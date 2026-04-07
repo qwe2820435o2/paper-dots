@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import boothReducer from "./slices/boothSlice";
-import editReducer from "./slices/editSlice";
+import decorateReducer from "./slices/decorateSlice";
 
 export const store = configureStore({
     reducer: {
-        booth: boothReducer,
-        edit: editReducer,
+        decorate: decorateReducer,
     },
 });
 

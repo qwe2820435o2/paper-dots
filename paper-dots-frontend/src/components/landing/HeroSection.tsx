@@ -26,7 +26,7 @@ export default function HeroSection() {
 
   function handleEnter() {
     setIsLoading(true);
-    router.push("/booth");
+    router.push("/decorate");
   }
 
   return (
@@ -58,7 +58,7 @@ export default function HeroSection() {
             Paper Dots
           </h1>
           <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-xs mx-auto">
-            TODO: Paper Dots hero description.
+            Upload a photo, pick a paper, scatter dots. Make it yours in seconds.
           </p>
           <div className="relative flex items-center justify-center mt-2 min-h-[68px]">
             <AnimatePresence mode="wait">

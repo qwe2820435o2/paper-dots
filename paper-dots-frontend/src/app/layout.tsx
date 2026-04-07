@@ -27,9 +27,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://paperdots.example.
 // TODO: replace with paper-dots Google Analytics id
 const GA_ID = "G-XXXXXXXXXX";
 
-// TODO: replace with real Paper Dots SEO title/description
 const SITE_TITLE = "Paper Dots";
-const SITE_DESCRIPTION = "TODO: Paper Dots product description";
+const SITE_DESCRIPTION =
+  "A tiny black-and-white tool to decorate your photos with hand-drawn paper textures and scattered dots.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

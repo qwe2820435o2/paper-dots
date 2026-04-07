@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <filter id="n">
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3"/>
+      <feColorMatrix values="0 0 0 0 0.78  0 0 0 0 0.68  0 0 0 0 0.52  0 0 0 0.35 0"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="#e8d9b8"/>
+  <rect width="600" height="600" filter="url(#n)"/>
+</svg>
