@@ -1,7 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, ChevronUp, Shuffle } from "lucide-react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
+import {
+    ChevronDown,
+    ChevronUp,
+    Circle as CircleIcon,
+    Droplet,
+    Heart,
+    Hexagon,
+    Leaf,
+    Moon,
+    Shuffle,
+    Square as SquareIcon,
+    Star,
+} from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -14,10 +26,37 @@ import {
 } from "@/store/slices/decorateSlice";
 import { DOT_COLORS, DOT_SHAPES } from "@/lib/dotShapes";
 
+type IconComponent = ComponentType<{ className?: string }>;
+
+const SHAPE_ICONS: Record<DotShape, IconComponent> = {
+    circle: CircleIcon,
+    square: SquareIcon,
+    teardrop: Droplet,
+    heart: Heart,
+    star: Star,
+    hexagon: Hexagon,
+    leaf: Leaf,
+    crescent: Moon,
+};
+
 export default function DotControls() {
     const dispatch = useAppDispatch();
     const dotConfig = useAppSelector((s) => s.decorate.dotConfig);
     const [isOpen, setIsOpen] = useState(true);
+    const shapeTileRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+    // Keep the selected shape tile visible whenever it changes (or on mount).
+    useEffect(() => {
+        if (!isOpen) return;
+        const el = shapeTileRefs.current[dotConfig.shape];
+        if (el) {
+            el.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+            });
+        }
+    }, [dotConfig.shape, isOpen]);
 
     return (
         <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
@@ -77,32 +116,51 @@ export default function DotControls() {
                         >
                             Shape
                         </label>
-                        <div className="grid grid-cols-3 gap-2">
-                            {DOT_SHAPES.map((s) => (
-                                <button
-                                    key={s.value}
-                                    type="button"
-                                    onClick={() => dispatch(setDotShape(s.value as DotShape))}
-                                    className="h-8 text-[13px] rounded-[8px] transition-all"
-                                    style={{
-                                        fontFamily:
-                                            "var(--font-inter), system-ui, sans-serif",
-                                        ...(dotConfig.shape === s.value
-                                            ? {
-                                                  border: "1px solid #0099ff",
-                                                  background: "rgba(0,153,255,0.1)",
-                                                  color: "#ffffff",
-                                              }
-                                            : {
-                                                  border: "1px solid rgba(255,255,255,0.1)",
-                                                  background: "#090909",
-                                                  color: "#a6a6a6",
-                                              }),
-                                    }}
-                                >
-                                    {s.label}
-                                </button>
-                            ))}
+                        <div
+                            className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+                            style={{
+                                scrollbarWidth: "none",
+                                msOverflowStyle: "none",
+                                WebkitMaskImage:
+                                    "linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%)",
+                                maskImage:
+                                    "linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%)",
+                                paddingInline: "4px",
+                            }}
+                        >
+                            {DOT_SHAPES.map((s) => {
+                                const Icon = SHAPE_ICONS[s.value];
+                                const selected = dotConfig.shape === s.value;
+                                return (
+                                    <button
+                                        key={s.value}
+                                        ref={(el) => {
+                                            shapeTileRefs.current[s.value] = el;
+                                        }}
+                                        type="button"
+                                        onClick={() => dispatch(setDotShape(s.value))}
+                                        aria-label={s.label}
+                                        title={s.label}
+                                        aria-pressed={selected}
+                                        className="shrink-0 snap-center w-11 h-11 rounded-[8px] flex items-center justify-center transition-all"
+                                        style={
+                                            selected
+                                                ? {
+                                                      border: "1px solid #0099ff",
+                                                      background: "rgba(0,153,255,0.1)",
+                                                      color: "#ffffff",
+                                                  }
+                                                : {
+                                                      border: "1px solid rgba(255,255,255,0.1)",
+                                                      background: "#090909",
+                                                      color: "#a6a6a6",
+                                                  }
+                                        }
+                                    >
+                                        <Icon className="w-5 h-5" />
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
 

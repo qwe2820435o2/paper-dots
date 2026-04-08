@@ -1,6 +1,14 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export type DotShape = "circle" | "square" | "teardrop";
+export type DotShape =
+    | "circle"
+    | "square"
+    | "teardrop"
+    | "heart"
+    | "star"
+    | "hexagon"
+    | "leaf"
+    | "crescent";
 
 export interface DotConfig {
     shape: DotShape;

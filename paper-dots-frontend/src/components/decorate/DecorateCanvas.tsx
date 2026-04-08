@@ -6,7 +6,7 @@ import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path } from "react-kon
 import { useAppSelector } from "@/store/hooks";
 import { getPaper } from "@/lib/papers";
 import { generateDots } from "@/lib/dotGenerator";
-import { TEARDROP_PATH } from "@/lib/dotShapes";
+import { SHAPE_PATHS } from "@/lib/dotShapes";
 import { useHTMLImage } from "./useHTMLImage";
 
 /** Logical canvas size — what we render and export at. */
@@ -130,13 +130,15 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                     />
                                 );
                             }
-                            // teardrop — Path is normalized to a unit box, scale by size.
+                            // Path-based shapes are normalized to a unit box, scale by size.
+                            const path = SHAPE_PATHS[dotConfig.shape];
+                            if (!path) return null;
                             return (
                                 <Path
                                     key={i}
                                     x={d.x}
                                     y={d.y}
-                                    data={TEARDROP_PATH}
+                                    data={path}
                                     scaleX={d.size}
                                     scaleY={d.size}
                                     rotation={d.rotation}
