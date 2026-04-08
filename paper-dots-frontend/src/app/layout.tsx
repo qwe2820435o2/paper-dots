@@ -1,23 +1,26 @@
-import { Geist, Geist_Mono, Caveat } from "next/font/google";
+import { Inter, Space_Grotesk, Azeret_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Providers from "@/components/common/Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const azeretMono = Azeret_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const caveat = Caveat({
-  variable: "--font-handwritten",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  display: "swap",
 });
 
 import type { Metadata } from "next";
@@ -76,7 +79,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} antialiased`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} ${azeretMono.variable} antialiased`}>
         <Providers>
           {children}
           <Toaster position="top-center" richColors closeButton />
