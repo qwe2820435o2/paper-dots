@@ -37,21 +37,16 @@ export function generateDots(
     height: number,
 ): GeneratedDot[] {
     const rand = mulberry32(seed);
-    const area = width * height;
     const avg = Math.max(1, config.size);
-    // Dot count depends only on density, not size.
-    // Fixed cell area is calibrated to size=14 so default behaviour is unchanged.
-    const DENSITY_CELL_AREA = 14 * 14 * 18 / 4; // ≈ 882
-    const rawCount = Math.round((config.density * area) / DENSITY_CELL_AREA);
-    const count = Math.min(MAX_DOTS, Math.max(0, rawCount));
+    const count = Math.min(MAX_DOTS, Math.max(0, Math.round(config.count)));
 
     const dots: GeneratedDot[] = new Array(count);
     for (let i = 0; i < count; i++) {
+        const spread = (config.variance / 100) * 0.8;
         dots[i] = {
             x: rand() * width,
             y: rand() * height,
-            // size jitter: 0.6x – 1.4x of base
-            size: avg * (0.6 + rand() * 0.8),
+            size: avg * (1 - spread + rand() * spread * 2),
             rotation: rand() * 360,
         };
     }

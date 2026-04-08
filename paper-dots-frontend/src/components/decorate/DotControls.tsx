@@ -18,8 +18,9 @@ import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
     setDotShape,
-    setDotDensity,
+    setDotCount,
     setDotSize,
+    setDotVariance,
     setDotColor,
     rerollSeed,
     type DotShape,
@@ -164,7 +165,7 @@ export default function DotControls() {
                         </div>
                     </div>
 
-                    {/* Density */}
+                    {/* Count */}
                     <div>
                         <div className="flex items-baseline justify-between mb-2">
                             <label
@@ -175,7 +176,7 @@ export default function DotControls() {
                                     letterSpacing: "0.08em",
                                 }}
                             >
-                                Density
+                                Count
                             </label>
                             <span
                                 className="text-[12px] tabular-nums"
@@ -184,15 +185,15 @@ export default function DotControls() {
                                     color: "#a6a6a6",
                                 }}
                             >
-                                {Math.round(dotConfig.density * 100)}%
+                                {dotConfig.count}
                             </span>
                         </div>
                         <Slider
-                            min={10}
+                            min={0}
                             max={100}
                             step={1}
-                            value={[Math.round(dotConfig.density * 100)]}
-                            onValueChange={(v) => dispatch(setDotDensity(v[0] / 100))}
+                            value={[dotConfig.count]}
+                            onValueChange={(v) => dispatch(setDotCount(v[0]))}
                         />
                     </div>
 
@@ -225,6 +226,38 @@ export default function DotControls() {
                             step={1}
                             value={[Math.round(dotConfig.size * 2)]}
                             onValueChange={(v) => dispatch(setDotSize(v[0] / 2))}
+                        />
+                    </div>
+
+                    {/* Variance */}
+                    <div>
+                        <div className="flex items-baseline justify-between mb-2">
+                            <label
+                                className="text-[11px] uppercase"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                    letterSpacing: "0.08em",
+                                }}
+                            >
+                                Variance
+                            </label>
+                            <span
+                                className="text-[12px] tabular-nums"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                }}
+                            >
+                                {dotConfig.variance}
+                            </span>
+                        </div>
+                        <Slider
+                            min={0}
+                            max={100}
+                            step={1}
+                            value={[dotConfig.variance]}
+                            onValueChange={(v) => dispatch(setDotVariance(v[0]))}
                         />
                     </div>
 

@@ -12,10 +12,12 @@ export type DotShape =
 
 export interface DotConfig {
     shape: DotShape;
-    /** 0.1 - 1.0 */
-    density: number;
+    /** 0 - 100, exact number of dots to render */
+    count: number;
     /** average dot size in px */
     size: number;
+    /** 0 - 100, controls size variation between dots */
+    variance: number;
     /** hex color string */
     color: string;
 }
@@ -35,8 +37,9 @@ const initialState: DecorateState = {
     paperId: "plain",
     dotConfig: {
         shape: "circle",
-        density: 0.5,
+        count: 50,
         size: 14,
+        variance: 0,
         color: "#1a1a1a",
     },
     seed: 1,
@@ -55,11 +58,14 @@ const decorateSlice = createSlice({
         setDotShape(state, action: PayloadAction<DotShape>) {
             state.dotConfig.shape = action.payload;
         },
-        setDotDensity(state, action: PayloadAction<number>) {
-            state.dotConfig.density = action.payload;
+        setDotCount(state, action: PayloadAction<number>) {
+            state.dotConfig.count = action.payload;
         },
         setDotSize(state, action: PayloadAction<number>) {
             state.dotConfig.size = action.payload;
+        },
+        setDotVariance(state, action: PayloadAction<number>) {
+            state.dotConfig.variance = action.payload;
         },
         setDotColor(state, action: PayloadAction<string>) {
             state.dotConfig.color = action.payload;
@@ -74,8 +80,9 @@ export const {
     setPhotoUrl,
     setPaperId,
     setDotShape,
-    setDotDensity,
+    setDotCount,
     setDotSize,
+    setDotVariance,
     setDotColor,
     rerollSeed,
 } = decorateSlice.actions;
