@@ -28,6 +28,7 @@ import {
     type DotShape,
 } from "@/store/slices/decorateSlice";
 import { DOT_COLORS, DOT_SHAPES } from "@/lib/dotShapes";
+import ColorPicker from "./ColorPicker";
 
 type IconComponent = ComponentType<{ className?: string }>;
 
@@ -47,7 +48,10 @@ export default function DotControls() {
     const dispatch = useAppDispatch();
     const dotConfig = useAppSelector((s) => s.decorate.dotConfig);
     const [isOpen, setIsOpen] = useState(true);
+    const [isPickerOpen, setIsPickerOpen] = useState(false);
     const shapeTileRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+    const isCustomColor = !DOT_COLORS.some((c) => c.value === dotConfig.color);
 
     // Keep the selected shape tile visible whenever it changes (or on mount).
     useEffect(() => {
@@ -299,9 +303,9 @@ export default function DotControls() {
                     </div>
 
                     {/* Color */}
-                    <div>
+                    <div className="flex flex-col gap-3">
                         <label
-                            className="block text-[11px] uppercase mb-2"
+                            className="block text-[11px] uppercase"
                             style={{
                                 fontFamily: "var(--font-inter), system-ui, sans-serif",
                                 color: "#a6a6a6",
@@ -315,12 +319,15 @@ export default function DotControls() {
                                 <button
                                     key={c.value}
                                     type="button"
-                                    onClick={() => dispatch(setDotColor(c.value))}
+                                    onClick={() => {
+                                        dispatch(setDotColor(c.value));
+                                        setIsPickerOpen(false);
+                                    }}
                                     aria-label={c.label}
                                     className="aspect-square rounded-full transition-all"
                                     style={{
                                         backgroundColor: c.value,
-                                        ...(dotConfig.color === c.value
+                                        ...(dotConfig.color === c.value && !isPickerOpen
                                             ? {
                                                   boxShadow:
                                                       "rgba(0, 153, 255, 0.9) 0px 0px 0px 2px, rgba(0, 153, 255, 0.25) 0px 0px 0px 4px",
@@ -332,7 +339,34 @@ export default function DotControls() {
                                     }}
                                 />
                             ))}
+                            {/* Custom color swatch */}
+                            <button
+                                type="button"
+                                onClick={() => setIsPickerOpen((v) => !v)}
+                                aria-label="Custom color"
+                                className="aspect-square rounded-full transition-all"
+                                style={{
+                                    background:
+                                        "conic-gradient(from 0deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
+                                    ...(isCustomColor || isPickerOpen
+                                        ? {
+                                              boxShadow:
+                                                  "rgba(0, 153, 255, 0.9) 0px 0px 0px 2px, rgba(0, 153, 255, 0.25) 0px 0px 0px 4px",
+                                          }
+                                        : {
+                                              boxShadow:
+                                                  "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                                          }),
+                                }}
+                            />
                         </div>
+
+                        {isPickerOpen && (
+                            <ColorPicker
+                                color={dotConfig.color}
+                                onChange={(hex) => dispatch(setDotColor(hex))}
+                            />
+                        )}
                     </div>
                 </div>
             )}

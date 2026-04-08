@@ -6,7 +6,6 @@ export const DOT_COLORS: { value: string; label: string }[] = [
     { value: "#cc7a00", label: "Marigold" },
     { value: "#ff1fa9", label: "Neon Pink" },
     { value: "#3b82f6", label: "Sky" },
-    { value: "#10b981", label: "Mint" },
 ];
 
 export const DOT_SHAPES: { value: DotShape; label: string }[] = [
