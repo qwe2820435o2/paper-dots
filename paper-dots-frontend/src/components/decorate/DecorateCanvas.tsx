@@ -163,21 +163,28 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     const scale = clampedDisplayW / canvasW;
     const displayH = Math.round(canvasH * scale);
 
-    // Split geometry.
-    const leftW = canvasW * (1 - layout.ratio / 100);
-    const rightW = canvasW - leftW;
+    const p = layout.ratio; // 0-100
 
-    // Photo fill for each sub-panel (contain fit, no inset so photo fills panel).
+    // Each panel is fixed at cellW × cellH.
+    // Clip controls visibility:
+    //   Left photo: p≤50 → full; p>50 → left edge moves right
+    //   Right paper: p≥50 → full; p<50 → right edge moves left (anchored at x=cellW)
+    const leftClipX = p > 50 ? ((p - 50) / 50) * cellW : 0;
+    const leftClipW = p > 50 ? ((100 - p) / 50) * cellW : cellW;
+    const rightClipX = cellW;
+    const rightClipW = p < 50 ? (p / 50) * cellW : cellW;
+
+    const hasLeft = leftClipW > 0;
+    const hasRight = rightClipW > 0;
+
+    // Photo always fills its fixed panel (no inset, contain fit within cellW × cellH).
     const leftPhotoLayout = useMemo(
-        () => (photoImg && leftW > 0 ? containLayout(photoImg, 0, 0, leftW, canvasH) : null),
-        [photoImg, leftW, canvasH],
+        () => (photoImg ? containLayout(photoImg, 0, 0, cellW, cellH) : null),
+        [photoImg, cellW, cellH],
     );
     const rightPhotoLayout = useMemo(
-        () =>
-            photoImg && rightW > 0
-                ? containLayout(photoImg, leftW, 0, rightW, canvasH)
-                : null,
-        [photoImg, leftW, rightW, canvasH],
+        () => (photoImg ? containLayout(photoImg, cellW, 0, cellW, cellH) : null),
+        [photoImg, cellW, cellH],
     );
 
     // Single dot field shared across both sub-panels.
@@ -189,8 +196,6 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     // Effective dot color: "auto" follows the current paper's representative color.
     const dotColor = dotConfig.colorMode === "auto" ? paper.color : dotConfig.color;
 
-    const hasLeft = leftW > 0;
-    const hasRight = rightW > 0;
 
     return (
         <div ref={wrapRef} className="w-full" style={{ maxWidth: canvasW }}>
@@ -201,22 +206,18 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                 scaleX={scale}
                 scaleY={scale}
                 style={{ width: clampedDisplayW, height: displayH }}
-                className="sketch-border bg-white"
+                className=""
             >
-                {/* Background */}
-                <Layer listening={false}>
-                    <Rect x={0} y={0} width={canvasW} height={canvasH} fill="#fafafa" />
-                </Layer>
-
-                {/* Left panel: photo + dots painted on top */}
+                {/* Left panel: fafafa bg + photo + dots painted on top */}
                 {hasLeft && (
                     <Layer
                         listening={false}
-                        clipX={0}
+                        clipX={leftClipX}
                         clipY={0}
-                        clipWidth={leftW}
+                        clipWidth={leftClipW}
                         clipHeight={canvasH}
                     >
+                        <Rect x={0} y={0} width={cellW} height={canvasH} fill="#fafafa" />
                         {photoImg && leftPhotoLayout && (
                             <KonvaImage image={photoImg} {...leftPhotoLayout} />
                         )}
@@ -233,13 +234,13 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                     </Layer>
                 )}
 
-                {/* Right panel: photo (below paper) */}
+                {/* Right panel: photo below the paper layer */}
                 {hasRight && (
                     <Layer
                         listening={false}
-                        clipX={leftW}
+                        clipX={rightClipX}
                         clipY={0}
-                        clipWidth={rightW}
+                        clipWidth={rightClipW}
                         clipHeight={canvasH}
                     >
                         {photoImg && rightPhotoLayout && (
@@ -252,24 +253,24 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                 {hasRight && (
                     <Layer
                         listening={false}
-                        clipX={leftW}
+                        clipX={rightClipX}
                         clipY={0}
-                        clipWidth={rightW}
+                        clipWidth={rightClipW}
                         clipHeight={canvasH}
                     >
                         <Rect
-                            x={leftW}
+                            x={cellW}
                             y={0}
-                            width={rightW}
+                            width={cellW}
                             height={canvasH}
                             fill={paper.color}
                         />
                         {paperImg && (
                             <KonvaImage
                                 image={paperImg}
-                                x={leftW}
+                                x={cellW}
                                 y={0}
-                                width={rightW}
+                                width={cellW}
                                 height={canvasH}
                             />
                         )}
