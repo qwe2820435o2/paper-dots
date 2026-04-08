@@ -8,7 +8,7 @@
 7. 出bug时，先写能重现的测试再修复
 8. 每次被纠正后，反思并制定不再犯的计划
 
-## 前端 photo-booth-frontend 
+## 前端 paper-dots-frontend 
 - 语言: TypeScript
 - 框架: Next.js，使用App Router
 - UI 组件库: shadcn/ui
