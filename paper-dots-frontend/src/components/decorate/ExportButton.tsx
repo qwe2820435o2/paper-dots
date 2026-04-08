@@ -4,7 +4,6 @@ import type { RefObject } from "react";
 import type Konva from "konva";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/hooks";
 
 interface Props {
@@ -28,15 +27,25 @@ export default function ExportButton({ stageRef }: Props) {
     }
 
     return (
-        <Button
+        <button
             type="button"
-            size="lg"
-            className="w-full"
             onClick={handleExport}
             disabled={!photoUrl}
+            className="w-full flex items-center justify-center gap-2 bg-white text-black text-[14px] font-medium py-2.5 rounded-[100px] transition-opacity"
+            style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                opacity: photoUrl ? 1 : 0.35,
+                cursor: photoUrl ? "pointer" : "not-allowed",
+            }}
+            onMouseEnter={(e) => {
+                if (photoUrl) (e.currentTarget as HTMLButtonElement).style.opacity = "0.85";
+            }}
+            onMouseLeave={(e) => {
+                if (photoUrl) (e.currentTarget as HTMLButtonElement).style.opacity = "1";
+            }}
         >
-            <Download className="w-4 h-4" />
+            <Download className="w-4 h-4" strokeWidth={2} />
             Download PNG
-        </Button>
+        </button>
     );
 }

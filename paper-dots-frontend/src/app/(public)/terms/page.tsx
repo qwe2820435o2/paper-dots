@@ -1,4 +1,3 @@
-// TODO: review these Terms of Service — content was inherited from the photo-booth scaffold and needs to be rewritten for Paper Dots.
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,100 +10,217 @@ export const metadata: Metadata = {
   },
 };
 
+const prohibited = [
+  "Use the service to create or distribute illegal, harmful, or offensive content.",
+  "Attempt to reverse-engineer, modify, or interfere with the application.",
+  "Use automated tools to scrape or overload the service.",
+];
+
 export default function TermsPage() {
   return (
-    <div className="min-h-[70vh] py-20 px-6">
+    <div className="min-h-[70vh] bg-black py-20 px-5 sm:px-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif font-semibold text-foreground mb-2">
+        <h1
+          className="text-[42px] sm:text-[62px] font-medium text-white mb-2"
+          style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            letterSpacing: "-3px",
+            lineHeight: "1.0",
+          }}
+        >
           Terms of Service
         </h1>
-        <p className="text-sm text-muted-foreground mb-14">
+        <p
+          className="text-[13px] mb-16"
+          style={{
+            fontFamily: "var(--font-inter), system-ui, sans-serif",
+            color: "#a6a6a6",
+          }}
+        >
           Last updated: March 26, 2026
         </p>
 
         <div className="space-y-10">
           <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">Acceptance of Terms</h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              Acceptance of Terms
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
               By accessing or using Paper Dots, you agree to be bound by these Terms of Service.
               If you do not agree, please do not use the service.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">Description of Service</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Paper Dots is a free, browser-based Paper Dots app application that allows you to take photos
-              using your webcam, apply filters and templates, add stickers, and download photo strips.
-              All processing occurs locally in your browser.
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              Description of Service
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
+              Paper Dots is a free, browser-based photo decoration tool. You upload a photo, apply
+              a paper texture, configure dot patterns, and download the result as a PNG. All
+              processing occurs locally in your browser — no server upload is required.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">User Conduct</h2>
-            <p className="text-muted-foreground leading-relaxed mb-3">
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              User Conduct
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7] mb-4"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
               You agree to use Paper Dots only for lawful purposes. You must not:
             </p>
-            <ul className="space-y-2 text-muted-foreground">
-              {[
-                "Use the service to create or distribute illegal, harmful, or offensive content.",
-                "Attempt to reverse-engineer, modify, or interfere with the application.",
-                "Use automated tools to scrape or overload the service.",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-2">
-                  <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
-                  <span className="leading-relaxed">{item}</span>
+            <ul className="space-y-3">
+              {prohibited.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-3 text-[15px] leading-[1.7]"
+                  style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+                >
+                  <span
+                    className="mt-[9px] shrink-0 w-1 h-1 rounded-full"
+                    style={{ background: "#a6a6a6" }}
+                  />
+                  {item}
                 </li>
               ))}
             </ul>
           </section>
 
           <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">Intellectual Property</h2>
-            <p className="text-muted-foreground leading-relaxed mb-3">
-              The Paper Dots application, including its design, code, templates, stickers, and visual assets,
-              is the intellectual property of Paper Dots. You may not copy, reproduce, or redistribute any
-              part of the application without prior written consent.
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              Intellectual Property
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7] mb-4"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
+              The Paper Dots application — including its design, code, paper textures, and visual
+              assets — is the intellectual property of Paper Dots. You may not copy, reproduce, or
+              redistribute any part of the application without prior written consent.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Photos you create using Paper Dots are yours. We claim no ownership over the content you generate.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">Disclaimer of Warranties</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Paper Dots is provided &quot;as is&quot; without warranties of any kind, express or implied. We do
-              not guarantee that the service will be uninterrupted, error-free, or compatible with all devices.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">Limitation of Liability</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              To the fullest extent permitted by law, Paper Dots shall not be liable for any indirect,
-              incidental, or consequential damages arising from your use of the service.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">Changes to These Terms</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We reserve the right to modify these Terms of Service at any time. Continued use of Paper Dots
-              after changes constitutes acceptance of the updated terms.
+            <p
+              className="text-[15px] leading-[1.7]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
+              Photos you decorate using Paper Dots are yours. We claim no ownership over the
+              content you generate.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-serif font-semibold text-foreground mb-3">Contact</h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              Disclaimer of Warranties
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
+              Paper Dots is provided &quot;as is&quot; without warranties of any kind, express or
+              implied. We do not guarantee that the service will be uninterrupted, error-free, or
+              compatible with all devices.
+            </p>
+          </section>
+
+          <section>
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              Limitation of Liability
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
+              To the fullest extent permitted by law, Paper Dots shall not be liable for any
+              indirect, incidental, or consequential damages arising from your use of the service.
+            </p>
+          </section>
+
+          <section>
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              Changes to These Terms
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
+              We reserve the right to modify these Terms of Service at any time. Continued use of
+              Paper Dots after changes constitutes acceptance of the updated terms.
+            </p>
+          </section>
+
+          <section>
+            <h2
+              className="text-[18px] font-medium text-white mb-3"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                letterSpacing: "-0.4px",
+              }}
+            >
+              Contact
+            </h2>
+            <p
+              className="text-[15px] leading-[1.7]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}
+            >
               If you have questions about these Terms of Service, please contact us at{" "}
               <a
-                href="mailto:support@paperdots.example.com"
-                className="text-primary hover:underline"
+                href="mailto:support@paperdots.app"
+                className="transition-opacity hover:opacity-75"
+                style={{ color: "#0099ff" }}
               >
-                support@paperdots.example.com
-              </a>.
+                support@paperdots.app
+              </a>
+              .
             </p>
           </section>
         </div>

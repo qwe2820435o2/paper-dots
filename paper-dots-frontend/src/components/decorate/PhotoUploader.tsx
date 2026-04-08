@@ -37,9 +37,15 @@ export default function PhotoUploader({ hasPhoto }: Props) {
                 handleFiles(e.dataTransfer.files);
             }}
             className={cn(
-                "flex items-center gap-3 px-3 py-2.5 cursor-pointer border-b border-foreground/10 transition-colors shrink-0",
-                dragOver ? "bg-foreground/5" : "hover:bg-foreground/5",
+                "flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors shrink-0",
+                dragOver ? "bg-white/[0.06]" : "hover:bg-white/[0.04]",
             )}
+            style={{
+                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: dragOver
+                    ? "rgba(0, 153, 255, 0.25) 0px 0px 0px 1px inset"
+                    : "none",
+            }}
         >
             <input
                 type="file"
@@ -47,12 +53,26 @@ export default function PhotoUploader({ hasPhoto }: Props) {
                 className="hidden"
                 onChange={(e) => handleFiles(e.target.files)}
             />
-            <Upload className="w-4 h-4 shrink-0 text-foreground" strokeWidth={1.8} />
+            <Upload
+                className="w-4 h-4 shrink-0 text-white"
+                strokeWidth={1.8}
+            />
             <div className="min-w-0">
-                <p className="font-serif text-sm text-foreground">
+                <p
+                    className="text-[14px] font-medium text-white"
+                    style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+                >
                     {hasPhoto ? "Replace photo" : "Upload photo"}
                 </p>
-                <p className="text-[10px] text-muted-foreground">PNG · JPG · WEBP</p>
+                <p
+                    className="text-[11px]"
+                    style={{
+                        fontFamily: "var(--font-inter), system-ui, sans-serif",
+                        color: "#a6a6a6",
+                    }}
+                >
+                    PNG · JPG · WEBP
+                </p>
             </div>
         </label>
     );

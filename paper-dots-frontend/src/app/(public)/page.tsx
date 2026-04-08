@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import HeroSection from "@/components/landing/HeroSection";
+import FeaturesSection from "@/components/landing/FeaturesSection";
+import CtaSection from "@/components/landing/CtaSection";
 
 const PAGE_TITLE = "Paper Dots";
 const PAGE_DESCRIPTION =
@@ -34,6 +36,8 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <HeroSection />
+      <FeaturesSection />
+      <CtaSection />
     </>
   );
 }

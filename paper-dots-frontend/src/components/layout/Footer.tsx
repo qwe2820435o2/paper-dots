@@ -13,28 +13,67 @@ const legalLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-muted/30 border-t-2 border-foreground/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer
+      className="bg-black"
+      style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+    >
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-3">
-              <Image src="/logo.png" alt="Paper Dots" width={28} height={28} className="rounded" />
-              <span className="font-serif font-semibold text-foreground text-lg">Paper Dots</span>
+            <Link href="/" className="inline-flex items-center gap-2 mb-4">
+              <Image
+                src="/logo.png"
+                alt="Paper Dots"
+                width={24}
+                height={24}
+                className="rounded"
+              />
+              <span
+                className="text-white text-[15px] font-medium"
+                style={{
+                  fontFamily: "var(--font-inter), system-ui, sans-serif",
+                  letterSpacing: "-0.15px",
+                }}
+              >
+                Paper Dots
+              </span>
             </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {/* TODO: replace with real Paper Dots tagline */}
-              Paper Dots — TODO tagline.
+            <p
+              className="text-[14px] leading-[1.6] max-w-[260px]"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                color: "#a6a6a6",
+              }}
+            >
+              Decorate your photos with hand-drawn paper textures and scattered
+              dots.
             </p>
           </div>
 
           {/* Support */}
           <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3">Support</h3>
-            <ul className="space-y-2">
+            <h3
+              className="text-[13px] font-medium mb-4"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                color: "#ffffff",
+                letterSpacing: "-0.1px",
+              }}
+            >
+              Support
+            </h3>
+            <ul className="space-y-3">
               {supportLinks.map(({ label, href }) => (
                 <li key={label}>
-                  <Link href={href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={href}
+                    className="text-[14px] transition-colors hover:text-white"
+                    style={{
+                      fontFamily: "var(--font-inter), system-ui, sans-serif",
+                      color: "#a6a6a6",
+                    }}
+                  >
                     {label}
                   </Link>
                 </li>
@@ -44,11 +83,27 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3">Legal</h3>
-            <ul className="space-y-2">
+            <h3
+              className="text-[13px] font-medium mb-4"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                color: "#ffffff",
+                letterSpacing: "-0.1px",
+              }}
+            >
+              Legal
+            </h3>
+            <ul className="space-y-3">
               {legalLinks.map(({ label, href }) => (
                 <li key={label}>
-                  <Link href={href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={href}
+                    className="text-[14px] transition-colors hover:text-white"
+                    style={{
+                      fontFamily: "var(--font-inter), system-ui, sans-serif",
+                      color: "#a6a6a6",
+                    }}
+                  >
                     {label}
                   </Link>
                 </li>
@@ -57,8 +112,17 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-border text-center">
-          <p className="text-xs text-muted-foreground">
+        <div
+          className="mt-12 pt-6"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+        >
+          <p
+            className="text-[13px]"
+            style={{
+              fontFamily: "var(--font-inter), system-ui, sans-serif",
+              color: "#a6a6a6",
+            }}
+          >
             &copy; {new Date().getFullYear()} Paper Dots. All rights reserved.
           </p>
         </div>

@@ -9,16 +9,16 @@ import SketchLoader from "@/components/common/SketchLoader";
 const container = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.14 },
+    transition: { staggerChildren: 0.12 },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 28 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -32,7 +32,16 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 pt-8 pb-16 overflow-hidden">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 pt-8 pb-20 overflow-hidden bg-black">
+      {/* Blue radial glow behind image */}
+      <div
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(0,153,255,0.08) 0%, transparent 70%)",
+        }}
+      />
+
       <motion.div
         className="max-w-[1200px] mx-auto w-full flex flex-col items-center gap-16 lg:gap-0 lg:grid lg:grid-cols-2 lg:items-center"
         variants={container}
@@ -40,41 +49,74 @@ export default function HeroSection() {
         animate="show"
       >
         {/* Left: text */}
-        <motion.div variants={item} className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
-          <h1
-            className="text-[52px] sm:text-[72px] lg:text-[88px] font-medium leading-[0.92] text-white"
+        <motion.div
+          variants={item}
+          className="flex flex-col gap-7 items-center lg:items-start text-center lg:text-left order-2 lg:order-1"
+        >
+          {/* Badge */}
+          <div
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] text-[12px] font-medium"
             style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              letterSpacing: "-4px",
+              fontFamily: "var(--font-inter), system-ui, sans-serif",
+              color: "#0099ff",
+              boxShadow: "rgba(0, 153, 255, 0.25) 0px 0px 0px 1px",
             }}
           >
-            Your photos,<br />dotted.
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: "#0099ff" }}
+            />
+            Free · No sign-up required
+          </div>
+
+          {/* Headline */}
+          <h1
+            className="text-[62px] sm:text-[85px] lg:text-[110px] font-medium text-white"
+            style={{
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              letterSpacing: "-5.5px",
+              lineHeight: "0.87",
+              fontWeight: 500,
+            }}
+          >
+            Your photos,
+            <br />
+            dotted.
           </h1>
 
+          {/* Sub-headline */}
           <p
-            className="text-[17px] leading-[1.6] max-w-[340px]"
+            className="text-[17px] leading-[1.6] max-w-[360px]"
             style={{
               fontFamily: "var(--font-inter), system-ui, sans-serif",
               color: "#a6a6a6",
+              fontFeatureSettings:
+                '"cv01","cv05","cv09","cv11","ss03","ss07"',
             }}
           >
-            Upload a photo, pick a paper texture, scatter dots. Make it yours in seconds.
+            Upload a photo, pick a paper texture, scatter dots.
+            <br />
+            Make it yours in seconds.
           </p>
 
-          <div className="mt-2 min-h-[48px] flex items-center">
+          {/* CTA */}
+          <div className="mt-1 min-h-[52px] flex items-center">
             <AnimatePresence mode="wait">
               {!isLoading ? (
                 <motion.button
                   key="cta"
                   onClick={handleEnter}
-                  className="bg-white text-black text-[15px] font-medium px-6 py-3 rounded-[100px] cursor-pointer"
-                  style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+                  className="bg-white text-black text-[15px] font-medium px-7 py-3 rounded-[100px] cursor-pointer"
+                  style={{
+                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                    fontWeight: 500,
+                  }}
                   whileHover={{ opacity: 0.88 }}
                   whileTap={{ scale: 0.96 }}
                   exit={{ opacity: 0, scale: 0.92 }}
                   transition={{ duration: 0.15 }}
                 >
-                  Start decorating
+                  Start decorating →
                 </motion.button>
               ) : (
                 <motion.div
@@ -93,13 +135,13 @@ export default function HeroSection() {
         {/* Right: product image */}
         <motion.div
           variants={item}
-          className="relative w-full max-w-[560px] mx-auto lg:mx-0 lg:ml-auto order-1 lg:order-2"
+          className="relative w-full max-w-[580px] mx-auto lg:mx-0 lg:ml-auto order-1 lg:order-2"
         >
           <div
             className="rounded-[12px] overflow-hidden"
             style={{
               boxShadow:
-                "rgba(255, 255, 255, 0.08) 0px 0.5px 0px 0.5px, rgba(0, 0, 0, 0.4) 0px 24px 60px",
+                "rgba(0, 153, 255, 0.15) 0px 0px 0px 1px, rgba(255, 255, 255, 0.08) 0px 0.5px 0px 0.5px, rgba(0, 0, 0, 0.5) 0px 30px 70px",
             }}
           >
             <Image

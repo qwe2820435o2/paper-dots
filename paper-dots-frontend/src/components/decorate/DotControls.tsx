@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Shuffle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
     setDotShape,
@@ -14,7 +13,6 @@ import {
     type DotShape,
 } from "@/store/slices/decorateSlice";
 import { DOT_COLORS, DOT_SHAPES } from "@/lib/dotShapes";
-import { cn } from "@/lib/utils";
 
 export default function DotControls() {
     const dispatch = useAppDispatch();
@@ -22,48 +20,85 @@ export default function DotControls() {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
-        <div className="border-b border-foreground/10">
+        <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
             <button
                 type="button"
                 onClick={() => setIsOpen((v) => !v)}
-                className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-foreground/5 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/[0.04] transition-colors"
             >
-                <span className="font-serif text-sm">Dots</span>
+                <span
+                    className="text-[13px] font-medium text-white"
+                    style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+                >
+                    Dots
+                </span>
                 {isOpen ? (
-                    <ChevronUp className="w-3.5 h-3.5 text-muted-foreground" />
+                    <ChevronUp className="w-3.5 h-3.5" style={{ color: "#a6a6a6" }} />
                 ) : (
-                    <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
+                    <ChevronDown className="w-3.5 h-3.5" style={{ color: "#a6a6a6" }} />
                 )}
             </button>
+
             {isOpen && (
-                <div className="px-3 pb-3 flex flex-col gap-4">
+                <div className="px-4 pb-4 flex flex-col gap-5">
+                    {/* Reroll */}
                     <div className="flex items-center justify-end">
-                        <Button
+                        <button
                             type="button"
-                            size="sm"
-                            variant="outline"
                             onClick={() => dispatch(rerollSeed())}
+                            className="flex items-center gap-1.5 px-4 py-1.5 rounded-[100px] text-[13px] font-medium text-white transition-colors"
+                            style={{
+                                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                background: "rgba(255,255,255,0.08)",
+                            }}
+                            onMouseEnter={(e) => {
+                                (e.currentTarget as HTMLButtonElement).style.background =
+                                    "rgba(255,255,255,0.14)";
+                            }}
+                            onMouseLeave={(e) => {
+                                (e.currentTarget as HTMLButtonElement).style.background =
+                                    "rgba(255,255,255,0.08)";
+                            }}
                         >
                             <Shuffle className="w-3.5 h-3.5" />
                             Reroll
-                        </Button>
+                        </button>
                     </div>
 
                     {/* Shape */}
                     <div>
-                        <label className="text-xs uppercase tracking-wide text-muted-foreground">Shape</label>
-                        <div className="grid grid-cols-3 gap-2 mt-2">
+                        <label
+                            className="block text-[11px] uppercase mb-2"
+                            style={{
+                                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                color: "#a6a6a6",
+                                letterSpacing: "0.08em",
+                            }}
+                        >
+                            Shape
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
                             {DOT_SHAPES.map((s) => (
                                 <button
                                     key={s.value}
                                     type="button"
                                     onClick={() => dispatch(setDotShape(s.value as DotShape))}
-                                    className={cn(
-                                        "h-8 border-2 text-sm font-serif transition-all",
-                                        dotConfig.shape === s.value
-                                            ? "border-foreground bg-foreground text-background"
-                                            : "border-foreground/20 hover:border-foreground/60",
-                                    )}
+                                    className="h-8 text-[13px] rounded-[8px] transition-all"
+                                    style={{
+                                        fontFamily:
+                                            "var(--font-inter), system-ui, sans-serif",
+                                        ...(dotConfig.shape === s.value
+                                            ? {
+                                                  border: "1px solid #0099ff",
+                                                  background: "rgba(0,153,255,0.1)",
+                                                  color: "#ffffff",
+                                              }
+                                            : {
+                                                  border: "1px solid rgba(255,255,255,0.1)",
+                                                  background: "#090909",
+                                                  color: "#a6a6a6",
+                                              }),
+                                    }}
                                 >
                                     {s.label}
                                 </button>
@@ -73,16 +108,28 @@ export default function DotControls() {
 
                     {/* Density */}
                     <div>
-                        <div className="flex items-baseline justify-between">
-                            <label className="text-xs uppercase tracking-wide text-muted-foreground">
+                        <div className="flex items-baseline justify-between mb-2">
+                            <label
+                                className="text-[11px] uppercase"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                    letterSpacing: "0.08em",
+                                }}
+                            >
                                 Density
                             </label>
-                            <span className="text-xs text-muted-foreground tabular-nums">
+                            <span
+                                className="text-[12px] tabular-nums"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                }}
+                            >
                                 {Math.round(dotConfig.density * 100)}%
                             </span>
                         </div>
                         <Slider
-                            className="mt-2"
                             min={10}
                             max={100}
                             step={1}
@@ -93,16 +140,28 @@ export default function DotControls() {
 
                     {/* Size */}
                     <div>
-                        <div className="flex items-baseline justify-between">
-                            <label className="text-xs uppercase tracking-wide text-muted-foreground">
+                        <div className="flex items-baseline justify-between mb-2">
+                            <label
+                                className="text-[11px] uppercase"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                    letterSpacing: "0.08em",
+                                }}
+                            >
                                 Size
                             </label>
-                            <span className="text-xs text-muted-foreground tabular-nums">
+                            <span
+                                className="text-[12px] tabular-nums"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                }}
+                            >
                                 {dotConfig.size}px
                             </span>
                         </div>
                         <Slider
-                            className="mt-2"
                             min={4}
                             max={48}
                             step={1}
@@ -113,21 +172,36 @@ export default function DotControls() {
 
                     {/* Color */}
                     <div>
-                        <label className="text-xs uppercase tracking-wide text-muted-foreground">Color</label>
-                        <div className="grid grid-cols-6 gap-2 mt-2">
+                        <label
+                            className="block text-[11px] uppercase mb-2"
+                            style={{
+                                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                color: "#a6a6a6",
+                                letterSpacing: "0.08em",
+                            }}
+                        >
+                            Color
+                        </label>
+                        <div className="grid grid-cols-6 gap-2">
                             {DOT_COLORS.map((c) => (
                                 <button
                                     key={c.value}
                                     type="button"
                                     onClick={() => dispatch(setDotColor(c.value))}
                                     aria-label={c.label}
-                                    className={cn(
-                                        "aspect-square rounded-full border-2 transition-all",
-                                        dotConfig.color === c.value
-                                            ? "border-foreground scale-110 shadow-[2px_2px_0_#1a1a1a]"
-                                            : "border-foreground/20 hover:border-foreground/60",
-                                    )}
-                                    style={{ backgroundColor: c.value }}
+                                    className="aspect-square rounded-full transition-all"
+                                    style={{
+                                        backgroundColor: c.value,
+                                        ...(dotConfig.color === c.value
+                                            ? {
+                                                  boxShadow:
+                                                      "rgba(0, 153, 255, 0.9) 0px 0px 0px 2px, rgba(0, 153, 255, 0.25) 0px 0px 0px 4px",
+                                              }
+                                            : {
+                                                  boxShadow:
+                                                      "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                                              }),
+                                    }}
                                 />
                             ))}
                         </div>

@@ -1,4 +1,3 @@
-// TODO: review this FAQ — content was inherited from the photo-booth scaffold and needs to be rewritten for Paper Dots.
 import type { Metadata } from "next";
 import {
   Accordion,
@@ -9,70 +8,54 @@ import {
 
 export const metadata: Metadata = {
   title: "FAQ",
-  description: "Answers to common questions about Paper Dots — the free browser-based Paper Dots app.",
+  description: "Answers to common questions about Paper Dots.",
   openGraph: {
     title: "Frequently Asked Questions — Paper Dots",
-    description: "Answers to common questions about Paper Dots — the free browser-based Paper Dots app.",
+    description: "Answers to common questions about Paper Dots.",
     url: "/faq",
   },
 };
 
-const faqs: { question: string; answer: string; plainAnswer: string }[] = [
+const faqs: { question: string; answer: string }[] = [
   {
     question: "What is Paper Dots?",
-    plainAnswer:
-      "Paper Dots is a free, browser-based Paper Dots app. Open the site, allow camera access, and take fun photo strips — no app download or account needed.",
     answer:
-      "Paper Dots is a free, browser-based Paper Dots app. Open the site, allow camera access, and take fun photo strips — no app download or account needed.",
+      "Paper Dots is a free, browser-based tool that lets you decorate your photos with hand-drawn paper textures and scattered dot patterns. Upload a photo, pick a paper style, adjust the dots, and download the result — no account or app install needed.",
   },
   {
-    question: "How do I use it?",
-    plainAnswer:
-      "Click \"Start Now\" on the homepage to open the booth. Choose your filters, set the shot count (2\u20139), and hit the camera button. After your shots are taken, you will be redirected to the edit page where you can pick a template, add stickers, and download your strip.",
+    question: "Is it free?",
     answer:
-      "Click \"Start Now\" on the homepage to open the booth. Choose your filters, set the shot count (2\u20139), and hit the camera button. After your shots are taken, you will be redirected to the edit page where you can pick a template, add stickers, and download your strip.",
+      "Yes, completely free. There are no hidden fees, subscriptions, or watermarks added to your exported images.",
   },
   {
-    question: "Do I need to install an app to use the online Paper Dots app?",
-    plainAnswer:
-      "No, our Paper Dots app website is entirely web-based. You can access the online camera and all its features directly through Chrome, Safari, or any modern browser on your desktop or mobile device.",
+    question: "What photo formats can I upload?",
     answer:
-      "No, our Paper Dots app website is entirely web-based. You can access the online camera and all its features directly through Chrome, Safari, or any modern browser on your desktop or mobile device.",
+      "Paper Dots accepts JPEG, PNG, and WEBP images. Any modern photo from your phone or camera will work.",
   },
   {
-    question: "Is the online camera with filters actually free?",
-    plainAnswer:
-      "Yes. Paper Dots provides a camera online free of charge. There are no hidden fees, and we do not add watermarks to your photos.",
+    question: "Do my photos get uploaded to a server?",
     answer:
-      "Yes. Paper Dots provides a camera online free of charge. There are no hidden fees, and we do not add watermarks to your photos.",
+      "No. All processing happens locally in your browser. Your photos never leave your device — they are not uploaded, stored, or shared with anyone.",
   },
   {
-    question: "What types of webcam filters are available?",
-    plainAnswer:
-      "We offer a wide range of webcam filters, including vintage film styles, black and white, and AI-driven beauty retouching that smooths skin tones and enhances facial features naturally.",
+    question: "What paper textures are available?",
     answer:
-      "We offer a wide range of webcam filters, including vintage film styles, black and white, and AI-driven beauty retouching that smooths skin tones and enhances facial features naturally.",
+      "Paper Dots includes a curated set of hand-drawn paper styles — from smooth white to rough kraft and soft watercolor. Each texture gives your photo a different tactile feel.",
   },
   {
-    question: "How do I get the best quality from my Paper Dots webcam?",
-    plainAnswer:
-      "To get the most out of your Paper Dots webcam, ensure you are in a well-lit area. Our AI will automatically sharpen the image, but good natural light helps the camera online capture the finest details.",
+    question: "How do I control the dots?",
     answer:
-      "To get the most out of your Paper Dots webcam, ensure you are in a well-lit area. Our AI will automatically sharpen the image, but good natural light helps the camera online capture the finest details.",
+      "The Dots panel lets you choose the shape (circle, square, teardrop), adjust density and size with sliders, pick a color, and hit Reroll to randomize the dot positions.",
   },
   {
-    question: "What file formats can I save my photos in?",
-    plainAnswer:
-      "When you finish your session on our Paper Dots online tool, you can download your images in high-quality .png formats, making them easy to print or upload to social media.",
+    question: "What resolution is the exported PNG?",
     answer:
-      "When you finish your session on our Paper Dots online tool, you can download your images in high-quality .png formats, making them easy to print or upload to social media.",
+      "Exports are rendered at 2x pixel ratio on a 1080×1080 canvas, giving you a 2160×2160 PNG — sharp enough to print or share at any size.",
   },
   {
-    question: "Is my privacy protected when using my camera online?",
-    plainAnswer:
-      "Yes, your online camera feed is processed locally for your preview. Photos are only saved to our servers temporarily during the generation process and are not shared with third parties.",
+    question: "Does it work on mobile?",
     answer:
-      "Yes, your online camera feed is processed locally for your preview. Photos are only saved to our servers temporarily during the generation process and are not shared with third parties.",
+      "Yes. Paper Dots is designed to work in any modern browser on desktop or mobile. The editor layout adapts to smaller screens.",
   },
 ];
 
@@ -82,32 +65,66 @@ const faqJsonLd = {
   mainEntity: faqs.map((faq) => ({
     "@type": "Question",
     name: faq.question,
-    acceptedAnswer: { "@type": "Answer", text: faq.plainAnswer },
+    acceptedAnswer: { "@type": "Answer", text: faq.answer },
   })),
 };
 
 export default function FAQPage() {
   return (
-    <div className="min-h-[70vh] py-20 px-6">
+    <div className="min-h-[70vh] bg-black py-20 px-5 sm:px-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif font-semibold text-foreground mb-4">
-          Frequently Asked Questions
+        <h1
+          className="text-[42px] sm:text-[62px] font-medium text-white mb-4"
+          style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            letterSpacing: "-3px",
+            lineHeight: "1.0",
+          }}
+        >
+          FAQ
         </h1>
-        <p className="text-muted-foreground mb-12">
+        <p
+          className="text-[16px] leading-[1.6] mb-14"
+          style={{
+            fontFamily: "var(--font-inter), system-ui, sans-serif",
+            color: "#a6a6a6",
+          }}
+        >
           Everything you need to know about Paper Dots.
         </p>
 
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, i) => (
-            <AccordionItem key={i} value={`item-${i}`}>
-              <AccordionTrigger className="text-left text-base font-serif font-medium">
+            <AccordionItem
+              key={i}
+              value={`item-${i}`}
+              style={{ borderColor: "rgba(255,255,255,0.08)" }}
+            >
+              <AccordionTrigger
+                className="text-left hover:no-underline hover:opacity-80 py-5"
+                style={{
+                  fontFamily: "var(--font-inter), system-ui, sans-serif",
+                  fontSize: "15px",
+                  fontWeight: 500,
+                  color: "#ffffff",
+                  letterSpacing: "-0.2px",
+                }}
+              >
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed">
+              <AccordionContent
+                className="pb-5"
+                style={{
+                  fontFamily: "var(--font-inter), system-ui, sans-serif",
+                  fontSize: "15px",
+                  lineHeight: "1.7",
+                  color: "#a6a6a6",
+                }}
+              >
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
