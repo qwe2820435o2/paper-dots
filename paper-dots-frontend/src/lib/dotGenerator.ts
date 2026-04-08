@@ -38,10 +38,11 @@ export function generateDots(
 ): GeneratedDot[] {
     const rand = mulberry32(seed);
     const area = width * height;
-    const avg = Math.max(4, config.size);
-    // Keep dots loosely spaced regardless of size.
-    const spacingFactor = 18;
-    const rawCount = Math.round((config.density * area) / (avg * avg * spacingFactor / 4));
+    const avg = Math.max(1, config.size);
+    // Dot count depends only on density, not size.
+    // Fixed cell area is calibrated to size=14 so default behaviour is unchanged.
+    const DENSITY_CELL_AREA = 14 * 14 * 18 / 4; // ≈ 882
+    const rawCount = Math.round((config.density * area) / DENSITY_CELL_AREA);
     const count = Math.min(MAX_DOTS, Math.max(0, rawCount));
 
     const dots: GeneratedDot[] = new Array(count);

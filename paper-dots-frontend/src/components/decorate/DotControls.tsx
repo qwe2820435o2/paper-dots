@@ -216,15 +216,15 @@ export default function DotControls() {
                                     color: "#a6a6a6",
                                 }}
                             >
-                                {dotConfig.size}px
+                                {Math.round(dotConfig.size * 2)}
                             </span>
                         </div>
                         <Slider
-                            min={4}
-                            max={48}
+                            min={0}
+                            max={100}
                             step={1}
-                            value={[dotConfig.size]}
-                            onValueChange={(v) => dispatch(setDotSize(v[0]))}
+                            value={[Math.round(dotConfig.size * 2)]}
+                            onValueChange={(v) => dispatch(setDotSize(v[0] / 2))}
                         />
                     </div>
 
