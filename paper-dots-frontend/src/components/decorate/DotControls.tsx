@@ -23,6 +23,7 @@ import {
     setDotSize,
     setDotVariance,
     setDotColor,
+    setDotColorMode,
     setCharacter,
     rerollSeed,
     type DotShape,
@@ -51,7 +52,9 @@ export default function DotControls() {
     const [isPickerOpen, setIsPickerOpen] = useState(false);
     const shapeTileRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
-    const isCustomColor = !DOT_COLORS.some((c) => c.value === dotConfig.color);
+    const isAuto = dotConfig.colorMode === "auto";
+    const isCustomColor =
+        !isAuto && !DOT_COLORS.some((c) => c.value === dotConfig.color);
 
     // Keep the selected shape tile visible whenever it changes (or on mount).
     useEffect(() => {
@@ -304,41 +307,72 @@ export default function DotControls() {
 
                     {/* Color */}
                     <div className="flex flex-col gap-3">
-                        <label
-                            className="block text-[11px] uppercase"
-                            style={{
-                                fontFamily: "var(--font-inter), system-ui, sans-serif",
-                                color: "#a6a6a6",
-                                letterSpacing: "0.08em",
-                            }}
-                        >
-                            Color
-                        </label>
+                        <div className="flex items-center justify-between">
+                            <label
+                                className="text-[11px] uppercase"
+                                style={{
+                                    fontFamily:
+                                        "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                    letterSpacing: "0.08em",
+                                }}
+                            >
+                                Color
+                            </label>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    dispatch(setDotColorMode("auto"));
+                                    setIsPickerOpen(false);
+                                }}
+                                aria-pressed={isAuto}
+                                className="px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors"
+                                style={{
+                                    fontFamily:
+                                        "var(--font-inter), system-ui, sans-serif",
+                                    color: isAuto ? "#ffffff" : "#a6a6a6",
+                                    background: isAuto
+                                        ? "rgba(0,153,255,0.18)"
+                                        : "rgba(255,255,255,0.06)",
+                                    boxShadow: isAuto
+                                        ? "rgba(0, 153, 255, 0.9) 0px 0px 0px 1px"
+                                        : "rgba(255,255,255,0.12) 0px 0px 0px 1px",
+                                }}
+                            >
+                                Auto
+                            </button>
+                        </div>
                         <div className="grid grid-cols-6 gap-2">
-                            {DOT_COLORS.map((c) => (
-                                <button
-                                    key={c.value}
-                                    type="button"
-                                    onClick={() => {
-                                        dispatch(setDotColor(c.value));
-                                        setIsPickerOpen(false);
-                                    }}
-                                    aria-label={c.label}
-                                    className="aspect-square rounded-full transition-all"
-                                    style={{
-                                        backgroundColor: c.value,
-                                        ...(dotConfig.color === c.value && !isPickerOpen
-                                            ? {
-                                                  boxShadow:
-                                                      "rgba(0, 153, 255, 0.9) 0px 0px 0px 2px, rgba(0, 153, 255, 0.25) 0px 0px 0px 4px",
-                                              }
-                                            : {
-                                                  boxShadow:
-                                                      "rgba(255,255,255,0.15) 0px 0px 0px 1px",
-                                              }),
-                                    }}
-                                />
-                            ))}
+                            {DOT_COLORS.map((c) => {
+                                const selected =
+                                    !isAuto &&
+                                    dotConfig.color === c.value &&
+                                    !isPickerOpen;
+                                return (
+                                    <button
+                                        key={c.value}
+                                        type="button"
+                                        onClick={() => {
+                                            dispatch(setDotColor(c.value));
+                                            setIsPickerOpen(false);
+                                        }}
+                                        aria-label={c.label}
+                                        className="aspect-square rounded-full transition-all"
+                                        style={{
+                                            backgroundColor: c.value,
+                                            ...(selected
+                                                ? {
+                                                      boxShadow:
+                                                          "rgba(0, 153, 255, 0.9) 0px 0px 0px 2px, rgba(0, 153, 255, 0.25) 0px 0px 0px 4px",
+                                                  }
+                                                : {
+                                                      boxShadow:
+                                                          "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                                                  }),
+                                        }}
+                                    />
+                                );
+                            })}
                             {/* Custom color swatch */}
                             <button
                                 type="button"

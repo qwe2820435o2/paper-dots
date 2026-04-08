@@ -11,6 +11,8 @@ export type DotShape =
     | "leaf"
     | "crescent";
 
+export type DotColorMode = "auto" | "custom";
+
 export interface DotConfig {
     shape: DotShape;
     /** 0 - 100, exact number of dots to render */
@@ -19,10 +21,20 @@ export interface DotConfig {
     size: number;
     /** 0 - 100, controls size variation between dots */
     variance: number;
-    /** hex color string */
+    /** "auto" means follow the current paper color; "custom" uses `color` */
+    colorMode: DotColorMode;
+    /** hex color string; only used when colorMode === "custom" */
     color: string;
     /** text to render when shape === "character" */
     character: string;
+}
+
+export type LayoutType = "main-left";
+
+export interface LayoutConfig {
+    type: LayoutType;
+    /** 0 - 100, right-side width as a fraction of total canvas width */
+    ratio: number;
 }
 
 export interface DecorateState {
@@ -31,6 +43,7 @@ export interface DecorateState {
     /** id of the selected paper background */
     paperId: string;
     dotConfig: DotConfig;
+    layout: LayoutConfig;
     /** seed used by the dot generator; reroll to reshuffle layout */
     seed: number;
 }
@@ -43,8 +56,13 @@ const initialState: DecorateState = {
         count: 50,
         size: 14,
         variance: 0,
+        colorMode: "auto",
         color: "#1a1a1a",
         character: "A",
+    },
+    layout: {
+        type: "main-left",
+        ratio: 50,
     },
     seed: 1,
 };
@@ -76,6 +94,17 @@ const decorateSlice = createSlice({
         },
         setDotColor(state, action: PayloadAction<string>) {
             state.dotConfig.color = action.payload;
+            state.dotConfig.colorMode = "custom";
+        },
+        setDotColorMode(state, action: PayloadAction<DotColorMode>) {
+            state.dotConfig.colorMode = action.payload;
+        },
+        setLayoutType(state, action: PayloadAction<LayoutType>) {
+            state.layout.type = action.payload;
+        },
+        setLayoutRatio(state, action: PayloadAction<number>) {
+            const v = Math.max(0, Math.min(100, action.payload));
+            state.layout.ratio = v;
         },
         rerollSeed(state) {
             state.seed = Math.floor(Math.random() * 2 ** 31);
@@ -91,6 +120,9 @@ export const {
     setDotSize,
     setDotVariance,
     setDotColor,
+    setDotColorMode,
+    setLayoutType,
+    setLayoutRatio,
     setCharacter,
     rerollSeed,
 } = decorateSlice.actions;

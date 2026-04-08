@@ -5,16 +5,116 @@ import type Konva from "konva";
 import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path, Text } from "react-konva";
 import { useAppSelector } from "@/store/hooks";
 import { getPaper } from "@/lib/papers";
-import { generateDots } from "@/lib/dotGenerator";
+import { generateDots, type GeneratedDot } from "@/lib/dotGenerator";
 import { SHAPE_PATHS } from "@/lib/dotShapes";
+import type { DotConfig } from "@/store/slices/decorateSlice";
 import { useHTMLImage } from "./useHTMLImage";
 
-/** Logical canvas size — what we render and export at. */
-const CANVAS_SIZE = 1080;
+/**
+ * Max size (px) for the longer edge of a single photo cell.
+ * The canvas width = 2 × cellW, height = cellH.
+ */
+const CELL_MAX = 1080;
 
 interface Props {
-    /** Whether to render the dot layer. Phase C disables it. */
     showDots?: boolean;
+}
+
+interface BoxLayout {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+/** Fit `img` with contain scaling into a box, with optional inset. Returns null if box is too small. */
+function containLayout(
+    img: HTMLImageElement,
+    boxX: number,
+    boxY: number,
+    boxW: number,
+    boxH: number,
+    inset = 0,
+): BoxLayout | null {
+    const innerW = boxW - inset * 2;
+    const innerH = boxH - inset * 2;
+    if (innerW <= 0 || innerH <= 0) return null;
+    const ratio = Math.min(innerW / img.width, innerH / img.height);
+    const w = img.width * ratio;
+    const h = img.height * ratio;
+    return {
+        x: boxX + (boxW - w) / 2,
+        y: boxY + (boxH - h) / 2,
+        width: w,
+        height: h,
+    };
+}
+
+interface DotShapeProps {
+    dot: GeneratedDot;
+    shape: DotConfig["shape"];
+    color: string;
+    character: string;
+    composite?: GlobalCompositeOperation;
+}
+
+function DotShape({ dot, shape, color, character, composite }: DotShapeProps) {
+    if (shape === "circle") {
+        return (
+            <Circle
+                x={dot.x}
+                y={dot.y}
+                radius={dot.size / 2}
+                fill={color}
+                globalCompositeOperation={composite}
+            />
+        );
+    }
+    if (shape === "square") {
+        return (
+            <Rect
+                x={dot.x}
+                y={dot.y}
+                width={dot.size}
+                height={dot.size}
+                offsetX={dot.size / 2}
+                offsetY={dot.size / 2}
+                rotation={dot.rotation}
+                fill={color}
+                globalCompositeOperation={composite}
+            />
+        );
+    }
+    if (shape === "character") {
+        const char = character || "A";
+        return (
+            <Text
+                x={dot.x}
+                y={dot.y}
+                text={char}
+                fontSize={dot.size}
+                fill={color}
+                rotation={dot.rotation}
+                offsetX={dot.size * 0.3}
+                offsetY={dot.size * 0.5}
+                globalCompositeOperation={composite}
+            />
+        );
+    }
+    const path = SHAPE_PATHS[shape];
+    if (!path) return null;
+    return (
+        <Path
+            x={dot.x}
+            y={dot.y}
+            data={path}
+            scaleX={dot.size}
+            scaleY={dot.size}
+            rotation={dot.rotation}
+            fill={color}
+            globalCompositeOperation={composite}
+        />
+    );
 }
 
 const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
@@ -24,144 +124,166 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     const photoUrl = useAppSelector((s) => s.decorate.photoUrl);
     const paperId = useAppSelector((s) => s.decorate.paperId);
     const dotConfig = useAppSelector((s) => s.decorate.dotConfig);
+    const layout = useAppSelector((s) => s.decorate.layout);
     const seed = useAppSelector((s) => s.decorate.seed);
 
     const paper = getPaper(paperId);
     const paperImg = useHTMLImage(paper.src || null);
     const photoImg = useHTMLImage(photoUrl);
 
-    // Responsive scaling: render at CANVAS_SIZE internally, but visually shrink
-    // to fit the parent box.
+    // Compute cell dimensions from the uploaded photo.
+    // cellW × cellH is the size of ONE panel (one "main image").
+    // Full canvas = 2*cellW × cellH.
+    const { cellW, cellH } = useMemo(() => {
+        if (!photoImg) return { cellW: CELL_MAX, cellH: CELL_MAX };
+        const scale = Math.min(CELL_MAX / photoImg.width, CELL_MAX / photoImg.height);
+        return {
+            cellW: Math.round(photoImg.width * scale),
+            cellH: Math.round(photoImg.height * scale),
+        };
+    }, [photoImg]);
+
+    const canvasW = cellW * 2;
+    const canvasH = cellH;
+
+    // Responsive scaling: fit the canvas (which may not be square) within the container.
     const wrapRef = useRef<HTMLDivElement | null>(null);
-    const [displaySize, setDisplaySize] = useState(CANVAS_SIZE);
+    const [displayW, setDisplayW] = useState(canvasW);
     useEffect(() => {
         const el = wrapRef.current;
         if (!el) return;
         const ro = new ResizeObserver(() => {
-            const w = el.clientWidth;
-            setDisplaySize(Math.min(CANVAS_SIZE, w));
+            setDisplayW(Math.min(canvasW, el.clientWidth));
         });
         ro.observe(el);
         return () => ro.disconnect();
-    }, []);
-    const scale = displaySize / CANVAS_SIZE;
+    }, [canvasW]);
+    // Clamp displayW when canvasW changes (e.g. new photo uploaded).
+    const clampedDisplayW = Math.min(displayW, canvasW);
+    const scale = clampedDisplayW / canvasW;
+    const displayH = Math.round(canvasH * scale);
 
-    // Layout the photo with `contain` fit, centered, with a small inset.
-    const photoLayout = useMemo(() => {
-        if (!photoImg) return null;
-        const inset = 80;
-        const boxW = CANVAS_SIZE - inset * 2;
-        const boxH = CANVAS_SIZE - inset * 2;
-        const ratio = Math.min(boxW / photoImg.width, boxH / photoImg.height);
-        const w = photoImg.width * ratio;
-        const h = photoImg.height * ratio;
-        return {
-            x: (CANVAS_SIZE - w) / 2,
-            y: (CANVAS_SIZE - h) / 2,
-            width: w,
-            height: h,
-        };
-    }, [photoImg]);
+    // Split geometry.
+    const leftW = canvasW * (1 - layout.ratio / 100);
+    const rightW = canvasW - leftW;
 
+    // Photo fill for each sub-panel (contain fit, no inset so photo fills panel).
+    const leftPhotoLayout = useMemo(
+        () => (photoImg && leftW > 0 ? containLayout(photoImg, 0, 0, leftW, canvasH) : null),
+        [photoImg, leftW, canvasH],
+    );
+    const rightPhotoLayout = useMemo(
+        () =>
+            photoImg && rightW > 0
+                ? containLayout(photoImg, leftW, 0, rightW, canvasH)
+                : null,
+        [photoImg, leftW, rightW, canvasH],
+    );
+
+    // Single dot field shared across both sub-panels.
     const dots = useMemo(() => {
         if (!showDots) return [];
-        return generateDots(seed, dotConfig, CANVAS_SIZE, CANVAS_SIZE);
-    }, [showDots, seed, dotConfig]);
+        return generateDots(seed, dotConfig, canvasW, canvasH);
+    }, [showDots, seed, dotConfig, canvasW, canvasH]);
+
+    // Effective dot color: "auto" follows the current paper's representative color.
+    const dotColor = dotConfig.colorMode === "auto" ? paper.color : dotConfig.color;
+
+    const hasLeft = leftW > 0;
+    const hasRight = rightW > 0;
 
     return (
-        <div ref={wrapRef} className="w-full max-w-[720px] aspect-square mx-auto">
+        <div ref={wrapRef} className="w-full" style={{ maxWidth: canvasW }}>
             <Stage
                 ref={ref}
-                width={CANVAS_SIZE}
-                height={CANVAS_SIZE}
+                width={canvasW}
+                height={canvasH}
                 scaleX={scale}
                 scaleY={scale}
-                style={{ width: displaySize, height: displaySize }}
+                style={{ width: clampedDisplayW, height: displayH }}
                 className="sketch-border bg-white"
             >
-                {/* Background paper */}
+                {/* Background */}
                 <Layer listening={false}>
-                    <Rect x={0} y={0} width={CANVAS_SIZE} height={CANVAS_SIZE} fill="#fafafa" />
-                    {paperImg && (
-                        <KonvaImage
-                            image={paperImg}
-                            x={0}
-                            y={0}
-                            width={CANVAS_SIZE}
-                            height={CANVAS_SIZE}
-                        />
-                    )}
+                    <Rect x={0} y={0} width={canvasW} height={canvasH} fill="#fafafa" />
                 </Layer>
 
-                {/* Photo */}
-                <Layer listening={false}>
-                    {photoImg && photoLayout && (
-                        <KonvaImage image={photoImg} {...photoLayout} />
-                    )}
-                </Layer>
-
-                {/* Dots */}
-                {showDots && (
-                    <Layer listening={false}>
-                        {dots.map((d, i) => {
-                            if (dotConfig.shape === "circle") {
-                                return (
-                                    <Circle
-                                        key={i}
-                                        x={d.x}
-                                        y={d.y}
-                                        radius={d.size / 2}
-                                        fill={dotConfig.color}
-                                    />
-                                );
-                            }
-                            if (dotConfig.shape === "square") {
-                                return (
-                                    <Rect
-                                        key={i}
-                                        x={d.x}
-                                        y={d.y}
-                                        width={d.size}
-                                        height={d.size}
-                                        offsetX={d.size / 2}
-                                        offsetY={d.size / 2}
-                                        rotation={d.rotation}
-                                        fill={dotConfig.color}
-                                    />
-                                );
-                            }
-                            if (dotConfig.shape === "character") {
-                                const char = dotConfig.character || "A";
-                                return (
-                                    <Text
-                                        key={i}
-                                        x={d.x}
-                                        y={d.y}
-                                        text={char}
-                                        fontSize={d.size}
-                                        fill={dotConfig.color}
-                                        rotation={d.rotation}
-                                        offsetX={d.size * 0.3}
-                                        offsetY={d.size * 0.5}
-                                    />
-                                );
-                            }
-                            // Path-based shapes are normalized to a unit box, scale by size.
-                            const path = SHAPE_PATHS[dotConfig.shape];
-                            if (!path) return null;
-                            return (
-                                <Path
+                {/* Left panel: photo + dots painted on top */}
+                {hasLeft && (
+                    <Layer
+                        listening={false}
+                        clipX={0}
+                        clipY={0}
+                        clipWidth={leftW}
+                        clipHeight={canvasH}
+                    >
+                        {photoImg && leftPhotoLayout && (
+                            <KonvaImage image={photoImg} {...leftPhotoLayout} />
+                        )}
+                        {showDots &&
+                            dots.map((d, i) => (
+                                <DotShape
                                     key={i}
-                                    x={d.x}
-                                    y={d.y}
-                                    data={path}
-                                    scaleX={d.size}
-                                    scaleY={d.size}
-                                    rotation={d.rotation}
-                                    fill={dotConfig.color}
+                                    dot={d}
+                                    shape={dotConfig.shape}
+                                    color={dotColor}
+                                    character={dotConfig.character}
                                 />
-                            );
-                        })}
+                            ))}
+                    </Layer>
+                )}
+
+                {/* Right panel: photo (below paper) */}
+                {hasRight && (
+                    <Layer
+                        listening={false}
+                        clipX={leftW}
+                        clipY={0}
+                        clipWidth={rightW}
+                        clipHeight={canvasH}
+                    >
+                        {photoImg && rightPhotoLayout && (
+                            <KonvaImage image={photoImg} {...rightPhotoLayout} />
+                        )}
+                    </Layer>
+                )}
+
+                {/* Right panel: paper with dot holes punched out */}
+                {hasRight && (
+                    <Layer
+                        listening={false}
+                        clipX={leftW}
+                        clipY={0}
+                        clipWidth={rightW}
+                        clipHeight={canvasH}
+                    >
+                        <Rect
+                            x={leftW}
+                            y={0}
+                            width={rightW}
+                            height={canvasH}
+                            fill={paper.color}
+                        />
+                        {paperImg && (
+                            <KonvaImage
+                                image={paperImg}
+                                x={leftW}
+                                y={0}
+                                width={rightW}
+                                height={canvasH}
+                            />
+                        )}
+                        {showDots &&
+                            dots.map((d, i) => (
+                                <DotShape
+                                    key={i}
+                                    dot={d}
+                                    shape={dotConfig.shape}
+                                    color="#000"
+                                    character={dotConfig.character}
+                                    composite="destination-out"
+                                />
+                            ))}
                     </Layer>
                 )}
             </Stage>

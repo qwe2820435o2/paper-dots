@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import type Konva from "konva";
 import { useAppSelector } from "@/store/hooks";
 import PhotoUploader from "@/components/decorate/PhotoUploader";
+import LayoutPicker from "@/components/decorate/LayoutPicker";
 import PaperPicker from "@/components/decorate/PaperPicker";
 import DotControls from "@/components/decorate/DotControls";
 import ExportButton from "@/components/decorate/ExportButton";
@@ -35,10 +36,14 @@ export default function DecorateApp() {
 
     return (
         <div className="h-[calc(100vh-56px)] overflow-hidden flex bg-black">
-            {/* Left: canvas */}
+            {/* Left: canvas or upload drop zone */}
             <div className="flex-1 min-w-0 flex items-center justify-center p-6 overflow-hidden">
                 <div className="w-full max-w-[calc(100vh-80px)]">
-                    <DecorateCanvas ref={stageRef} />
+                    {photoUrl ? (
+                        <DecorateCanvas ref={stageRef} />
+                    ) : (
+                        <PhotoUploader variant="canvas" hasPhoto={false} />
+                    )}
                 </div>
             </div>
 
@@ -47,8 +52,11 @@ export default function DecorateApp() {
                 className="w-72 shrink-0 flex flex-col bg-black"
                 style={{ borderLeft: "1px solid rgba(255,255,255,0.08)" }}
             >
-                <PhotoUploader hasPhoto={Boolean(photoUrl)} />
+                {photoUrl && (
+                    <PhotoUploader variant="sidebar" hasPhoto={true} />
+                )}
                 <div className="flex-1 overflow-y-auto min-h-0">
+                    <LayoutPicker />
                     <PaperPicker />
                     <DotControls />
                 </div>
