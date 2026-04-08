@@ -7,44 +7,151 @@ import { useAppSelector } from "@/store/hooks";
 import { getPaper } from "@/lib/papers";
 import { generateDots, type GeneratedDot } from "@/lib/dotGenerator";
 import { SHAPE_PATHS } from "@/lib/dotShapes";
-import type { DotConfig } from "@/store/slices/decorateSlice";
+import type { DotConfig, LayoutType } from "@/store/slices/decorateSlice";
 import { useHTMLImage } from "./useHTMLImage";
 
-/**
- * Max size (px) for the longer edge of a single photo cell.
- * The canvas width = 2 × cellW, height = cellH.
- */
+/** Max px for the longer edge of one photo cell at export resolution. */
 const CELL_MAX = 1080;
 
 interface Props {
     showDots?: boolean;
 }
 
-interface BoxLayout {
+interface Rect4 {
     x: number;
     y: number;
-    width: number;
-    height: number;
+    w: number;
+    h: number;
 }
 
-/** Fit `img` with contain scaling into a box, with optional inset. Returns null if box is too small. */
+interface LayoutGeo {
+    canvasW: number;
+    canvasH: number;
+    /** Main photo panel position (fixed, never changes with ratio). */
+    mainBox: Rect4;
+    /** Paper panel position (fixed). */
+    paperBox: Rect4;
+    /** Clip applied to the main layer. */
+    mainClip: Rect4;
+    /** Clip applied to the paper layers. */
+    paperClip: Rect4;
+}
+
+/**
+ * Compute panel positions and clip regions for a given layout type and ratio.
+ *
+ * Clip semantics:
+ *   p = 0   → only main visible (paper clip = 0 area)
+ *   p = 50  → both panels fully visible
+ *   p = 100 → only paper visible (main clip = 0 area)
+ *
+ * Disappearance directions (symmetric "slide" effect):
+ *   main-left:   paper shrinks from right edge (p 50→0); main shrinks from left edge (p 50→100)
+ *   main-right:  paper shrinks from left edge  (p 50→0); main shrinks from right edge (p 50→100)
+ *   main-top:    paper shrinks from bottom edge (p 50→0); main shrinks from top edge  (p 50→100)
+ *   main-bottom: paper shrinks from top edge    (p 50→0); main shrinks from bottom edge (p 50→100)
+ */
+function computeGeo(
+    type: LayoutType,
+    p: number,
+    cellW: number,
+    cellH: number,
+): LayoutGeo {
+    switch (type) {
+        case "main-left": {
+            // Main: left panel (x=0..cellW). Paper: right panel (x=cellW..2*cellW).
+            const mainClip: Rect4 =
+                p > 50
+                    ? { x: ((p - 50) / 50) * cellW, y: 0, w: ((100 - p) / 50) * cellW, h: cellH }
+                    : { x: 0, y: 0, w: cellW, h: cellH };
+            const paperClip: Rect4 =
+                p < 50
+                    ? { x: cellW, y: 0, w: (p / 50) * cellW, h: cellH }
+                    : { x: cellW, y: 0, w: cellW, h: cellH };
+            return {
+                canvasW: 2 * cellW,
+                canvasH: cellH,
+                mainBox: { x: 0, y: 0, w: cellW, h: cellH },
+                paperBox: { x: cellW, y: 0, w: cellW, h: cellH },
+                mainClip,
+                paperClip,
+            };
+        }
+        case "main-right": {
+            // Main: right panel (x=cellW..2*cellW). Paper: left panel (x=0..cellW).
+            const mainClip: Rect4 =
+                p > 50
+                    ? { x: cellW, y: 0, w: ((100 - p) / 50) * cellW, h: cellH }
+                    : { x: cellW, y: 0, w: cellW, h: cellH };
+            const paperClip: Rect4 =
+                p < 50
+                    ? { x: (1 - p / 50) * cellW, y: 0, w: (p / 50) * cellW, h: cellH }
+                    : { x: 0, y: 0, w: cellW, h: cellH };
+            return {
+                canvasW: 2 * cellW,
+                canvasH: cellH,
+                mainBox: { x: cellW, y: 0, w: cellW, h: cellH },
+                paperBox: { x: 0, y: 0, w: cellW, h: cellH },
+                mainClip,
+                paperClip,
+            };
+        }
+        case "main-top": {
+            // Main: top panel (y=0..cellH). Paper: bottom panel (y=cellH..2*cellH).
+            const mainClip: Rect4 =
+                p > 50
+                    ? { x: 0, y: ((p - 50) / 50) * cellH, w: cellW, h: ((100 - p) / 50) * cellH }
+                    : { x: 0, y: 0, w: cellW, h: cellH };
+            const paperClip: Rect4 =
+                p < 50
+                    ? { x: 0, y: cellH, w: cellW, h: (p / 50) * cellH }
+                    : { x: 0, y: cellH, w: cellW, h: cellH };
+            return {
+                canvasW: cellW,
+                canvasH: 2 * cellH,
+                mainBox: { x: 0, y: 0, w: cellW, h: cellH },
+                paperBox: { x: 0, y: cellH, w: cellW, h: cellH },
+                mainClip,
+                paperClip,
+            };
+        }
+        case "main-bottom": {
+            // Main: bottom panel (y=cellH..2*cellH). Paper: top panel (y=0..cellH).
+            const mainClip: Rect4 =
+                p > 50
+                    ? { x: 0, y: cellH, w: cellW, h: ((100 - p) / 50) * cellH }
+                    : { x: 0, y: cellH, w: cellW, h: cellH };
+            const paperClip: Rect4 =
+                p < 50
+                    ? { x: 0, y: (1 - p / 50) * cellH, w: cellW, h: (p / 50) * cellH }
+                    : { x: 0, y: 0, w: cellW, h: cellH };
+            return {
+                canvasW: cellW,
+                canvasH: 2 * cellH,
+                mainBox: { x: 0, y: cellH, w: cellW, h: cellH },
+                paperBox: { x: 0, y: 0, w: cellW, h: cellH },
+                mainClip,
+                paperClip,
+            };
+        }
+    }
+}
+
+/** Contain-fit `img` within a box. Returns null if the box is too small. */
 function containLayout(
     img: HTMLImageElement,
-    boxX: number,
-    boxY: number,
-    boxW: number,
-    boxH: number,
+    box: Rect4,
     inset = 0,
-): BoxLayout | null {
-    const innerW = boxW - inset * 2;
-    const innerH = boxH - inset * 2;
+): { x: number; y: number; width: number; height: number } | null {
+    const innerW = box.w - inset * 2;
+    const innerH = box.h - inset * 2;
     if (innerW <= 0 || innerH <= 0) return null;
     const ratio = Math.min(innerW / img.width, innerH / img.height);
     const w = img.width * ratio;
     const h = img.height * ratio;
     return {
-        x: boxX + (boxW - w) / 2,
-        y: boxY + (boxH - h) / 2,
+        x: box.x + (box.w - w) / 2,
+        y: box.y + (box.h - h) / 2,
         width: w,
         height: h,
     };
@@ -86,12 +193,11 @@ function DotShape({ dot, shape, color, character, composite }: DotShapeProps) {
         );
     }
     if (shape === "character") {
-        const char = character || "A";
         return (
             <Text
                 x={dot.x}
                 y={dot.y}
-                text={char}
+                text={character || "A"}
                 fontSize={dot.size}
                 fill={color}
                 rotation={dot.rotation}
@@ -131,95 +237,93 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     const paperImg = useHTMLImage(paper.src || null);
     const photoImg = useHTMLImage(photoUrl);
 
-    // Compute cell dimensions from the uploaded photo.
-    // cellW × cellH is the size of ONE panel (one "main image").
-    // Full canvas = 2*cellW × cellH.
+    // One photo cell = photo at export resolution (max CELL_MAX on either side).
     const { cellW, cellH } = useMemo(() => {
         if (!photoImg) return { cellW: CELL_MAX, cellH: CELL_MAX };
-        const scale = Math.min(CELL_MAX / photoImg.width, CELL_MAX / photoImg.height);
+        const s = Math.min(CELL_MAX / photoImg.width, CELL_MAX / photoImg.height);
         return {
-            cellW: Math.round(photoImg.width * scale),
-            cellH: Math.round(photoImg.height * scale),
+            cellW: Math.round(photoImg.width * s),
+            cellH: Math.round(photoImg.height * s),
         };
     }, [photoImg]);
 
-    const canvasW = cellW * 2;
-    const canvasH = cellH;
+    // Layout geometry (panel positions + clip regions).
+    const geo = useMemo(
+        () => computeGeo(layout.type, layout.ratio, cellW, cellH),
+        [layout.type, layout.ratio, cellW, cellH],
+    );
+    const { canvasW, canvasH, mainBox, paperBox, mainClip, paperClip } = geo;
 
-    // Responsive scaling: fit the canvas (which may not be square) within the container.
+    // Responsive display: fit canvas within the wrapper (constrained by both W and H).
     const wrapRef = useRef<HTMLDivElement | null>(null);
-    const [displayW, setDisplayW] = useState(canvasW);
+    const [containerW, setContainerW] = useState(4096);
+    const [containerH, setContainerH] = useState(4096);
     useEffect(() => {
         const el = wrapRef.current;
         if (!el) return;
         const ro = new ResizeObserver(() => {
-            setDisplayW(Math.min(canvasW, el.clientWidth));
+            setContainerW(el.clientWidth);
+            setContainerH(el.clientHeight || 4096);
         });
         ro.observe(el);
         return () => ro.disconnect();
-    }, [canvasW]);
-    // Clamp displayW when canvasW changes (e.g. new photo uploaded).
-    const clampedDisplayW = Math.min(displayW, canvasW);
-    const scale = clampedDisplayW / canvasW;
+    }, []);
+
+    const scale = Math.min(containerW / canvasW, containerH / canvasH, 1);
+    const displayW = Math.round(canvasW * scale);
     const displayH = Math.round(canvasH * scale);
 
-    const p = layout.ratio; // 0-100
-
-    // Each panel is fixed at cellW × cellH.
-    // Clip controls visibility:
-    //   Left photo: p≤50 → full; p>50 → left edge moves right
-    //   Right paper: p≥50 → full; p<50 → right edge moves left (anchored at x=cellW)
-    const leftClipX = p > 50 ? ((p - 50) / 50) * cellW : 0;
-    const leftClipW = p > 50 ? ((100 - p) / 50) * cellW : cellW;
-    const rightClipX = cellW;
-    const rightClipW = p < 50 ? (p / 50) * cellW : cellW;
-
-    const hasLeft = leftClipW > 0;
-    const hasRight = rightClipW > 0;
-
-    // Photo always fills its fixed panel (no inset, contain fit within cellW × cellH).
-    const leftPhotoLayout = useMemo(
-        () => (photoImg ? containLayout(photoImg, 0, 0, cellW, cellH) : null),
-        [photoImg, cellW, cellH],
+    // Photo layouts within each panel.
+    const mainPhotoLayout = useMemo(
+        () => (photoImg ? containLayout(photoImg, mainBox) : null),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [photoImg, mainBox.x, mainBox.y, mainBox.w, mainBox.h],
     );
-    const rightPhotoLayout = useMemo(
-        () => (photoImg ? containLayout(photoImg, cellW, 0, cellW, cellH) : null),
-        [photoImg, cellW, cellH],
+    const paperPhotoLayout = useMemo(
+        () => (photoImg ? containLayout(photoImg, paperBox) : null),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [photoImg, paperBox.x, paperBox.y, paperBox.w, paperBox.h],
     );
 
-    // Single dot field shared across both sub-panels.
+    // Dots span the full canvas; clip per layer handles which portion is visible.
     const dots = useMemo(() => {
         if (!showDots) return [];
         return generateDots(seed, dotConfig, canvasW, canvasH);
     }, [showDots, seed, dotConfig, canvasW, canvasH]);
 
-    // Effective dot color: "auto" follows the current paper's representative color.
     const dotColor = dotConfig.colorMode === "auto" ? paper.color : dotConfig.color;
 
+    const hasMain = mainClip.w > 0 && mainClip.h > 0;
+    const hasPaper = paperClip.w > 0 && paperClip.h > 0;
 
     return (
-        <div ref={wrapRef} className="w-full" style={{ maxWidth: canvasW }}>
+        <div ref={wrapRef} className="w-full h-full flex items-center justify-center">
             <Stage
                 ref={ref}
                 width={canvasW}
                 height={canvasH}
                 scaleX={scale}
                 scaleY={scale}
-                style={{ width: clampedDisplayW, height: displayH }}
-                className=""
+                style={{ width: displayW, height: displayH }}
             >
-                {/* Left panel: fafafa bg + photo + dots painted on top */}
-                {hasLeft && (
+                {/* Main panel: fafafa bg + photo + opaque dots */}
+                {hasMain && (
                     <Layer
                         listening={false}
-                        clipX={leftClipX}
-                        clipY={0}
-                        clipWidth={leftClipW}
-                        clipHeight={canvasH}
+                        clipX={mainClip.x}
+                        clipY={mainClip.y}
+                        clipWidth={mainClip.w}
+                        clipHeight={mainClip.h}
                     >
-                        <Rect x={0} y={0} width={cellW} height={canvasH} fill="#fafafa" />
-                        {photoImg && leftPhotoLayout && (
-                            <KonvaImage image={photoImg} {...leftPhotoLayout} />
+                        <Rect
+                            x={mainBox.x}
+                            y={mainBox.y}
+                            width={mainBox.w}
+                            height={mainBox.h}
+                            fill="#fafafa"
+                        />
+                        {photoImg && mainPhotoLayout && (
+                            <KonvaImage image={photoImg} {...mainPhotoLayout} />
                         )}
                         {showDots &&
                             dots.map((d, i) => (
@@ -234,44 +338,44 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                     </Layer>
                 )}
 
-                {/* Right panel: photo below the paper layer */}
-                {hasRight && (
+                {/* Paper panel: photo underneath */}
+                {hasPaper && (
                     <Layer
                         listening={false}
-                        clipX={rightClipX}
-                        clipY={0}
-                        clipWidth={rightClipW}
-                        clipHeight={canvasH}
+                        clipX={paperClip.x}
+                        clipY={paperClip.y}
+                        clipWidth={paperClip.w}
+                        clipHeight={paperClip.h}
                     >
-                        {photoImg && rightPhotoLayout && (
-                            <KonvaImage image={photoImg} {...rightPhotoLayout} />
+                        {photoImg && paperPhotoLayout && (
+                            <KonvaImage image={photoImg} {...paperPhotoLayout} />
                         )}
                     </Layer>
                 )}
 
-                {/* Right panel: paper with dot holes punched out */}
-                {hasRight && (
+                {/* Paper panel: paper fill + image, then destination-out dots punch holes */}
+                {hasPaper && (
                     <Layer
                         listening={false}
-                        clipX={rightClipX}
-                        clipY={0}
-                        clipWidth={rightClipW}
-                        clipHeight={canvasH}
+                        clipX={paperClip.x}
+                        clipY={paperClip.y}
+                        clipWidth={paperClip.w}
+                        clipHeight={paperClip.h}
                     >
                         <Rect
-                            x={cellW}
-                            y={0}
-                            width={cellW}
-                            height={canvasH}
+                            x={paperBox.x}
+                            y={paperBox.y}
+                            width={paperBox.w}
+                            height={paperBox.h}
                             fill={paper.color}
                         />
                         {paperImg && (
                             <KonvaImage
                                 image={paperImg}
-                                x={cellW}
-                                y={0}
-                                width={cellW}
-                                height={canvasH}
+                                x={paperBox.x}
+                                y={paperBox.y}
+                                width={paperBox.w}
+                                height={paperBox.h}
                             />
                         )}
                         {showDots &&

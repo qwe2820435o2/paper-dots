@@ -12,6 +12,9 @@ import {
 
 const LAYOUT_OPTIONS: { value: LayoutType; label: string }[] = [
     { value: "main-left", label: "Main on Left" },
+    { value: "main-right", label: "Main on Right" },
+    { value: "main-top", label: "Main on Top" },
+    { value: "main-bottom", label: "Main on Bottom" },
 ];
 
 export default function LayoutPicker() {

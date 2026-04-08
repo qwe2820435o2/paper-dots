@@ -37,14 +37,14 @@ export default function DecorateApp() {
     return (
         <div className="h-[calc(100vh-56px)] overflow-hidden flex bg-black">
             {/* Left: canvas or upload drop zone */}
-            <div className="flex-1 min-w-0 flex items-center justify-center p-6 overflow-hidden">
-                <div className="w-full max-w-[calc(100vh-80px)]">
-                    {photoUrl ? (
-                        <DecorateCanvas ref={stageRef} />
-                    ) : (
+            <div className="flex-1 min-w-0 min-h-0 flex items-center justify-center p-6 overflow-hidden">
+                {photoUrl ? (
+                    <DecorateCanvas ref={stageRef} />
+                ) : (
+                    <div className="w-full max-w-[calc(100vh-80px)]">
                         <PhotoUploader variant="canvas" hasPhoto={false} />
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
 
             {/* Right: controls */}

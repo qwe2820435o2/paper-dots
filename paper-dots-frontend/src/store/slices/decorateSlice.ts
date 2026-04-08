@@ -29,7 +29,7 @@ export interface DotConfig {
     character: string;
 }
 
-export type LayoutType = "main-left";
+export type LayoutType = "main-left" | "main-right" | "main-top" | "main-bottom";
 
 export interface LayoutConfig {
     type: LayoutType;
