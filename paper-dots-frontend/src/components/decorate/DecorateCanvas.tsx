@@ -2,7 +2,7 @@
 
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import type Konva from "konva";
-import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path } from "react-konva";
+import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path, Text } from "react-konva";
 import { useAppSelector } from "@/store/hooks";
 import { getPaper } from "@/lib/papers";
 import { generateDots } from "@/lib/dotGenerator";
@@ -127,6 +127,22 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                         offsetY={d.size / 2}
                                         rotation={d.rotation}
                                         fill={dotConfig.color}
+                                    />
+                                );
+                            }
+                            if (dotConfig.shape === "character") {
+                                const char = dotConfig.character || "A";
+                                return (
+                                    <Text
+                                        key={i}
+                                        x={d.x}
+                                        y={d.y}
+                                        text={char}
+                                        fontSize={d.size}
+                                        fill={dotConfig.color}
+                                        rotation={d.rotation}
+                                        offsetX={d.size * 0.3}
+                                        offsetY={d.size * 0.5}
                                     />
                                 );
                             }

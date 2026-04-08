@@ -13,6 +13,7 @@ import {
     Shuffle,
     Square as SquareIcon,
     Star,
+    Type,
 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -22,6 +23,7 @@ import {
     setDotSize,
     setDotVariance,
     setDotColor,
+    setCharacter,
     rerollSeed,
     type DotShape,
 } from "@/store/slices/decorateSlice";
@@ -32,6 +34,7 @@ type IconComponent = ComponentType<{ className?: string }>;
 const SHAPE_ICONS: Record<DotShape, IconComponent> = {
     circle: CircleIcon,
     square: SquareIcon,
+    character: Type,
     teardrop: Droplet,
     heart: Heart,
     star: Star,
@@ -164,6 +167,40 @@ export default function DotControls() {
                             })}
                         </div>
                     </div>
+
+                    {/* Character input */}
+                    {dotConfig.shape === "character" && (
+                        <div>
+                            <label
+                                className="block text-[11px] uppercase mb-2"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                    letterSpacing: "0.08em",
+                                }}
+                            >
+                                Character
+                            </label>
+                            <input
+                                type="text"
+                                value={dotConfig.character}
+                                onChange={(e) => dispatch(setCharacter(e.target.value))}
+                                placeholder="A"
+                                className="w-full px-3 py-2 rounded-[8px] text-[14px] text-white text-center outline-none transition-colors"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    background: "#090909",
+                                    border: "1px solid rgba(255,255,255,0.12)",
+                                }}
+                                onFocus={(e) => {
+                                    e.currentTarget.style.border = "1px solid #0099ff";
+                                }}
+                                onBlur={(e) => {
+                                    e.currentTarget.style.border = "1px solid rgba(255,255,255,0.12)";
+                                }}
+                            />
+                        </div>
+                    )}
 
                     {/* Count */}
                     <div>

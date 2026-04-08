@@ -12,6 +12,7 @@ export const DOT_COLORS: { value: string; label: string }[] = [
 export const DOT_SHAPES: { value: DotShape; label: string }[] = [
     { value: "circle", label: "Circle" },
     { value: "square", label: "Square" },
+    { value: "character", label: "Character" },
     { value: "teardrop", label: "Teardrop" },
     { value: "heart", label: "Heart" },
     { value: "star", label: "Star" },
@@ -30,6 +31,7 @@ export const DOT_SHAPES: { value: DotShape; label: string }[] = [
 export const SHAPE_PATHS: Record<DotShape, string | null> = {
     circle: null,
     square: null,
+    character: null,
     // Pointed tip on top, circular bottom (sides tangent to bottom circle).
     teardrop: "M0,-0.5 L0.282,0.029 A0.32,0.32 0 1,1 -0.282,0.029 Z",
     // Classic two-lobe heart, point at the bottom.

@@ -3,6 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 export type DotShape =
     | "circle"
     | "square"
+    | "character"
     | "teardrop"
     | "heart"
     | "star"
@@ -20,6 +21,8 @@ export interface DotConfig {
     variance: number;
     /** hex color string */
     color: string;
+    /** text to render when shape === "character" */
+    character: string;
 }
 
 export interface DecorateState {
@@ -41,6 +44,7 @@ const initialState: DecorateState = {
         size: 14,
         variance: 0,
         color: "#1a1a1a",
+        character: "A",
     },
     seed: 1,
 };
@@ -67,6 +71,9 @@ const decorateSlice = createSlice({
         setDotVariance(state, action: PayloadAction<number>) {
             state.dotConfig.variance = action.payload;
         },
+        setCharacter(state, action: PayloadAction<string>) {
+            state.dotConfig.character = action.payload;
+        },
         setDotColor(state, action: PayloadAction<string>) {
             state.dotConfig.color = action.payload;
         },
@@ -84,6 +91,7 @@ export const {
     setDotSize,
     setDotVariance,
     setDotColor,
+    setCharacter,
     rerollSeed,
 } = decorateSlice.actions;
 
