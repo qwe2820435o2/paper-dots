@@ -478,11 +478,14 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
         );
     }, [background.mode, background.dotGridColor, background.dotGridSpacing, background.dotGridRadius]);
 
-    // Dots span the full canvas; clip per layer handles which portion is visible.
+    // For split layouts, generate dots relative to one cell so both panels share
+    // identical relative positions (1:1 correspondence). Border layout spans the
+    // full canvas instead.
     const dots = useMemo(() => {
         if (!showDots) return [];
-        return generateDots(seed, dotConfig, canvasW, canvasH);
-    }, [showDots, seed, dotConfig, canvasW, canvasH]);
+        if (layout.type === "border") return generateDots(seed, dotConfig, canvasW, canvasH);
+        return generateDots(seed, dotConfig, cellW, cellH);
+    }, [showDots, seed, dotConfig, canvasW, canvasH, cellW, cellH, layout.type]);
 
     const dotColor = dotConfig.colorMode === "auto"
         ? getBgRepresentativeColor(background)
@@ -677,7 +680,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                     dots.map((d, i) => (
                                         <DotShape
                                             key={i}
-                                            dot={d}
+                                            dot={{ ...d, x: d.x + mainBox.x, y: d.y + mainBox.y }}
                                             shape={dotConfig.shape}
                                             color={dotColor}
                                             character={dotConfig.character}
@@ -712,7 +715,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                     dots.map((d, i) => (
                                         <DotShape
                                             key={i}
-                                            dot={d}
+                                            dot={{ ...d, x: d.x + paperBox.x, y: d.y + paperBox.y }}
                                             shape={dotConfig.shape}
                                             color="#000"
                                             character={dotConfig.character}
