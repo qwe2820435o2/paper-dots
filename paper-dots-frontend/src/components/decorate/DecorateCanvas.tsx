@@ -302,10 +302,11 @@ interface DotShapeProps {
     shape: DotConfig["shape"];
     color: string;
     character: string;
+    opacity?: number;
     composite?: GlobalCompositeOperation;
 }
 
-function DotShape({ dot, shape, color, character, composite }: DotShapeProps) {
+function DotShape({ dot, shape, color, character, opacity = 1, composite }: DotShapeProps) {
     if (shape === "circle") {
         return (
             <Circle
@@ -313,6 +314,7 @@ function DotShape({ dot, shape, color, character, composite }: DotShapeProps) {
                 y={dot.y}
                 radius={dot.size / 2}
                 fill={color}
+                opacity={opacity}
                 globalCompositeOperation={composite}
             />
         );
@@ -328,6 +330,7 @@ function DotShape({ dot, shape, color, character, composite }: DotShapeProps) {
                 offsetY={dot.size / 2}
                 rotation={dot.rotation}
                 fill={color}
+                opacity={opacity}
                 globalCompositeOperation={composite}
             />
         );
@@ -343,6 +346,7 @@ function DotShape({ dot, shape, color, character, composite }: DotShapeProps) {
                 rotation={dot.rotation}
                 offsetX={dot.size * 0.3}
                 offsetY={dot.size * 0.5}
+                opacity={opacity}
                 globalCompositeOperation={composite}
             />
         );
@@ -358,6 +362,7 @@ function DotShape({ dot, shape, color, character, composite }: DotShapeProps) {
             scaleY={dot.size}
             rotation={dot.rotation}
             fill={color}
+            opacity={opacity}
             globalCompositeOperation={composite}
         />
     );
@@ -631,6 +636,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                         shape={dotConfig.shape}
                                         color={dotColor}
                                         character={dotConfig.character}
+                                        opacity={dotConfig.opacity / 100}
                                     />
                                 ))}
                         </Layer>
@@ -675,6 +681,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                             shape={dotConfig.shape}
                                             color={dotColor}
                                             character={dotConfig.character}
+                                            opacity={dotConfig.opacity / 100}
                                         />
                                     ))}
                             </Layer>

@@ -27,6 +27,8 @@ export interface DotConfig {
     color: string;
     /** text to render when shape === "character" */
     character: string;
+    /** dot opacity, 0-100 */
+    opacity: number;
 }
 
 export type LayoutType =
@@ -146,6 +148,7 @@ const initialState: DecorateState = {
         colorMode: "auto",
         color: "#1a1a1a",
         character: "A",
+        opacity: 100,
     },
     layout: {
         type: "main-left",
@@ -245,6 +248,9 @@ const decorateSlice = createSlice({
         setDotColorMode(state, action: PayloadAction<DotColorMode>) {
             state.dotConfig.colorMode = action.payload;
         },
+        setDotOpacity(state, action: PayloadAction<number>) {
+            state.dotConfig.opacity = Math.max(0, Math.min(100, action.payload));
+        },
         setLayoutType(state, action: PayloadAction<LayoutType>) {
             state.layout.type = action.payload;
         },
@@ -284,6 +290,7 @@ export const {
     setDotVariance,
     setDotColor,
     setDotColorMode,
+    setDotOpacity,
     setLayoutType,
     setLayoutRatio,
     setCharacter,

@@ -24,6 +24,7 @@ import {
     setDotVariance,
     setDotColor,
     setDotColorMode,
+    setDotOpacity,
     setCharacter,
     rerollSeed,
     type DotShape,
@@ -302,6 +303,38 @@ export default function DotControls() {
                             step={1}
                             value={[dotConfig.variance]}
                             onValueChange={(v) => dispatch(setDotVariance(v[0]))}
+                        />
+                    </div>
+
+                    {/* Opacity */}
+                    <div>
+                        <div className="flex items-baseline justify-between mb-2">
+                            <label
+                                className="text-[11px] uppercase"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                    letterSpacing: "0.08em",
+                                }}
+                            >
+                                Opacity
+                            </label>
+                            <span
+                                className="text-[12px] tabular-nums"
+                                style={{
+                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                    color: "#a6a6a6",
+                                }}
+                            >
+                                {dotConfig.opacity}
+                            </span>
+                        </div>
+                        <Slider
+                            min={0}
+                            max={100}
+                            step={1}
+                            value={[dotConfig.opacity]}
+                            onValueChange={(v) => dispatch(setDotOpacity(v[0]))}
                         />
                     </div>
 
