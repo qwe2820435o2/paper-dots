@@ -5,7 +5,7 @@ import type Konva from "konva";
 import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path, Text } from "react-konva";
 import { useAppSelector } from "@/store/hooks";
 import { generateDots, type GeneratedDot } from "@/lib/dotGenerator";
-import { SHAPE_PATHS } from "@/lib/dotShapes";
+import { SHAPE_PATHS, PALETTE_PRESETS } from "@/lib/dotShapes";
 import type { BackgroundConfig, DotConfig, LayoutType } from "@/store/slices/decorateSlice";
 import { useHTMLImage } from "./useHTMLImage";
 
@@ -182,6 +182,53 @@ function getBgRepresentativeColor(bg: BackgroundConfig): string {
         case "gradient": return bg.gradientColor1;
         case "grid": return bg.solidColor;
         case "dot-grid": return bg.solidColor;
+    }
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+    const n = parseInt(hex.replace("#", ""), 16);
+    return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
+}
+
+function lerpColor(hex1: string, hex2: string, t: number): string {
+    const [r1, g1, b1] = hexToRgb(hex1);
+    const [r2, g2, b2] = hexToRgb(hex2);
+    const r = Math.round(r1 + (r2 - r1) * t);
+    const g = Math.round(g1 + (g2 - g1) * t);
+    const b = Math.round(b1 + (b2 - b1) * t);
+    return `rgb(${r},${g},${b})`;
+}
+
+function resolveDotColor(
+    dot: GeneratedDot,
+    dotConfig: DotConfig,
+    autoBgColor: string,
+    dotsW: number,
+    dotsH: number,
+): string {
+    switch (dotConfig.colorMode) {
+        case "auto":
+            return autoBgColor;
+        case "single":
+            return dotConfig.color;
+        case "palette": {
+            const preset = PALETTE_PRESETS.find((p) => p.id === dotConfig.paletteId) ?? PALETTE_PRESETS[0];
+            return preset.colors[dot.paletteIndex % preset.colors.length];
+        }
+        case "gradient": {
+            let t: number;
+            if (dotConfig.gradientDirection === "x") {
+                t = dotsW > 0 ? dot.x / dotsW : 0;
+            } else if (dotConfig.gradientDirection === "y") {
+                t = dotsH > 0 ? dot.y / dotsH : 0;
+            } else {
+                const cx = dotsW / 2;
+                const cy = dotsH / 2;
+                const maxR = Math.sqrt(cx * cx + cy * cy);
+                t = maxR > 0 ? Math.sqrt((dot.x - cx) ** 2 + (dot.y - cy) ** 2) / maxR : 0;
+            }
+            return lerpColor(dotConfig.gradientColor1, dotConfig.gradientColor2, Math.min(1, Math.max(0, t)));
+        }
     }
 }
 
@@ -487,9 +534,9 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
         return generateDots(seed, dotConfig, cellW, cellH);
     }, [showDots, seed, dotConfig, canvasW, canvasH, cellW, cellH, layout.type]);
 
-    const dotColor = dotConfig.colorMode === "auto"
-        ? getBgRepresentativeColor(background)
-        : dotConfig.color;
+    const autoBgColor = getBgRepresentativeColor(background);
+    const dotsW = layout.type === "border" ? canvasW : cellW;
+    const dotsH = layout.type === "border" ? canvasH : cellH;
 
     const hasMain = mainClip.w > 0 && mainClip.h > 0;
     const hasPaper = paperClip.w > 0 && paperClip.h > 0;
@@ -637,7 +684,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                         key={i}
                                         dot={d}
                                         shape={dotConfig.shape}
-                                        color={dotColor}
+                                        color={resolveDotColor(d, dotConfig, autoBgColor, dotsW, dotsH)}
                                         character={dotConfig.character}
                                         opacity={dotConfig.opacity / 100}
                                     />
@@ -682,7 +729,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                             key={i}
                                             dot={{ ...d, x: d.x + mainBox.x, y: d.y + mainBox.y }}
                                             shape={dotConfig.shape}
-                                            color={dotColor}
+                                            color={resolveDotColor(d, dotConfig, autoBgColor, dotsW, dotsH)}
                                             character={dotConfig.character}
                                             opacity={dotConfig.opacity / 100}
                                         />

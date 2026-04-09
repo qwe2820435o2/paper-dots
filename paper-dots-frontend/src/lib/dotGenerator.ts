@@ -5,6 +5,8 @@ export interface GeneratedDot {
     y: number;
     size: number;
     rotation: number;
+    /** 0-3 index into a palette array; used when colorMode === "palette" */
+    paletteIndex: number;
 }
 
 /** Hard cap to keep render cost bounded. */
@@ -48,6 +50,7 @@ export function generateDots(
             y: rand() * height,
             size: avg * (1 - spread + rand() * spread * 2),
             rotation: rand() * 360,
+            paletteIndex: Math.floor(rand() * 4),
         };
     }
     return dots;

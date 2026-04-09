@@ -11,7 +11,8 @@ export type DotShape =
     | "leaf"
     | "crescent";
 
-export type DotColorMode = "auto" | "custom";
+export type DotColorMode = "auto" | "single" | "palette" | "gradient";
+export type GradientDirection = "x" | "y" | "radial";
 
 export interface DotConfig {
     shape: DotShape;
@@ -21,10 +22,18 @@ export interface DotConfig {
     size: number;
     /** 0 - 100, controls size variation between dots */
     variance: number;
-    /** "auto" means follow the current background representative color; "custom" uses `color` */
+    /** "auto": follow bg color; "single": fixed color; "palette": multi-color preset; "gradient": positional interpolation */
     colorMode: DotColorMode;
-    /** hex color string; only used when colorMode === "custom" */
+    /** hex color string; used when colorMode === "single" */
     color: string;
+    /** palette preset id; used when colorMode === "palette" */
+    paletteId: string;
+    /** gradient start color; used when colorMode === "gradient" */
+    gradientColor1: string;
+    /** gradient end color; used when colorMode === "gradient" */
+    gradientColor2: string;
+    /** gradient direction; used when colorMode === "gradient" */
+    gradientDirection: GradientDirection;
     /** text to render when shape === "character" */
     character: string;
     /** dot opacity, 0-100 */
@@ -147,6 +156,10 @@ const initialState: DecorateState = {
         variance: 0,
         colorMode: "auto",
         color: "#1a1a1a",
+        paletteId: "morandi",
+        gradientColor1: "#f4a261",
+        gradientColor2: "#3b82f6",
+        gradientDirection: "x",
         character: "A",
         opacity: 100,
     },
@@ -243,10 +256,23 @@ const decorateSlice = createSlice({
         },
         setDotColor(state, action: PayloadAction<string>) {
             state.dotConfig.color = action.payload;
-            state.dotConfig.colorMode = "custom";
+            state.dotConfig.colorMode = "single";
         },
         setDotColorMode(state, action: PayloadAction<DotColorMode>) {
             state.dotConfig.colorMode = action.payload;
+        },
+        setDotPaletteId(state, action: PayloadAction<string>) {
+            state.dotConfig.paletteId = action.payload;
+            state.dotConfig.colorMode = "palette";
+        },
+        setDotGradientColor1(state, action: PayloadAction<string>) {
+            state.dotConfig.gradientColor1 = action.payload;
+        },
+        setDotGradientColor2(state, action: PayloadAction<string>) {
+            state.dotConfig.gradientColor2 = action.payload;
+        },
+        setDotGradientDirection(state, action: PayloadAction<GradientDirection>) {
+            state.dotConfig.gradientDirection = action.payload;
         },
         setDotOpacity(state, action: PayloadAction<number>) {
             state.dotConfig.opacity = Math.max(0, Math.min(100, action.payload));
@@ -290,6 +316,10 @@ export const {
     setDotVariance,
     setDotColor,
     setDotColorMode,
+    setDotPaletteId,
+    setDotGradientColor1,
+    setDotGradientColor2,
+    setDotGradientDirection,
     setDotOpacity,
     setLayoutType,
     setLayoutRatio,

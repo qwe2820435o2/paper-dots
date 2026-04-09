@@ -1,5 +1,39 @@
 import type { DotShape } from "@/store/slices/decorateSlice";
 
+export interface PalettePreset {
+    id: string;
+    label: string;
+    colors: [string, string, string, string];
+}
+
+export const PALETTE_PRESETS: PalettePreset[] = [
+    {
+        id: "morandi",
+        label: "Morandi",
+        colors: ["#c4b7a6", "#a8b5a2", "#b5c4ce", "#d4c5b0"],
+    },
+    {
+        id: "macaron",
+        label: "Macaron",
+        colors: ["#f9c5d1", "#c5e3f7", "#d5f5e3", "#fde8c8"],
+    },
+    {
+        id: "sunset",
+        label: "Sunset",
+        colors: ["#f4a261", "#e76f51", "#c77dff", "#f8edeb"],
+    },
+    {
+        id: "ocean",
+        label: "Ocean",
+        colors: ["#03045e", "#0077b6", "#90e0ef", "#caf0f8"],
+    },
+    {
+        id: "forest",
+        label: "Forest",
+        colors: ["#2d6a4f", "#52b788", "#b7e4c7", "#d8f3dc"],
+    },
+];
+
 export const DOT_COLORS: { value: string; label: string }[] = [
     { value: "#1a1a1a", label: "Ink" },
     { value: "#fafafa", label: "Paper" },

@@ -24,12 +24,17 @@ import {
     setDotVariance,
     setDotColor,
     setDotColorMode,
+    setDotPaletteId,
+    setDotGradientColor1,
+    setDotGradientColor2,
+    setDotGradientDirection,
     setDotOpacity,
     setCharacter,
     rerollSeed,
     type DotShape,
+    type GradientDirection,
 } from "@/store/slices/decorateSlice";
-import { DOT_COLORS, DOT_SHAPES } from "@/lib/dotShapes";
+import { DOT_COLORS, DOT_SHAPES, PALETTE_PRESETS } from "@/lib/dotShapes";
 import ColorPicker from "./ColorPicker";
 
 type IconComponent = ComponentType<{ className?: string }>;
@@ -50,12 +55,12 @@ export default function DotControls() {
     const dispatch = useAppDispatch();
     const dotConfig = useAppSelector((s) => s.decorate.dotConfig);
     const [isOpen, setIsOpen] = useState(true);
-    const [isPickerOpen, setIsPickerOpen] = useState(false);
+    const [pickerOpen, setPickerOpen] = useState<"single" | "grad1" | "grad2" | null>(null);
     const shapeTileRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
-    const isAuto = dotConfig.colorMode === "auto";
-    const isCustomColor =
-        !isAuto && !DOT_COLORS.some((c) => c.value === dotConfig.color);
+    const colorMode = dotConfig.colorMode;
+    const isCustomSingleColor =
+        colorMode === "single" && !DOT_COLORS.some((c) => c.value === dotConfig.color);
 
     // Keep the selected shape tile visible whenever it changes (or on mount).
     useEffect(() => {
@@ -340,99 +345,227 @@ export default function DotControls() {
 
                     {/* Color */}
                     <div className="flex flex-col gap-3">
-                        <div className="flex items-center justify-between">
-                            <label
-                                className="text-[11px] uppercase"
-                                style={{
-                                    fontFamily:
-                                        "var(--font-inter), system-ui, sans-serif",
-                                    color: "#a6a6a6",
-                                    letterSpacing: "0.08em",
-                                }}
-                            >
-                                Color
-                            </label>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    dispatch(setDotColorMode("auto"));
-                                    setIsPickerOpen(false);
-                                }}
-                                aria-pressed={isAuto}
-                                className="px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors"
-                                style={{
-                                    fontFamily:
-                                        "var(--font-inter), system-ui, sans-serif",
-                                    color: isAuto ? "#ffffff" : "#a6a6a6",
-                                    background: isAuto
-                                        ? "rgba(0,153,255,0.18)"
-                                        : "rgba(255,255,255,0.06)",
-                                    boxShadow: isAuto
-                                        ? "rgba(0, 153, 255, 0.9) 0px 0px 0px 1px"
-                                        : "rgba(255,255,255,0.12) 0px 0px 0px 1px",
-                                }}
-                            >
-                                Auto
-                            </button>
-                        </div>
-                        <div className="grid grid-cols-6 gap-2">
-                            {DOT_COLORS.map((c) => {
-                                const selected =
-                                    !isAuto &&
-                                    dotConfig.color === c.value &&
-                                    !isPickerOpen;
+                        <label
+                            className="text-[11px] uppercase"
+                            style={{
+                                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                color: "#a6a6a6",
+                                letterSpacing: "0.08em",
+                            }}
+                        >
+                            Color
+                        </label>
+
+                        {/* Mode selector */}
+                        <div className="grid grid-cols-4 gap-1.5">
+                            {(["auto", "single", "palette", "gradient"] as const).map((mode) => {
+                                const labels: Record<string, string> = {
+                                    auto: "Auto",
+                                    single: "Single",
+                                    palette: "Palette",
+                                    gradient: "Gradient",
+                                };
+                                const selected = colorMode === mode;
                                 return (
                                     <button
-                                        key={c.value}
+                                        key={mode}
                                         type="button"
                                         onClick={() => {
-                                            dispatch(setDotColor(c.value));
-                                            setIsPickerOpen(false);
+                                            dispatch(setDotColorMode(mode));
+                                            setPickerOpen(null);
                                         }}
-                                        aria-label={c.label}
-                                        className="aspect-square rounded-full transition-all"
+                                        className="py-1.5 rounded-[6px] text-[11px] font-medium transition-colors"
                                         style={{
-                                            backgroundColor: c.value,
-                                            ...(selected
-                                                ? {
-                                                      boxShadow:
-                                                          "rgba(0, 153, 255, 0.9) 0px 0px 0px 2px, rgba(0, 153, 255, 0.25) 0px 0px 0px 4px",
-                                                  }
-                                                : {
-                                                      boxShadow:
-                                                          "rgba(255,255,255,0.15) 0px 0px 0px 1px",
-                                                  }),
+                                            fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                            color: selected ? "#ffffff" : "#a6a6a6",
+                                            background: selected
+                                                ? "rgba(0,153,255,0.18)"
+                                                : "rgba(255,255,255,0.06)",
+                                            boxShadow: selected
+                                                ? "rgba(0,153,255,0.9) 0px 0px 0px 1px"
+                                                : "rgba(255,255,255,0.1) 0px 0px 0px 1px",
                                         }}
-                                    />
+                                    >
+                                        {labels[mode]}
+                                    </button>
                                 );
                             })}
-                            {/* Custom color swatch */}
-                            <button
-                                type="button"
-                                onClick={() => setIsPickerOpen((v) => !v)}
-                                aria-label="Custom color"
-                                className="aspect-square rounded-full transition-all"
-                                style={{
-                                    background:
-                                        "conic-gradient(from 0deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
-                                    ...(isCustomColor || isPickerOpen
-                                        ? {
-                                              boxShadow:
-                                                  "rgba(0, 153, 255, 0.9) 0px 0px 0px 2px, rgba(0, 153, 255, 0.25) 0px 0px 0px 4px",
-                                          }
-                                        : {
-                                              boxShadow:
-                                                  "rgba(255,255,255,0.15) 0px 0px 0px 1px",
-                                          }),
-                                }}
-                            />
                         </div>
 
-                        {isPickerOpen && (
-                            <ColorPicker
-                                color={dotConfig.color}
-                                onChange={(hex) => dispatch(setDotColor(hex))}
-                            />
+                        {/* Single mode: color swatches */}
+                        {colorMode === "single" && (
+                            <>
+                                <div className="grid grid-cols-6 gap-2">
+                                    {DOT_COLORS.map((c) => {
+                                        const selected = dotConfig.color === c.value && pickerOpen !== "single";
+                                        return (
+                                            <button
+                                                key={c.value}
+                                                type="button"
+                                                onClick={() => {
+                                                    dispatch(setDotColor(c.value));
+                                                    setPickerOpen(null);
+                                                }}
+                                                aria-label={c.label}
+                                                className="aspect-square rounded-full transition-all"
+                                                style={{
+                                                    backgroundColor: c.value,
+                                                    boxShadow: selected
+                                                        ? "rgba(0,153,255,0.9) 0px 0px 0px 2px, rgba(0,153,255,0.25) 0px 0px 0px 4px"
+                                                        : "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                                                }}
+                                            />
+                                        );
+                                    })}
+                                    <button
+                                        type="button"
+                                        onClick={() => setPickerOpen((v) => (v === "single" ? null : "single"))}
+                                        aria-label="Custom color"
+                                        className="aspect-square rounded-full transition-all"
+                                        style={{
+                                            background: "conic-gradient(from 0deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
+                                            boxShadow: isCustomSingleColor || pickerOpen === "single"
+                                                ? "rgba(0,153,255,0.9) 0px 0px 0px 2px, rgba(0,153,255,0.25) 0px 0px 0px 4px"
+                                                : "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                                        }}
+                                    />
+                                </div>
+                                {pickerOpen === "single" && (
+                                    <ColorPicker
+                                        color={dotConfig.color}
+                                        onChange={(hex) => dispatch(setDotColor(hex))}
+                                    />
+                                )}
+                            </>
+                        )}
+
+                        {/* Palette mode: preset tiles */}
+                        {colorMode === "palette" && (
+                            <div className="flex flex-col gap-2">
+                                {PALETTE_PRESETS.map((preset) => {
+                                    const selected = dotConfig.paletteId === preset.id;
+                                    return (
+                                        <button
+                                            key={preset.id}
+                                            type="button"
+                                            onClick={() => dispatch(setDotPaletteId(preset.id))}
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-[8px] transition-all"
+                                            style={{
+                                                background: selected
+                                                    ? "rgba(0,153,255,0.1)"
+                                                    : "rgba(255,255,255,0.04)",
+                                                boxShadow: selected
+                                                    ? "rgba(0,153,255,0.9) 0px 0px 0px 1px"
+                                                    : "rgba(255,255,255,0.08) 0px 0px 0px 1px",
+                                            }}
+                                        >
+                                            <div className="flex gap-1">
+                                                {preset.colors.map((color) => (
+                                                    <div
+                                                        key={color}
+                                                        className="w-4 h-4 rounded-full"
+                                                        style={{ backgroundColor: color }}
+                                                    />
+                                                ))}
+                                            </div>
+                                            <span
+                                                className="text-[12px]"
+                                                style={{
+                                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                                    color: selected ? "#ffffff" : "#a6a6a6",
+                                                }}
+                                            >
+                                                {preset.label}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        {/* Gradient mode: two color pickers + direction */}
+                        {colorMode === "gradient" && (
+                            <div className="flex flex-col gap-3">
+                                {/* Direction */}
+                                <div className="flex gap-1.5">
+                                    {(["x", "y", "radial"] as GradientDirection[]).map((dir) => {
+                                        const labels: Record<GradientDirection, string> = {
+                                            x: "Horizontal",
+                                            y: "Vertical",
+                                            radial: "Radial",
+                                        };
+                                        const sel = dotConfig.gradientDirection === dir;
+                                        return (
+                                            <button
+                                                key={dir}
+                                                type="button"
+                                                onClick={() => dispatch(setDotGradientDirection(dir))}
+                                                className="flex-1 py-1.5 rounded-[6px] text-[11px] font-medium transition-colors"
+                                                style={{
+                                                    fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                                    color: sel ? "#ffffff" : "#a6a6a6",
+                                                    background: sel
+                                                        ? "rgba(0,153,255,0.18)"
+                                                        : "rgba(255,255,255,0.06)",
+                                                    boxShadow: sel
+                                                        ? "rgba(0,153,255,0.9) 0px 0px 0px 1px"
+                                                        : "rgba(255,255,255,0.1) 0px 0px 0px 1px",
+                                                }}
+                                            >
+                                                {labels[dir]}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                {/* Color stops */}
+                                <div className="flex gap-2">
+                                    {(["grad1", "grad2"] as const).map((key) => {
+                                        const color = key === "grad1" ? dotConfig.gradientColor1 : dotConfig.gradientColor2;
+                                        const label = key === "grad1" ? "Start" : "End";
+                                        const isOpen = pickerOpen === key;
+                                        return (
+                                            <button
+                                                key={key}
+                                                type="button"
+                                                onClick={() => setPickerOpen((v) => (v === key ? null : key))}
+                                                className="flex-1 flex items-center gap-2 px-3 py-2 rounded-[8px] transition-all"
+                                                style={{
+                                                    background: "rgba(255,255,255,0.04)",
+                                                    boxShadow: isOpen
+                                                        ? "rgba(0,153,255,0.9) 0px 0px 0px 1px"
+                                                        : "rgba(255,255,255,0.08) 0px 0px 0px 1px",
+                                                }}
+                                            >
+                                                <div
+                                                    className="w-4 h-4 rounded-full shrink-0"
+                                                    style={{ backgroundColor: color }}
+                                                />
+                                                <span
+                                                    className="text-[11px]"
+                                                    style={{
+                                                        fontFamily: "var(--font-inter), system-ui, sans-serif",
+                                                        color: "#a6a6a6",
+                                                    }}
+                                                >
+                                                    {label}
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                {pickerOpen === "grad1" && (
+                                    <ColorPicker
+                                        color={dotConfig.gradientColor1}
+                                        onChange={(hex) => dispatch(setDotGradientColor1(hex))}
+                                    />
+                                )}
+                                {pickerOpen === "grad2" && (
+                                    <ColorPicker
+                                        color={dotConfig.gradientColor2}
+                                        onChange={(hex) => dispatch(setDotGradientColor2(hex))}
+                                    />
+                                )}
+                            </div>
                         )}
                     </div>
                 </div>
