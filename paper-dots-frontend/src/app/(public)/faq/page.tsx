@@ -71,14 +71,14 @@ const faqJsonLd = {
 
 export default function FAQPage() {
   return (
-    <div className="min-h-[70vh] bg-black py-20 px-5 sm:px-8">
+    <div className="min-h-[70vh] bg-white py-20 px-5 sm:px-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="max-w-3xl mx-auto">
         <h1
-          className="text-[42px] sm:text-[62px] font-medium text-white mb-4"
+          className="text-[42px] sm:text-[62px] font-medium text-[#1a1a2e] mb-4"
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             letterSpacing: "-3px",
@@ -87,13 +87,7 @@ export default function FAQPage() {
         >
           FAQ
         </h1>
-        <p
-          className="text-[16px] leading-[1.6] mb-14"
-          style={{
-            fontFamily: "var(--font-inter), system-ui, sans-serif",
-            color: "#a6a6a6",
-          }}
-        >
+        <p className="text-[16px] leading-[1.6] mb-14 text-[#64748b]">
           Everything you need to know about Paper Dots.
         </p>
 
@@ -102,29 +96,14 @@ export default function FAQPage() {
             <AccordionItem
               key={i}
               value={`item-${i}`}
-              style={{ borderColor: "rgba(255,255,255,0.08)" }}
+              className="border-slate-200"
             >
               <AccordionTrigger
-                className="text-left hover:no-underline hover:opacity-80 py-5"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#ffffff",
-                  letterSpacing: "-0.2px",
-                }}
+                className="text-left hover:no-underline hover:opacity-80 py-5 text-[15px] font-medium text-[#1a1a2e] tracking-[-0.2px]"
               >
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent
-                className="pb-5"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  fontSize: "15px",
-                  lineHeight: "1.7",
-                  color: "#a6a6a6",
-                }}
-              >
+              <AccordionContent className="pb-5 text-[15px] leading-[1.7] text-[#64748b]">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>

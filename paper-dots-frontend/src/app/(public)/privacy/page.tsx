@@ -55,10 +55,10 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-[70vh] bg-black py-20 px-5 sm:px-8">
+    <div className="min-h-[70vh] bg-white py-20 px-5 sm:px-8">
       <div className="max-w-3xl mx-auto">
         <h1
-          className="text-[42px] sm:text-[62px] font-medium text-white mb-2"
+          className="text-[42px] sm:text-[62px] font-medium text-[#1a1a2e] mb-2"
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             letterSpacing: "-3px",
@@ -67,13 +67,7 @@ export default function PrivacyPage() {
         >
           Privacy Policy
         </h1>
-        <p
-          className="text-[13px] mb-16"
-          style={{
-            fontFamily: "var(--font-inter), system-ui, sans-serif",
-            color: "#a6a6a6",
-          }}
-        >
+        <p className="text-[13px] mb-16 text-[#64748b]">
           Last updated: March 26, 2026
         </p>
 
@@ -81,40 +75,23 @@ export default function PrivacyPage() {
           {sections.map((s) => (
             <section key={s.title}>
               <h2
-                className="text-[18px] font-medium text-white mb-3"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  letterSpacing: "-0.4px",
-                }}
+                className="text-[18px] font-semibold text-[#1a1a2e] mb-3 tracking-[-0.4px]"
               >
                 {s.title}
               </h2>
               {s.isContact ? (
-                <p
-                  className="text-[15px] leading-[1.7]"
-                  style={{
-                    fontFamily: "var(--font-inter), system-ui, sans-serif",
-                    color: "#a6a6a6",
-                  }}
-                >
+                <p className="text-[15px] leading-[1.7] text-[#64748b]">
                   If you have questions about this Privacy Policy, please reach out at{" "}
                   <a
                     href="mailto:support@paperdots.app"
-                    className="transition-opacity hover:opacity-75"
-                    style={{ color: "#0099ff" }}
+                    className="text-[#4338CA] hover:text-[#3730A3] transition-colors"
                   >
                     support@paperdots.app
                   </a>
                   .
                 </p>
               ) : (
-                <p
-                  className="text-[15px] leading-[1.7]"
-                  style={{
-                    fontFamily: "var(--font-inter), system-ui, sans-serif",
-                    color: "#a6a6a6",
-                  }}
-                >
+                <p className="text-[15px] leading-[1.7] text-[#64748b]">
                   {s.content}
                 </p>
               )}

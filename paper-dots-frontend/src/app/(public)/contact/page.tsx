@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="min-h-[70vh] bg-black py-20 px-5 sm:px-8">
+    <div className="min-h-[70vh] bg-white py-20 px-5 sm:px-8">
       <div className="max-w-3xl mx-auto">
         <h1
-          className="text-[42px] sm:text-[62px] font-medium text-white mb-4"
+          className="text-[42px] sm:text-[62px] font-medium text-[#1a1a2e] mb-4"
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             letterSpacing: "-3px",
@@ -25,57 +25,26 @@ export default function ContactPage() {
         >
           Contact Us
         </h1>
-        <p
-          className="text-[16px] leading-[1.6] mb-14"
-          style={{
-            fontFamily: "var(--font-inter), system-ui, sans-serif",
-            color: "#a6a6a6",
-          }}
-        >
+        <p className="text-[16px] leading-[1.6] mb-14 text-[#64748b]">
           Have a question or feedback? We would love to hear from you.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Email */}
-          <div
-            className="flex items-start gap-4 p-6 rounded-[12px]"
-            style={{
-              background: "#090909",
-              boxShadow: "rgba(0, 153, 255, 0.15) 0px 0px 0px 1px",
-            }}
-          >
-            <div
-              className="shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center"
-              style={{ background: "rgba(0,153,255,0.12)" }}
-            >
-              <Mail className="w-4 h-4" style={{ color: "#0099ff" }} strokeWidth={1.8} />
+          <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-indigo-50">
+              <Mail className="w-4 h-4 text-[#4338CA]" strokeWidth={1.8} />
             </div>
             <div>
-              <h2
-                className="text-[15px] font-medium text-white mb-1"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  letterSpacing: "-0.2px",
-                }}
-              >
+              <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">
                 Email
               </h2>
-              <p
-                className="text-[14px] leading-[1.6] mb-3"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  color: "#a6a6a6",
-                }}
-              >
+              <p className="text-[14px] leading-[1.6] mb-3 text-[#64748b]">
                 Send us an email and we will get back to you as soon as possible.
               </p>
               <a
                 href="mailto:support@paperdots.app"
-                className="text-[14px] font-medium transition-opacity hover:opacity-75"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  color: "#0099ff",
-                }}
+                className="text-[14px] font-medium text-[#4338CA] hover:text-[#3730A3] transition-colors"
               >
                 support@paperdots.app
               </a>
@@ -83,36 +52,15 @@ export default function ContactPage() {
           </div>
 
           {/* Feedback */}
-          <div
-            className="flex items-start gap-4 p-6 rounded-[12px]"
-            style={{
-              background: "#090909",
-              boxShadow: "rgba(0, 153, 255, 0.15) 0px 0px 0px 1px",
-            }}
-          >
-            <div
-              className="shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center"
-              style={{ background: "rgba(0,153,255,0.12)" }}
-            >
-              <MessageSquare className="w-4 h-4" style={{ color: "#0099ff" }} strokeWidth={1.8} />
+          <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-indigo-50">
+              <MessageSquare className="w-4 h-4 text-[#4338CA]" strokeWidth={1.8} />
             </div>
             <div>
-              <h2
-                className="text-[15px] font-medium text-white mb-1"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  letterSpacing: "-0.2px",
-                }}
-              >
+              <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">
                 Feedback
               </h2>
-              <p
-                className="text-[14px] leading-[1.6]"
-                style={{
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  color: "#a6a6a6",
-                }}
-              >
+              <p className="text-[14px] leading-[1.6] text-[#64748b]">
                 Found a bug or have a feature request? Let us know — we are always improving Paper Dots.
               </p>
             </div>
