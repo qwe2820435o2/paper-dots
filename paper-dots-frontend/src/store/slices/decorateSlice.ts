@@ -113,7 +113,7 @@ export interface DecorateState {
 const initialState: DecorateState = {
     photoUrl: null,
     background: {
-        mode: "template",
+        mode: "solid",
         solidColor: "#fafafa",
         stripeColor1: "#fafafa",
         stripeColor1Set: false,
