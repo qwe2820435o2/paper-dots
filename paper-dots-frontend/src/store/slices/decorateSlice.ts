@@ -21,7 +21,7 @@ export interface DotConfig {
     size: number;
     /** 0 - 100, controls size variation between dots */
     variance: number;
-    /** "auto" means follow the current paper color; "custom" uses `color` */
+    /** "auto" means follow the current background representative color; "custom" uses `color` */
     colorMode: DotColorMode;
     /** hex color string; only used when colorMode === "custom" */
     color: string;
@@ -37,11 +37,30 @@ export interface LayoutConfig {
     ratio: number;
 }
 
+export type BackgroundMode = "solid" | "stripe" | "photo" | "template";
+
+export interface BackgroundConfig {
+    mode: BackgroundMode;
+    /** hex color for solid mode */
+    solidColor: string;
+    /** hex color for stripe color 1 */
+    stripeColor1: string;
+    stripeColor1Set: boolean;
+    /** hex color for stripe color 2 */
+    stripeColor2: string;
+    stripeColor2Set: boolean;
+    /** stripe width in px tile units, 1-100 */
+    stripeWidth: number;
+    /** object URL of the uploaded background photo, or null */
+    bgPhotoUrl: string | null;
+    /** paper template id for template mode */
+    templateId: string;
+}
+
 export interface DecorateState {
     /** object URL of the uploaded photo, or null */
     photoUrl: string | null;
-    /** id of the selected paper background */
-    paperId: string;
+    background: BackgroundConfig;
     dotConfig: DotConfig;
     layout: LayoutConfig;
     /** seed used by the dot generator; reroll to reshuffle layout */
@@ -50,7 +69,17 @@ export interface DecorateState {
 
 const initialState: DecorateState = {
     photoUrl: null,
-    paperId: "plain",
+    background: {
+        mode: "template",
+        solidColor: "#fafafa",
+        stripeColor1: "#fafafa",
+        stripeColor1Set: false,
+        stripeColor2: "#e0e0e0",
+        stripeColor2Set: false,
+        stripeWidth: 20,
+        bgPhotoUrl: null,
+        templateId: "plain",
+    },
     dotConfig: {
         shape: "circle",
         count: 50,
@@ -74,8 +103,28 @@ const decorateSlice = createSlice({
         setPhotoUrl(state, action: PayloadAction<string | null>) {
             state.photoUrl = action.payload;
         },
-        setPaperId(state, action: PayloadAction<string>) {
-            state.paperId = action.payload;
+        setBackgroundMode(state, action: PayloadAction<BackgroundMode>) {
+            state.background.mode = action.payload;
+        },
+        setSolidColor(state, action: PayloadAction<string>) {
+            state.background.solidColor = action.payload;
+        },
+        setStripeColor1(state, action: PayloadAction<string>) {
+            state.background.stripeColor1 = action.payload;
+            state.background.stripeColor1Set = true;
+        },
+        setStripeColor2(state, action: PayloadAction<string>) {
+            state.background.stripeColor2 = action.payload;
+            state.background.stripeColor2Set = true;
+        },
+        setStripeWidth(state, action: PayloadAction<number>) {
+            state.background.stripeWidth = Math.max(1, Math.min(100, action.payload));
+        },
+        setBgPhotoUrl(state, action: PayloadAction<string | null>) {
+            state.background.bgPhotoUrl = action.payload;
+        },
+        setTemplateId(state, action: PayloadAction<string>) {
+            state.background.templateId = action.payload;
         },
         setDotShape(state, action: PayloadAction<DotShape>) {
             state.dotConfig.shape = action.payload;
@@ -114,7 +163,13 @@ const decorateSlice = createSlice({
 
 export const {
     setPhotoUrl,
-    setPaperId,
+    setBackgroundMode,
+    setSolidColor,
+    setStripeColor1,
+    setStripeColor2,
+    setStripeWidth,
+    setBgPhotoUrl,
+    setTemplateId,
     setDotShape,
     setDotCount,
     setDotSize,

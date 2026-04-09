@@ -7,7 +7,7 @@ import { useAppSelector } from "@/store/hooks";
 import { getPaper } from "@/lib/papers";
 import { generateDots, type GeneratedDot } from "@/lib/dotGenerator";
 import { SHAPE_PATHS } from "@/lib/dotShapes";
-import type { DotConfig, LayoutType } from "@/store/slices/decorateSlice";
+import type { BackgroundConfig, DotConfig, LayoutType } from "@/store/slices/decorateSlice";
 import { useHTMLImage } from "./useHTMLImage";
 
 /** Max px for the longer edge of one photo cell at export resolution. */
@@ -59,7 +59,6 @@ function computeGeo(
 ): LayoutGeo {
     switch (type) {
         case "main-left": {
-            // Main: left panel (x=0..cellW). Paper: right panel (x=cellW..2*cellW).
             const mainClip: Rect4 =
                 p > 50
                     ? { x: ((p - 50) / 50) * cellW, y: 0, w: ((100 - p) / 50) * cellW, h: cellH }
@@ -78,7 +77,6 @@ function computeGeo(
             };
         }
         case "main-right": {
-            // Main: right panel (x=cellW..2*cellW). Paper: left panel (x=0..cellW).
             const mainClip: Rect4 =
                 p > 50
                     ? { x: cellW, y: 0, w: ((100 - p) / 50) * cellW, h: cellH }
@@ -97,7 +95,6 @@ function computeGeo(
             };
         }
         case "main-top": {
-            // Main: top panel (y=0..cellH). Paper: bottom panel (y=cellH..2*cellH).
             const mainClip: Rect4 =
                 p > 50
                     ? { x: 0, y: ((p - 50) / 50) * cellH, w: cellW, h: ((100 - p) / 50) * cellH }
@@ -116,7 +113,6 @@ function computeGeo(
             };
         }
         case "main-bottom": {
-            // Main: bottom panel (y=cellH..2*cellH). Paper: top panel (y=0..cellH).
             const mainClip: Rect4 =
                 p > 50
                     ? { x: 0, y: cellH, w: cellW, h: ((100 - p) / 50) * cellH }
@@ -155,6 +151,39 @@ function containLayout(
         width: w,
         height: h,
     };
+}
+
+/** Returns the representative color of the background for dot auto-color mode. */
+function getBgRepresentativeColor(bg: BackgroundConfig): string {
+    switch (bg.mode) {
+        case "solid": return bg.solidColor;
+        case "stripe": return bg.stripeColor1;
+        case "photo": return "#fafafa";
+        case "template": return getPaper(bg.templateId).color;
+    }
+}
+
+/**
+ * Build a 45° diagonal stripe tile as an HTMLImageElement.
+ * The tile is (stripeWidth * 2) px square and repeats seamlessly.
+ */
+function buildStripePatternImage(
+    color1: string,
+    color2: string,
+    stripeWidth: number,
+): HTMLImageElement {
+    const w = Math.max(2, stripeWidth * 2);
+    const c = document.createElement("canvas");
+    c.width = w;
+    c.height = 1;
+    const ctx = c.getContext("2d")!;
+    ctx.fillStyle = color1;
+    ctx.fillRect(0, 0, w / 2, 1);
+    ctx.fillStyle = color2;
+    ctx.fillRect(w / 2, 0, w / 2, 1);
+    const img = new Image();
+    img.src = c.toDataURL();
+    return img;
 }
 
 interface DotShapeProps {
@@ -228,14 +257,19 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     ref,
 ) {
     const photoUrl = useAppSelector((s) => s.decorate.photoUrl);
-    const paperId = useAppSelector((s) => s.decorate.paperId);
+    const background = useAppSelector((s) => s.decorate.background);
     const dotConfig = useAppSelector((s) => s.decorate.dotConfig);
     const layout = useAppSelector((s) => s.decorate.layout);
     const seed = useAppSelector((s) => s.decorate.seed);
 
-    const paper = getPaper(paperId);
-    const paperImg = useHTMLImage(paper.src || null);
+    const templatePaper = getPaper(background.templateId);
+    const templateImg = useHTMLImage(
+        background.mode === "template" ? (templatePaper.src || null) : null,
+    );
     const photoImg = useHTMLImage(photoUrl);
+    const bgPhotoImg = useHTMLImage(
+        background.mode === "photo" ? background.bgPhotoUrl : null,
+    );
 
     // One photo cell = photo at export resolution (max CELL_MAX on either side).
     const { cellW, cellH } = useMemo(() => {
@@ -284,6 +318,21 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [photoImg, paperBox.x, paperBox.y, paperBox.w, paperBox.h],
     );
+    const bgPhotoLayout = useMemo(
+        () => (bgPhotoImg ? containLayout(bgPhotoImg, paperBox) : null),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [bgPhotoImg, paperBox.x, paperBox.y, paperBox.w, paperBox.h],
+    );
+
+    // Stripe pattern (built synchronously from offscreen canvas).
+    const stripePatternImg = useMemo(() => {
+        if (background.mode !== "stripe") return null;
+        return buildStripePatternImage(
+            background.stripeColor1,
+            background.stripeColor2,
+            background.stripeWidth,
+        );
+    }, [background.mode, background.stripeColor1, background.stripeColor2, background.stripeWidth]);
 
     // Dots span the full canvas; clip per layer handles which portion is visible.
     const dots = useMemo(() => {
@@ -291,7 +340,9 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
         return generateDots(seed, dotConfig, canvasW, canvasH);
     }, [showDots, seed, dotConfig, canvasW, canvasH]);
 
-    const dotColor = dotConfig.colorMode === "auto" ? paper.color : dotConfig.color;
+    const dotColor = dotConfig.colorMode === "auto"
+        ? getBgRepresentativeColor(background)
+        : dotConfig.color;
 
     const hasMain = mainClip.w > 0 && mainClip.h > 0;
     const hasPaper = paperClip.w > 0 && paperClip.h > 0;
@@ -338,7 +389,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                     </Layer>
                 )}
 
-                {/* Paper panel: photo underneath */}
+                {/* Paper panel: photo underneath (used by template/solid/stripe modes for the punch-through effect) */}
                 {hasPaper && (
                     <Layer
                         listening={false}
@@ -353,7 +404,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                     </Layer>
                 )}
 
-                {/* Paper panel: paper fill + image, then destination-out dots punch holes */}
+                {/* Paper panel: background fill + destination-out dots punch holes */}
                 {hasPaper && (
                     <Layer
                         listening={false}
@@ -362,22 +413,62 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                         clipWidth={paperClip.w}
                         clipHeight={paperClip.h}
                     >
-                        <Rect
-                            x={paperBox.x}
-                            y={paperBox.y}
-                            width={paperBox.w}
-                            height={paperBox.h}
-                            fill={paper.color}
-                        />
-                        {paperImg && (
-                            <KonvaImage
-                                image={paperImg}
+                        {/* Background fill by mode */}
+                        {background.mode === "solid" && (
+                            <Rect
                                 x={paperBox.x}
                                 y={paperBox.y}
                                 width={paperBox.w}
                                 height={paperBox.h}
+                                fill={background.solidColor}
                             />
                         )}
+                        {background.mode === "stripe" && stripePatternImg && (
+                            <Rect
+                                x={paperBox.x}
+                                y={paperBox.y}
+                                width={paperBox.w}
+                                height={paperBox.h}
+                                fillPatternImage={stripePatternImg}
+                                fillPatternRepeat="repeat"
+                            />
+                        )}
+                        {background.mode === "photo" && (
+                            <>
+                                <Rect
+                                    x={paperBox.x}
+                                    y={paperBox.y}
+                                    width={paperBox.w}
+                                    height={paperBox.h}
+                                    fill="#fafafa"
+                                />
+                                {bgPhotoImg && bgPhotoLayout && (
+                                    <KonvaImage image={bgPhotoImg} {...bgPhotoLayout} />
+                                )}
+                            </>
+                        )}
+                        {background.mode === "template" && (
+                            <>
+                                <Rect
+                                    x={paperBox.x}
+                                    y={paperBox.y}
+                                    width={paperBox.w}
+                                    height={paperBox.h}
+                                    fill={templatePaper.color}
+                                />
+                                {templateImg && (
+                                    <KonvaImage
+                                        image={templateImg}
+                                        x={paperBox.x}
+                                        y={paperBox.y}
+                                        width={paperBox.w}
+                                        height={paperBox.h}
+                                    />
+                                )}
+                            </>
+                        )}
+
+                        {/* Dots punch holes through background */}
                         {showDots &&
                             dots.map((d, i) => (
                                 <DotShape

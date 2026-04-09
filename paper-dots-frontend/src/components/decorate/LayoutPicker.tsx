@@ -44,7 +44,7 @@ export default function LayoutPicker() {
 
             {isOpen && (
                 <div className="px-4 pb-4 flex flex-col gap-5">
-                    {/* Split type */}
+                    {/* Stitch type */}
                     <div>
                         <label
                             className="block text-[11px] uppercase mb-2"
@@ -54,7 +54,7 @@ export default function LayoutPicker() {
                                 letterSpacing: "0.08em",
                             }}
                         >
-                            Split
+                            Stitch
                         </label>
                         <div className="relative">
                             <select
