@@ -49,8 +49,8 @@ export default function DecorateApp() {
 
             {/* Right: controls */}
             <aside
-                className="w-72 shrink-0 flex flex-col bg-black"
-                style={{ borderLeft: "1px solid rgba(255,255,255,0.08)" }}
+                className="w-72 shrink-0 flex flex-col bg-[#0f0f0f]"
+                style={{ borderLeft: "1px solid rgba(255,255,255,0.12)" }}
             >
                 {photoUrl && (
                     <PhotoUploader variant="sidebar" hasPhoto={true} />
@@ -62,7 +62,7 @@ export default function DecorateApp() {
                 </div>
                 <div
                     className="shrink-0 p-3"
-                    style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+                    style={{ borderTop: "1px solid rgba(255,255,255,0.12)" }}
                 >
                     <ExportButton stageRef={stageRef} />
                 </div>
