@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import SketchLoader from "@/components/common/SketchLoader";
+import DotPattern from "./DotPattern";
 
 export default function CtaSection() {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,11 +16,16 @@ export default function CtaSection() {
   }
 
   return (
-    <section className="bg-black px-5 sm:px-8 py-24 sm:py-32">
-      <div
-        className="max-w-[1200px] mx-auto"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
-      >
+    <section className="relative bg-white px-5 sm:px-8 py-24 sm:py-32 overflow-hidden">
+      {/* Dot pattern decoration */}
+      <div className="absolute top-10 right-10 w-[120px] h-[80px] opacity-20">
+        <DotPattern color="#4338CA" dotSize={3} spacing={14} />
+      </div>
+      <div className="absolute bottom-10 left-10 w-[100px] h-[60px] opacity-15">
+        <DotPattern color="#4338CA" dotSize={3} spacing={14} />
+      </div>
+
+      <div className="max-w-[1200px] mx-auto border-t border-slate-200">
         <motion.div
           className="pt-20 sm:pt-24 flex flex-col items-center text-center gap-8"
           initial={{ opacity: 0, y: 24 }}
@@ -28,27 +34,20 @@ export default function CtaSection() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2
-            className="text-[48px] sm:text-[72px] lg:text-[88px] font-medium text-white"
+            className="text-[42px] sm:text-[56px] lg:text-[72px] font-medium text-[#1a1a2e]"
             style={{
               fontFamily: "var(--font-space-grotesk), sans-serif",
-              letterSpacing: "-4.5px",
-              lineHeight: "0.88",
+              letterSpacing: "-3px",
+              lineHeight: "1.0",
               fontWeight: 500,
             }}
           >
-            Ready to dot
+            Ready to Dot
             <br />
-            your photo?
+            Your Photo?
           </h2>
 
-          <p
-            className="text-[17px] leading-[1.6] max-w-[340px]"
-            style={{
-              fontFamily: "var(--font-inter), system-ui, sans-serif",
-              color: "#a6a6a6",
-              fontFeatureSettings: '"cv01","cv05","cv09","cv11","ss03","ss07"',
-            }}
-          >
+          <p className="text-[17px] leading-[1.6] max-w-[340px] text-[#64748b]">
             Free, instant, no account needed.
           </p>
 
@@ -58,17 +57,13 @@ export default function CtaSection() {
                 <motion.button
                   key="cta"
                   onClick={handleEnter}
-                  className="bg-white text-black text-[15px] font-medium px-8 py-3.5 rounded-[100px] cursor-pointer"
-                  style={{
-                    fontFamily: "var(--font-inter), system-ui, sans-serif",
-                    fontWeight: 500,
-                  }}
-                  whileHover={{ opacity: 0.88 }}
+                  className="bg-[#4338CA] text-white text-[15px] font-medium px-8 py-3.5 rounded-full cursor-pointer hover:bg-[#3730A3] transition-colors"
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
                   exit={{ opacity: 0, scale: 0.92 }}
                   transition={{ duration: 0.15 }}
                 >
-                  Start decorating →
+                  Get Started
                 </motion.button>
               ) : (
                 <motion.div

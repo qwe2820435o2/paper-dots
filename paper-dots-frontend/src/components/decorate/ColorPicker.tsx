@@ -142,7 +142,7 @@ export default function ColorPicker({ color, onChange }: Props) {
                     className="shrink-0 w-7 h-7 rounded-full"
                     style={{
                         backgroundColor: preview,
-                        boxShadow: "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                        boxShadow: "rgba(255,255,255,0.12) 0px 0px 0px 1px",
                     }}
                 />
                 <div

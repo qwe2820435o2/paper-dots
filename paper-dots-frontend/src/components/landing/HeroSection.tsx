@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import SketchLoader from "@/components/common/SketchLoader";
+import DecorativeBlob from "./DecorativeBlob";
+import DotPattern from "./DotPattern";
 
 const container = {
   hidden: {},
@@ -32,18 +34,31 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 pt-8 pb-20 overflow-hidden bg-black">
-      {/* Blue radial glow behind image */}
-      <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(0,153,255,0.08) 0%, transparent 70%)",
-        }}
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 pt-8 pb-20 overflow-hidden bg-[#FFF9E0]">
+      {/* Decorative blobs */}
+      <DecorativeBlob
+        color="#FEF3C7"
+        size={400}
+        className="absolute -top-20 -right-20 opacity-80"
+      />
+      <DecorativeBlob
+        color="#FEF3C7"
+        size={200}
+        className="absolute bottom-40 left-10 opacity-60"
       />
 
+      {/* Dot pattern - top right */}
+      <div className="absolute top-8 right-8 w-[120px] h-[80px] opacity-40">
+        <DotPattern color="#4338CA" dotSize={3} spacing={14} />
+      </div>
+
+      {/* Dot pattern - bottom left */}
+      <div className="absolute bottom-20 left-20 w-[140px] h-[100px] opacity-30">
+        <DotPattern color="#4338CA" dotSize={3} spacing={14} />
+      </div>
+
       <motion.div
-        className="max-w-[1200px] mx-auto w-full flex flex-col items-center gap-16 lg:gap-0 lg:grid lg:grid-cols-2 lg:items-center"
+        className="relative z-10 max-w-[1200px] mx-auto w-full flex flex-col items-center gap-16 lg:gap-0 lg:grid lg:grid-cols-2 lg:items-center"
         variants={container}
         initial="hidden"
         animate="show"
@@ -53,50 +68,25 @@ export default function HeroSection() {
           variants={item}
           className="flex flex-col gap-7 items-center lg:items-start text-center lg:text-left order-2 lg:order-1"
         >
-          {/* Badge */}
-          <div
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] text-[12px] font-medium"
-            style={{
-              fontFamily: "var(--font-inter), system-ui, sans-serif",
-              color: "#0099ff",
-              boxShadow: "rgba(0, 153, 255, 0.25) 0px 0px 0px 1px",
-            }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: "#0099ff" }}
-            />
-            Free · No sign-up required
-          </div>
-
           {/* Headline */}
           <h1
-            className="text-[62px] sm:text-[85px] lg:text-[110px] font-medium text-white"
+            className="text-[48px] sm:text-[64px] lg:text-[80px] font-medium text-[#1a1a2e]"
             style={{
               fontFamily: "var(--font-space-grotesk), sans-serif",
-              letterSpacing: "-5.5px",
-              lineHeight: "0.87",
+              letterSpacing: "-3px",
+              lineHeight: "1.0",
               fontWeight: 500,
             }}
           >
-            Your photos,
+            Decorate Your
             <br />
-            dotted.
+            Photos Instantly
           </h1>
 
           {/* Sub-headline */}
-          <p
-            className="text-[17px] leading-[1.6] max-w-[360px]"
-            style={{
-              fontFamily: "var(--font-inter), system-ui, sans-serif",
-              color: "#a6a6a6",
-              fontFeatureSettings:
-                '"cv01","cv05","cv09","cv11","ss03","ss07"',
-            }}
-          >
-            Upload a photo, pick a paper texture, scatter dots.
-            <br />
-            Make it yours in seconds.
+          <p className="text-[17px] leading-[1.6] max-w-[420px] text-[#64748b]">
+            Our easy-to-use tool lets you add beautiful paper textures and
+            scattered dots to any photo. No sign-up required.
           </p>
 
           {/* CTA */}
@@ -106,17 +96,13 @@ export default function HeroSection() {
                 <motion.button
                   key="cta"
                   onClick={handleEnter}
-                  className="bg-white text-black text-[15px] font-medium px-7 py-3 rounded-[100px] cursor-pointer"
-                  style={{
-                    fontFamily: "var(--font-inter), system-ui, sans-serif",
-                    fontWeight: 500,
-                  }}
-                  whileHover={{ opacity: 0.88 }}
+                  className="bg-[#4338CA] text-white text-[15px] font-medium px-7 py-3 rounded-full cursor-pointer hover:bg-[#3730A3] transition-colors"
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
                   exit={{ opacity: 0, scale: 0.92 }}
                   transition={{ duration: 0.15 }}
                 >
-                  Start decorating →
+                  Get Started
                 </motion.button>
               ) : (
                 <motion.div
@@ -137,11 +123,16 @@ export default function HeroSection() {
           variants={item}
           className="relative w-full max-w-[580px] mx-auto lg:mx-0 lg:ml-auto order-1 lg:order-2"
         >
+          {/* Dot pattern behind image */}
+          <div className="absolute -bottom-6 left-0 w-[100px] h-[80px] opacity-30">
+            <DotPattern color="#4338CA" dotSize={3} spacing={14} />
+          </div>
+
           <div
-            className="rounded-[12px] overflow-hidden"
+            className="rounded-[12px] overflow-hidden relative z-10"
             style={{
               boxShadow:
-                "rgba(0, 153, 255, 0.15) 0px 0px 0px 1px, rgba(255, 255, 255, 0.08) 0px 0.5px 0px 0.5px, rgba(0, 0, 0, 0.5) 0px 30px 70px",
+                "rgba(0, 0, 0, 0.08) 0px 4px 24px, rgba(0, 0, 0, 0.04) 0px 1px 2px",
             }}
           >
             <Image
