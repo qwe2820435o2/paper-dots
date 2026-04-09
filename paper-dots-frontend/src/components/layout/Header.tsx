@@ -1,10 +1,7 @@
-"use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function Header() {
-  const router = useRouter();
 
   return (
     <header className="sticky top-0 z-50 bg-[#080808]/90 backdrop-blur-md border-b border-white/[0.12]">
@@ -20,13 +17,6 @@ export default function Header() {
             </span>
           </Link>
 
-          <button
-            onClick={() => router.push("/decorate")}
-            className="text-black text-[14px] font-medium px-4 py-2 rounded-[100px] bg-white transition-opacity hover:opacity-80 active:opacity-60 cursor-pointer"
-            style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
-          >
-            Try it free
-          </button>
         </div>
       </div>
     </header>
