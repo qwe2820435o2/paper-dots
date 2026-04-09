@@ -16,7 +16,10 @@ export default function ExportButton({ stageRef }: Props) {
     function handleExport() {
         const stage = stageRef.current;
         if (!stage) return;
+        const prevScale = stage.scaleX();
+        stage.scale({ x: 1, y: 1 });
         const dataUrl = stage.toDataURL({ pixelRatio: 2, mimeType: "image/png" });
+        stage.scale({ x: prevScale, y: prevScale });
         const link = document.createElement("a");
         link.href = dataUrl;
         link.download = `paper-dots-${Date.now()}.png`;
