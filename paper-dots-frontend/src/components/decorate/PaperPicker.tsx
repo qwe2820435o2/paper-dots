@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { ChevronDown, ChevronUp, Upload } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import { PAPERS } from "@/lib/papers";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
     setBackgroundMode,
@@ -12,7 +11,18 @@ import {
     setStripeColor2,
     setStripeWidth,
     setBgPhotoUrl,
-    setTemplateId,
+    setCheckerboardColor1,
+    setCheckerboardColor2,
+    setCheckerboardSize,
+    setNoiseOpacity,
+    setGradientColor1,
+    setGradientColor2,
+    setGradientAngle,
+    setGridColor,
+    setGridSize,
+    setDotGridColor,
+    setDotGridSpacing,
+    setDotGridRadius,
     type BackgroundMode,
 } from "@/store/slices/decorateSlice";
 import ColorPicker from "./ColorPicker";
@@ -21,7 +31,11 @@ const MODES: { id: BackgroundMode; label: string }[] = [
     { id: "solid", label: "Solid" },
     { id: "stripe", label: "Stripe" },
     { id: "photo", label: "Photo" },
-    { id: "template", label: "Template" },
+    { id: "checkerboard", label: "Checker" },
+    { id: "noise", label: "Noise" },
+    { id: "gradient", label: "Gradient" },
+    { id: "grid", label: "Grid" },
+    { id: "dot-grid", label: "Dot Grid" },
 ];
 
 const LABEL_STYLE = {
@@ -35,19 +49,49 @@ const VALUE_STYLE = {
     color: "#a6a6a6",
 } as const;
 
+const RAINBOW = "conic-gradient(red, yellow, lime, cyan, blue, magenta, red)";
+
+interface ColorRowProps {
+    label: string;
+    isSet: boolean;
+    color: string;
+    open: boolean;
+    onToggle: () => void;
+    onChange: (hex: string) => void;
+}
+
+function ColorRow({ label, isSet, color, open, onToggle, onChange }: ColorRowProps) {
+    return (
+        <div>
+            <div className="flex items-center justify-between mb-2">
+                <label className="text-[11px] uppercase" style={LABEL_STYLE}>{label}</label>
+                <button
+                    type="button"
+                    onClick={onToggle}
+                    className="w-5 h-5 rounded-full border border-white/20 transition-shadow hover:border-white/40"
+                    style={{ background: isSet ? color : RAINBOW }}
+                />
+            </div>
+            {open && <ColorPicker color={color} onChange={onChange} />}
+        </div>
+    );
+}
+
 export default function PaperPicker() {
     const dispatch = useAppDispatch();
     const background = useAppSelector((s) => s.decorate.background);
     const [isOpen, setIsOpen] = useState(true);
-    const [picker1Open, setPicker1Open] = useState(false);
-    const [picker2Open, setPicker2Open] = useState(false);
+    const [openPicker, setOpenPicker] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    function togglePicker(name: string) {
+        setOpenPicker((v) => (v === name ? null : name));
+    }
 
     function handleBgPhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;
-        const url = URL.createObjectURL(file);
-        dispatch(setBgPhotoUrl(url));
+        dispatch(setBgPhotoUrl(URL.createObjectURL(file)));
     }
 
     return (
@@ -73,13 +117,16 @@ export default function PaperPicker() {
 
             {isOpen && (
                 <div className="px-4 pb-4 flex flex-col gap-4">
-                    {/* Mode selector */}
+                    {/* Mode selector — 4 columns, wraps to 2 rows */}
                     <div className="grid grid-cols-4 gap-1">
                         {MODES.map((m) => (
                             <button
                                 key={m.id}
                                 type="button"
-                                onClick={() => dispatch(setBackgroundMode(m.id))}
+                                onClick={() => {
+                                    dispatch(setBackgroundMode(m.id));
+                                    setOpenPicker(null);
+                                }}
                                 className="py-1.5 text-[11px] rounded-[6px] transition-colors"
                                 style={{
                                     fontFamily: "var(--font-inter), system-ui, sans-serif",
@@ -87,8 +134,7 @@ export default function PaperPicker() {
                                         background.mode === m.id
                                             ? "rgba(255,255,255,0.12)"
                                             : "rgba(255,255,255,0.04)",
-                                    color:
-                                        background.mode === m.id ? "#ffffff" : "#a6a6a6",
+                                    color: background.mode === m.id ? "#ffffff" : "#a6a6a6",
                                 }}
                             >
                                 {m.label}
@@ -96,7 +142,7 @@ export default function PaperPicker() {
                         ))}
                     </div>
 
-                    {/* Solid mode */}
+                    {/* Solid */}
                     {background.mode === "solid" && (
                         <ColorPicker
                             color={background.solidColor}
@@ -104,106 +150,43 @@ export default function PaperPicker() {
                         />
                     )}
 
-                    {/* Stripe mode */}
+                    {/* Stripe */}
                     {background.mode === "stripe" && (
                         <div className="flex flex-col gap-3">
-                            {/* Color 1 */}
-                            <div>
-                                <div className="flex items-center justify-between mb-2">
-                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>
-                                        Color 1
-                                    </label>
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setPicker1Open((v) => !v);
-                                            setPicker2Open(false);
-                                        }}
-                                        className="w-5 h-5 rounded-full border border-white/20 transition-shadow hover:border-white/40"
-                                        style={{
-                                            background: background.stripeColor1Set
-                                                ? background.stripeColor1
-                                                : "conic-gradient(red, yellow, lime, cyan, blue, magenta, red)",
-                                        }}
-                                        aria-label="Pick color 1"
-                                    />
-                                </div>
-                                {picker1Open && (
-                                    <ColorPicker
-                                        color={background.stripeColor1}
-                                        onChange={(hex) => dispatch(setStripeColor1(hex))}
-                                    />
-                                )}
-                            </div>
-
-                            {/* Color 2 */}
-                            <div>
-                                <div className="flex items-center justify-between mb-2">
-                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>
-                                        Color 2
-                                    </label>
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setPicker2Open((v) => !v);
-                                            setPicker1Open(false);
-                                        }}
-                                        className="w-5 h-5 rounded-full border border-white/20 transition-shadow hover:border-white/40"
-                                        style={{
-                                            background: background.stripeColor2Set
-                                                ? background.stripeColor2
-                                                : "conic-gradient(red, yellow, lime, cyan, blue, magenta, red)",
-                                        }}
-                                        aria-label="Pick color 2"
-                                    />
-                                </div>
-                                {picker2Open && (
-                                    <ColorPicker
-                                        color={background.stripeColor2}
-                                        onChange={(hex) => dispatch(setStripeColor2(hex))}
-                                    />
-                                )}
-                            </div>
-
-                            {/* Stripe width */}
+                            <ColorRow
+                                label="Color 1"
+                                isSet={background.stripeColor1Set}
+                                color={background.stripeColor1}
+                                open={openPicker === "stripe1"}
+                                onToggle={() => togglePicker("stripe1")}
+                                onChange={(hex) => dispatch(setStripeColor1(hex))}
+                            />
+                            <ColorRow
+                                label="Color 2"
+                                isSet={background.stripeColor2Set}
+                                color={background.stripeColor2}
+                                open={openPicker === "stripe2"}
+                                onToggle={() => togglePicker("stripe2")}
+                                onChange={(hex) => dispatch(setStripeColor2(hex))}
+                            />
                             <div>
                                 <div className="flex items-baseline justify-between mb-2">
-                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>
-                                        Width
-                                    </label>
-                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>
-                                        {background.stripeWidth}
-                                    </span>
+                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>Width</label>
+                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>{background.stripeWidth}</span>
                                 </div>
-                                <Slider
-                                    min={1}
-                                    max={100}
-                                    step={1}
-                                    value={[background.stripeWidth]}
-                                    onValueChange={(v) => dispatch(setStripeWidth(v[0]))}
-                                />
+                                <Slider min={1} max={100} step={1} value={[background.stripeWidth]} onValueChange={(v) => dispatch(setStripeWidth(v[0]))} />
                             </div>
                         </div>
                     )}
 
-                    {/* Photo mode */}
+                    {/* Photo */}
                     {background.mode === "photo" && (
                         <div className="flex flex-col gap-3">
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={handleBgPhotoUpload}
-                            />
+                            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleBgPhotoUpload} />
                             {background.bgPhotoUrl ? (
                                 <div className="relative rounded-[8px] overflow-hidden aspect-square">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        src={background.bgPhotoUrl}
-                                        alt="background"
-                                        className="w-full h-full object-cover"
-                                    />
+                                    <img src={background.bgPhotoUrl} alt="background" className="w-full h-full object-cover" />
                                     <button
                                         type="button"
                                         onClick={() => fileInputRef.current?.click()}
@@ -221,13 +204,7 @@ export default function PaperPicker() {
                                     style={{ borderColor: "rgba(255,255,255,0.15)" }}
                                 >
                                     <Upload className="w-5 h-5" style={{ color: "#a6a6a6" }} />
-                                    <span
-                                        className="text-[11px]"
-                                        style={{
-                                            fontFamily: "var(--font-inter), system-ui, sans-serif",
-                                            color: "#a6a6a6",
-                                        }}
-                                    >
+                                    <span className="text-[11px]" style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#a6a6a6" }}>
                                         Upload photo
                                     </span>
                                 </button>
@@ -235,51 +212,126 @@ export default function PaperPicker() {
                         </div>
                     )}
 
-                    {/* Template mode */}
-                    {background.mode === "template" && (
-                        <div className="grid grid-cols-3 gap-2">
-                            {PAPERS.map((p) => (
-                                <button
-                                    key={p.id}
-                                    type="button"
-                                    onClick={() => dispatch(setTemplateId(p.id))}
-                                    className="aspect-square flex items-end justify-center pb-1 text-[10px] transition-all rounded-[6px] overflow-hidden"
-                                    style={
-                                        background.templateId === p.id
-                                            ? {
-                                                  backgroundImage: p.src
-                                                      ? `url(${p.src})`
-                                                      : undefined,
-                                                  backgroundSize: "cover",
-                                                  backgroundColor: "#fafafa",
-                                                  boxShadow:
-                                                      "rgba(0, 153, 255, 0.7) 0px 0px 0px 2px",
-                                              }
-                                            : {
-                                                  backgroundImage: p.src
-                                                      ? `url(${p.src})`
-                                                      : undefined,
-                                                  backgroundSize: "cover",
-                                                  backgroundColor: "#fafafa",
-                                                  boxShadow:
-                                                      "rgba(255, 255, 255, 0.12) 0px 0px 0px 1px",
-                                              }
-                                    }
-                                    aria-pressed={background.templateId === p.id}
-                                >
-                                    <span
-                                        className="px-1 rounded-sm text-[10px]"
-                                        style={{
-                                            fontFamily:
-                                                "var(--font-inter), system-ui, sans-serif",
-                                            background: "rgba(0,0,0,0.6)",
-                                            color: "#ffffff",
-                                        }}
-                                    >
-                                        {p.label}
-                                    </span>
-                                </button>
-                            ))}
+                    {/* Checkerboard */}
+                    {background.mode === "checkerboard" && (
+                        <div className="flex flex-col gap-3">
+                            <ColorRow
+                                label="Color 1"
+                                isSet={background.checkerboardColor1Set}
+                                color={background.checkerboardColor1}
+                                open={openPicker === "checker1"}
+                                onToggle={() => togglePicker("checker1")}
+                                onChange={(hex) => dispatch(setCheckerboardColor1(hex))}
+                            />
+                            <ColorRow
+                                label="Color 2"
+                                isSet={background.checkerboardColor2Set}
+                                color={background.checkerboardColor2}
+                                open={openPicker === "checker2"}
+                                onToggle={() => togglePicker("checker2")}
+                                onChange={(hex) => dispatch(setCheckerboardColor2(hex))}
+                            />
+                            <div>
+                                <div className="flex items-baseline justify-between mb-2">
+                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>Size</label>
+                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>{background.checkerboardSize}</span>
+                                </div>
+                                <Slider min={20} max={200} step={4} value={[background.checkerboardSize]} onValueChange={(v) => dispatch(setCheckerboardSize(v[0]))} />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Noise */}
+                    {background.mode === "noise" && (
+                        <div className="flex flex-col gap-3">
+                            <ColorPicker color={background.solidColor} onChange={(hex) => dispatch(setSolidColor(hex))} />
+                            <div>
+                                <div className="flex items-baseline justify-between mb-2">
+                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>Grain</label>
+                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>{background.noiseOpacity}</span>
+                                </div>
+                                <Slider min={0} max={100} step={1} value={[background.noiseOpacity]} onValueChange={(v) => dispatch(setNoiseOpacity(v[0]))} />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Gradient */}
+                    {background.mode === "gradient" && (
+                        <div className="flex flex-col gap-3">
+                            <ColorRow
+                                label="Color 1"
+                                isSet={background.gradientColor1Set}
+                                color={background.gradientColor1}
+                                open={openPicker === "grad1"}
+                                onToggle={() => togglePicker("grad1")}
+                                onChange={(hex) => dispatch(setGradientColor1(hex))}
+                            />
+                            <ColorRow
+                                label="Color 2"
+                                isSet={background.gradientColor2Set}
+                                color={background.gradientColor2}
+                                open={openPicker === "grad2"}
+                                onToggle={() => togglePicker("grad2")}
+                                onChange={(hex) => dispatch(setGradientColor2(hex))}
+                            />
+                            <div>
+                                <div className="flex items-baseline justify-between mb-2">
+                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>Angle</label>
+                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>{background.gradientAngle}°</span>
+                                </div>
+                                <Slider min={0} max={360} step={1} value={[background.gradientAngle]} onValueChange={(v) => dispatch(setGradientAngle(v[0]))} />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Grid */}
+                    {background.mode === "grid" && (
+                        <div className="flex flex-col gap-3">
+                            <ColorPicker color={background.solidColor} onChange={(hex) => dispatch(setSolidColor(hex))} />
+                            <ColorRow
+                                label="Line Color"
+                                isSet={background.gridColorSet}
+                                color={background.gridColor}
+                                open={openPicker === "grid"}
+                                onToggle={() => togglePicker("grid")}
+                                onChange={(hex) => dispatch(setGridColor(hex))}
+                            />
+                            <div>
+                                <div className="flex items-baseline justify-between mb-2">
+                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>Size</label>
+                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>{background.gridSize}</span>
+                                </div>
+                                <Slider min={20} max={200} step={4} value={[background.gridSize]} onValueChange={(v) => dispatch(setGridSize(v[0]))} />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Dot Grid */}
+                    {background.mode === "dot-grid" && (
+                        <div className="flex flex-col gap-3">
+                            <ColorPicker color={background.solidColor} onChange={(hex) => dispatch(setSolidColor(hex))} />
+                            <ColorRow
+                                label="Dot Color"
+                                isSet={background.dotGridColorSet}
+                                color={background.dotGridColor}
+                                open={openPicker === "dotgrid"}
+                                onToggle={() => togglePicker("dotgrid")}
+                                onChange={(hex) => dispatch(setDotGridColor(hex))}
+                            />
+                            <div>
+                                <div className="flex items-baseline justify-between mb-2">
+                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>Spacing</label>
+                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>{background.dotGridSpacing}</span>
+                                </div>
+                                <Slider min={20} max={100} step={2} value={[background.dotGridSpacing]} onValueChange={(v) => dispatch(setDotGridSpacing(v[0]))} />
+                            </div>
+                            <div>
+                                <div className="flex items-baseline justify-between mb-2">
+                                    <label className="text-[11px] uppercase" style={LABEL_STYLE}>Size</label>
+                                    <span className="text-[12px] tabular-nums" style={VALUE_STYLE}>{background.dotGridRadius}</span>
+                                </div>
+                                <Slider min={1} max={20} step={1} value={[background.dotGridRadius]} onValueChange={(v) => dispatch(setDotGridRadius(v[0]))} />
+                            </div>
                         </div>
                     )}
                 </div>

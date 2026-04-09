@@ -42,11 +42,19 @@ export interface LayoutConfig {
     ratio: number;
 }
 
-export type BackgroundMode = "solid" | "stripe" | "photo" | "template";
+export type BackgroundMode =
+    | "solid"
+    | "stripe"
+    | "photo"
+    | "checkerboard"
+    | "noise"
+    | "gradient"
+    | "grid"
+    | "dot-grid";
 
 export interface BackgroundConfig {
     mode: BackgroundMode;
-    /** hex color for solid mode */
+    /** hex color for solid mode (also used as base color for noise/grid/dot-grid) */
     solidColor: string;
     /** hex color for stripe color 1 */
     stripeColor1: string;
@@ -58,8 +66,36 @@ export interface BackgroundConfig {
     stripeWidth: number;
     /** object URL of the uploaded background photo, or null */
     bgPhotoUrl: string | null;
-    /** paper template id for template mode */
-    templateId: string;
+    /** checkerboard color 1 */
+    checkerboardColor1: string;
+    checkerboardColor1Set: boolean;
+    /** checkerboard color 2 */
+    checkerboardColor2: string;
+    checkerboardColor2Set: boolean;
+    /** checkerboard cell size in canvas px, 20-200 */
+    checkerboardSize: number;
+    /** noise overlay opacity, 0-100 */
+    noiseOpacity: number;
+    /** gradient color 1 */
+    gradientColor1: string;
+    gradientColor1Set: boolean;
+    /** gradient color 2 */
+    gradientColor2: string;
+    gradientColor2Set: boolean;
+    /** gradient angle in degrees, 0-360 */
+    gradientAngle: number;
+    /** grid line color */
+    gridColor: string;
+    gridColorSet: boolean;
+    /** grid cell size in canvas px, 20-200 */
+    gridSize: number;
+    /** dot grid dot color */
+    dotGridColor: string;
+    dotGridColorSet: boolean;
+    /** dot grid spacing in canvas px, 20-100 */
+    dotGridSpacing: number;
+    /** dot grid dot radius in canvas px, 1-20 */
+    dotGridRadius: number;
 }
 
 export interface DecorateState {
@@ -83,7 +119,24 @@ const initialState: DecorateState = {
         stripeColor2Set: false,
         stripeWidth: 20,
         bgPhotoUrl: null,
-        templateId: "plain",
+        checkerboardColor1: "#ffffff",
+        checkerboardColor1Set: false,
+        checkerboardColor2: "#000000",
+        checkerboardColor2Set: false,
+        checkerboardSize: 60,
+        noiseOpacity: 15,
+        gradientColor1: "#f0f0f0",
+        gradientColor1Set: false,
+        gradientColor2: "#b0b0b0",
+        gradientColor2Set: false,
+        gradientAngle: 135,
+        gridColor: "#888888",
+        gridColorSet: false,
+        gridSize: 40,
+        dotGridColor: "#888888",
+        dotGridColorSet: false,
+        dotGridSpacing: 30,
+        dotGridRadius: 2,
     },
     dotConfig: {
         shape: "circle",
@@ -128,8 +181,47 @@ const decorateSlice = createSlice({
         setBgPhotoUrl(state, action: PayloadAction<string | null>) {
             state.background.bgPhotoUrl = action.payload;
         },
-        setTemplateId(state, action: PayloadAction<string>) {
-            state.background.templateId = action.payload;
+        setCheckerboardColor1(state, action: PayloadAction<string>) {
+            state.background.checkerboardColor1 = action.payload;
+            state.background.checkerboardColor1Set = true;
+        },
+        setCheckerboardColor2(state, action: PayloadAction<string>) {
+            state.background.checkerboardColor2 = action.payload;
+            state.background.checkerboardColor2Set = true;
+        },
+        setCheckerboardSize(state, action: PayloadAction<number>) {
+            state.background.checkerboardSize = Math.max(20, Math.min(200, action.payload));
+        },
+        setNoiseOpacity(state, action: PayloadAction<number>) {
+            state.background.noiseOpacity = Math.max(0, Math.min(100, action.payload));
+        },
+        setGradientColor1(state, action: PayloadAction<string>) {
+            state.background.gradientColor1 = action.payload;
+            state.background.gradientColor1Set = true;
+        },
+        setGradientColor2(state, action: PayloadAction<string>) {
+            state.background.gradientColor2 = action.payload;
+            state.background.gradientColor2Set = true;
+        },
+        setGradientAngle(state, action: PayloadAction<number>) {
+            state.background.gradientAngle = Math.max(0, Math.min(360, action.payload));
+        },
+        setGridColor(state, action: PayloadAction<string>) {
+            state.background.gridColor = action.payload;
+            state.background.gridColorSet = true;
+        },
+        setGridSize(state, action: PayloadAction<number>) {
+            state.background.gridSize = Math.max(20, Math.min(200, action.payload));
+        },
+        setDotGridColor(state, action: PayloadAction<string>) {
+            state.background.dotGridColor = action.payload;
+            state.background.dotGridColorSet = true;
+        },
+        setDotGridSpacing(state, action: PayloadAction<number>) {
+            state.background.dotGridSpacing = Math.max(20, Math.min(100, action.payload));
+        },
+        setDotGridRadius(state, action: PayloadAction<number>) {
+            state.background.dotGridRadius = Math.max(1, Math.min(20, action.payload));
         },
         setDotShape(state, action: PayloadAction<DotShape>) {
             state.dotConfig.shape = action.payload;
@@ -174,7 +266,18 @@ export const {
     setStripeColor2,
     setStripeWidth,
     setBgPhotoUrl,
-    setTemplateId,
+    setCheckerboardColor1,
+    setCheckerboardColor2,
+    setCheckerboardSize,
+    setNoiseOpacity,
+    setGradientColor1,
+    setGradientColor2,
+    setGradientAngle,
+    setGridColor,
+    setGridSize,
+    setDotGridColor,
+    setDotGridSpacing,
+    setDotGridRadius,
     setDotShape,
     setDotCount,
     setDotSize,

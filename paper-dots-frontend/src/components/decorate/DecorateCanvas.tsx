@@ -4,7 +4,6 @@ import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import type Konva from "konva";
 import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path, Text } from "react-konva";
 import { useAppSelector } from "@/store/hooks";
-import { getPaper } from "@/lib/papers";
 import { generateDots, type GeneratedDot } from "@/lib/dotGenerator";
 import { SHAPE_PATHS } from "@/lib/dotShapes";
 import type { BackgroundConfig, DotConfig, LayoutType } from "@/store/slices/decorateSlice";
@@ -178,8 +177,101 @@ function getBgRepresentativeColor(bg: BackgroundConfig): string {
         case "solid": return bg.solidColor;
         case "stripe": return bg.stripeColor1;
         case "photo": return "#fafafa";
-        case "template": return getPaper(bg.templateId).color;
+        case "checkerboard": return bg.checkerboardColor1;
+        case "noise": return bg.solidColor;
+        case "gradient": return bg.gradientColor1;
+        case "grid": return bg.solidColor;
+        case "dot-grid": return bg.solidColor;
     }
+}
+
+/** Noise: random grayscale pixel tile. Opacity controlled via Konva shape opacity prop. */
+function buildNoisePatternImage(): HTMLImageElement {
+    const size = 150;
+    const c = document.createElement("canvas");
+    c.width = size;
+    c.height = size;
+    const ctx = c.getContext("2d")!;
+    const imageData = ctx.createImageData(size, size);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const gray = Math.floor(Math.random() * 256);
+        imageData.data[i] = gray;
+        imageData.data[i + 1] = gray;
+        imageData.data[i + 2] = gray;
+        imageData.data[i + 3] = 255;
+    }
+    ctx.putImageData(imageData, 0, 0);
+    const img = new Image();
+    img.src = c.toDataURL();
+    return img;
+}
+
+/** Grid: single-cell tile with right and bottom border lines. */
+function buildGridPatternImage(color: string, size: number): HTMLImageElement {
+    const s = Math.max(4, size);
+    const c = document.createElement("canvas");
+    c.width = s;
+    c.height = s;
+    const ctx = c.getContext("2d")!;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(s - 0.5, 0);
+    ctx.lineTo(s - 0.5, s);
+    ctx.moveTo(0, s - 0.5);
+    ctx.lineTo(s, s - 0.5);
+    ctx.stroke();
+    const img = new Image();
+    img.src = c.toDataURL();
+    return img;
+}
+
+/** Dot grid: single-cell tile with a centered dot. */
+function buildDotGridPatternImage(color: string, spacing: number, radius: number): HTMLImageElement {
+    const s = Math.max(4, spacing);
+    const c = document.createElement("canvas");
+    c.width = s;
+    c.height = s;
+    const ctx = c.getContext("2d")!;
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath();
+    ctx.arc(s / 2, s / 2, Math.max(0.5, radius), 0, Math.PI * 2);
+    ctx.fill();
+    const img = new Image();
+    img.src = c.toDataURL();
+    return img;
+}
+
+/** Checkerboard: 2×2 tile with alternating colors. */
+function buildCheckerboardPatternImage(color1: string, color2: string, size: number): HTMLImageElement {
+    const s = Math.max(4, size);
+    const c = document.createElement("canvas");
+    c.width = s * 2;
+    c.height = s * 2;
+    const ctx = c.getContext("2d")!;
+    ctx.fillStyle = color1;
+    ctx.fillRect(0, 0, s, s);
+    ctx.fillRect(s, s, s, s);
+    ctx.fillStyle = color2;
+    ctx.fillRect(s, 0, s, s);
+    ctx.fillRect(0, s, s, s);
+    const img = new Image();
+    img.src = c.toDataURL();
+    return img;
+}
+
+/** Compute linear gradient start/end points for a given angle and box size. */
+function gradientPoints(angleDeg: number, w: number, h: number) {
+    const rad = (angleDeg * Math.PI) / 180;
+    const cx = w / 2;
+    const cy = h / 2;
+    const halfDiag = Math.sqrt(w * w + h * h) / 2;
+    return {
+        start: { x: cx - Math.cos(rad) * halfDiag, y: cy - Math.sin(rad) * halfDiag },
+        end: { x: cx + Math.cos(rad) * halfDiag, y: cy + Math.sin(rad) * halfDiag },
+    };
 }
 
 /**
@@ -281,10 +373,6 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     const layout = useAppSelector((s) => s.decorate.layout);
     const seed = useAppSelector((s) => s.decorate.seed);
 
-    const templatePaper = getPaper(background.templateId);
-    const templateImg = useHTMLImage(
-        background.mode === "template" ? (templatePaper.src || null) : null,
-    );
     const photoImg = useHTMLImage(photoUrl);
     const bgPhotoImg = useHTMLImage(
         background.mode === "photo" ? background.bgPhotoUrl : null,
@@ -353,6 +441,38 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
         );
     }, [background.mode, background.stripeColor1, background.stripeColor2, background.stripeWidth]);
 
+    // Noise pattern (rebuilt only when switching into noise mode).
+    const noisePatternImg = useMemo(() => {
+        if (background.mode !== "noise") return null;
+        return buildNoisePatternImage();
+    }, [background.mode]);
+
+    // Grid pattern.
+    const gridPatternImg = useMemo(() => {
+        if (background.mode !== "grid") return null;
+        return buildGridPatternImage(background.gridColor, background.gridSize);
+    }, [background.mode, background.gridColor, background.gridSize]);
+
+    // Checkerboard pattern.
+    const checkerboardPatternImg = useMemo(() => {
+        if (background.mode !== "checkerboard") return null;
+        return buildCheckerboardPatternImage(
+            background.checkerboardColor1,
+            background.checkerboardColor2,
+            background.checkerboardSize,
+        );
+    }, [background.mode, background.checkerboardColor1, background.checkerboardColor2, background.checkerboardSize]);
+
+    // Dot grid pattern.
+    const dotGridPatternImg = useMemo(() => {
+        if (background.mode !== "dot-grid") return null;
+        return buildDotGridPatternImage(
+            background.dotGridColor,
+            background.dotGridSpacing,
+            background.dotGridRadius,
+        );
+    }, [background.mode, background.dotGridColor, background.dotGridSpacing, background.dotGridRadius]);
+
     // Dots span the full canvas; clip per layer handles which portion is visible.
     const dots = useMemo(() => {
         if (!showDots) return [];
@@ -368,6 +488,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     const isNewLayout = layout.type === "border";
 
     // Helper: render paper background fill (shared between old and new layouts).
+    const gPts = gradientPoints(background.gradientAngle, paperBox.w, paperBox.h);
     const paperBgNodes = (
         <>
             {background.mode === "solid" && (
@@ -403,24 +524,85 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                     )}
                 </>
             )}
-            {background.mode === "template" && (
+            {background.mode === "checkerboard" && checkerboardPatternImg && (
+                <Rect
+                    x={paperBox.x}
+                    y={paperBox.y}
+                    width={paperBox.w}
+                    height={paperBox.h}
+                    fillPatternImage={checkerboardPatternImg}
+                    fillPatternRepeat="repeat"
+                />
+            )}
+            {background.mode === "noise" && (
                 <>
                     <Rect
                         x={paperBox.x}
                         y={paperBox.y}
                         width={paperBox.w}
                         height={paperBox.h}
-                        fill={templatePaper.color}
+                        fill={background.solidColor}
                     />
-                    {templateImg && (
-                        <KonvaImage
-                            image={templateImg}
+                    {noisePatternImg && (
+                        <Rect
                             x={paperBox.x}
                             y={paperBox.y}
                             width={paperBox.w}
                             height={paperBox.h}
+                            fillPatternImage={noisePatternImg}
+                            fillPatternRepeat="repeat"
+                            opacity={background.noiseOpacity / 100}
                         />
                     )}
+                </>
+            )}
+            {background.mode === "gradient" && (
+                <Rect
+                    x={paperBox.x}
+                    y={paperBox.y}
+                    width={paperBox.w}
+                    height={paperBox.h}
+                    fillLinearGradientStartPoint={{ x: gPts.start.x, y: gPts.start.y }}
+                    fillLinearGradientEndPoint={{ x: gPts.end.x, y: gPts.end.y }}
+                    fillLinearGradientColorStops={[0, background.gradientColor1, 1, background.gradientColor2]}
+                />
+            )}
+            {background.mode === "grid" && gridPatternImg && (
+                <>
+                    <Rect
+                        x={paperBox.x}
+                        y={paperBox.y}
+                        width={paperBox.w}
+                        height={paperBox.h}
+                        fill={background.solidColor}
+                    />
+                    <Rect
+                        x={paperBox.x}
+                        y={paperBox.y}
+                        width={paperBox.w}
+                        height={paperBox.h}
+                        fillPatternImage={gridPatternImg}
+                        fillPatternRepeat="repeat"
+                    />
+                </>
+            )}
+            {background.mode === "dot-grid" && dotGridPatternImg && (
+                <>
+                    <Rect
+                        x={paperBox.x}
+                        y={paperBox.y}
+                        width={paperBox.w}
+                        height={paperBox.h}
+                        fill={background.solidColor}
+                    />
+                    <Rect
+                        x={paperBox.x}
+                        y={paperBox.y}
+                        width={paperBox.w}
+                        height={paperBox.h}
+                        fillPatternImage={dotGridPatternImg}
+                        fillPatternRepeat="repeat"
+                    />
                 </>
             )}
         </>
