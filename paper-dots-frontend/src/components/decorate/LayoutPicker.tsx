@@ -15,7 +15,13 @@ const LAYOUT_OPTIONS: { value: LayoutType; label: string }[] = [
     { value: "main-right", label: "Main on Right" },
     { value: "main-top", label: "Main on Top" },
     { value: "main-bottom", label: "Main on Bottom" },
+    { value: "border", label: "Polaroid Border" },
 ];
+
+function ratioLabel(type: LayoutType): string {
+    if (type === "border") return "Border";
+    return "Ratio";
+}
 
 export default function LayoutPicker() {
     const dispatch = useAppDispatch();
@@ -95,7 +101,7 @@ export default function LayoutPicker() {
                                     letterSpacing: "0.08em",
                                 }}
                             >
-                                Ratio
+                                {ratioLabel(layout.type)}
                             </label>
                             <span
                                 className="text-[12px] tabular-nums"

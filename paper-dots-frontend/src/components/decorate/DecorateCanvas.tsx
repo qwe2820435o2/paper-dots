@@ -35,6 +35,8 @@ interface LayoutGeo {
     mainClip: Rect4;
     /** Clip applied to the paper layers. */
     paperClip: Rect4;
+    /** Extra photo tile positions for strip/border layouts. */
+    photoTiles?: Rect4[];
 }
 
 /**
@@ -128,6 +130,23 @@ function computeGeo(
                 paperBox: { x: 0, y: 0, w: cellW, h: cellH },
                 mainClip,
                 paperClip,
+            };
+        }
+        case "border": {
+            const borderPx = Math.round((p / 100) * cellW * 0.3);
+            const bottomPx = Math.round(borderPx * 1.7);
+            const canvasW = cellW + borderPx * 2;
+            const canvasH = cellH + borderPx + bottomPx;
+            const full: Rect4 = { x: 0, y: 0, w: canvasW, h: canvasH };
+            const mainBox: Rect4 = { x: borderPx, y: borderPx, w: cellW, h: cellH };
+            return {
+                canvasW,
+                canvasH,
+                mainBox,
+                paperBox: full,
+                mainClip: mainBox,
+                paperClip: full,
+                photoTiles: [mainBox],
             };
         }
     }
@@ -346,6 +365,66 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
 
     const hasMain = mainClip.w > 0 && mainClip.h > 0;
     const hasPaper = paperClip.w > 0 && paperClip.h > 0;
+    const isNewLayout = layout.type === "border";
+
+    // Helper: render paper background fill (shared between old and new layouts).
+    const paperBgNodes = (
+        <>
+            {background.mode === "solid" && (
+                <Rect
+                    x={paperBox.x}
+                    y={paperBox.y}
+                    width={paperBox.w}
+                    height={paperBox.h}
+                    fill={background.solidColor}
+                />
+            )}
+            {background.mode === "stripe" && stripePatternImg && (
+                <Rect
+                    x={paperBox.x}
+                    y={paperBox.y}
+                    width={paperBox.w}
+                    height={paperBox.h}
+                    fillPatternImage={stripePatternImg}
+                    fillPatternRepeat="repeat"
+                />
+            )}
+            {background.mode === "photo" && (
+                <>
+                    <Rect
+                        x={paperBox.x}
+                        y={paperBox.y}
+                        width={paperBox.w}
+                        height={paperBox.h}
+                        fill="#fafafa"
+                    />
+                    {bgPhotoImg && bgPhotoLayout && (
+                        <KonvaImage image={bgPhotoImg} {...bgPhotoLayout} />
+                    )}
+                </>
+            )}
+            {background.mode === "template" && (
+                <>
+                    <Rect
+                        x={paperBox.x}
+                        y={paperBox.y}
+                        width={paperBox.w}
+                        height={paperBox.h}
+                        fill={templatePaper.color}
+                    />
+                    {templateImg && (
+                        <KonvaImage
+                            image={templateImg}
+                            x={paperBox.x}
+                            y={paperBox.y}
+                            width={paperBox.w}
+                            height={paperBox.h}
+                        />
+                    )}
+                </>
+            )}
+        </>
+    );
 
     return (
         <div ref={wrapRef} className="w-full h-full flex items-center justify-center">
@@ -357,130 +436,103 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                 scaleY={scale}
                 style={{ width: displayW, height: displayH }}
             >
-                {/* Main panel: fafafa bg + photo + opaque dots */}
-                {hasMain && (
-                    <Layer
-                        listening={false}
-                        clipX={mainClip.x}
-                        clipY={mainClip.y}
-                        clipWidth={mainClip.w}
-                        clipHeight={mainClip.h}
-                    >
-                        <Rect
-                            x={mainBox.x}
-                            y={mainBox.y}
-                            width={mainBox.w}
-                            height={mainBox.h}
-                            fill="#fafafa"
-                        />
-                        {photoImg && mainPhotoLayout && (
-                            <KonvaImage image={photoImg} {...mainPhotoLayout} />
+                {isNewLayout ? (
+                    <>
+                        {/* New layouts: paper bg + opaque dots, then photos on top */}
+                        <Layer listening={false}>
+                            {paperBgNodes}
+                            {showDots &&
+                                dots.map((d, i) => (
+                                    <DotShape
+                                        key={i}
+                                        dot={d}
+                                        shape={dotConfig.shape}
+                                        color={dotColor}
+                                        character={dotConfig.character}
+                                    />
+                                ))}
+                        </Layer>
+                        {/* Photo tiles */}
+                        {photoImg && geo.photoTiles && (
+                            <Layer listening={false}>
+                                {geo.photoTiles.map((tile, i) => {
+                                    const layout2 = containLayout(photoImg, tile);
+                                    return layout2 ? (
+                                        <KonvaImage key={i} image={photoImg} {...layout2} />
+                                    ) : null;
+                                })}
+                            </Layer>
                         )}
-                        {showDots &&
-                            dots.map((d, i) => (
-                                <DotShape
-                                    key={i}
-                                    dot={d}
-                                    shape={dotConfig.shape}
-                                    color={dotColor}
-                                    character={dotConfig.character}
-                                />
-                            ))}
-                    </Layer>
-                )}
-
-                {/* Paper panel: photo underneath (used by template/solid/stripe modes for the punch-through effect) */}
-                {hasPaper && (
-                    <Layer
-                        listening={false}
-                        clipX={paperClip.x}
-                        clipY={paperClip.y}
-                        clipWidth={paperClip.w}
-                        clipHeight={paperClip.h}
-                    >
-                        {photoImg && paperPhotoLayout && (
-                            <KonvaImage image={photoImg} {...paperPhotoLayout} />
-                        )}
-                    </Layer>
-                )}
-
-                {/* Paper panel: background fill + destination-out dots punch holes */}
-                {hasPaper && (
-                    <Layer
-                        listening={false}
-                        clipX={paperClip.x}
-                        clipY={paperClip.y}
-                        clipWidth={paperClip.w}
-                        clipHeight={paperClip.h}
-                    >
-                        {/* Background fill by mode */}
-                        {background.mode === "solid" && (
-                            <Rect
-                                x={paperBox.x}
-                                y={paperBox.y}
-                                width={paperBox.w}
-                                height={paperBox.h}
-                                fill={background.solidColor}
-                            />
-                        )}
-                        {background.mode === "stripe" && stripePatternImg && (
-                            <Rect
-                                x={paperBox.x}
-                                y={paperBox.y}
-                                width={paperBox.w}
-                                height={paperBox.h}
-                                fillPatternImage={stripePatternImg}
-                                fillPatternRepeat="repeat"
-                            />
-                        )}
-                        {background.mode === "photo" && (
-                            <>
+                    </>
+                ) : (
+                    <>
+                        {/* Original layouts: punch-through rendering */}
+                        {hasMain && (
+                            <Layer
+                                listening={false}
+                                clipX={mainClip.x}
+                                clipY={mainClip.y}
+                                clipWidth={mainClip.w}
+                                clipHeight={mainClip.h}
+                            >
                                 <Rect
-                                    x={paperBox.x}
-                                    y={paperBox.y}
-                                    width={paperBox.w}
-                                    height={paperBox.h}
+                                    x={mainBox.x}
+                                    y={mainBox.y}
+                                    width={mainBox.w}
+                                    height={mainBox.h}
                                     fill="#fafafa"
                                 />
-                                {bgPhotoImg && bgPhotoLayout && (
-                                    <KonvaImage image={bgPhotoImg} {...bgPhotoLayout} />
+                                {photoImg && mainPhotoLayout && (
+                                    <KonvaImage image={photoImg} {...mainPhotoLayout} />
                                 )}
-                            </>
+                                {showDots &&
+                                    dots.map((d, i) => (
+                                        <DotShape
+                                            key={i}
+                                            dot={d}
+                                            shape={dotConfig.shape}
+                                            color={dotColor}
+                                            character={dotConfig.character}
+                                        />
+                                    ))}
+                            </Layer>
                         )}
-                        {background.mode === "template" && (
-                            <>
-                                <Rect
-                                    x={paperBox.x}
-                                    y={paperBox.y}
-                                    width={paperBox.w}
-                                    height={paperBox.h}
-                                    fill={templatePaper.color}
-                                />
-                                {templateImg && (
-                                    <KonvaImage
-                                        image={templateImg}
-                                        x={paperBox.x}
-                                        y={paperBox.y}
-                                        width={paperBox.w}
-                                        height={paperBox.h}
-                                    />
+                        {hasPaper && (
+                            <Layer
+                                listening={false}
+                                clipX={paperClip.x}
+                                clipY={paperClip.y}
+                                clipWidth={paperClip.w}
+                                clipHeight={paperClip.h}
+                            >
+                                {photoImg && paperPhotoLayout && (
+                                    <KonvaImage image={photoImg} {...paperPhotoLayout} />
                                 )}
-                            </>
+                            </Layer>
                         )}
-
-                        {/* Dots punch holes through background */}
-                        {showDots &&
-                            dots.map((d, i) => (
-                                <DotShape
-                                    key={i}
-                                    dot={d}
-                                    shape={dotConfig.shape}
-                                    color="#000"
-                                    character={dotConfig.character}
-                                    composite="destination-out"
-                                />
-                            ))}
-                    </Layer>
+                        {hasPaper && (
+                            <Layer
+                                listening={false}
+                                clipX={paperClip.x}
+                                clipY={paperClip.y}
+                                clipWidth={paperClip.w}
+                                clipHeight={paperClip.h}
+                            >
+                                {paperBgNodes}
+                                {showDots &&
+                                    dots.map((d, i) => (
+                                        <DotShape
+                                            key={i}
+                                            dot={d}
+                                            shape={dotConfig.shape}
+                                            color="#000"
+                                            character={dotConfig.character}
+                                            composite="destination-out"
+                                        />
+                                    ))}
+                            </Layer>
+                        )}
+                    </>
                 )}
             </Stage>
         </div>
