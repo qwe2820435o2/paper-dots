@@ -58,7 +58,7 @@ export default function HeroSection() {
       </div>
 
       <motion.div
-        className="relative z-10 max-w-[1200px] mx-auto w-full flex flex-col items-center gap-16 lg:gap-0 lg:grid lg:grid-cols-2 lg:items-center"
+        className="relative z-10 max-w-[1200px] mx-auto w-full flex flex-col items-center gap-16 lg:gap-0 lg:grid lg:grid-cols-[2fr_3fr] lg:items-center"
         variants={container}
         initial="hidden"
         animate="show"
@@ -121,7 +121,7 @@ export default function HeroSection() {
         {/* Right: product image */}
         <motion.div
           variants={item}
-          className="relative w-full max-w-[580px] mx-auto lg:mx-0 lg:ml-auto order-1 lg:order-2"
+          className="relative w-full mx-auto lg:mx-0 lg:ml-auto order-1 lg:order-2"
         >
           {/* Dot pattern behind image */}
           <div className="absolute -bottom-6 left-0 w-[100px] h-[80px] opacity-30">
@@ -136,10 +136,10 @@ export default function HeroSection() {
             }}
           >
             <Image
-              src="/hero-booth.webp"
-              alt="Paper Dots — decorate your photos with paper textures and dots"
-              width={1200}
-              height={900}
+              src="/hero-before-after.png"
+              alt="Paper Dots — before and after adding dot decorations to a photo"
+              width={2752}
+              height={1536}
               priority
               className="w-full block"
             />
