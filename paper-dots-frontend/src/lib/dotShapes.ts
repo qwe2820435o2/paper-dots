@@ -80,5 +80,5 @@ export const SHAPE_PATHS: Record<DotShape, string | null> = {
     leaf: "M0,-0.5 Q0.4,0 0,0.5 Q-0.4,0 0,-0.5 Z",
     // Crescent moon: outer circle r=0.5 minus inner circle r=0.4 offset right.
     crescent:
-        "M0.34,-0.367 A0.5,0.5 0 1,0 0.34,0.367 A0.4,0.4 0 1,0 0.34,-0.367 Z",
+        "M0.35,-0.357 A0.5,0.5 0 1,0 0.35,0.357 A0.38,0.38 0 1,1 0.35,-0.357 Z",
 };
