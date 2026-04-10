@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import SketchLoader from "@/components/common/SketchLoader";
 import DecorativeBlob from "./DecorativeBlob";
 import DotPattern from "./DotPattern";
+import { useAppDispatch } from "@/store/hooks";
+import { resetDecorate } from "@/store/slices/decorateSlice";
 
 const container = {
   hidden: {},
@@ -27,8 +28,10 @@ const item = {
 export default function HeroSection() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   function handleEnter() {
+    dispatch(resetDecorate());
     setIsLoading(true);
     router.push("/decorate");
   }
@@ -107,11 +110,21 @@ export default function HeroSection() {
               ) : (
                 <motion.div
                   key="loader"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center justify-center gap-1.5 bg-[#4338CA] px-7 py-3 rounded-full"
+                  style={{ minWidth: "120px" }}
                 >
-                  <SketchLoader message="Setting up..." compact />
+                  {[0, 1, 2].map((i) => (
+                    <motion.span
+                      key={i}
+                      className="w-2 h-2 rounded-full bg-white"
+                      animate={{ scale: [1, 1.4, 1] }}
+                      transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
+                    />
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>

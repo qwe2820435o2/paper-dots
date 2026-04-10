@@ -287,6 +287,9 @@ const decorateSlice = createSlice({
         rerollSeed(state) {
             state.seed = Math.floor(Math.random() * 2 ** 31);
         },
+        resetDecorate() {
+            return initialState;
+        },
     },
 });
 
@@ -325,6 +328,7 @@ export const {
     setLayoutRatio,
     setCharacter,
     rerollSeed,
+    resetDecorate,
 } = decorateSlice.actions;
 
 export default decorateSlice.reducer;
