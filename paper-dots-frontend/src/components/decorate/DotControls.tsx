@@ -72,23 +72,22 @@ export default function DotControls() {
 
   return (
     <div className="px-4 py-4 flex flex-col gap-5">
-      {/* Reroll */}
-      <div className="flex items-center justify-end">
-        <button
-          type="button"
-          onClick={() => dispatch(rerollSeed())}
-          className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-medium text-[#e2e2e8] transition-colors bg-white/[0.08] hover:bg-white/[0.14]"
-        >
-          <Shuffle className="w-3.5 h-3.5" />
-          Reroll
-        </button>
-      </div>
-
       {/* Shape */}
       <div>
-        <label className="block text-[11px] uppercase mb-2 text-[#9595a8] tracking-[0.08em]">
-          Shape
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Shape</label>
+          <button
+            type="button"
+            onClick={() => dispatch(rerollSeed())}
+            title="Reroll"
+            className="w-7 h-7 rounded-md flex items-center justify-center transition-colors"
+            style={{ background: "#1a1a2e", border: "1px solid rgba(255,255,255,0.08)", color: "#9595a8" }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "#e2e2e8"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "#9595a8"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+          >
+            <Shuffle className="w-3.5 h-3.5" />
+          </button>
+        </div>
         <div
           className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
           style={{
