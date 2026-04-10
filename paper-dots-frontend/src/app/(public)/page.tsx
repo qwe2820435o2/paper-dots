@@ -39,13 +39,6 @@ export default function HomePage() {
       />
       <HeroSection />
       <FeatureShowcase
-        heading="The Best Free Online Photo Decorator"
-        description="Whether you're creating art prints, personalizing gifts, or just having fun, Paper Dots makes it easy to transform any photo into a unique dotted masterpiece. Upload your image, choose a paper texture, and watch the magic happen — all in your browser, completely free."
-        imageSrc="/hero-booth.webp"
-        imageAlt="Paper Dots collage maker interface"
-        blobColor="#EDE9FE"
-      />
-      <FeatureShowcase
         heading="Experience the Magic of Paper Textures"
         description="Choose from a collection of hand-drawn paper styles that give your photos a tactile, artistic feel. Each texture is carefully crafted to complement different photo styles — from warm kraft paper to elegant parchment. Just pick your favorite and see your photo transform instantly."
         imageSrc="/hero-booth.webp"
