@@ -88,18 +88,7 @@ export default function DotControls() {
             <Shuffle className="w-3.5 h-3.5" />
           </button>
         </div>
-        <div
-          className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%)",
-            maskImage:
-              "linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%)",
-            paddingInline: "4px",
-          }}
-        >
+        <div className="flex flex-wrap gap-2">
           {DOT_SHAPES.map((s) => {
             const Icon = SHAPE_ICONS[s.value];
             const selected = dotConfig.shape === s.value;
@@ -114,7 +103,7 @@ export default function DotControls() {
                 aria-label={s.label}
                 title={s.label}
                 aria-pressed={selected}
-                className="shrink-0 snap-center w-11 h-11 rounded-lg flex items-center justify-center transition-all"
+                className="w-11 h-11 rounded-lg flex items-center justify-center transition-all"
                 style={
                   selected
                     ? {
