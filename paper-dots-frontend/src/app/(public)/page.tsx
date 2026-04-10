@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import HeroSection from "@/components/landing/HeroSection";
 import FeatureShowcase from "@/components/landing/FeatureShowcase";
-import StylesGrid from "@/components/landing/StylesGrid";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import CtaSection from "@/components/landing/CtaSection";
 
@@ -41,7 +40,7 @@ export default function HomePage() {
       <FeatureShowcase
         heading="Experience the Magic of Paper Textures"
         description="Choose from a collection of hand-drawn paper styles that give your photos a tactile, artistic feel. Each texture is carefully crafted to complement different photo styles — from warm kraft paper to elegant parchment. Just pick your favorite and see your photo transform instantly."
-        imageSrc="/hero-booth.webp"
+        imageSrc="/feature-paper.png"
         imageAlt="Paper texture selection"
         reverse
         blobColor="#CCFBF1"
@@ -49,12 +48,11 @@ export default function HomePage() {
       <FeatureShowcase
         heading="Find the Perfect Dot Pattern"
         description="Fine-tune every detail of your dot decoration. Adjust density, size, and spread to create exactly the look you want. Whether you prefer a subtle scattered effect or bold dotted coverage, the controls are intuitive and the results are always beautiful."
-        imageSrc="/hero-booth.webp"
+        imageSrc="/feature-dots.png"
         imageAlt="Dot pattern customization"
         blobColor="#FEF3C7"
       />
-      <StylesGrid />
-      <FeaturesSection />
+<FeaturesSection />
       <CtaSection />
     </>
   );
