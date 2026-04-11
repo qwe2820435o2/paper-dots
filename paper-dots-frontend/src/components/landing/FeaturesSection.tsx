@@ -5,21 +5,21 @@ import { motion } from "framer-motion";
 const steps = [
   {
     number: "01",
-    title: "Upload Your Photo",
+    title: "Upload & Auto-Analyze",
     description:
-      "Drop any photo into Paper Dots — portraits, landscapes, everyday moments. Works with JPEG and PNG files of any size.",
+      "Drop your favorite photos! Our smart engine analyzes your photo's color palette to automatically generate a matching polka dot pattern and layout that perfectly fits the vibe.",
   },
   {
     number: "02",
-    title: "Pick a Paper Texture",
+    title: "Customize Your Style",
     description:
-      "Choose from our collection of hand-drawn paper styles. Each texture gives your photo a different tactile, artistic feel.",
+      "Make it yours! Tweak the dot pattern, swap the background, or play with the layout until it's \"grid-ready.\"",
   },
   {
     number: "03",
-    title: "Scatter the Dots",
+    title: "Download & Glow Up",
     description:
-      "Adjust density, size, and spread to create your perfect look. Export a crisp PNG ready to print or share anywhere.",
+      "Save your high-res creation instantly. No watermarks, no hassle—just pure aesthetic.",
   },
 ];
 
@@ -59,14 +59,8 @@ export default function FeaturesSection() {
               lineHeight: "1.1",
             }}
           >
-            How to Decorate Your
-            <br />
-            Photo in 3 Easy Steps
+            How to Generate an Aesthetic Dot Image?
           </h2>
-          <p className="text-[16px] text-[#64748b] max-w-[520px] mx-auto leading-[1.6]">
-            With our free online photo decorator, you can easily create dotted
-            photo art that tells your story.
-          </p>
         </motion.div>
 
         {/* Cards */}
@@ -81,19 +75,22 @@ export default function FeaturesSection() {
             <motion.div
               key={step.number}
               variants={item}
-              className="rounded-2xl p-7 flex flex-col gap-5 bg-white border border-slate-200 shadow-sm"
+              className="rounded-2xl overflow-hidden flex flex-col bg-white border border-slate-200 shadow-sm"
             >
-              <span className="text-[13px] font-semibold text-[#B8DB80] tracking-wide">
-                {step.number}
-              </span>
+              {/* Image placeholder */}
+              <div className="w-full aspect-[4/3] bg-slate-100 flex items-center justify-center">
+                <span className="text-[13px] text-slate-400">Image coming soon</span>
+              </div>
 
-              <h3 className="text-[18px] font-semibold text-[#1a1a2e] leading-[1.2]">
-                {step.title}
-              </h3>
-
-              <p className="text-[14px] leading-[1.6] text-[#64748b]">
-                {step.description}
-              </p>
+              {/* Text */}
+              <div className="p-7 flex flex-col gap-3">
+                <h3 className="text-[18px] font-semibold text-[#1a1a2e] leading-[1.2]">
+                  Step {step.number.replace(/^0/, "")}: {step.title}
+                </h3>
+                <p className="text-[14px] leading-[1.6] text-[#64748b]">
+                  {step.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </motion.div>

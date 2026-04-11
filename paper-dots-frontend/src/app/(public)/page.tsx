@@ -38,18 +38,33 @@ export default function HomePage() {
       />
       <HeroSection />
       <FeatureShowcase
-        heading="Experience the Magic of Paper Textures"
-        description="Choose from a collection of hand-drawn paper styles that give your photos a tactile, artistic feel. Each texture is carefully crafted to complement different photo styles — from warm kraft paper to elegant parchment. Just pick your favorite and see your photo transform instantly."
+        heading="Create Viral Content with our Dot Image Generator"
+        description={'Transform your everyday "photo dumps" into curated art. Whether it\'s a weekend recap or a café visit, our tool uses a dot image generator to instantly add that sought-after "Ins-style" atmosphere to your Instagram grid.'}
         imageSrc="/feature-paper.png"
-        imageAlt="Paper texture selection"
+        imageAlt="Create viral content with dot image generator"
         reverse
         blobColor="#B8DB80"
       />
       <FeatureShowcase
-        heading="Find the Perfect Dot Pattern"
-        description="Fine-tune every detail of your dot decoration. Adjust density, size, and spread to create exactly the look you want. Whether you prefer a subtle scattered effect or bold dotted coverage, the controls are intuitive and the results are always beautiful."
+        heading="Personalized OOTD with an Automatic Photo Collage Maker"
+        description="Flaunt your style! Upload your Outfit of the Day, and let our Automatic Photo Collage Maker detect your clothing colors. It creates a matching polka dot background that makes your fashion shots look like a professional magazine spread."
         imageSrc="/feature-dots.png"
-        imageAlt="Dot pattern customization"
+        imageAlt="Personalized OOTD with automatic photo collage maker"
+        blobColor="#E8F5D2"
+      />
+      <FeatureShowcase
+        heading="Aesthetic Edits with Custom Polka Dot Patterns"
+        description={'Go beyond the basics. For the ultimate "Soft-girl" or "Coquette" aesthetic, swap standard dots for hearts or stars. Our polka dots pattern options allow you to customize the size and density to match your favorite K-Pop idol or anime fan-art vibes.'}
+        imageSrc="/feature-paper.png"
+        imageAlt="Aesthetic edits with custom polka dot patterns"
+        reverse
+        blobColor="#B8DB80"
+      />
+      <FeatureShowcase
+        heading="High-Vibe Moodboards featuring Polka Dots Pattern"
+        description="Design your dream life. Use a polka dots pattern to tie together travel photos, interior design inspo, or vision boards. Add custom text to capture the mood and save a high-res version perfect for your Pinterest boards."
+        imageSrc="/feature-dots.png"
+        imageAlt="High-vibe moodboards featuring polka dots pattern"
         blobColor="#E8F5D2"
       />
 <FeaturesSection />
