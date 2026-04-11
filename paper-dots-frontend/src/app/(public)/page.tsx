@@ -4,9 +4,9 @@ import FeatureShowcase from "@/components/landing/FeatureShowcase";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import CtaSection from "@/components/landing/CtaSection";
 
-const PAGE_TITLE = "Paper Dots";
+const PAGE_TITLE = "Free Dot Image Generator | Automatic Photo Collage Maker with Polka Dot Pattern";
 const PAGE_DESCRIPTION =
-  "A free online tool to decorate your photos with hand-drawn paper textures and scattered dots.";
+  "Turn photos into art with our Automatic Photo Collage Maker. Customize your polka dot background with hearts, stars, and dots. Use the best dot image generator for free, no sign-up required!";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,

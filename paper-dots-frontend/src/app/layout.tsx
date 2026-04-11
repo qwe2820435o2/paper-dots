@@ -30,9 +30,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://paperdots.example.
 // TODO: replace with paper-dots Google Analytics id
 const GA_ID = "G-XXXXXXXXXX";
 
-const SITE_TITLE = "Paper Dots";
+const SITE_TITLE = "Free Dot Image Generator | Automatic Photo Collage Maker with Polka Dot Pattern";
 const SITE_DESCRIPTION =
-  "A tiny black-and-white tool to decorate your photos with hand-drawn paper textures and scattered dots.";
+  "Turn photos into art with our Automatic Photo Collage Maker. Customize your polka dot background with hearts, stars, and dots. Use the best dot image generator for free, no sign-up required!";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
