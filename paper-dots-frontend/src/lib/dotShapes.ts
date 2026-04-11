@@ -44,14 +44,15 @@ export const DOT_COLORS: { value: string; label: string }[] = [
 
 export const DOT_SHAPES: { value: DotShape; label: string }[] = [
     { value: "circle", label: "Circle" },
-    { value: "square", label: "Square" },
+    { value: "flower", label: "Flower" },
     { value: "character", label: "Character" },
-    { value: "teardrop", label: "Teardrop" },
+    { value: "diamond", label: "Diamond" },
     { value: "heart", label: "Heart" },
     { value: "star", label: "Star" },
-    { value: "hexagon", label: "Hexagon" },
+    { value: "crown", label: "Crown" },
     { value: "leaf", label: "Leaf" },
     { value: "crescent", label: "Crescent" },
+    { value: "snowflake", label: "Snowflake" },
 ];
 
 /**
@@ -63,22 +64,26 @@ export const DOT_SHAPES: { value: DotShape; label: string }[] = [
  */
 export const SHAPE_PATHS: Record<DotShape, string | null> = {
     circle: null,
-    square: null,
+    // Four-leaf clover: 4 oval lobes meeting at origin, each drawn with 2 quadratic beziers.
+    flower:
+        "M0,0 Q0.35,-0.25 0,-0.5 Q-0.35,-0.25 0,0 Q0.25,0.35 0.5,0 Q0.25,-0.35 0,0 Q-0.35,0.25 0,0.5 Q0.35,0.25 0,0 Q-0.25,-0.35 -0.5,0 Q-0.25,0.35 0,0 Z",
     character: null,
-    // Pointed tip on top, circular bottom (sides tangent to bottom circle).
-    teardrop: "M0,-0.5 L0.282,0.029 A0.32,0.32 0 1,1 -0.282,0.029 Z",
+    // Faceted diamond / gem shape.
+    diamond: "M0,-0.5 L0.35,-0.1 L0.5,0.05 L0,0.5 L-0.5,0.05 L-0.35,-0.1 Z",
     // Classic two-lobe heart, point at the bottom.
     heart:
         "M0,0.5 C-0.5,0.15 -0.5,-0.35 -0.25,-0.5 C-0.1,-0.5 0,-0.35 0,-0.2 C0,-0.35 0.1,-0.5 0.25,-0.5 C0.5,-0.35 0.5,0.15 0,0.5 Z",
     // 5-pointed star, outer radius 0.5, inner radius 0.2.
     star:
         "M0,-0.5 L0.118,-0.162 L0.476,-0.155 L0.190,0.062 L0.294,0.405 L0,0.2 L-0.294,0.405 L-0.190,0.062 L-0.476,-0.155 L-0.118,-0.162 Z",
-    // Pointy-top regular hexagon, circumradius 0.5.
-    hexagon:
-        "M0,-0.5 L0.433,-0.25 L0.433,0.25 L0,0.5 L-0.433,0.25 L-0.433,-0.25 Z",
+    // Crown: tall center peak, two side peaks, V-dips between, solid base — matches Lucide Crown icon.
+    crown:
+        "M-0.5,0.4 L-0.5,-0.3 L-0.2,0.1 L0,-0.5 L0.2,0.1 L0.5,-0.3 L0.5,0.4 Z",
     // Almond / olive leaf, two quadratic arcs meeting at top and bottom tips.
     leaf: "M0,-0.5 Q0.4,0 0,0.5 Q-0.4,0 0,-0.5 Z",
     // Crescent moon: outer circle r=0.5 minus inner circle r=0.4 offset right.
     crescent:
         "M0.35,-0.357 A0.5,0.5 0 1,0 0.35,0.357 A0.38,0.38 0 1,1 0.35,-0.357 Z",
+    // Rendered as stroked lines in DecorateCanvas (not a filled path).
+    snowflake: null,
 };

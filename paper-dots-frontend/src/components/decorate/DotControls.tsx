@@ -3,14 +3,15 @@
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import {
   Circle as CircleIcon,
-  Droplet,
+  Flower2,
   Heart,
-  Hexagon,
+  Crown,
   Leaf,
   Moon,
   Shuffle,
-  Square as SquareIcon,
+  Diamond,
   Star,
+  Snowflake,
   Type,
 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
@@ -39,14 +40,15 @@ type IconComponent = ComponentType<{ className?: string }>;
 
 const SHAPE_ICONS: Record<DotShape, IconComponent> = {
   circle: CircleIcon,
-  square: SquareIcon,
+  flower: Flower2,
   character: Type,
-  teardrop: Droplet,
+  diamond: Diamond,
   heart: Heart,
   star: Star,
-  hexagon: Hexagon,
+  crown: Crown,
   leaf: Leaf,
   crescent: Moon,
+  snowflake: Snowflake,
 };
 
 export default function DotControls() {

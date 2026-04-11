@@ -2,7 +2,7 @@
 
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import type Konva from "konva";
-import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path, Text } from "react-konva";
+import { Stage, Layer, Rect, Image as KonvaImage, Circle, Path, Text, Line } from "react-konva";
 import { useAppSelector } from "@/store/hooks";
 import { generateDots, type GeneratedDot } from "@/lib/dotGenerator";
 import { SHAPE_PATHS, PALETTE_PRESETS } from "@/lib/dotShapes";
@@ -372,22 +372,6 @@ function DotShape({ dot, shape, color, character, opacity = 1, composite }: DotS
             />
         );
     }
-    if (shape === "square") {
-        return (
-            <Rect
-                x={dot.x}
-                y={dot.y}
-                width={dot.size}
-                height={dot.size}
-                offsetX={dot.size / 2}
-                offsetY={dot.size / 2}
-                rotation={dot.rotation}
-                fill={color}
-                opacity={opacity}
-                globalCompositeOperation={composite}
-            />
-        );
-    }
     if (shape === "character") {
         return (
             <Text
@@ -402,6 +386,43 @@ function DotShape({ dot, shape, color, character, opacity = 1, composite }: DotS
                 opacity={opacity}
                 globalCompositeOperation={composite}
             />
+        );
+    }
+    if (shape === "snowflake") {
+        const { x, y, size, rotation } = dot;
+        const rotRad = (rotation * Math.PI) / 180;
+        const armLen = size * 0.5;
+        const branchDist = size * 0.3;
+        const branchLen = size * 0.15;
+        const sw = Math.max(1, size * 0.08);
+        const segments: [number, number, number, number][] = [];
+        for (let i = 0; i < 6; i++) {
+            const a = (i * Math.PI) / 3 - Math.PI / 2 + rotRad;
+            const tx = x + Math.cos(a) * armLen;
+            const ty = y + Math.sin(a) * armLen;
+            const bx = x + Math.cos(a) * branchDist;
+            const by = y + Math.sin(a) * branchDist;
+            if (i < 3) {
+                const oa = a + Math.PI;
+                segments.push([tx, ty, x + Math.cos(oa) * armLen, y + Math.sin(oa) * armLen]);
+            }
+            segments.push([bx, by, bx + Math.cos(a + Math.PI / 3) * branchLen, by + Math.sin(a + Math.PI / 3) * branchLen]);
+            segments.push([bx, by, bx + Math.cos(a - Math.PI / 3) * branchLen, by + Math.sin(a - Math.PI / 3) * branchLen]);
+        }
+        return (
+            <>
+                {segments.map(([x1, y1, x2, y2], i) => (
+                    <Line
+                        key={i}
+                        points={[x1, y1, x2, y2]}
+                        stroke={color}
+                        strokeWidth={sw}
+                        opacity={opacity}
+                        globalCompositeOperation={composite}
+                        lineCap="round"
+                    />
+                ))}
+            </>
         );
     }
     const path = SHAPE_PATHS[shape];

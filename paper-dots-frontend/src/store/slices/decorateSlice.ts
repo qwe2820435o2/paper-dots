@@ -2,14 +2,15 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type DotShape =
     | "circle"
-    | "square"
+    | "flower"
     | "character"
-    | "teardrop"
+    | "diamond"
     | "heart"
     | "star"
-    | "hexagon"
+    | "crown"
     | "leaf"
-    | "crescent";
+    | "crescent"
+    | "snowflake";
 
 export type DotColorMode = "auto" | "single" | "palette" | "gradient";
 export type GradientDirection = "x" | "y" | "radial";
