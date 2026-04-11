@@ -7,7 +7,7 @@ const styles = [
     title: "Grid",
     description:
       "Create a clean, uniform dot grid that gives your photo a structured, retro halftone feel.",
-    color: "#EDE9FE",
+    color: "#F7F6D3",
   },
   {
     title: "Scatter",
