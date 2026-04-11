@@ -53,6 +53,7 @@ export default function DotControls() {
   const dispatch = useAppDispatch();
   const dotConfig = useAppSelector((s) => s.decorate.dotConfig);
   const [pickerOpen, setPickerOpen] = useState<"single" | "grad1" | "grad2" | null>(null);
+  const [spinning, setSpinning] = useState(false);
   const shapeTileRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const colorMode = dotConfig.colorMode;
@@ -78,11 +79,15 @@ export default function DotControls() {
           <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Shape</label>
           <button
             type="button"
-            onClick={() => dispatch(rerollSeed())}
-            title="Reroll"
-            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors text-[#9CA3AF] border border-[#F5D5E0] bg-white hover:text-[#F39EB6] hover:border-[#F39EB6]"
+            onClick={() => {
+              dispatch(rerollSeed());
+              setSpinning(true);
+            }}
+            onAnimationEnd={() => setSpinning(false)}
+            className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#F39EB6] bg-[#FFE4EF] hover:bg-[#ffd6e8] text-[11px] font-medium"
           >
-            <Shuffle className="w-3.5 h-3.5" />
+            <Shuffle className={`w-3.5 h-3.5 shrink-0 ${spinning ? "animate-spin-once" : ""}`} />
+            Shuffle
           </button>
         </div>
         <div className="flex flex-wrap gap-2">
