@@ -41,13 +41,13 @@ export default function HeroSection() {
       {/* Decorative blobs */}
       <DecorativeBlob
         color="#E8F5D2"
-        size={400}
-        className="absolute -top-20 -right-20 opacity-80"
+        size={480}
+        className="absolute -top-32 -right-24 opacity-70"
       />
       <DecorativeBlob
-        color="#E8F5D2"
-        size={200}
-        className="absolute bottom-40 left-10 opacity-60"
+        color="#F7F6D3"
+        size={180}
+        className="absolute bottom-32 left-6 opacity-50"
       />
 
       {/* Dot pattern - top right */}
@@ -136,16 +136,58 @@ export default function HeroSection() {
           variants={item}
           className="relative w-full mx-auto lg:mx-0 lg:ml-auto order-1 lg:order-2"
         >
-          {/* Dot pattern behind image */}
-          <div className="absolute -bottom-6 left-0 w-[100px] h-[80px] opacity-30">
-            <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
-          </div>
-
+          {/* Blob peeking from behind - bottom left */}
           <div
-            className="rounded-[12px] overflow-hidden relative z-10"
+            className="absolute -bottom-12 -left-12 w-[220px] h-[220px] rounded-full z-0 pointer-events-none"
+            style={{ backgroundColor: "#D2EAAA", opacity: 0.7 }}
+          />
+
+          {/* Blob peeking from behind - top right */}
+          <div
+            className="absolute -top-8 -right-8 w-[150px] h-[150px] rounded-full z-0 pointer-events-none"
+            style={{ backgroundColor: "#F7F6D3", opacity: 0.85 }}
+          />
+
+          {/* Floating dot - top right, large solid */}
+          <div
+            className="absolute -top-3 right-10 w-5 h-5 rounded-full z-20 pointer-events-none"
             style={{
+              backgroundColor: "#B8DB80",
+              animation: "float 4s ease-in-out infinite",
+              "--float-rot": "0deg",
+            } as React.CSSProperties}
+          />
+
+          {/* Floating dot - left middle, medium outline */}
+          <div
+            className="absolute top-1/3 -left-5 w-4 h-4 rounded-full z-20 pointer-events-none"
+            style={{
+              backgroundColor: "#F7F6D3",
+              border: "2px solid #D2EAAA",
+              animation: "float 5.5s ease-in-out infinite 0.8s",
+              "--float-rot": "0deg",
+            } as React.CSSProperties}
+          />
+
+          {/* Floating dot - bottom right, small */}
+          <div
+            className="absolute -bottom-3 right-1/4 w-3 h-3 rounded-full z-20 pointer-events-none"
+            style={{
+              backgroundColor: "#B8DB80",
+              opacity: 0.6,
+              animation: "float 6s ease-in-out infinite 1.5s",
+              "--float-rot": "0deg",
+            } as React.CSSProperties}
+          />
+
+          {/* Polaroid frame */}
+          <div
+            className="relative z-10 bg-white"
+            style={{
+              padding: "10px 10px 34px 10px",
+              transform: "rotate(-2deg)",
               boxShadow:
-                "rgba(0, 0, 0, 0.08) 0px 4px 24px, rgba(0, 0, 0, 0.04) 0px 1px 2px",
+                "rgba(0, 0, 0, 0.07) 0px 8px 32px, rgba(0, 0, 0, 0.04) 0px 2px 6px",
             }}
           >
             <Image
