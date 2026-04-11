@@ -4,10 +4,10 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import type Konva from "konva";
 import {
-  Upload,
+  ImagePlus,
   LayoutGrid,
-  Palette,
-  CircleDot,
+  Wallpaper,
+  Sparkles,
   Download,
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
@@ -34,11 +34,11 @@ const DecorateCanvas = dynamic(
 
 type Panel = "upload" | "layout" | "paper" | "dots" | "export" | null;
 
-const TOOLS: { id: Panel; icon: typeof Upload; label: string }[] = [
-  { id: "upload", icon: Upload, label: "Upload" },
+const TOOLS: { id: Panel; icon: typeof ImagePlus; label: string }[] = [
+  { id: "upload", icon: ImagePlus, label: "Photo" },
   { id: "layout", icon: LayoutGrid, label: "Layout" },
-  { id: "paper", icon: Palette, label: "Paper" },
-  { id: "dots", icon: CircleDot, label: "Dots" },
+  { id: "paper", icon: Wallpaper, label: "Paper" },
+  { id: "dots", icon: Sparkles, label: "Dots" },
   { id: "export", icon: Download, label: "Export" },
 ];
 
@@ -66,7 +66,7 @@ export default function DecorateApp() {
     <div className="h-[calc(100vh-56px)] overflow-hidden flex bg-[#FFF7FA]">
       {/* Left: icon toolbar */}
       <div
-        className="shrink-0 w-14 flex flex-col items-center py-3 gap-1 bg-white"
+        className="shrink-0 w-16 flex flex-col items-center py-3 gap-1 bg-white"
         style={{ borderRight: "1px solid #F5D5E0" }}
       >
         {TOOLS.map(({ id, icon: Icon, label }) => {
@@ -76,8 +76,7 @@ export default function DecorateApp() {
               key={id}
               type="button"
               onClick={() => togglePanel(id)}
-              title={label}
-              className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
+              className="w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors"
               style={{
                 background: isActive ? "#FFE4EF" : "transparent",
                 color: isActive ? "#F39EB6" : "#9CA3AF",
@@ -95,7 +94,8 @@ export default function DecorateApp() {
                 }
               }}
             >
-              <Icon size={20} strokeWidth={1.6} />
+              <Icon size={18} strokeWidth={1.6} />
+              <span className="text-[10px] leading-none font-semibold">{label}</span>
             </button>
           );
         })}
