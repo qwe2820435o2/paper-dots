@@ -13,13 +13,13 @@ const styles = [
     title: "Scatter",
     description:
       "Randomly scattered dots for an organic, hand-sprinkled look that feels natural and playful.",
-    color: "#CCFBF1",
+    color: "#B8DB80",
   },
   {
     title: "Pattern",
     description:
       "Combine paper textures with artistic dot patterns for a one-of-a-kind decorative effect.",
-    color: "#FEF3C7",
+    color: "#FFE4EF",
   },
 ];
 
@@ -80,7 +80,7 @@ export default function StylesGrid() {
                   {Array.from({ length: 9 }).map((_, i) => (
                     <div
                       key={i}
-                      className="w-8 h-8 rounded-lg border-2 border-[#4338CA]/40"
+                      className="w-8 h-8 rounded-lg border-2 border-[#F39EB6]/40"
                     />
                   ))}
                 </div>

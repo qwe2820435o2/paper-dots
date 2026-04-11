@@ -32,8 +32,8 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Email */}
           <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-indigo-50">
-              <Mail className="w-4 h-4 text-[#4338CA]" strokeWidth={1.8} />
+            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-pink-50">
+              <Mail className="w-4 h-4 text-[#F39EB6]" strokeWidth={1.8} />
             </div>
             <div>
               <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">
@@ -44,7 +44,7 @@ export default function ContactPage() {
               </p>
               <a
                 href="mailto:support@paperdots.app"
-                className="text-[14px] font-medium text-[#4338CA] hover:text-[#3730A3] transition-colors"
+                className="text-[14px] font-medium text-[#F39EB6] hover:text-[#E8809E] transition-colors"
               >
                 support@paperdots.app
               </a>
@@ -53,8 +53,8 @@ export default function ContactPage() {
 
           {/* Feedback */}
           <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-indigo-50">
-              <MessageSquare className="w-4 h-4 text-[#4338CA]" strokeWidth={1.8} />
+            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-pink-50">
+              <MessageSquare className="w-4 h-4 text-[#F39EB6]" strokeWidth={1.8} />
             </div>
             <div>
               <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">

@@ -83,7 +83,7 @@ export default function FeaturesSection() {
               variants={item}
               className="rounded-2xl p-7 flex flex-col gap-5 bg-white border border-slate-200 shadow-sm"
             >
-              <span className="text-[13px] font-semibold text-[#4338CA] tracking-wide">
+              <span className="text-[13px] font-semibold text-[#F39EB6] tracking-wide">
                 {step.number}
               </span>
 

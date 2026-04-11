@@ -121,25 +121,25 @@ export default function PhotoUploader({
                 className="rounded-xl cursor-pointer flex flex-col items-center justify-center gap-2 transition-all duration-150 active:scale-[0.97] select-none px-4 py-3"
                 style={{
                     border: dragOver
-                        ? "1.5px solid #4338CA"
-                        : "1.5px dashed rgba(67, 56, 202, 0.35)",
+                        ? "1.5px solid #F39EB6"
+                        : "1.5px dashed #F5D5E0",
                     background: dragOver
-                        ? "rgba(67, 56, 202, 0.08)"
-                        : "transparent",
+                        ? "#FFF0F5"
+                        : "white",
                     boxShadow: dragOver
-                        ? "rgba(67, 56, 202, 0.2) 0px 0px 20px 0px"
+                        ? "rgba(243, 158, 182, 0.15) 0px 0px 20px 0px"
                         : "none",
                 }}
                 onMouseEnter={(e) => {
                     if (!dragOver) {
-                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(67, 56, 202, 0.7)";
-                        (e.currentTarget as HTMLElement).style.background = "rgba(67, 56, 202, 0.04)";
+                        (e.currentTarget as HTMLElement).style.borderColor = "#F39EB6";
+                        (e.currentTarget as HTMLElement).style.background = "#FFF7FA";
                     }
                 }}
                 onMouseLeave={(e) => {
                     if (!dragOver) {
-                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(67, 56, 202, 0.35)";
-                        (e.currentTarget as HTMLElement).style.background = "transparent";
+                        (e.currentTarget as HTMLElement).style.borderColor = "#F5D5E0";
+                        (e.currentTarget as HTMLElement).style.background = "white";
                     }
                 }}
             >
@@ -152,23 +152,23 @@ export default function PhotoUploader({
 
                 <div
                     className="w-[38px] h-[38px] rounded-full flex items-center justify-center transition-all duration-150"
-                    style={{ background: dragOver ? "rgba(67, 56, 202, 0.15)" : "rgba(67, 56, 202, 0.08)" }}
+                    style={{ background: dragOver ? "#FFE4EF" : "#FFF0F5" }}
                 >
-                    <Upload className="w-4 h-4 text-[#e2e2e8]" strokeWidth={1.5} />
+                    <Upload className="w-4 h-4 text-[#1a1a2e]" strokeWidth={1.5} />
                 </div>
 
                 <div className="flex flex-col items-center gap-1.5">
-                    <p className="text-[13px] font-medium text-[#e2e2e8]">
+                    <p className="text-[13px] font-medium text-[#1a1a2e]">
                         {hasPhoto ? "Replace photo" : "Upload photo"}
                     </p>
-                    <p className="text-[11px] text-center text-[#9595a8]">
+                    <p className="text-[11px] text-center text-[#9CA3AF]">
                         Drop image here or click to browse
                     </p>
                     <div className="flex items-center gap-1 mt-0.5">
                         {["PNG", "JPG", "WEBP"].map((fmt) => (
                             <span
                                 key={fmt}
-                                className="px-2 py-0.5 rounded-full text-[10px] bg-white/[0.08] text-[#9595a8] tracking-[0.04em]"
+                                className="px-2 py-0.5 rounded-full text-[10px] bg-[#FFF0F5] text-[#9CA3AF] tracking-[0.04em]"
                             >
                                 {fmt}
                             </span>
@@ -184,13 +184,13 @@ export default function PhotoUploader({
             {...commonDragHandlers}
             className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-150 shrink-0"
             style={{
-                borderBottom: "1px solid rgba(255,255,255,0.08)",
-                borderLeft: "3px solid #4338CA",
-                background: dragOver ? "rgba(67, 56, 202, 0.06)" : "transparent",
+                borderBottom: "1px solid #F5D5E0",
+                borderLeft: "3px solid #F39EB6",
+                background: dragOver ? "#FFF0F5" : "transparent",
             }}
             onMouseEnter={(e) => {
                 if (!dragOver) {
-                    (e.currentTarget as HTMLElement).style.background = "rgba(67, 56, 202, 0.04)";
+                    (e.currentTarget as HTMLElement).style.background = "#FFF7FA";
                 }
             }}
             onMouseLeave={(e) => {
@@ -205,12 +205,12 @@ export default function PhotoUploader({
                 className="hidden"
                 onChange={(e) => handleFiles(e.target.files)}
             />
-            <Upload className="w-4 h-4 shrink-0 text-[#e2e2e8]" strokeWidth={1.8} />
+            <Upload className="w-4 h-4 shrink-0 text-[#1a1a2e]" strokeWidth={1.8} />
             <div className="min-w-0">
-                <p className="text-[14px] font-medium text-[#e2e2e8]">
+                <p className="text-[14px] font-medium text-[#1a1a2e]">
                     {hasPhoto ? "Replace photo" : "Upload photo"}
                 </p>
-                <p className="text-[11px] text-[#9595a8]">
+                <p className="text-[11px] text-[#9CA3AF]">
                     PNG &middot; JPG &middot; WEBP
                 </p>
             </div>

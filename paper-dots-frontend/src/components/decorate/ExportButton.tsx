@@ -81,16 +81,16 @@ export default function ExportButton({ stageRef }: Props) {
             disabled={!photoUrl}
             className="w-full flex items-center justify-center gap-2 text-[14px] font-medium py-2.5 rounded-full transition-all"
             style={{
-                background: photoUrl ? "#4338CA" : "rgba(67,56,202,0.3)",
+                background: photoUrl ? "#F39EB6" : "rgba(243,158,182,0.3)",
                 color: "#ffffff",
                 cursor: photoUrl ? "pointer" : "not-allowed",
                 opacity: photoUrl ? 1 : 0.5,
             }}
             onMouseEnter={(e) => {
-                if (photoUrl) (e.currentTarget as HTMLButtonElement).style.background = "#3730A3";
+                if (photoUrl) (e.currentTarget as HTMLButtonElement).style.background = "#E8809E";
             }}
             onMouseLeave={(e) => {
-                if (photoUrl) (e.currentTarget as HTMLButtonElement).style.background = "#4338CA";
+                if (photoUrl) (e.currentTarget as HTMLButtonElement).style.background = "#F39EB6";
             }}
         >
             <Download className="w-4 h-4" strokeWidth={2} />

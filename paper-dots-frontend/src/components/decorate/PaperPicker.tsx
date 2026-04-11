@@ -53,11 +53,11 @@ function ColorRow({ label, isSet, color, open, onToggle, onChange }: ColorRowPro
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">{label}</label>
+        <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{label}</label>
         <button
           type="button"
           onClick={onToggle}
-          className="w-5 h-5 rounded-full border border-white/20 transition-shadow hover:border-white/40"
+          className="w-5 h-5 rounded-full border border-[#F5D5E0] transition-shadow hover:border-[#F39EB6]"
           style={{ background: isSet ? color : RAINBOW }}
         />
       </div>
@@ -96,12 +96,13 @@ export default function PaperPicker() {
                 dispatch(setBackgroundMode(m.id));
                 setOpenPicker(null);
               }}
-              className="py-1.5 text-[11px] rounded-md transition-colors"
+              className="py-1.5 text-[11px] rounded-lg transition-colors"
               style={{
-                background: selected
-                  ? "rgba(67,56,202,0.2)"
-                  : "rgba(255,255,255,0.04)",
-                color: selected ? "#a5b4fc" : "#9595a8",
+                background: selected ? "#FFE4EF" : "#FFF0F5",
+                color: selected ? "#F39EB6" : "#64748b",
+                boxShadow: selected
+                  ? "#F39EB6 0px 0px 0px 1.5px"
+                  : "#F5D5E0 0px 0px 0px 1px",
               }}
             >
               {m.label}
@@ -139,8 +140,8 @@ export default function PaperPicker() {
           />
           <div>
             <div className="flex items-baseline justify-between mb-2">
-              <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Width</label>
-              <span className="text-[12px] tabular-nums text-[#9595a8]">{background.stripeWidth}</span>
+              <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Width</label>
+              <span className="text-[12px] tabular-nums text-[#64748b]">{background.stripeWidth}</span>
             </div>
             <Slider min={1} max={100} step={1} value={[background.stripeWidth]} onValueChange={(v) => dispatch(setStripeWidth(v[0]))} />
           </div>
@@ -168,10 +169,10 @@ export default function PaperPicker() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full aspect-square flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-white/[0.15] transition-colors hover:border-white/30"
+              className="w-full aspect-square flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[#F5D5E0] transition-colors hover:border-[#F39EB6]"
             >
-              <Upload className="w-5 h-5 text-[#9595a8]" />
-              <span className="text-[11px] text-[#9595a8]">Upload photo</span>
+              <Upload className="w-5 h-5 text-[#64748b]" />
+              <span className="text-[11px] text-[#64748b]">Upload photo</span>
             </button>
           )}
         </div>
@@ -198,8 +199,8 @@ export default function PaperPicker() {
           />
           <div>
             <div className="flex items-baseline justify-between mb-2">
-              <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Size</label>
-              <span className="text-[12px] tabular-nums text-[#9595a8]">{background.checkerboardSize}</span>
+              <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Size</label>
+              <span className="text-[12px] tabular-nums text-[#64748b]">{background.checkerboardSize}</span>
             </div>
             <Slider min={20} max={200} step={4} value={[background.checkerboardSize]} onValueChange={(v) => dispatch(setCheckerboardSize(v[0]))} />
           </div>
@@ -212,8 +213,8 @@ export default function PaperPicker() {
           <ColorPicker color={background.solidColor} onChange={(hex) => dispatch(setSolidColor(hex))} />
           <div>
             <div className="flex items-baseline justify-between mb-2">
-              <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Grain</label>
-              <span className="text-[12px] tabular-nums text-[#9595a8]">{background.noiseOpacity}</span>
+              <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Grain</label>
+              <span className="text-[12px] tabular-nums text-[#64748b]">{background.noiseOpacity}</span>
             </div>
             <Slider min={0} max={100} step={1} value={[background.noiseOpacity]} onValueChange={(v) => dispatch(setNoiseOpacity(v[0]))} />
           </div>
@@ -241,8 +242,8 @@ export default function PaperPicker() {
           />
           <div>
             <div className="flex items-baseline justify-between mb-2">
-              <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Angle</label>
-              <span className="text-[12px] tabular-nums text-[#9595a8]">{background.gradientAngle}&deg;</span>
+              <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Angle</label>
+              <span className="text-[12px] tabular-nums text-[#64748b]">{background.gradientAngle}&deg;</span>
             </div>
             <Slider min={0} max={360} step={1} value={[background.gradientAngle]} onValueChange={(v) => dispatch(setGradientAngle(v[0]))} />
           </div>
@@ -263,8 +264,8 @@ export default function PaperPicker() {
           />
           <div>
             <div className="flex items-baseline justify-between mb-2">
-              <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Size</label>
-              <span className="text-[12px] tabular-nums text-[#9595a8]">{background.gridSize}</span>
+              <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Size</label>
+              <span className="text-[12px] tabular-nums text-[#64748b]">{background.gridSize}</span>
             </div>
             <Slider min={20} max={200} step={4} value={[background.gridSize]} onValueChange={(v) => dispatch(setGridSize(v[0]))} />
           </div>
@@ -285,15 +286,15 @@ export default function PaperPicker() {
           />
           <div>
             <div className="flex items-baseline justify-between mb-2">
-              <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Spacing</label>
-              <span className="text-[12px] tabular-nums text-[#9595a8]">{background.dotGridSpacing}</span>
+              <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Spacing</label>
+              <span className="text-[12px] tabular-nums text-[#64748b]">{background.dotGridSpacing}</span>
             </div>
             <Slider min={20} max={100} step={2} value={[background.dotGridSpacing]} onValueChange={(v) => dispatch(setDotGridSpacing(v[0]))} />
           </div>
           <div>
             <div className="flex items-baseline justify-between mb-2">
-              <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Size</label>
-              <span className="text-[12px] tabular-nums text-[#9595a8]">{background.dotGridRadius}</span>
+              <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Size</label>
+              <span className="text-[12px] tabular-nums text-[#64748b]">{background.dotGridRadius}</span>
             </div>
             <Slider min={1} max={20} step={1} value={[background.dotGridRadius]} onValueChange={(v) => dispatch(setDotGridRadius(v[0]))} />
           </div>

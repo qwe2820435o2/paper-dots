@@ -75,15 +75,12 @@ export default function DotControls() {
       {/* Shape */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Shape</label>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Shape</label>
           <button
             type="button"
             onClick={() => dispatch(rerollSeed())}
             title="Reroll"
-            className="w-7 h-7 rounded-md flex items-center justify-center transition-colors"
-            style={{ background: "#1a1a2e", border: "1px solid rgba(255,255,255,0.08)", color: "#9595a8" }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = "#e2e2e8"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "#9595a8"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors text-[#9CA3AF] border border-[#F5D5E0] bg-white hover:text-[#F39EB6] hover:border-[#F39EB6]"
           >
             <Shuffle className="w-3.5 h-3.5" />
           </button>
@@ -103,18 +100,18 @@ export default function DotControls() {
                 aria-label={s.label}
                 title={s.label}
                 aria-pressed={selected}
-                className="w-11 h-11 rounded-lg flex items-center justify-center transition-all"
+                className="w-11 h-11 rounded-xl flex items-center justify-center transition-all"
                 style={
                   selected
                     ? {
-                        border: "1px solid #4338CA",
-                        background: "rgba(67,56,202,0.15)",
-                        color: "#a5b4fc",
+                        border: "1.5px solid #F39EB6",
+                        background: "#FFE4EF",
+                        color: "#F39EB6",
                       }
                     : {
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        background: "#1a1a2e",
-                        color: "#9595a8",
+                        border: "1.5px solid #F5D5E0",
+                        background: "white",
+                        color: "#9CA3AF",
                       }
                 }
               >
@@ -128,7 +125,7 @@ export default function DotControls() {
       {/* Character input */}
       {dotConfig.shape === "character" && (
         <div>
-          <label className="block text-[11px] uppercase mb-2 text-[#9595a8] tracking-[0.08em]">
+          <label className="block text-[11px] uppercase mb-2 text-[#64748b] tracking-[0.08em]">
             Character
           </label>
           <input
@@ -136,7 +133,7 @@ export default function DotControls() {
             value={dotConfig.character}
             onChange={(e) => dispatch(setCharacter(e.target.value))}
             placeholder="A"
-            className="w-full px-3 py-2 rounded-lg text-[14px] text-[#e2e2e8] text-center outline-none transition-colors bg-[#1a1a2e] border border-white/[0.08] focus:border-[#4338CA]"
+            className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#F5D5E0] focus:border-[#F39EB6]"
           />
         </div>
       )}
@@ -144,8 +141,8 @@ export default function DotControls() {
       {/* Count */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Count</label>
-          <span className="text-[12px] tabular-nums text-[#9595a8]">{dotConfig.count}</span>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Count</label>
+          <span className="text-[12px] tabular-nums text-[#64748b]">{dotConfig.count}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[dotConfig.count]} onValueChange={(v) => dispatch(setDotCount(v[0]))} />
       </div>
@@ -153,8 +150,8 @@ export default function DotControls() {
       {/* Size */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Size</label>
-          <span className="text-[12px] tabular-nums text-[#9595a8]">{Math.round(dotConfig.size * 2)}</span>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Size</label>
+          <span className="text-[12px] tabular-nums text-[#64748b]">{Math.round(dotConfig.size * 2)}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[Math.round(dotConfig.size * 2)]} onValueChange={(v) => dispatch(setDotSize(v[0] / 2))} />
       </div>
@@ -162,8 +159,8 @@ export default function DotControls() {
       {/* Variance */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Variance</label>
-          <span className="text-[12px] tabular-nums text-[#9595a8]">{dotConfig.variance}</span>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Variance</label>
+          <span className="text-[12px] tabular-nums text-[#64748b]">{dotConfig.variance}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[dotConfig.variance]} onValueChange={(v) => dispatch(setDotVariance(v[0]))} />
       </div>
@@ -171,15 +168,15 @@ export default function DotControls() {
       {/* Opacity */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Opacity</label>
-          <span className="text-[12px] tabular-nums text-[#9595a8]">{dotConfig.opacity}</span>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Opacity</label>
+          <span className="text-[12px] tabular-nums text-[#64748b]">{dotConfig.opacity}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[dotConfig.opacity]} onValueChange={(v) => dispatch(setDotOpacity(v[0]))} />
       </div>
 
       {/* Color */}
       <div className="flex flex-col gap-3">
-        <label className="text-[11px] uppercase text-[#9595a8] tracking-[0.08em]">Color</label>
+        <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Color</label>
 
         {/* Mode selector */}
         <div className="grid grid-cols-4 gap-1.5">
@@ -199,15 +196,13 @@ export default function DotControls() {
                   dispatch(setDotColorMode(mode));
                   setPickerOpen(null);
                 }}
-                className="py-1.5 rounded-md text-[11px] font-medium transition-colors"
+                className="py-1.5 rounded-lg text-[11px] font-medium transition-colors"
                 style={{
-                  color: selected ? "#a5b4fc" : "#9595a8",
-                  background: selected
-                    ? "rgba(67,56,202,0.2)"
-                    : "rgba(255,255,255,0.06)",
+                  color: selected ? "#F39EB6" : "#64748b",
+                  background: selected ? "#FFE4EF" : "#FFF0F5",
                   boxShadow: selected
-                    ? "rgba(67,56,202,0.9) 0px 0px 0px 1px"
-                    : "rgba(255,255,255,0.08) 0px 0px 0px 1px",
+                    ? "#F39EB6 0px 0px 0px 1.5px"
+                    : "#F5D5E0 0px 0px 0px 1px",
                 }}
               >
                 {labels[mode]}
@@ -235,8 +230,8 @@ export default function DotControls() {
                     style={{
                       backgroundColor: c.value,
                       boxShadow: selected
-                        ? "rgba(67,56,202,0.9) 0px 0px 0px 2px, rgba(67,56,202,0.25) 0px 0px 0px 4px"
-                        : "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                        ? "#F39EB6 0px 0px 0px 2px, rgba(243,158,182,0.25) 0px 0px 0px 4px"
+                        : "rgba(0,0,0,0.08) 0px 0px 0px 1px",
                     }}
                   />
                 );
@@ -249,8 +244,8 @@ export default function DotControls() {
                 style={{
                   background: "conic-gradient(from 0deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
                   boxShadow: isCustomSingleColor || pickerOpen === "single"
-                    ? "rgba(67,56,202,0.9) 0px 0px 0px 2px, rgba(67,56,202,0.25) 0px 0px 0px 4px"
-                    : "rgba(255,255,255,0.15) 0px 0px 0px 1px",
+                    ? "#F39EB6 0px 0px 0px 2px, rgba(243,158,182,0.25) 0px 0px 0px 4px"
+                    : "rgba(0,0,0,0.08) 0px 0px 0px 1px",
                 }}
               />
             </div>
@@ -275,12 +270,10 @@ export default function DotControls() {
                   onClick={() => dispatch(setDotPaletteId(preset.id))}
                   className="flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all"
                   style={{
-                    background: selected
-                      ? "rgba(67,56,202,0.15)"
-                      : "rgba(255,255,255,0.04)",
+                    background: selected ? "#FFE4EF" : "white",
                     boxShadow: selected
-                      ? "rgba(67,56,202,0.9) 0px 0px 0px 1px"
-                      : "rgba(255,255,255,0.08) 0px 0px 0px 1px",
+                      ? "#F39EB6 0px 0px 0px 1.5px"
+                      : "#F5D5E0 0px 0px 0px 1px",
                   }}
                 >
                   <div className="flex gap-1">
@@ -294,7 +287,7 @@ export default function DotControls() {
                   </div>
                   <span
                     className="text-[12px]"
-                    style={{ color: selected ? "#a5b4fc" : "#9595a8" }}
+                    style={{ color: selected ? "#F39EB6" : "#64748b" }}
                   >
                     {preset.label}
                   </span>
@@ -320,15 +313,13 @@ export default function DotControls() {
                     key={dir}
                     type="button"
                     onClick={() => dispatch(setDotGradientDirection(dir))}
-                    className="flex-1 py-1.5 rounded-md text-[11px] font-medium transition-colors"
+                    className="flex-1 py-1.5 rounded-lg text-[11px] font-medium transition-colors"
                     style={{
-                      color: sel ? "#a5b4fc" : "#9595a8",
-                      background: sel
-                        ? "rgba(67,56,202,0.2)"
-                        : "rgba(255,255,255,0.06)",
+                      color: sel ? "#F39EB6" : "#64748b",
+                      background: sel ? "#FFE4EF" : "#FFF0F5",
                       boxShadow: sel
-                        ? "rgba(67,56,202,0.9) 0px 0px 0px 1px"
-                        : "rgba(255,255,255,0.08) 0px 0px 0px 1px",
+                        ? "#F39EB6 0px 0px 0px 1.5px"
+                        : "#F5D5E0 0px 0px 0px 1px",
                     }}
                   >
                     {labels[dir]}
@@ -348,17 +339,17 @@ export default function DotControls() {
                     onClick={() => setPickerOpen((v) => (v === key ? null : key))}
                     className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
+                      background: "white",
                       boxShadow: isOpen
-                        ? "rgba(67,56,202,0.9) 0px 0px 0px 1px"
-                        : "rgba(255,255,255,0.08) 0px 0px 0px 1px",
+                        ? "#F39EB6 0px 0px 0px 1.5px"
+                        : "#F5D5E0 0px 0px 0px 1px",
                     }}
                   >
                     <div
                       className="w-4 h-4 rounded-full shrink-0"
                       style={{ backgroundColor: color }}
                     />
-                    <span className="text-[11px] text-[#9595a8]">{label}</span>
+                    <span className="text-[11px] text-[#64748b]">{label}</span>
                   </button>
                 );
               })}

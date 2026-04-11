@@ -43,14 +43,14 @@ export default function HomePage() {
         imageSrc="/feature-paper.png"
         imageAlt="Paper texture selection"
         reverse
-        blobColor="#CCFBF1"
+        blobColor="#B8DB80"
       />
       <FeatureShowcase
         heading="Find the Perfect Dot Pattern"
         description="Fine-tune every detail of your dot decoration. Adjust density, size, and spread to create exactly the look you want. Whether you prefer a subtle scattered effect or bold dotted coverage, the controls are intuitive and the results are always beautiful."
         imageSrc="/feature-dots.png"
         imageAlt="Dot pattern customization"
-        blobColor="#FEF3C7"
+        blobColor="#FFE4EF"
       />
 <FeaturesSection />
       <CtaSection />

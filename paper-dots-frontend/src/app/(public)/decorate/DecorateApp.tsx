@@ -23,9 +23,9 @@ const DecorateCanvas = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="w-full aspect-square rounded-xl bg-[#232336]"
+        className="w-full aspect-square rounded-xl bg-[#FFF0F5]"
         style={{
-          boxShadow: "rgba(67, 56, 202, 0.15) 0px 0px 0px 1px",
+          boxShadow: "rgba(243, 158, 182, 0.25) 0px 0px 0px 1px",
         }}
       />
     ),
@@ -59,11 +59,11 @@ export default function DecorateApp() {
   }
 
   return (
-    <div className="theme-dark h-[calc(100vh-56px)] overflow-hidden flex bg-[#1e1e2e]">
+    <div className="h-[calc(100vh-56px)] overflow-hidden flex bg-[#FFF7FA]">
       {/* Left: icon toolbar */}
       <div
-        className="shrink-0 w-14 flex flex-col items-center py-3 gap-1 bg-[#171725]"
-        style={{ borderRight: "1px solid rgba(255,255,255,0.08)" }}
+        className="shrink-0 w-14 flex flex-col items-center py-3 gap-1 bg-white"
+        style={{ borderRight: "1px solid #F5D5E0" }}
       >
         {TOOLS.map(({ id, icon: Icon, label }) => {
           const isActive = activePanel === id;
@@ -73,24 +73,21 @@ export default function DecorateApp() {
               type="button"
               onClick={() => togglePanel(id)}
               title={label}
-              className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
               style={{
-                background: isActive
-                  ? "rgba(67, 56, 202, 0.2)"
-                  : "transparent",
-                color: isActive ? "#a5b4fc" : "#9595a8",
+                background: isActive ? "#FFE4EF" : "transparent",
+                color: isActive ? "#F39EB6" : "#9CA3AF",
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.background =
-                    "rgba(255,255,255,0.06)";
-                  e.currentTarget.style.color = "#e2e2e8";
+                  e.currentTarget.style.background = "#FFF0F5";
+                  e.currentTarget.style.color = "#F39EB6";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = "#9595a8";
+                  e.currentTarget.style.color = "#9CA3AF";
                 }
               }}
             >
@@ -103,13 +100,13 @@ export default function DecorateApp() {
       {/* Expandable panel */}
       {activePanel && (
         <div
-          className="shrink-0 w-72 flex flex-col bg-[#232336] overflow-hidden"
-          style={{ borderRight: "1px solid rgba(255,255,255,0.08)" }}
+          className="shrink-0 w-72 flex flex-col bg-white overflow-hidden"
+          style={{ borderRight: "1px solid #F5D5E0" }}
         >
           {/* Panel header */}
           <div
-            className="shrink-0 px-4 py-3 text-[13px] font-medium text-[#e2e2e8]"
-            style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+            className="shrink-0 px-4 py-3 text-[13px] font-medium text-[#1a1a2e]"
+            style={{ borderBottom: "1px solid #F5D5E0" }}
           >
             {TOOLS.find((t) => t.id === activePanel)?.label}
           </div>
