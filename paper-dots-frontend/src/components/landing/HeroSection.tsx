@@ -37,27 +37,27 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 pt-8 pb-20 overflow-hidden bg-[#FFF7FA]">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 pt-8 pb-20 overflow-hidden bg-[#F8FCF2]">
       {/* Decorative blobs */}
       <DecorativeBlob
-        color="#FFE4EF"
+        color="#E8F5D2"
         size={400}
         className="absolute -top-20 -right-20 opacity-80"
       />
       <DecorativeBlob
-        color="#FFE4EF"
+        color="#E8F5D2"
         size={200}
         className="absolute bottom-40 left-10 opacity-60"
       />
 
       {/* Dot pattern - top right */}
       <div className="absolute top-8 right-8 w-[120px] h-[80px] opacity-40">
-        <DotPattern color="#F39EB6" dotSize={3} spacing={14} />
+        <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
       </div>
 
       {/* Dot pattern - bottom left */}
       <div className="absolute bottom-20 left-20 w-[140px] h-[100px] opacity-30">
-        <DotPattern color="#F39EB6" dotSize={3} spacing={14} />
+        <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
       </div>
 
       <motion.div
@@ -99,7 +99,7 @@ export default function HeroSection() {
                 <motion.button
                   key="cta"
                   onClick={handleEnter}
-                  className="bg-[#F39EB6] text-white text-[15px] font-medium px-7 py-3 rounded-full cursor-pointer hover:bg-[#E8809E] transition-colors"
+                  className="bg-[#B8DB80] text-white text-[15px] font-medium px-7 py-3 rounded-full cursor-pointer hover:bg-[#8BBF52] transition-colors"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
                   exit={{ opacity: 0, scale: 0.92 }}
@@ -114,7 +114,7 @@ export default function HeroSection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="flex items-center justify-center gap-1.5 bg-[#F39EB6] px-7 py-3 rounded-full"
+                  className="flex items-center justify-center gap-1.5 bg-[#B8DB80] px-7 py-3 rounded-full"
                   style={{ minWidth: "120px" }}
                 >
                   {[0, 1, 2].map((i) => (
@@ -138,7 +138,7 @@ export default function HeroSection() {
         >
           {/* Dot pattern behind image */}
           <div className="absolute -bottom-6 left-0 w-[100px] h-[80px] opacity-30">
-            <DotPattern color="#F39EB6" dotSize={3} spacing={14} />
+            <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
           </div>
 
           <div

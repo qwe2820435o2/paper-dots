@@ -28,7 +28,7 @@ export default function FeatureShowcase({
   imageSrc,
   imageAlt,
   reverse = false,
-  blobColor = "#FFE4EF",
+  blobColor = "#E8F5D2",
 }: FeatureShowcaseProps) {
   return (
     <section className="bg-white px-5 sm:px-8 py-20 sm:py-28">

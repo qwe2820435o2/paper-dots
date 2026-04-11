@@ -41,7 +41,7 @@ export default function LayoutPicker() {
             onChange={(e) =>
               dispatch(setLayoutType(e.target.value as LayoutType))
             }
-            className="w-full appearance-none px-3 py-2 pr-8 rounded-lg text-[13px] text-[#1a1a2e] outline-none transition-colors cursor-pointer bg-white border border-[#F5D5E0] focus:border-[#F39EB6]"
+            className="w-full appearance-none px-3 py-2 pr-8 rounded-lg text-[13px] text-[#1a1a2e] outline-none transition-colors cursor-pointer bg-white border border-[#D2EAAA] focus:border-[#B8DB80]"
           >
             {LAYOUT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>

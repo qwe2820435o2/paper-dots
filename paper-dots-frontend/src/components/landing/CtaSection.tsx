@@ -19,10 +19,10 @@ export default function CtaSection() {
     <section className="relative bg-white px-5 sm:px-8 py-24 sm:py-32 overflow-hidden">
       {/* Dot pattern decoration */}
       <div className="absolute top-10 right-10 w-[120px] h-[80px] opacity-20">
-        <DotPattern color="#F39EB6" dotSize={3} spacing={14} />
+        <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
       </div>
       <div className="absolute bottom-10 left-10 w-[100px] h-[60px] opacity-15">
-        <DotPattern color="#F39EB6" dotSize={3} spacing={14} />
+        <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
       </div>
 
       <div className="max-w-[1200px] mx-auto border-t border-slate-200">
@@ -57,7 +57,7 @@ export default function CtaSection() {
                 <motion.button
                   key="cta"
                   onClick={handleEnter}
-                  className="bg-[#F39EB6] text-white text-[15px] font-medium px-8 py-3.5 rounded-full cursor-pointer hover:bg-[#E8809E] transition-colors"
+                  className="bg-[#B8DB80] text-white text-[15px] font-medium px-8 py-3.5 rounded-full cursor-pointer hover:bg-[#8BBF52] transition-colors"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
                   exit={{ opacity: 0, scale: 0.92 }}

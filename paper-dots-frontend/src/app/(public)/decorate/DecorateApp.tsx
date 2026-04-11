@@ -23,9 +23,9 @@ const DecorateCanvas = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="w-full aspect-square rounded-xl bg-[#FFF0F5]"
+        className="w-full aspect-square rounded-xl bg-[#F4FAE8]"
         style={{
-          boxShadow: "rgba(243, 158, 182, 0.25) 0px 0px 0px 1px",
+          boxShadow: "rgba(184, 219, 128, 0.25) 0px 0px 0px 1px",
         }}
       />
     ),
@@ -63,11 +63,11 @@ export default function DecorateApp() {
   }
 
   return (
-    <div className="h-[calc(100vh-56px)] overflow-hidden flex bg-[#FFF7FA]">
+    <div className="h-[calc(100vh-56px)] overflow-hidden flex bg-[#F8FCF2]">
       {/* Left: icon toolbar */}
       <div
         className="shrink-0 w-16 flex flex-col items-center py-3 gap-1 bg-white"
-        style={{ borderRight: "1px solid #F5D5E0" }}
+        style={{ borderRight: "1px solid #D2EAAA" }}
       >
         {TOOLS.map(({ id, icon: Icon, label }) => {
           const isActive = activePanel === id;
@@ -78,13 +78,13 @@ export default function DecorateApp() {
               onClick={() => togglePanel(id)}
               className="w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors"
               style={{
-                background: isActive ? "#FFE4EF" : "transparent",
-                color: isActive ? "#F39EB6" : "#9CA3AF",
+                background: isActive ? "#E8F5D2" : "transparent",
+                color: isActive ? "#B8DB80" : "#9CA3AF",
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.background = "#FFF0F5";
-                  e.currentTarget.style.color = "#F39EB6";
+                  e.currentTarget.style.background = "#F4FAE8";
+                  e.currentTarget.style.color = "#B8DB80";
                 }
               }}
               onMouseLeave={(e) => {
@@ -105,12 +105,12 @@ export default function DecorateApp() {
       {activePanel && (
         <div
           className="shrink-0 w-72 flex flex-col bg-white overflow-hidden"
-          style={{ borderRight: "1px solid #F5D5E0" }}
+          style={{ borderRight: "1px solid #D2EAAA" }}
         >
           {/* Panel header */}
           <div
             className="shrink-0 px-4 py-3 text-[13px] font-medium text-[#1a1a2e]"
-            style={{ borderBottom: "1px solid #F5D5E0" }}
+            style={{ borderBottom: "1px solid #D2EAAA" }}
           >
             {TOOLS.find((t) => t.id === activePanel)?.label}
           </div>

@@ -6,7 +6,7 @@ interface DecorativeBlobProps {
 
 export default function DecorativeBlob({
   className = "",
-  color = "#FFE4EF",
+  color = "#E8F5D2",
   size = 300,
 }: DecorativeBlobProps) {
   return (

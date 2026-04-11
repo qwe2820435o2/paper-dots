@@ -84,7 +84,7 @@ export default function PrivacyPage() {
                   If you have questions about this Privacy Policy, please reach out at{" "}
                   <a
                     href="mailto:support@paperdots.app"
-                    className="text-[#F39EB6] hover:text-[#E8809E] transition-colors"
+                    className="text-[#B8DB80] hover:text-[#8BBF52] transition-colors"
                   >
                     support@paperdots.app
                   </a>

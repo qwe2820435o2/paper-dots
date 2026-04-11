@@ -125,24 +125,24 @@ export default function PhotoUploader({
                 className="rounded-xl cursor-pointer flex flex-col items-center justify-center gap-2 transition-all duration-150 active:scale-[0.97] select-none px-4 py-3"
                 style={{
                     border: dragOver
-                        ? "1.5px solid #F39EB6"
-                        : "1.5px dashed #F5D5E0",
+                        ? "1.5px solid #B8DB80"
+                        : "1.5px dashed #D2EAAA",
                     background: dragOver
-                        ? "#FFF0F5"
+                        ? "#F4FAE8"
                         : "white",
                     boxShadow: dragOver
-                        ? "rgba(243, 158, 182, 0.15) 0px 0px 20px 0px"
+                        ? "rgba(184, 219, 128, 0.15) 0px 0px 20px 0px"
                         : "none",
                 }}
                 onMouseEnter={(e) => {
                     if (!dragOver) {
-                        (e.currentTarget as HTMLElement).style.borderColor = "#F39EB6";
-                        (e.currentTarget as HTMLElement).style.background = "#FFF7FA";
+                        (e.currentTarget as HTMLElement).style.borderColor = "#B8DB80";
+                        (e.currentTarget as HTMLElement).style.background = "#F8FCF2";
                     }
                 }}
                 onMouseLeave={(e) => {
                     if (!dragOver) {
-                        (e.currentTarget as HTMLElement).style.borderColor = "#F5D5E0";
+                        (e.currentTarget as HTMLElement).style.borderColor = "#D2EAAA";
                         (e.currentTarget as HTMLElement).style.background = "white";
                     }
                 }}
@@ -156,7 +156,7 @@ export default function PhotoUploader({
 
                 <div
                     className="w-[38px] h-[38px] rounded-full flex items-center justify-center transition-all duration-150"
-                    style={{ background: dragOver ? "#FFE4EF" : "#FFF0F5" }}
+                    style={{ background: dragOver ? "#E8F5D2" : "#F4FAE8" }}
                 >
                     <Upload className="w-4 h-4 text-[#1a1a2e]" strokeWidth={1.5} />
                 </div>
@@ -172,7 +172,7 @@ export default function PhotoUploader({
                         {["PNG", "JPG", "WEBP"].map((fmt) => (
                             <span
                                 key={fmt}
-                                className="px-2 py-0.5 rounded-full text-[10px] bg-[#FFF0F5] text-[#9CA3AF] tracking-[0.04em]"
+                                className="px-2 py-0.5 rounded-full text-[10px] bg-[#F4FAE8] text-[#9CA3AF] tracking-[0.04em]"
                             >
                                 {fmt}
                             </span>
@@ -188,13 +188,13 @@ export default function PhotoUploader({
             {...commonDragHandlers}
             className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-150 shrink-0"
             style={{
-                borderBottom: "1px solid #F5D5E0",
-                borderLeft: "3px solid #F39EB6",
-                background: dragOver ? "#FFF0F5" : "transparent",
+                borderBottom: "1px solid #D2EAAA",
+                borderLeft: "3px solid #B8DB80",
+                background: dragOver ? "#F4FAE8" : "transparent",
             }}
             onMouseEnter={(e) => {
                 if (!dragOver) {
-                    (e.currentTarget as HTMLElement).style.background = "#FFF7FA";
+                    (e.currentTarget as HTMLElement).style.background = "#F8FCF2";
                 }
             }}
             onMouseLeave={(e) => {

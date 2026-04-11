@@ -19,7 +19,7 @@ const styles = [
     title: "Pattern",
     description:
       "Combine paper textures with artistic dot patterns for a one-of-a-kind decorative effect.",
-    color: "#FFE4EF",
+    color: "#E8F5D2",
   },
 ];
 
@@ -80,7 +80,7 @@ export default function StylesGrid() {
                   {Array.from({ length: 9 }).map((_, i) => (
                     <div
                       key={i}
-                      className="w-8 h-8 rounded-lg border-2 border-[#F39EB6]/40"
+                      className="w-8 h-8 rounded-lg border-2 border-[#B8DB80]/40"
                     />
                   ))}
                 </div>
