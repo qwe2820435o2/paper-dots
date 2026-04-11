@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { Upload } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
-import { setPhotoUrl, setSolidColor, setBackgroundMode } from "@/store/slices/decorateSlice";
+import { setPhotoUrl, setSolidColor, setBackgroundMode, setDotShape, setDotSize, setDotVariance, setDotOpacity } from "@/store/slices/decorateSlice";
 
 function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
     const rf = r / 255, gf = g / 255, bf = b / 255;
@@ -96,6 +96,10 @@ export default function PhotoUploader({
                 dispatch(setBackgroundMode("solid"));
                 dispatch(setSolidColor(color));
                 dispatch(setPhotoUrl(url));
+                dispatch(setDotShape("snowflake"));
+                dispatch(setDotSize(50));
+                dispatch(setDotVariance(23));
+                dispatch(setDotOpacity(66));
             });
         },
         [dispatch],
