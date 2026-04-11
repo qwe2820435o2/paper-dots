@@ -60,7 +60,7 @@ export default function PrivacyPage() {
         <h1
           className="text-[42px] sm:text-[62px] font-medium text-[#1a1a2e] mb-2"
           style={{
-            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontFamily: "var(--font-quicksand), sans-serif",
             letterSpacing: "-3px",
             lineHeight: "1.0",
           }}

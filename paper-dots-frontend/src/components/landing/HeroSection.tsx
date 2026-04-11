@@ -75,7 +75,7 @@ export default function HeroSection() {
           <h1
             className="text-[48px] sm:text-[64px] lg:text-[80px] font-medium text-[#1a1a2e]"
             style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontFamily: "var(--font-quicksand), sans-serif",
               letterSpacing: "-3px",
               lineHeight: "1.0",
               fontWeight: 500,

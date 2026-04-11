@@ -1,17 +1,17 @@
-import { Inter, Space_Grotesk, Azeret_Mono } from "next/font/google";
+import { Nunito, Quicksand, Azeret_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Providers from "@/components/common/Providers";
 
-const inter = Inter({
-  variable: "--font-inter",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
@@ -79,7 +79,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} ${azeretMono.variable} antialiased`}>
+      <body className={`${nunito.variable} ${quicksand.variable} ${azeretMono.variable} antialiased`}>
         <Providers>
           {children}
           <Toaster position="top-center" richColors closeButton />

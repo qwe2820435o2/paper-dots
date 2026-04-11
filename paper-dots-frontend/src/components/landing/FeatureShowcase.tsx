@@ -81,7 +81,7 @@ export default function FeatureShowcase({
             <h2
               className="text-[36px] sm:text-[48px] font-medium text-[#1a1a2e]"
               style={{
-                fontFamily: "var(--font-space-grotesk), sans-serif",
+                fontFamily: "var(--font-quicksand), sans-serif",
                 letterSpacing: "-2px",
                 lineHeight: "1.1",
               }}

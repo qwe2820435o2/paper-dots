@@ -36,7 +36,7 @@ export default function CtaSection() {
           <h2
             className="text-[42px] sm:text-[56px] lg:text-[72px] font-medium text-[#1a1a2e]"
             style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontFamily: "var(--font-quicksand), sans-serif",
               letterSpacing: "-3px",
               lineHeight: "1.0",
               fontWeight: 500,
