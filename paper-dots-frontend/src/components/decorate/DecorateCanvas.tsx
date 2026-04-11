@@ -190,6 +190,12 @@ function hexToRgb(hex: string): [number, number, number] {
     return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 }
 
+function getContrastColor(hex: string): string {
+    const [r, g, b] = hexToRgb(hex);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5 ? "#1a1a2e" : "#ffffff";
+}
+
 function lerpColor(hex1: string, hex2: string, t: number): string {
     const [r1, g1, b1] = hexToRgb(hex1);
     const [r2, g2, b2] = hexToRgb(hex2);
@@ -535,6 +541,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
     }, [showDots, seed, dotConfig, canvasW, canvasH, cellW, cellH, layout.type]);
 
     const autoBgColor = getBgRepresentativeColor(background);
+    const autoBorderDotColor = getContrastColor(autoBgColor);
     const dotsW = layout.type === "border" ? canvasW : cellW;
     const dotsH = layout.type === "border" ? canvasH : cellH;
 
@@ -684,7 +691,7 @@ const DecorateCanvas = forwardRef<Konva.Stage, Props>(function DecorateCanvas(
                                         key={i}
                                         dot={d}
                                         shape={dotConfig.shape}
-                                        color={resolveDotColor(d, dotConfig, autoBgColor, dotsW, dotsH)}
+                                        color={resolveDotColor(d, dotConfig, autoBorderDotColor, dotsW, dotsH)}
                                         character={dotConfig.character}
                                         opacity={dotConfig.opacity / 100}
                                     />
