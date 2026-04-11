@@ -54,6 +54,10 @@ export default function DecorateApp() {
     };
   }, []);
 
+  useEffect(() => {
+    if (photoUrl) setActivePanel("layout");
+  }, [photoUrl]);
+
   function togglePanel(panel: Panel) {
     setActivePanel((prev) => (prev === panel ? null : panel));
   }
