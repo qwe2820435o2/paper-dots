@@ -190,7 +190,7 @@ export default function HeroSection() {
             }}
           >
             <Image
-              src="/hero-before-after.png"
+              src="/hero-before-after.webp"
               alt="Mochipic — before and after adding dot decorations to a photo"
               width={2752}
               height={1536}

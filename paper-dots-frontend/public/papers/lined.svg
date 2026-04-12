@@ -1,17 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
-  <rect width="600" height="600" fill="#fafafa"/>
-  <g stroke="#1a1a1a" stroke-width="1.2" opacity="0.22">
-    <line x1="0" y1="48" x2="600" y2="48"/>
-    <line x1="0" y1="96" x2="600" y2="96"/>
-    <line x1="0" y1="144" x2="600" y2="144"/>
-    <line x1="0" y1="192" x2="600" y2="192"/>
-    <line x1="0" y1="240" x2="600" y2="240"/>
-    <line x1="0" y1="288" x2="600" y2="288"/>
-    <line x1="0" y1="336" x2="600" y2="336"/>
-    <line x1="0" y1="384" x2="600" y2="384"/>
-    <line x1="0" y1="432" x2="600" y2="432"/>
-    <line x1="0" y1="480" x2="600" y2="480"/>
-    <line x1="0" y1="528" x2="600" y2="528"/>
-    <line x1="0" y1="576" x2="600" y2="576"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600"><path fill="#fafafa" d="M0 0h600v600H0z"/><path stroke="#1a1a1a" stroke-width="1.2" d="M0 48h600M0 96h600M0 144h600M0 192h600M0 240h600M0 288h600M0 336h600M0 384h600M0 432h600M0 480h600M0 528h600M0 576h600" opacity=".22"/></svg>
