@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import HeroSection from "@/components/landing/HeroSection";
 import FeatureShowcase from "@/components/landing/FeatureShowcase";
 import FeaturesSection from "@/components/landing/FeaturesSection";
+import WhyLoveSection from "@/components/landing/WhyLoveSection";
 import CtaSection from "@/components/landing/CtaSection";
 
 const PAGE_TITLE = "Free Dot Image Generator | Automatic Photo Collage Maker with Polka Dot Pattern";
@@ -67,7 +68,8 @@ export default function HomePage() {
         imageAlt="High-vibe moodboards featuring polka dots pattern"
         blobColor="#E8F5D2"
       />
-<FeaturesSection />
+      <FeaturesSection />
+      <WhyLoveSection />
       <CtaSection />
     </>
   );
