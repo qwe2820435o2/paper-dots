@@ -69,7 +69,7 @@ export default function TermsPage() {
                   key={item}
                   className="flex items-start gap-3 text-[15px] leading-[1.7] text-[#64748b]"
                 >
-                  <span className="mt-[9px] shrink-0 w-1.5 h-1.5 rounded-full bg-[#B8DB80]/40" />
+                  <span className="mt-[9px] shrink-0 w-1.5 h-1.5 rounded-full bg-[#C5E89A]/40" />
                   {item}
                 </li>
               ))}
@@ -130,7 +130,7 @@ export default function TermsPage() {
               If you have questions about these Terms of Service, please contact us at{" "}
               <a
                 href="mailto:support@paperdots.app"
-                className="text-[#B8DB80] hover:text-[#8BBF52] transition-colors"
+                className="text-[#C5E89A] hover:text-[#9ED06C] transition-colors"
               >
                 support@paperdots.app
               </a>

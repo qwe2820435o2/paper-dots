@@ -57,7 +57,7 @@ export default function FeatureShowcase({
               className="relative z-10 rounded-xl overflow-hidden"
               style={{
                 boxShadow:
-                  "rgba(0, 0, 0, 0.08) 0px 4px 24px, rgba(0, 0, 0, 0.04) 0px 1px 2px",
+                  "rgba(197, 232, 154, 0.28) 0px 4px 24px, rgba(197, 232, 154, 0.14) 0px 1px 2px",
               }}
             >
               <Image

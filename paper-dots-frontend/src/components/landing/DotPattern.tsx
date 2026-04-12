@@ -7,7 +7,7 @@ interface DotPatternProps {
 
 export default function DotPattern({
   className = "",
-  color = "#B8DB80",
+  color = "#C5E89A",
   dotSize = 3,
   spacing = 16,
 }: DotPatternProps) {

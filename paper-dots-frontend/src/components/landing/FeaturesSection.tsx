@@ -75,7 +75,7 @@ export default function FeaturesSection() {
             <motion.div
               key={step.number}
               variants={item}
-              className="rounded-2xl overflow-hidden flex flex-col bg-white border border-slate-200 shadow-sm"
+              className="rounded-2xl overflow-hidden flex flex-col bg-white border border-[#E8F5D2] shadow-[0_4px_24px_rgba(197,232,154,0.18)]"
             >
               {/* Image placeholder */}
               <div className="w-full aspect-[4/3] bg-slate-100 flex items-center justify-center">

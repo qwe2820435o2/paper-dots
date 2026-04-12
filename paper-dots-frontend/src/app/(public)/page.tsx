@@ -44,7 +44,7 @@ export default function HomePage() {
         imageSrc="/feature-paper.png"
         imageAlt="Create viral content with dot image generator"
         reverse
-        blobColor="#B8DB80"
+        blobColor="#C5E89A"
       />
       <FeatureShowcase
         heading="Personalized OOTD with an Automatic Photo Collage Maker"
@@ -59,7 +59,7 @@ export default function HomePage() {
         imageSrc="/feature-paper.png"
         imageAlt="Aesthetic edits with custom polka dot patterns"
         reverse
-        blobColor="#B8DB80"
+        blobColor="#C5E89A"
       />
       <FeatureShowcase
         heading="High-Vibe Moodboards featuring Polka Dots Pattern"

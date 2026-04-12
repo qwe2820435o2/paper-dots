@@ -43,7 +43,7 @@ export default function Header() {
           <div className="hidden md:flex items-center">
             <Link
               href="/decorate"
-              className="bg-[#B8DB80] text-white text-[14px] font-medium px-5 py-2 rounded-full hover:bg-[#8BBF52] transition-colors"
+              className="bg-[#C5E89A] text-white text-[14px] font-medium px-5 py-2 rounded-full hover:bg-[#9ED06C] transition-colors"
             >
               Get Started
             </Link>
@@ -76,7 +76,7 @@ export default function Header() {
             ))}
             <Link
               href="/decorate"
-              className="bg-[#B8DB80] text-white text-[14px] font-medium px-5 py-2.5 rounded-full text-center hover:bg-[#8BBF52] transition-colors"
+              className="bg-[#C5E89A] text-white text-[14px] font-medium px-5 py-2.5 rounded-full text-center hover:bg-[#9ED06C] transition-colors"
               onClick={() => setMenuOpen(false)}
             >
               Get Started

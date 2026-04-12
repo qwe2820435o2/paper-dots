@@ -57,7 +57,7 @@ function ColorRow({ label, isSet, color, open, onToggle, onChange }: ColorRowPro
         <button
           type="button"
           onClick={onToggle}
-          className="w-5 h-5 rounded-full border border-[#D2EAAA] transition-shadow hover:border-[#B8DB80]"
+          className="w-5 h-5 rounded-full border border-[#D2EAAA] transition-shadow hover:border-[#C5E89A]"
           style={{ background: isSet ? color : RAINBOW }}
         />
       </div>
@@ -99,9 +99,9 @@ export default function PaperPicker() {
               className="py-1.5 text-[11px] rounded-lg transition-colors"
               style={{
                 background: selected ? "#E8F5D2" : "#F4FAE8",
-                color: selected ? "#B8DB80" : "#64748b",
+                color: selected ? "#C5E89A" : "#64748b",
                 boxShadow: selected
-                  ? "#B8DB80 0px 0px 0px 1.5px"
+                  ? "#C5E89A 0px 0px 0px 1.5px"
                   : "#D2EAAA 0px 0px 0px 1px",
               }}
             >
@@ -169,7 +169,7 @@ export default function PaperPicker() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full aspect-square flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[#D2EAAA] transition-colors hover:border-[#B8DB80]"
+              className="w-full aspect-square flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[#D2EAAA] transition-colors hover:border-[#C5E89A]"
             >
               <Upload className="w-5 h-5 text-[#64748b]" />
               <span className="text-[11px] text-[#64748b]">Upload photo</span>

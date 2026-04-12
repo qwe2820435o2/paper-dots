@@ -52,12 +52,12 @@ export default function HeroSection() {
 
       {/* Dot pattern - top right */}
       <div className="absolute top-8 right-8 w-[120px] h-[80px] opacity-40">
-        <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
+        <DotPattern color="#C5E89A" dotSize={3} spacing={14} />
       </div>
 
       {/* Dot pattern - bottom left */}
       <div className="absolute bottom-20 left-20 w-[140px] h-[100px] opacity-30">
-        <DotPattern color="#B8DB80" dotSize={3} spacing={14} />
+        <DotPattern color="#C5E89A" dotSize={3} spacing={14} />
       </div>
 
       <motion.div
@@ -99,7 +99,7 @@ export default function HeroSection() {
                 <motion.button
                   key="cta"
                   onClick={handleEnter}
-                  className="bg-[#B8DB80] text-white text-[15px] font-medium px-7 py-3 rounded-full cursor-pointer hover:bg-[#8BBF52] transition-colors"
+                  className="bg-[#C5E89A] text-white text-[15px] font-medium px-7 py-3 rounded-full cursor-pointer hover:bg-[#9ED06C] transition-colors"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
                   exit={{ opacity: 0, scale: 0.92 }}
@@ -114,7 +114,7 @@ export default function HeroSection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="flex items-center justify-center gap-1.5 bg-[#B8DB80] px-7 py-3 rounded-full"
+                  className="flex items-center justify-center gap-1.5 bg-[#C5E89A] px-7 py-3 rounded-full"
                   style={{ minWidth: "120px" }}
                 >
                   {[0, 1, 2].map((i) => (
@@ -152,7 +152,7 @@ export default function HeroSection() {
           <div
             className="absolute -top-3 right-10 w-5 h-5 rounded-full z-20 pointer-events-none"
             style={{
-              backgroundColor: "#B8DB80",
+              backgroundColor: "#C5E89A",
               animation: "float 4s ease-in-out infinite",
               "--float-rot": "0deg",
             } as React.CSSProperties}
@@ -173,7 +173,7 @@ export default function HeroSection() {
           <div
             className="absolute -bottom-3 right-1/4 w-3 h-3 rounded-full z-20 pointer-events-none"
             style={{
-              backgroundColor: "#B8DB80",
+              backgroundColor: "#C5E89A",
               opacity: 0.6,
               animation: "float 6s ease-in-out infinite 1.5s",
               "--float-rot": "0deg",
@@ -187,7 +187,7 @@ export default function HeroSection() {
               padding: "10px 10px 34px 10px",
               transform: "rotate(-2deg)",
               boxShadow:
-                "rgba(0, 0, 0, 0.07) 0px 8px 32px, rgba(0, 0, 0, 0.04) 0px 2px 6px",
+                "rgba(197, 232, 154, 0.28) 0px 8px 32px, rgba(197, 232, 154, 0.14) 0px 2px 6px",
             }}
           >
             <Image

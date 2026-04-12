@@ -115,7 +115,7 @@ export default function WhyLoveSection() {
               <motion.div
                 key={feature.title}
                 variants={item}
-                className="rounded-3xl p-7 flex flex-col gap-4 bg-white border border-slate-200 hover:shadow-lg transition-shadow"
+                className="rounded-3xl p-7 flex flex-col gap-4 bg-white border border-[#E8F5D2] shadow-[0_4px_24px_rgba(197,232,154,0.18)] hover:shadow-[0_8px_32px_rgba(197,232,154,0.28)] transition-shadow"
               >
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center"

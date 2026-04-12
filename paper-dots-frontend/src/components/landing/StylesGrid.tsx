@@ -13,7 +13,7 @@ const styles = [
     title: "Scatter",
     description:
       "Randomly scattered dots for an organic, hand-sprinkled look that feels natural and playful.",
-    color: "#B8DB80",
+    color: "#C5E89A",
   },
   {
     title: "Pattern",
@@ -69,7 +69,7 @@ export default function StylesGrid() {
             <motion.div
               key={style.title}
               variants={item}
-              className="rounded-2xl overflow-hidden bg-white border border-slate-200 hover:shadow-lg transition-shadow"
+              className="rounded-2xl overflow-hidden bg-white border border-[#E8F5D2] shadow-[0_4px_24px_rgba(197,232,154,0.18)] hover:shadow-[0_8px_32px_rgba(197,232,154,0.28)] transition-shadow"
             >
               {/* Placeholder preview area */}
               <div
@@ -80,7 +80,7 @@ export default function StylesGrid() {
                   {Array.from({ length: 9 }).map((_, i) => (
                     <div
                       key={i}
-                      className="w-8 h-8 rounded-lg border-2 border-[#B8DB80]/40"
+                      className="w-8 h-8 rounded-lg border-2 border-[#C5E89A]/40"
                     />
                   ))}
                 </div>

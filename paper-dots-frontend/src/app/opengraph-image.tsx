@@ -36,7 +36,7 @@ export default async function OGImage() {
               width: d.size,
               height: d.size,
               borderRadius: "50%",
-              background: "#B8DB80",
+              background: "#C5E89A",
               opacity: d.opacity,
               display: "flex",
             }}
@@ -59,7 +59,7 @@ export default async function OGImage() {
               width: d.size,
               height: d.size,
               borderRadius: "50%",
-              background: "#B8DB80",
+              background: "#C5E89A",
               opacity: d.opacity,
               display: "flex",
             }}
@@ -170,8 +170,8 @@ export default async function OGImage() {
                   display: "flex",
                   padding: "8px 18px",
                   borderRadius: 999,
-                  background: "rgba(184,219,128,0.08)",
-                  color: "#B8DB80",
+                  background: "rgba(197,232,154,0.08)",
+                  color: "#C5E89A",
                   fontSize: 15,
                   fontWeight: 500,
                 }}
@@ -190,7 +190,7 @@ export default async function OGImage() {
             left: 0,
             right: 0,
             height: 6,
-            background: "#B8DB80",
+            background: "#C5E89A",
             display: "flex",
           }}
         />

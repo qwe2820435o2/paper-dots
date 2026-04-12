@@ -33,7 +33,7 @@ export default function ContactPage() {
           {/* Email */}
           <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
             <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-green-50">
-              <Mail className="w-4 h-4 text-[#B8DB80]" strokeWidth={1.8} />
+              <Mail className="w-4 h-4 text-[#C5E89A]" strokeWidth={1.8} />
             </div>
             <div>
               <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">
@@ -44,7 +44,7 @@ export default function ContactPage() {
               </p>
               <a
                 href="mailto:support@paperdots.app"
-                className="text-[14px] font-medium text-[#B8DB80] hover:text-[#8BBF52] transition-colors"
+                className="text-[14px] font-medium text-[#C5E89A] hover:text-[#9ED06C] transition-colors"
               >
                 support@paperdots.app
               </a>
@@ -54,7 +54,7 @@ export default function ContactPage() {
           {/* Feedback */}
           <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
             <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-green-50">
-              <MessageSquare className="w-4 h-4 text-[#B8DB80]" strokeWidth={1.8} />
+              <MessageSquare className="w-4 h-4 text-[#C5E89A]" strokeWidth={1.8} />
             </div>
             <div>
               <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">

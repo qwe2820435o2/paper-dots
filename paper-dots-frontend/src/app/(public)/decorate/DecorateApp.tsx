@@ -25,7 +25,7 @@ const DecorateCanvas = dynamic(
       <div
         className="w-full aspect-square rounded-xl bg-[#F4FAE8]"
         style={{
-          boxShadow: "rgba(184, 219, 128, 0.25) 0px 0px 0px 1px",
+          boxShadow: "rgba(197, 232, 154, 0.25) 0px 0px 0px 1px",
         }}
       />
     ),
@@ -79,12 +79,12 @@ export default function DecorateApp() {
               className="w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors"
               style={{
                 background: isActive ? "#E8F5D2" : "transparent",
-                color: isActive ? "#B8DB80" : "#9CA3AF",
+                color: isActive ? "#C5E89A" : "#9CA3AF",
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.background = "#F4FAE8";
-                  e.currentTarget.style.color = "#B8DB80";
+                  e.currentTarget.style.color = "#C5E89A";
                 }
               }}
               onMouseLeave={(e) => {

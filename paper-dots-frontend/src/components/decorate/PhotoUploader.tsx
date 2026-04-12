@@ -125,18 +125,18 @@ export default function PhotoUploader({
                 className="rounded-xl cursor-pointer flex flex-col items-center justify-center gap-2 transition-all duration-150 active:scale-[0.97] select-none px-4 py-3"
                 style={{
                     border: dragOver
-                        ? "1.5px solid #B8DB80"
+                        ? "1.5px solid #C5E89A"
                         : "1.5px dashed #D2EAAA",
                     background: dragOver
                         ? "#F4FAE8"
                         : "white",
                     boxShadow: dragOver
-                        ? "rgba(184, 219, 128, 0.15) 0px 0px 20px 0px"
+                        ? "rgba(197, 232, 154, 0.15) 0px 0px 20px 0px"
                         : "none",
                 }}
                 onMouseEnter={(e) => {
                     if (!dragOver) {
-                        (e.currentTarget as HTMLElement).style.borderColor = "#B8DB80";
+                        (e.currentTarget as HTMLElement).style.borderColor = "#C5E89A";
                         (e.currentTarget as HTMLElement).style.background = "#F8FCF2";
                     }
                 }}
@@ -189,7 +189,7 @@ export default function PhotoUploader({
             className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-150 shrink-0"
             style={{
                 borderBottom: "1px solid #D2EAAA",
-                borderLeft: "3px solid #B8DB80",
+                borderLeft: "3px solid #C5E89A",
                 background: dragOver ? "#F4FAE8" : "transparent",
             }}
             onMouseEnter={(e) => {

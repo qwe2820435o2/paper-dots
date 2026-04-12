@@ -86,7 +86,7 @@ export default function DotControls() {
               setSpinning(true);
             }}
             onAnimationEnd={() => setSpinning(false)}
-            className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#B8DB80] bg-[#E8F5D2] hover:bg-[#d5edba] text-[11px] font-medium"
+            className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#C5E89A] bg-[#E8F5D2] hover:bg-[#d5edba] text-[11px] font-medium"
           >
             <Shuffle className={`w-3.5 h-3.5 shrink-0 ${spinning ? "animate-spin-once" : ""}`} />
             Shuffle
@@ -111,9 +111,9 @@ export default function DotControls() {
                 style={
                   selected
                     ? {
-                        border: "1.5px solid #B8DB80",
+                        border: "1.5px solid #C5E89A",
                         background: "#E8F5D2",
-                        color: "#B8DB80",
+                        color: "#C5E89A",
                       }
                     : {
                         border: "1.5px solid #D2EAAA",
@@ -140,7 +140,7 @@ export default function DotControls() {
             value={dotConfig.character}
             onChange={(e) => dispatch(setCharacter(e.target.value))}
             placeholder="A"
-            className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#D2EAAA] focus:border-[#B8DB80]"
+            className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#D2EAAA] focus:border-[#C5E89A]"
           />
         </div>
       )}
@@ -205,10 +205,10 @@ export default function DotControls() {
                 }}
                 className="py-1.5 rounded-lg text-[11px] font-medium transition-colors"
                 style={{
-                  color: selected ? "#B8DB80" : "#64748b",
+                  color: selected ? "#C5E89A" : "#64748b",
                   background: selected ? "#E8F5D2" : "#F4FAE8",
                   boxShadow: selected
-                    ? "#B8DB80 0px 0px 0px 1.5px"
+                    ? "#C5E89A 0px 0px 0px 1.5px"
                     : "#D2EAAA 0px 0px 0px 1px",
                 }}
               >
@@ -237,7 +237,7 @@ export default function DotControls() {
                     style={{
                       backgroundColor: c.value,
                       boxShadow: selected
-                        ? "#B8DB80 0px 0px 0px 2px, rgba(184,219,128,0.25) 0px 0px 0px 4px"
+                        ? "#C5E89A 0px 0px 0px 2px, rgba(197,232,154,0.25) 0px 0px 0px 4px"
                         : "rgba(0,0,0,0.08) 0px 0px 0px 1px",
                     }}
                   />
@@ -251,7 +251,7 @@ export default function DotControls() {
                 style={{
                   background: "conic-gradient(from 0deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
                   boxShadow: isCustomSingleColor || pickerOpen === "single"
-                    ? "#B8DB80 0px 0px 0px 2px, rgba(184,219,128,0.25) 0px 0px 0px 4px"
+                    ? "#C5E89A 0px 0px 0px 2px, rgba(197,232,154,0.25) 0px 0px 0px 4px"
                     : "rgba(0,0,0,0.08) 0px 0px 0px 1px",
                 }}
               />
@@ -279,7 +279,7 @@ export default function DotControls() {
                   style={{
                     background: selected ? "#E8F5D2" : "white",
                     boxShadow: selected
-                      ? "#B8DB80 0px 0px 0px 1.5px"
+                      ? "#C5E89A 0px 0px 0px 1.5px"
                       : "#D2EAAA 0px 0px 0px 1px",
                   }}
                 >
@@ -294,7 +294,7 @@ export default function DotControls() {
                   </div>
                   <span
                     className="text-[12px]"
-                    style={{ color: selected ? "#B8DB80" : "#64748b" }}
+                    style={{ color: selected ? "#C5E89A" : "#64748b" }}
                   >
                     {preset.label}
                   </span>
@@ -322,10 +322,10 @@ export default function DotControls() {
                     onClick={() => dispatch(setDotGradientDirection(dir))}
                     className="flex-1 py-1.5 rounded-lg text-[11px] font-medium transition-colors"
                     style={{
-                      color: sel ? "#B8DB80" : "#64748b",
+                      color: sel ? "#C5E89A" : "#64748b",
                       background: sel ? "#E8F5D2" : "#F4FAE8",
                       boxShadow: sel
-                        ? "#B8DB80 0px 0px 0px 1.5px"
+                        ? "#C5E89A 0px 0px 0px 1.5px"
                         : "#D2EAAA 0px 0px 0px 1px",
                     }}
                   >
@@ -348,7 +348,7 @@ export default function DotControls() {
                     style={{
                       background: "white",
                       boxShadow: isOpen
-                        ? "#B8DB80 0px 0px 0px 1.5px"
+                        ? "#C5E89A 0px 0px 0px 1.5px"
                         : "#D2EAAA 0px 0px 0px 1px",
                     }}
                   >
