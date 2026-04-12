@@ -22,11 +22,11 @@ export default function Footer() {
               <Image
                 src="/logo.png"
                 alt="Mochipic"
-                width={24}
-                height={24}
+                width={44}
+                height={44}
                 className="rounded"
               />
-              <span className="text-[#1a1a2e] text-[15px] font-medium tracking-[-0.15px]">
+              <span className="text-[#1a1a2e] text-[24px] font-medium tracking-[-0.15px]">
                 Mochipic
               </span>
             </Link>

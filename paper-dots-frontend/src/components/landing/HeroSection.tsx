@@ -61,7 +61,7 @@ export default function HeroSection() {
       </div>
 
       <motion.div
-        className="relative z-10 max-w-[1200px] mx-auto w-full flex flex-col items-center gap-16 lg:gap-0 lg:grid lg:grid-cols-[2fr_3fr] lg:items-center"
+        className="relative z-10 max-w-[1200px] mx-auto w-full flex flex-col items-center gap-16 lg:gap-12 lg:grid lg:grid-cols-[1fr_1fr] lg:items-center"
         variants={container}
         initial="hidden"
         animate="show"
@@ -73,7 +73,7 @@ export default function HeroSection() {
         >
           {/* Headline */}
           <h1
-            className="text-[48px] sm:text-[64px] lg:text-[80px] font-medium text-[#1a1a2e]"
+            className="text-[40px] sm:text-[48px] lg:text-[56px] font-medium text-[#1a1a2e]"
             style={{
               fontFamily: "var(--font-quicksand), sans-serif",
               letterSpacing: "-3px",
@@ -81,15 +81,14 @@ export default function HeroSection() {
               fontWeight: 500,
             }}
           >
-            Decorate Your
+            Mochipic: Your Aesthetic
             <br />
-            Photos Instantly
+            Dot Image Generator
           </h1>
 
           {/* Sub-headline */}
           <p className="text-[17px] leading-[1.6] max-w-[420px] text-[#64748b]">
-            Our easy-to-use tool lets you add beautiful paper textures and
-            scattered dots to any photo. No sign-up required.
+            Create dreamy, &ldquo;Ins-style&rdquo; collages in seconds. Turn your memories into polka-dot masterpieces with the ultimate Automatic Photo Collage Maker.
           </p>
 
           {/* CTA */}
