@@ -90,7 +90,7 @@ export default async function OGImage() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${base}/feature-showcase-1.png`}
+              src={`${base}/hero-before-after.png`}
               alt=""
               width={488}
               height={274}
