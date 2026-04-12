@@ -23,7 +23,7 @@ const features: Feature[] = [
     icon: Sparkles,
     title: "Instant AI Color-Match",
     description:
-      "Stop stressing over color palettes. Mochipic automatically analyzes your images to generate a polka dot background that complements your photos effortlessly.",
+      "Stop stressing over color palettes. Dottypic automatically analyzes your images to generate a polka dot background that complements your photos effortlessly.",
     bubbleColor: "#E8F5D2",
   },
   {
@@ -98,7 +98,7 @@ export default function WhyLoveSection() {
               lineHeight: "1.1",
             }}
           >
-            Why You&rsquo;ll Love Mochipic?
+            Why You&rsquo;ll Love Dottypic?
           </h2>
         </motion.div>
 

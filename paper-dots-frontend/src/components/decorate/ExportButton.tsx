@@ -67,7 +67,7 @@ export default function ExportButton({ stageRef }: Props) {
         stage.scale({ x: prevScale, y: prevScale });
         const link = document.createElement("a");
         link.href = dataUrl;
-        link.download = `mochipic-${Date.now()}.png`;
+        link.download = `dottypic-${Date.now()}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

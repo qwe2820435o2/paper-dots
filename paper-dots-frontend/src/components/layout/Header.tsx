@@ -20,9 +20,9 @@ export default function Header() {
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <Image src="/logo.png" alt="Mochipic" width={44} height={44} className="rounded" />
+            <Image src="/logo.png" alt="Dottypic" width={44} height={44} className="rounded" />
             <span className="text-[#1a1a2e] text-[24px] font-medium tracking-[-0.15px]">
-              Mochipic
+              Dottypic
             </span>
           </Link>
 

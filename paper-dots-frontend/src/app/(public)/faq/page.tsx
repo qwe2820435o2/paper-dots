@@ -8,17 +8,17 @@ import {
 
 export const metadata: Metadata = {
   title: "FAQ",
-  description: "Answers to common questions about Mochipic.",
+  description: "Answers to common questions about Dottypic.",
   openGraph: {
-    title: "Frequently Asked Questions — Mochipic",
-    description: "Answers to common questions about Mochipic.",
+    title: "Frequently Asked Questions — Dottypic",
+    description: "Answers to common questions about Dottypic.",
     url: "/faq",
   },
 };
 
 const faqs: { question: string; answer: string }[] = [
   {
-    question: "Is Mochipic's dot image generator free to use?",
+    question: "Is Dottypic's dot image generator free to use?",
     answer:
       "Yes! You get full access to our Automatic Photo Collage Maker and all design elements for free. Best of all? No watermarks on your final masterpieces.",
   },
@@ -50,12 +50,12 @@ const faqs: { question: string; answer: string }[] = [
   {
     question: "Will the dot image generator work on my phone?",
     answer:
-      "Yes! Mochipic is optimized for mobile and desktop browsers, so you can create aesthetic collages whenever inspiration strikes.",
+      "Yes! Dottypic is optimized for mobile and desktop browsers, so you can create aesthetic collages whenever inspiration strikes.",
   },
   {
     question: "How does the Automatic Photo Collage Maker handle my privacy?",
     answer:
-      "Your photos stay yours. Mochipic processes everything locally in your browser. We never store or upload your images to a server, ensuring 100% privacy and security.",
+      "Your photos stay yours. Dottypic processes everything locally in your browser. We never store or upload your images to a server, ensuring 100% privacy and security.",
   },
 ];
 
@@ -88,7 +88,7 @@ export default function FAQPage() {
           FAQ
         </h1>
         <p className="text-[16px] leading-[1.6] mb-14 text-[#64748b]">
-          Everything you need to know about Mochipic.
+          Everything you need to know about Dottypic.
         </p>
 
         <Accordion type="single" collapsible className="w-full">

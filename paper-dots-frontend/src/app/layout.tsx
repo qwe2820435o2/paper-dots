@@ -13,7 +13,7 @@ const nunito = Nunito({
 
 import type { Metadata } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mochipic.io";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dottypic.com";
 // TODO: replace with paper-dots Google Analytics id
 const GA_ID = "G-XXXXXXXXXX";
 
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     type: "website",
     locale: "en_US",
-    siteName: "Mochipic",
+    siteName: "Dottypic",
     url: "/",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: SITE_TITLE }],
   },

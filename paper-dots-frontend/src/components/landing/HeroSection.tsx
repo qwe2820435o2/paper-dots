@@ -81,7 +81,7 @@ export default function HeroSection() {
               fontWeight: 500,
             }}
           >
-            Mochipic: Your Aesthetic
+            Dottypic: Your Aesthetic
             <br />
             Dot Image Generator
           </h1>
@@ -191,7 +191,7 @@ export default function HeroSection() {
           >
             <Image
               src="/hero-before-after.webp"
-              alt="Mochipic — before and after adding dot decorations to a photo"
+              alt="Dottypic — before and after adding dot decorations to a photo"
               width={2752}
               height={1536}
               priority

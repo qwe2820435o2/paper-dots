@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Mochipic — Decorate your photos with paper textures and scattered dots";
+export const alt = "Dottypic — Decorate your photos with paper textures and scattered dots";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -115,7 +115,7 @@ export default async function OGImage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`${base}/logo.png`}
-              alt="Mochipic"
+              alt="Dottypic"
               width={48}
               height={48}
               style={{ borderRadius: 10, display: "block" }}
@@ -128,7 +128,7 @@ export default async function OGImage() {
                 letterSpacing: "-0.5px",
               }}
             >
-              Mochipic
+              Dottypic
             </span>
           </div>
 
