@@ -192,7 +192,7 @@ export default function HeroSection() {
           >
             <Image
               src="/hero-before-after.png"
-              alt="Paper Dots — before and after adding dot decorations to a photo"
+              alt="Mochipic — before and after adding dot decorations to a photo"
               width={2752}
               height={1536}
               priority

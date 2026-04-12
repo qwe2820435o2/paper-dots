@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Read the terms and conditions for using Paper Dots.",
+  description: "Read the terms and conditions for using Mochipic.",
   openGraph: {
-    title: "Terms of Service — Paper Dots",
-    description: "Read the terms and conditions for using Paper Dots.",
+    title: "Terms of Service — Mochipic",
+    description: "Read the terms and conditions for using Mochipic.",
     url: "/terms",
   },
 };
@@ -40,7 +40,7 @@ export default function TermsPage() {
               Acceptance of Terms
             </h2>
             <p className="text-[15px] leading-[1.7] text-[#64748b]">
-              By accessing or using Paper Dots, you agree to be bound by these Terms of Service.
+              By accessing or using Mochipic, you agree to be bound by these Terms of Service.
               If you do not agree, please do not use the service.
             </p>
           </section>
@@ -50,7 +50,7 @@ export default function TermsPage() {
               Description of Service
             </h2>
             <p className="text-[15px] leading-[1.7] text-[#64748b]">
-              Paper Dots is a free, browser-based photo decoration tool. You upload a photo, apply
+              Mochipic is a free, browser-based photo decoration tool. You upload a photo, apply
               a paper texture, configure dot patterns, and download the result as a PNG. All
               processing occurs locally in your browser — no server upload is required.
             </p>
@@ -61,7 +61,7 @@ export default function TermsPage() {
               User Conduct
             </h2>
             <p className="text-[15px] leading-[1.7] mb-4 text-[#64748b]">
-              You agree to use Paper Dots only for lawful purposes. You must not:
+              You agree to use Mochipic only for lawful purposes. You must not:
             </p>
             <ul className="space-y-3">
               {prohibited.map((item) => (
@@ -81,12 +81,12 @@ export default function TermsPage() {
               Intellectual Property
             </h2>
             <p className="text-[15px] leading-[1.7] mb-4 text-[#64748b]">
-              The Paper Dots application — including its design, code, paper textures, and visual
-              assets — is the intellectual property of Paper Dots. You may not copy, reproduce, or
+              The Mochipic application — including its design, code, paper textures, and visual
+              assets — is the intellectual property of Mochipic. You may not copy, reproduce, or
               redistribute any part of the application without prior written consent.
             </p>
             <p className="text-[15px] leading-[1.7] text-[#64748b]">
-              Photos you decorate using Paper Dots are yours. We claim no ownership over the
+              Photos you decorate using Mochipic are yours. We claim no ownership over the
               content you generate.
             </p>
           </section>
@@ -96,7 +96,7 @@ export default function TermsPage() {
               Disclaimer of Warranties
             </h2>
             <p className="text-[15px] leading-[1.7] text-[#64748b]">
-              Paper Dots is provided &quot;as is&quot; without warranties of any kind, express or
+              Mochipic is provided &quot;as is&quot; without warranties of any kind, express or
               implied. We do not guarantee that the service will be uninterrupted, error-free, or
               compatible with all devices.
             </p>
@@ -107,7 +107,7 @@ export default function TermsPage() {
               Limitation of Liability
             </h2>
             <p className="text-[15px] leading-[1.7] text-[#64748b]">
-              To the fullest extent permitted by law, Paper Dots shall not be liable for any
+              To the fullest extent permitted by law, Mochipic shall not be liable for any
               indirect, incidental, or consequential damages arising from your use of the service.
             </p>
           </section>
@@ -118,7 +118,7 @@ export default function TermsPage() {
             </h2>
             <p className="text-[15px] leading-[1.7] text-[#64748b]">
               We reserve the right to modify these Terms of Service at any time. Continued use of
-              Paper Dots after changes constitutes acceptance of the updated terms.
+              Mochipic after changes constitutes acceptance of the updated terms.
             </p>
           </section>
 

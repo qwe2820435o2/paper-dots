@@ -3,10 +3,10 @@ import { Mail, MessageSquare } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with the Paper Dots team.",
+  description: "Get in touch with the Mochipic team.",
   openGraph: {
-    title: "Contact Us — Paper Dots",
-    description: "Have a question or feedback? Get in touch with the Paper Dots team.",
+    title: "Contact Us — Mochipic",
+    description: "Have a question or feedback? Get in touch with the Mochipic team.",
     url: "/contact",
   },
 };
@@ -61,7 +61,7 @@ export default function ContactPage() {
                 Feedback
               </h2>
               <p className="text-[14px] leading-[1.6] text-[#64748b]">
-                Found a bug or have a feature request? Let us know — we are always improving Paper Dots.
+                Found a bug or have a feature request? Let us know — we are always improving Mochipic.
               </p>
             </div>
           </div>

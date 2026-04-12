@@ -21,13 +21,13 @@ export default function Footer() {
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
               <Image
                 src="/logo.png"
-                alt="Paper Dots"
+                alt="Mochipic"
                 width={24}
                 height={24}
                 className="rounded"
               />
               <span className="text-[#1a1a2e] text-[15px] font-medium tracking-[-0.15px]">
-                Paper Dots
+                Mochipic
               </span>
             </Link>
             <p className="text-[14px] leading-[1.6] max-w-[260px] text-[#64748b]">
@@ -77,7 +77,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-slate-200">
           <p className="text-[13px] text-[#64748b]">
-            &copy; {new Date().getFullYear()} Paper Dots. All rights reserved.
+            &copy; {new Date().getFullYear()} Mochipic. All rights reserved.
           </p>
         </div>
       </div>

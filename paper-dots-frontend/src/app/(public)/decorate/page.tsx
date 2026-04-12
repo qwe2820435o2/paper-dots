@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import DecorateApp from "./DecorateApp";
 
 export const metadata: Metadata = {
-  title: "Decorate · Paper Dots",
+  title: "Decorate · Mochipic",
   description: "Upload a photo, pick a paper, scatter dots.",
 };
 

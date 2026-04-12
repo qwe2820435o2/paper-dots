@@ -8,10 +8,10 @@ import {
 
 export const metadata: Metadata = {
   title: "FAQ",
-  description: "Answers to common questions about Paper Dots.",
+  description: "Answers to common questions about Mochipic.",
   openGraph: {
-    title: "Frequently Asked Questions — Paper Dots",
-    description: "Answers to common questions about Paper Dots.",
+    title: "Frequently Asked Questions — Mochipic",
+    description: "Answers to common questions about Mochipic.",
     url: "/faq",
   },
 };

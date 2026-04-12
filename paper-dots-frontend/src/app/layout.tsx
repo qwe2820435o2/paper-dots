@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     type: "website",
     locale: "en_US",
-    siteName: "Paper Dots",
+    siteName: "Mochipic",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: SITE_TITLE }],
   },
   twitter: {

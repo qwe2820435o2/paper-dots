@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Learn how Paper Dots handles your data and privacy.",
+  description: "Learn how Mochipic handles your data and privacy.",
   openGraph: {
-    title: "Privacy Policy — Paper Dots",
-    description: "Learn how Paper Dots handles your data and privacy.",
+    title: "Privacy Policy — Mochipic",
+    description: "Learn how Mochipic handles your data and privacy.",
     url: "/privacy",
   },
 };
@@ -14,12 +14,12 @@ const sections = [
   {
     title: "Introduction",
     content:
-      'Paper Dots ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you use our browser-based photo decoration tool.',
+      'Mochipic ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you use our browser-based photo decoration tool.',
   },
   {
     title: "Information We Collect",
     content:
-      "We do not collect personal data. Paper Dots is designed to work entirely in your browser. Photos you upload are processed locally on your device — they are never sent to our servers.",
+      "We do not collect personal data. Mochipic is designed to work entirely in your browser. Photos you upload are processed locally on your device — they are never sent to our servers.",
   },
   {
     title: "Photo Processing",
@@ -34,12 +34,12 @@ const sections = [
   {
     title: "Third-Party Services",
     content:
-      "Paper Dots does not share any data with third-party services. There are no embedded advertising networks or external analytics platforms in our application.",
+      "Mochipic does not share any data with third-party services. There are no embedded advertising networks or external analytics platforms in our application.",
   },
   {
     title: "Your Rights",
     content:
-      "Since we do not collect or store personal data, there is nothing to access, modify, or delete. If you have any concerns about your privacy while using Paper Dots, please contact us.",
+      "Since we do not collect or store personal data, there is nothing to access, modify, or delete. If you have any concerns about your privacy while using Mochipic, please contact us.",
   },
   {
     title: "Changes to This Policy",

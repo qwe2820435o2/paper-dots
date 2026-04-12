@@ -1,7 +1,7 @@
 {
-  "name": "Paper Dots",
-  "short_name": "Paper Dots",
-  "description": "TODO: Paper Dots product description",
+  "name": "Mochipic",
+  "short_name": "Mochipic",
+  "description": "Turn photos into art with our Automatic Photo Collage Maker. Customize your polka dot background with hearts, stars, and dots. Use the best dot image generator for free, no sign-up required!",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

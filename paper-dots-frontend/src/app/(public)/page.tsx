@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Paper Dots",
+  name: "Mochipic",
   description: PAGE_DESCRIPTION,
   applicationCategory: "MultimediaApplication",
   operatingSystem: "Any",
