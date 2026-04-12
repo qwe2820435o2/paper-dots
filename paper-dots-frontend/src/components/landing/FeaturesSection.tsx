@@ -43,16 +43,15 @@ export default function FeaturesSection() {
   return (
     <section className="bg-[#F8FAFC] px-5 sm:px-8 py-20 sm:py-28">
       <div className="max-w-[1200px] mx-auto">
-        {/* Section heading */}
         <motion.div
-          className="mb-6 text-center"
+          className="mb-14 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2
-            className="text-[36px] sm:text-[48px] font-medium text-[#1a1a2e] mb-4"
+            className="text-[36px] sm:text-[48px] font-medium text-[#1a1a2e]"
             style={{
               fontFamily: "var(--font-quicksand), sans-serif",
               letterSpacing: "-2px",
@@ -63,9 +62,8 @@ export default function FeaturesSection() {
           </h2>
         </motion.div>
 
-        {/* Cards */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-14"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-6"
           variants={container}
           initial="hidden"
           whileInView="show"
@@ -77,17 +75,21 @@ export default function FeaturesSection() {
               variants={item}
               className="rounded-2xl overflow-hidden flex flex-col bg-white border border-[#E8F5D2] shadow-[0_4px_24px_rgba(197,232,154,0.18)]"
             >
-              {/* Image placeholder */}
-              <div className="w-full aspect-[4/3] bg-slate-100 flex items-center justify-center">
-                <span className="text-[13px] text-slate-400">Image coming soon</span>
-              </div>
-
               {/* Text */}
-              <div className="p-7 flex flex-col gap-3">
-                <h3 className="text-[18px] font-semibold text-[#1a1a2e] leading-[1.2]">
-                  Step {step.number.replace(/^0/, "")}: {step.title}
+              <div className="p-7 flex flex-col gap-3 flex-1">
+                <p
+                  className="text-[12px] font-semibold tracking-[0.08em] uppercase"
+                  style={{ color: "#A8CF6F" }}
+                >
+                  Step {step.number.replace(/^0/, "")}
+                </p>
+                <h3
+                  className="text-[20px] font-semibold text-[#1a1a2e] leading-[1.25]"
+                  style={{ fontFamily: "var(--font-quicksand), sans-serif" }}
+                >
+                  {step.title}
                 </h3>
-                <p className="text-[14px] leading-[1.6] text-[#64748b]">
+                <p className="text-[14px] leading-[1.7] text-[#64748b]">
                   {step.description}
                 </p>
               </div>
