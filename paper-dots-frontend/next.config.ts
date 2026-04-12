@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
+      {
+        source: "/:path(.*\\.(?:png|webp|svg|ico|jpg|jpeg|woff2))",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
     ];
   },
 };

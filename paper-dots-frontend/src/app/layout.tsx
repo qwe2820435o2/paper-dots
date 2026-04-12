@@ -1,4 +1,4 @@
-import { Nunito, Quicksand, Azeret_Mono } from "next/font/google";
+import { Nunito } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "sonner";
@@ -10,18 +10,6 @@ const nunito = Nunito({
   display: "swap",
 });
 
-const quicksand = Quicksand({
-  variable: "--font-quicksand",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const azeretMono = Azeret_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 import type { Metadata } from "next";
 
@@ -79,7 +67,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${nunito.variable} ${quicksand.variable} ${azeretMono.variable} antialiased`}>
+      <body className={`${nunito.variable} antialiased`}>
         <Providers>
           {children}
           <Toaster position="top-center" richColors closeButton />
