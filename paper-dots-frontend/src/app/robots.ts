@@ -13,7 +13,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: "/",
       },
     ],
-    // TODO: replace with real paper-dots domain
-    sitemap: "https://paperdots.example.com/sitemap.xml",
+    sitemap: "https://mochipic.io/sitemap.xml",
   };
 }

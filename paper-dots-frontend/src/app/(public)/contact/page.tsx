@@ -43,10 +43,10 @@ export default function ContactPage() {
                 Send us an email and we will get back to you as soon as possible.
               </p>
               <a
-                href="mailto:support@paperdots.app"
+                href="mailto:support@mochipic.io"
                 className="text-[14px] font-medium text-[#C5E89A] hover:text-[#9ED06C] transition-colors"
               >
-                support@paperdots.app
+                support@mochipic.io
               </a>
             </div>
           </div>

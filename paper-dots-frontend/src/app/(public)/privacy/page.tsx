@@ -83,10 +83,10 @@ export default function PrivacyPage() {
                 <p className="text-[15px] leading-[1.7] text-[#64748b]">
                   If you have questions about this Privacy Policy, please reach out at{" "}
                   <a
-                    href="mailto:support@paperdots.app"
+                    href="mailto:support@mochipic.io"
                     className="text-[#C5E89A] hover:text-[#9ED06C] transition-colors"
                   >
-                    support@paperdots.app
+                    support@mochipic.io
                   </a>
                   .
                 </p>

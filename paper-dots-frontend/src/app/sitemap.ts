@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // TODO: replace with real paper-dots domain
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://paperdots.example.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mochipic.io";
 
   return [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },

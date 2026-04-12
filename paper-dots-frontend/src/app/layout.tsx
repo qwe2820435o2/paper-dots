@@ -25,8 +25,7 @@ const azeretMono = Azeret_Mono({
 
 import type { Metadata } from "next";
 
-// TODO: replace with real paper-dots domain
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://paperdots.example.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mochipic.io";
 // TODO: replace with paper-dots Google Analytics id
 const GA_ID = "G-XXXXXXXXXX";
 
