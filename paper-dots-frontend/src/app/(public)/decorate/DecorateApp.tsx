@@ -35,9 +35,9 @@ const DecorateCanvas = dynamic(
 type Panel = "upload" | "layout" | "paper" | "dots" | "export" | null;
 
 const TOOLS: { id: Panel; icon: typeof ImagePlus; label: string }[] = [
-  { id: "upload", icon: ImagePlus, label: "Photo" },
+  { id: "upload", icon: ImagePlus, label: "Upload" },
   { id: "layout", icon: LayoutGrid, label: "Layout" },
-  { id: "paper", icon: Wallpaper, label: "Paper" },
+  { id: "paper", icon: Wallpaper, label: "Mask" },
   { id: "dots", icon: Sparkles, label: "Dots" },
   { id: "export", icon: Download, label: "Export" },
 ];

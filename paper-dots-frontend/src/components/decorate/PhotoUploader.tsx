@@ -163,7 +163,7 @@ export default function PhotoUploader({
 
                 <div className="flex flex-col items-center gap-1.5">
                     <p className="text-[13px] font-medium text-[#1a1a2e]">
-                        {hasPhoto ? "Replace photo" : "Upload photo"}
+                        {hasPhoto ? "Upload photo" : "Upload photo"}
                     </p>
                     <p className="text-[11px] text-center text-[#9CA3AF]">
                         Drop image here or click to browse
@@ -212,7 +212,7 @@ export default function PhotoUploader({
             <Upload className="w-4 h-4 shrink-0 text-[#1a1a2e]" strokeWidth={1.8} />
             <div className="min-w-0">
                 <p className="text-[14px] font-medium text-[#1a1a2e]">
-                    {hasPhoto ? "Replace photo" : "Upload photo"}
+                    {hasPhoto ? "Upload photo" : "Upload photo"}
                 </p>
                 <p className="text-[11px] text-[#9CA3AF]">
                     PNG &middot; JPG &middot; WEBP
