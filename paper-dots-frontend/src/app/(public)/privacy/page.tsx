@@ -29,7 +29,7 @@ const sections = [
   {
     title: "Cookies & Local Storage",
     content:
-      "We may use browser local storage to save your editor preferences between sessions (such as your last selected paper or dot settings). We do not use tracking cookies or third-party analytics that collect personal information.",
+      "We may use browser local storage to save your editor preferences between sessions (such as your last selected paper or dot settings). We also use Google Analytics to collect anonymous usage statistics (such as page views and session duration) to help us improve the service. Google Analytics may use cookies to collect this data. No personally identifiable information is collected.",
   },
   {
     title: "Third-Party Services",

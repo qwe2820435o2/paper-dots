@@ -1,18 +1,19 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mochipic.io";
+
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/booth", "/booth/edit"],
       },
       {
         userAgent: "SimilarwebBot",
         disallow: "/",
       },
     ],
-    sitemap: "https://mochipic.io/sitemap.xml",
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
