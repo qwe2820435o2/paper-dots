@@ -18,44 +18,44 @@ export const metadata: Metadata = {
 
 const faqs: { question: string; answer: string }[] = [
   {
-    question: "What is Paper Dots?",
+    question: "Is Mochipic's dot image generator free to use?",
     answer:
-      "Paper Dots is a free, browser-based tool that lets you decorate your photos with hand-drawn paper textures and scattered dot patterns. Upload a photo, pick a paper style, adjust the dots, and download the result — no account or app install needed.",
+      "Yes! You get full access to our Automatic Photo Collage Maker and all design elements for free. Best of all? No watermarks on your final masterpieces.",
   },
   {
-    question: "Is it free?",
+    question: "Do I need to register to use the dot image generator?",
     answer:
-      "Yes, completely free. There are no hidden fees, subscriptions, or watermarks added to your exported images.",
+      'No registration required! We believe in "creating on the go." Just upload, edit your polka dot pattern, and download. Simple as that.',
   },
   {
-    question: "What photo formats can I upload?",
+    question: "Can I customize the density of the polka dot pattern?",
     answer:
-      "Paper Dots accepts JPEG, PNG, and WEBP images. Any modern photo from your phone or camera will work.",
+      "Absolutely. You have full control over the polka dots pattern. You can adjust the shape, size, color, and spacing to create a look that is uniquely yours.",
   },
   {
-    question: "Do my photos get uploaded to a server?",
+    question: "Can I change the dots to other shapes?",
     answer:
-      "No. All processing happens locally in your browser. Your photos never leave your device — they are not uploaded, stored, or shared with anyone.",
+      "Of course! While we love a classic polka dot setting, you can switch to hearts, stars, or waterdrops to match your specific vibe.",
   },
   {
-    question: "What paper textures are available?",
+    question: 'How does the "Auto-Analyze" feature work?',
     answer:
-      "Paper Dots includes a curated set of hand-drawn paper styles — from smooth white to rough kraft and soft watercolor. Each texture gives your photo a different tactile feel.",
+      "Our smart tool \"reads\" the dominant colors in your uploaded images and automatically suggests a dot pattern and background color that complements your photo perfectly. It's like having a tiny designer in your pocket!",
   },
   {
-    question: "How do I control the dots?",
+    question: "Can I use my own background images?",
     answer:
-      "The Dots panel lets you choose the shape (circle, square, teardrop), adjust density and size with sliders, pick a color, and hit Reroll to randomize the dot positions.",
+      "Yes! You can use our AI-generated colors or upload your own favorite textures and patterns to use as a base for your collage.",
   },
   {
-    question: "What resolution is the exported PNG?",
+    question: "Will the dot image generator work on my phone?",
     answer:
-      "Exports are rendered at 2x pixel ratio on a 1080×1080 canvas, giving you a 2160×2160 PNG — sharp enough to print or share at any size.",
+      "Yes! Mochipic is optimized for mobile and desktop browsers, so you can create aesthetic collages whenever inspiration strikes.",
   },
   {
-    question: "Does it work on mobile?",
+    question: "How does the Automatic Photo Collage Maker handle my privacy?",
     answer:
-      "Yes. Paper Dots is designed to work in any modern browser on desktop or mobile. The editor layout adapts to smaller screens.",
+      "Your photos stay yours. Mochipic processes everything locally in your browser. We never store or upload your images to a server, ensuring 100% privacy and security.",
   },
 ];
 
@@ -88,7 +88,7 @@ export default function FAQPage() {
           FAQ
         </h1>
         <p className="text-[16px] leading-[1.6] mb-14 text-[#64748b]">
-          Everything you need to know about Paper Dots.
+          Everything you need to know about Mochipic.
         </p>
 
         <Accordion type="single" collapsible className="w-full">

@@ -1,10 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const productLinks = [
-  { label: "Photo Decorator", href: "/decorate" },
-];
-
 const supportLinks = [
   { label: "FAQ", href: "/faq" },
   { label: "Contact Us", href: "/contact" },
@@ -19,7 +15,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#F8FAFC] border-t border-slate-200">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
@@ -38,25 +34,6 @@ export default function Footer() {
               Decorate your photos with hand-drawn paper textures and scattered
               dots. Free and easy to use.
             </p>
-          </div>
-
-          {/* Products */}
-          <div>
-            <h3 className="text-[13px] font-semibold mb-4 text-[#1a1a2e] tracking-[-0.1px]">
-              Products
-            </h3>
-            <ul className="space-y-3">
-              {productLinks.map(({ label, href }) => (
-                <li key={label}>
-                  <Link
-                    href={href}
-                    className="text-[14px] text-[#64748b] hover:text-[#1a1a2e] transition-colors"
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Support */}
