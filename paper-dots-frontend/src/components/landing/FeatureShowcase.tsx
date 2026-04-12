@@ -11,6 +11,7 @@ interface FeatureShowcaseProps {
   imageAlt: string;
   reverse?: boolean;
   blobColor?: string;
+  blendMultiply?: boolean;
 }
 
 const item = {
@@ -29,6 +30,7 @@ export default function FeatureShowcase({
   imageAlt,
   reverse = false,
   blobColor = "#E8F5D2",
+  blendMultiply = false,
 }: FeatureShowcaseProps) {
   return (
     <section className="bg-white px-5 sm:px-8 py-20 sm:py-28">
@@ -55,7 +57,7 @@ export default function FeatureShowcase({
             />
             <div
               className="relative z-10 rounded-xl overflow-hidden"
-              style={{
+              style={blendMultiply ? undefined : {
                 boxShadow:
                   "rgba(197, 232, 154, 0.28) 0px 4px 24px, rgba(197, 232, 154, 0.14) 0px 1px 2px",
               }}
@@ -66,6 +68,7 @@ export default function FeatureShowcase({
                 width={600}
                 height={450}
                 className="w-full block"
+                style={blendMultiply ? { mixBlendMode: "multiply" } : undefined}
               />
             </div>
           </motion.div>
