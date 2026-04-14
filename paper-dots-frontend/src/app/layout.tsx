@@ -14,8 +14,7 @@ const nunito = Nunito({
 import type { Metadata } from "next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dottypic.com";
-// TODO: replace with paper-dots Google Analytics id
-const GA_ID = "G-XXXXXXXXXX";
+const GA_ID = "G-BWMB2S8Z1N";
 
 const SITE_TITLE = "Free Dot Image Generator | Automatic Photo Collage Maker with Polka Dot Pattern";
 const SITE_DESCRIPTION =
