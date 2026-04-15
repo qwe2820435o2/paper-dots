@@ -86,13 +86,13 @@ export default function DecorateApp() {
   const canvasArea = photoUrl ? (
     <DecorateCanvas ref={stageRef} />
   ) : (
-    <div className="w-full max-w-[min(100vw-24px,calc(100vh-80px))]">
+    <div className="w-full max-w-[min(100vw-24px,calc(100dvh-80px))]">
       <PhotoUploader variant="canvas" hasPhoto={false} />
     </div>
   );
 
   return (
-    <div className="h-[calc(100vh-56px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">
+    <div className="h-[calc(100dvh-56px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">
       {/* Desktop: left icon toolbar */}
       <div
         className="hidden md:flex shrink-0 w-16 flex-col items-center py-3 gap-1 bg-white"
@@ -142,7 +142,7 @@ export default function DecorateApp() {
       {/* Mobile: bottom drawer (above toolbar) */}
       {activePanel && (
         <div
-          className="md:hidden shrink-0 bg-white flex flex-col max-h-[50vh]"
+          className="md:hidden shrink-0 bg-white flex flex-col max-h-[45dvh]"
           style={{ borderTop: "1px solid #D2EAAA" }}
         >
           <div

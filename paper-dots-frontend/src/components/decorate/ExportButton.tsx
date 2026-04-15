@@ -57,7 +57,7 @@ export default function ExportButton({ stageRef }: Props) {
     const photoUrl = useAppSelector((s) => s.decorate.photoUrl);
     const layout = useAppSelector((s) => s.decorate.layout);
 
-    function handleExport() {
+    async function handleExport() {
         const stage = stageRef.current;
         if (!stage) return;
         const prevScale = stage.scaleX();
@@ -65,12 +65,34 @@ export default function ExportButton({ stageRef }: Props) {
         const crop = computeExportCrop(layout.type, layout.ratio, stage.width(), stage.height());
         const dataUrl = stage.toDataURL({ ...crop, pixelRatio: 2, mimeType: "image/png" });
         stage.scale({ x: prevScale, y: prevScale });
+
+        const blob = await (await fetch(dataUrl)).blob();
+        const filename = `dottypic-${Date.now()}.png`;
+        const file = new File([blob], filename, { type: "image/png" });
+
+        if (
+            typeof navigator !== "undefined" &&
+            typeof navigator.canShare === "function" &&
+            navigator.canShare({ files: [file] })
+        ) {
+            try {
+                await navigator.share({ files: [file] });
+                return;
+            } catch (err) {
+                if ((err as DOMException)?.name === "AbortError") return;
+            }
+        }
+
+        const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = `dottypic-${Date.now()}.png`;
+        link.href = url;
+        link.download = filename;
+        link.rel = "noopener";
+        link.target = "_blank";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
         toast.success("Saved to your downloads");
     }
 
