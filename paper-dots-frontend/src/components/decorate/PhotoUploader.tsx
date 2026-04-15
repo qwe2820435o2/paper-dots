@@ -97,7 +97,7 @@ export default function PhotoUploader({
                 dispatch(setSolidColor(color));
                 dispatch(setPhotoUrl(url));
                 dispatch(setDotShape("snowflake"));
-                dispatch(setDotSize(50));
+                dispatch(setDotSize(30));
                 dispatch(setDotVariance(23));
                 dispatch(setDotOpacity(66));
             });

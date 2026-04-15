@@ -153,7 +153,7 @@ const initialState: DecorateState = {
     dotConfig: {
         shape: "circle",
         count: 50,
-        size: 14,
+        size: 30,
         variance: 0,
         colorMode: "auto",
         color: "#1a1a1a",
