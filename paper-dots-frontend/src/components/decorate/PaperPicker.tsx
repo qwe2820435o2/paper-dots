@@ -57,9 +57,14 @@ function ColorRow({ label, isSet, color, open, onToggle, onChange }: ColorRowPro
         <button
           type="button"
           onClick={onToggle}
-          className="w-5 h-5 rounded-full border border-[#D2EAAA] transition-shadow hover:border-[#C5E89A]"
-          style={{ background: isSet ? color : RAINBOW }}
-        />
+          aria-label={label}
+          className="relative w-9 h-9 -mr-1.5 flex items-center justify-center rounded-lg transition-colors active:bg-[#F4FAE8]"
+        >
+          <span
+            className="block w-6 h-6 rounded-full border border-[#D2EAAA]"
+            style={{ background: isSet ? color : RAINBOW }}
+          />
+        </button>
       </div>
       {open && <ColorPicker color={color} onChange={onChange} />}
     </div>
@@ -96,7 +101,7 @@ export default function PaperPicker() {
                 dispatch(setBackgroundMode(m.id));
                 setOpenPicker(null);
               }}
-              className="py-1.5 text-[11px] rounded-lg transition-colors"
+              className="min-h-[36px] py-1.5 text-[11px] rounded-lg transition-colors"
               style={{
                 background: selected ? "#E8F5D2" : "#F4FAE8",
                 color: selected ? "#C5E89A" : "#64748b",

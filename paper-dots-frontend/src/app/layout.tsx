@@ -11,7 +11,7 @@ const nunito = Nunito({
 });
 
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dottypic.com";
 const GA_ID = "G-BWMB2S8Z1N";
@@ -19,6 +19,13 @@ const GA_ID = "G-BWMB2S8Z1N";
 const SITE_TITLE = "Free Dot Image Generator | Automatic Photo Collage Maker with Polka Dot Pattern";
 const SITE_DESCRIPTION =
   "Turn photos into art with our Automatic Photo Collage Maker. Customize your polka dot background with hearts, stars, and dots. Use the best dot image generator for free, no sign-up required!";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

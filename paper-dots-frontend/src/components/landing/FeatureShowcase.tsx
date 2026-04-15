@@ -33,7 +33,7 @@ export default function FeatureShowcase({
   blendMultiply = false,
 }: FeatureShowcaseProps) {
   return (
-    <section className="bg-white px-5 sm:px-8 py-20 sm:py-28">
+    <section className="bg-white px-5 sm:px-8 py-20 sm:py-28 overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
         <div
           className={`flex flex-col gap-12 lg:gap-16 lg:grid lg:grid-cols-2 lg:items-center ${

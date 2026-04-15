@@ -9,6 +9,7 @@ import {
   Wallpaper,
   Sparkles,
   Download,
+  X,
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import PhotoUploader from "@/components/decorate/PhotoUploader";
@@ -62,11 +63,39 @@ export default function DecorateApp() {
     setActivePanel((prev) => (prev === panel ? null : panel));
   }
 
+  const activeLabel = TOOLS.find((t) => t.id === activePanel)?.label;
+
+  const panelContent = (
+    <>
+      {activePanel === "upload" && (
+        <div className="p-4">
+          <PhotoUploader variant="canvas" hasPhoto={!!photoUrl} />
+        </div>
+      )}
+      {activePanel === "layout" && <LayoutPicker />}
+      {activePanel === "paper" && <PaperPicker />}
+      {activePanel === "dots" && <DotControls />}
+      {activePanel === "export" && (
+        <div className="p-4">
+          <ExportButton stageRef={stageRef} />
+        </div>
+      )}
+    </>
+  );
+
+  const canvasArea = photoUrl ? (
+    <DecorateCanvas ref={stageRef} />
+  ) : (
+    <div className="w-full max-w-[min(100vw-24px,calc(100vh-80px))]">
+      <PhotoUploader variant="canvas" hasPhoto={false} />
+    </div>
+  );
+
   return (
-    <div className="h-[calc(100vh-56px)] overflow-hidden flex bg-[#F8FCF2]">
-      {/* Left: icon toolbar */}
+    <div className="h-[calc(100vh-56px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">
+      {/* Desktop: left icon toolbar */}
       <div
-        className="shrink-0 w-16 flex flex-col items-center py-3 gap-1 bg-white"
+        className="hidden md:flex shrink-0 w-16 flex-col items-center py-3 gap-1 bg-white"
         style={{ borderRight: "1px solid #D2EAAA" }}
       >
         {TOOLS.map(({ id, icon: Icon, label }) => {
@@ -76,23 +105,11 @@ export default function DecorateApp() {
               key={id}
               type="button"
               onClick={() => togglePanel(id)}
-              className="w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors"
-              style={{
-                background: isActive ? "#E8F5D2" : "transparent",
-                color: isActive ? "#C5E89A" : "#9CA3AF",
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = "#F4FAE8";
-                  e.currentTarget.style.color = "#C5E89A";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = "#9CA3AF";
-                }
-              }}
+              className={`w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
+                isActive
+                  ? "bg-[#E8F5D2] text-[#C5E89A]"
+                  : "text-[#9CA3AF] hover:bg-[#F4FAE8] hover:text-[#C5E89A]"
+              }`}
             >
               <Icon size={18} strokeWidth={1.6} />
               <span className="text-[10px] leading-none font-semibold">{label}</span>
@@ -101,51 +118,79 @@ export default function DecorateApp() {
         })}
       </div>
 
-      {/* Expandable panel */}
+      {/* Desktop: expandable side panel */}
       {activePanel && (
         <div
-          className="shrink-0 w-72 flex flex-col bg-white overflow-hidden"
+          className="hidden md:flex shrink-0 w-72 flex-col bg-white overflow-hidden"
           style={{ borderRight: "1px solid #D2EAAA" }}
         >
-          {/* Panel header */}
           <div
             className="shrink-0 px-4 py-3 text-[13px] font-medium text-[#1a1a2e]"
             style={{ borderBottom: "1px solid #D2EAAA" }}
           >
-            {TOOLS.find((t) => t.id === activePanel)?.label}
+            {activeLabel}
           </div>
-
-          {/* Panel content */}
-          <div className="flex-1 overflow-y-auto min-h-0">
-            {activePanel === "upload" && (
-              <div className="p-4">
-                <PhotoUploader
-                  variant="canvas"
-                  hasPhoto={!!photoUrl}
-                />
-              </div>
-            )}
-            {activePanel === "layout" && <LayoutPicker />}
-            {activePanel === "paper" && <PaperPicker />}
-            {activePanel === "dots" && <DotControls />}
-            {activePanel === "export" && (
-              <div className="p-4">
-                <ExportButton stageRef={stageRef} />
-              </div>
-            )}
-          </div>
+          <div className="flex-1 overflow-y-auto min-h-0">{panelContent}</div>
         </div>
       )}
 
-      {/* Canvas area */}
-      <div className="flex-1 min-w-0 min-h-0 flex items-center justify-center p-6 overflow-hidden">
-        {photoUrl ? (
-          <DecorateCanvas ref={stageRef} />
-        ) : (
-          <div className="w-full max-w-[calc(100vh-80px)]">
-            <PhotoUploader variant="canvas" hasPhoto={false} />
+      {/* Canvas area (shared) */}
+      <div className="flex-1 min-w-0 min-h-0 flex items-center justify-center p-3 md:p-6 overflow-hidden">
+        {canvasArea}
+      </div>
+
+      {/* Mobile: bottom drawer (above toolbar) */}
+      {activePanel && (
+        <div
+          className="md:hidden shrink-0 bg-white flex flex-col max-h-[50vh]"
+          style={{ borderTop: "1px solid #D2EAAA" }}
+        >
+          <div
+            className="shrink-0 flex items-center justify-between px-4 py-3"
+            style={{ borderBottom: "1px solid #D2EAAA" }}
+          >
+            <span className="text-[13px] font-medium text-[#1a1a2e]">
+              {activeLabel}
+            </span>
+            <button
+              type="button"
+              onClick={() => setActivePanel(null)}
+              className="p-1 -mr-1 text-[#9CA3AF] active:text-[#1a1a2e]"
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
           </div>
-        )}
+          <div className="flex-1 overflow-y-auto min-h-0">{panelContent}</div>
+        </div>
+      )}
+
+      {/* Mobile: bottom icon toolbar */}
+      <div
+        className="md:hidden shrink-0 flex flex-row items-stretch justify-around bg-white px-1 pt-1"
+        style={{
+          borderTop: "1px solid #D2EAAA",
+          paddingBottom: "max(0.25rem, env(safe-area-inset-bottom))",
+        }}
+      >
+        {TOOLS.map(({ id, icon: Icon, label }) => {
+          const isActive = activePanel === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => togglePanel(id)}
+              className={`flex-1 min-h-[52px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
+                isActive
+                  ? "bg-[#E8F5D2] text-[#C5E89A]"
+                  : "text-[#9CA3AF] active:bg-[#F4FAE8] active:text-[#C5E89A]"
+              }`}
+            >
+              <Icon size={20} strokeWidth={1.6} />
+              <span className="text-[10px] leading-none font-semibold">{label}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

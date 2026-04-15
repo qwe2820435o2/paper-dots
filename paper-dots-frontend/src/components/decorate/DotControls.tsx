@@ -203,7 +203,7 @@ export default function DotControls() {
                   dispatch(setDotColorMode(mode));
                   setPickerOpen(null);
                 }}
-                className="py-1.5 rounded-lg text-[11px] font-medium transition-colors"
+                className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium transition-colors"
                 style={{
                   color: selected ? "#C5E89A" : "#64748b",
                   background: selected ? "#E8F5D2" : "#F4FAE8",
@@ -320,7 +320,7 @@ export default function DotControls() {
                     key={dir}
                     type="button"
                     onClick={() => dispatch(setDotGradientDirection(dir))}
-                    className="flex-1 py-1.5 rounded-lg text-[11px] font-medium transition-colors"
+                    className="flex-1 min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium transition-colors"
                     style={{
                       color: sel ? "#C5E89A" : "#64748b",
                       background: sel ? "#E8F5D2" : "#F4FAE8",
