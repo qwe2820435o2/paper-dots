@@ -6,10 +6,9 @@ import { Stage, Layer, Rect, Image as KonvaImage, Text, Group } from "react-konv
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setBgColor, setCropOffsetY } from "@/store/slices/momentCardSlice";
 import {
+    darkenHex,
     extractDominantColorVivid,
     getContrastTextColor,
-    rgbToHsl,
-    hslToRgb,
 } from "@/lib/extractDominantColor";
 import { useHTMLImage } from "@/components/decorate/useHTMLImage";
 
@@ -30,16 +29,6 @@ const TOP_W = STAGE_W - PAGE_INSET_X * 2;
 const BOTTOM_X = PAGE_INSET_X;
 const BOTTOM_Y = TOP_Y + TOP_H + CARD_GAP;
 const BOTTOM_W = TOP_W;
-
-function darkenHex(hex: string, deltaL = 0.06): string {
-    const n = parseInt(hex.replace("#", ""), 16);
-    const r = (n >> 16) & 0xff;
-    const g = (n >> 8) & 0xff;
-    const b = n & 0xff;
-    const [h, s, l] = rgbToHsl(r, g, b);
-    const [nr, ng, nb] = hslToRgb(h, s, Math.max(0, l - deltaL));
-    return `#${nr.toString(16).padStart(2, "0")}${ng.toString(16).padStart(2, "0")}${nb.toString(16).padStart(2, "0")}`;
-}
 
 interface PhotoLayout {
     scale: number;

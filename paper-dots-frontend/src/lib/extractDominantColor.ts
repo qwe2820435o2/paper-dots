@@ -38,6 +38,17 @@ function rgbToHex(r: number, g: number, b: number): string {
     return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
+/** Subtract `deltaL` from a hex color's HSL lightness. Used to derive a slightly darker page tone. */
+export function darkenHex(hex: string, deltaL = 0.06): string {
+    const n = parseInt(hex.replace("#", ""), 16);
+    const r = (n >> 16) & 0xff;
+    const g = (n >> 8) & 0xff;
+    const b = n & 0xff;
+    const [h, s, l] = rgbToHsl(r, g, b);
+    const [nr, ng, nb] = hslToRgb(h, s, Math.max(0, l - deltaL));
+    return rgbToHex(nr, ng, nb);
+}
+
 interface SoftenOptions {
     minLightness?: number;
     saturationScale?: number;
@@ -138,6 +149,10 @@ interface VividOptions {
     minLuminance?: number;
     /** discard pixels with HSL saturation below this (0-1) — strips white/gray/black */
     minSaturation?: number;
+    /** ensure the result has at least this HSL saturation (0-1); 0 disables */
+    floorSaturation?: number;
+    /** clamp the result's HSL lightness at most to this value (0-1); 1 disables */
+    ceilingLuminance?: number;
 }
 
 type VividRegion = NormRect;
@@ -162,6 +177,8 @@ export function extractDominantColorVivid(
         maxLuminance = 0.92,
         minLuminance = 0.08,
         minSaturation = 0.18,
+        floorSaturation = 0.30,
+        ceilingLuminance = 0.82,
     } = options;
     const canvas = document.createElement("canvas");
     canvas.width = sampleSize;
@@ -197,10 +214,12 @@ export function extractDominantColorVivid(
 
     if (buckets.size === 0) {
         if (fallbackCount === 0) return "#fafafa";
-        return rgbToHex(
+        return finalizeColor(
             Math.round(fallbackR / fallbackCount),
             Math.round(fallbackG / fallbackCount),
             Math.round(fallbackB / fallbackCount),
+            floorSaturation,
+            ceilingLuminance,
         );
     }
 
@@ -209,11 +228,28 @@ export function extractDominantColorVivid(
         if (!best || cell.count > best.count) best = cell;
     }
     if (!best) return "#fafafa";
-    return rgbToHex(
+    return finalizeColor(
         Math.round(best.r / best.count),
         Math.round(best.g / best.count),
         Math.round(best.b / best.count),
+        floorSaturation,
+        ceilingLuminance,
     );
+}
+
+function finalizeColor(
+    r: number,
+    g: number,
+    b: number,
+    floorSaturation: number,
+    ceilingLuminance: number,
+): string {
+    const [h, s, l] = rgbToHsl(r, g, b);
+    const s2 = Math.max(s, floorSaturation);
+    const l2 = Math.min(l, ceilingLuminance);
+    if (s2 === s && l2 === l) return rgbToHex(r, g, b);
+    const [r2, g2, b2] = hslToRgb(h, s2, l2);
+    return rgbToHex(r2, g2, b2);
 }
 
 /** Returns "#1a1a2e" or "#ffffff" depending on which has better contrast vs `bgHex`. */
