@@ -28,33 +28,28 @@ export default function MomentCardExportButton({ stageRef }: Props) {
         });
         stage.scale({ x: prevScale, y: prevScale });
 
-        const blob = await (await fetch(dataUrl)).blob();
         const filename = `moment-card-${Date.now()}.png`;
-        const file = new File([blob], filename, { type: "image/png" });
+        const isMobile = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
 
-        if (
-            typeof navigator !== "undefined" &&
-            typeof navigator.canShare === "function" &&
-            navigator.canShare({ files: [file] })
-        ) {
-            try {
-                await navigator.share({ files: [file] });
-                return;
-            } catch (err) {
-                if ((err as DOMException)?.name === "AbortError") return;
+        if (isMobile && typeof navigator.canShare === "function") {
+            const blob = await (await fetch(dataUrl)).blob();
+            const file = new File([blob], filename, { type: "image/png" });
+            if (navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({ files: [file] });
+                    return;
+                } catch (err) {
+                    if ((err as DOMException)?.name === "AbortError") return;
+                }
             }
         }
 
-        const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.href = url;
+        link.href = dataUrl;
         link.download = filename;
-        link.rel = "noopener";
-        link.target = "_blank";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
         toast.success("Saved to your downloads");
     }
 

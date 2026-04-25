@@ -3,11 +3,10 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import type Konva from "konva";
-import { ImagePlus, Type, Palette, Download, X } from "lucide-react";
+import { ImagePlus, Type, Download, X } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import MomentCardUploader from "@/components/moment-card/MomentCardUploader";
 import TextControls from "@/components/moment-card/TextControls";
-import ColorControls from "@/components/moment-card/ColorControls";
 import MomentCardExportButton from "@/components/moment-card/MomentCardExportButton";
 
 const MomentCardCanvas = dynamic(
@@ -25,12 +24,11 @@ const MomentCardCanvas = dynamic(
     },
 );
 
-type Panel = "upload" | "text" | "color" | "export" | null;
+type Panel = "upload" | "text" | "export" | null;
 
 const TOOLS: { id: Panel; icon: typeof ImagePlus; label: string }[] = [
     { id: "upload", icon: ImagePlus, label: "Upload" },
     { id: "text", icon: Type, label: "Text" },
-    { id: "color", icon: Palette, label: "Color" },
     { id: "export", icon: Download, label: "Export" },
 ];
 
@@ -64,7 +62,6 @@ export default function MomentCardApp() {
                 </div>
             )}
             {activePanel === "text" && <TextControls />}
-            {activePanel === "color" && <ColorControls />}
             {activePanel === "export" && (
                 <div className="p-4">
                     <MomentCardExportButton stageRef={stageRef} />
