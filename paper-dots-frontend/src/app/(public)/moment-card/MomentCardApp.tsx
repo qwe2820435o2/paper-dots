@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import type Konva from "konva";
 import { ImagePlus, Type, Palette, Download, X } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
-import { darkenHex } from "@/lib/extractDominantColor";
 import MomentCardUploader from "@/components/moment-card/MomentCardUploader";
 import TextControls from "@/components/moment-card/TextControls";
 import ColorControls from "@/components/moment-card/ColorControls";
@@ -37,10 +36,8 @@ const TOOLS: { id: Panel; icon: typeof ImagePlus; label: string }[] = [
 
 export default function MomentCardApp() {
     const photoUrl = useAppSelector((s) => s.momentCard.photoUrl);
-    const bgColor = useAppSelector((s) => s.momentCard.bgColor);
     const stageRef = useRef<Konva.Stage | null>(null);
     const [activePanel, setActivePanel] = useState<Panel>(null);
-    const pageBg = darkenHex(bgColor, 0.07);
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -85,10 +82,7 @@ export default function MomentCardApp() {
     );
 
     return (
-        <div
-            className="h-[calc(100dvh-56px)] overflow-hidden flex flex-col md:flex-row"
-            style={{ backgroundColor: pageBg }}
-        >
+        <div className="h-[calc(100dvh-56px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">
             {/* Desktop: left icon toolbar */}
             <div
                 className="hidden md:flex shrink-0 w-16 flex-col items-center py-3 gap-1 bg-white"
