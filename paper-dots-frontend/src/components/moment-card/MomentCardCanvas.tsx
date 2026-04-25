@@ -232,9 +232,11 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const titleFontSize = 56;
-    const subtitleFontSize = 26;
-    const titleY = TOP_Y + TOP_H * 0.5 - titleFontSize / 2;
+    const titleFontSize = 34;
+    const subtitleFontSize = 19;
+    const textGap = 16;
+    const totalTextH = titleFontSize + textGap + subtitleFontSize;
+    const titleY = TOP_Y + (TOP_H - totalTextH) / 2;
 
     return (
         <div
@@ -273,17 +275,17 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
                         align="center"
                         fontSize={titleFontSize}
                         fontStyle="600"
-                        fontFamily="var(--font-quicksand), var(--font-nunito), sans-serif"
+                        fontFamily="Nunito, sans-serif"
                         fill={textColor}
                     />
                     <Text
                         x={TOP_X}
-                        y={titleY + titleFontSize + 14}
+                        y={titleY + titleFontSize + textGap}
                         width={TOP_W}
                         text={subtitle || ""}
                         align="center"
                         fontSize={subtitleFontSize}
-                        fontFamily="var(--font-nunito), sans-serif"
+                        fontFamily="Nunito, sans-serif"
                         fill={textColor}
                         opacity={0.6}
                     />
