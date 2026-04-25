@@ -3,35 +3,41 @@
 import { useCallback, useState } from "react";
 import { Upload } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
-import { setPhotoUrl, setSolidColor, setBackgroundMode, setDotShape, setDotSize, setDotVariance, setDotOpacity } from "@/store/slices/decorateSlice";
-import { extractPhotoColor } from "@/lib/extractDominantColor";
+import { setPhoto } from "@/store/slices/momentCardSlice";
+import { extractDominantColorVivid } from "@/lib/extractDominantColor";
+
+function loadImageEl(url: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error("image load failed"));
+        img.src = url;
+    });
+}
 
 interface Props {
     hasPhoto: boolean;
     variant?: "sidebar" | "canvas";
 }
 
-export default function PhotoUploader({
-    hasPhoto,
-    variant = "sidebar",
-}: Props) {
+export default function MomentCardUploader({ hasPhoto, variant = "sidebar" }: Props) {
     const dispatch = useAppDispatch();
     const [dragOver, setDragOver] = useState(false);
 
     const handleFiles = useCallback(
-        (files: FileList | null) => {
+        async (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
             const url = URL.createObjectURL(file);
-            extractPhotoColor(url).then((color) => {
-                dispatch(setBackgroundMode("solid"));
-                dispatch(setSolidColor(color));
-                dispatch(setPhotoUrl(url));
-                dispatch(setDotShape("snowflake"));
-                dispatch(setDotSize(30));
-                dispatch(setDotVariance(23));
-                dispatch(setDotOpacity(66));
-            });
+            const img = await loadImageEl(url);
+            const color = extractDominantColorVivid(img);
+            dispatch(setPhoto({
+                url,
+                naturalWidth: img.naturalWidth,
+                naturalHeight: img.naturalHeight,
+                bgColor: color,
+            }));
         },
         [dispatch],
     );
@@ -53,7 +59,7 @@ export default function PhotoUploader({
         return (
             <label
                 {...commonDragHandlers}
-                className={`relative w-full rounded-2xl cursor-pointer flex flex-col items-center justify-center gap-3 transition-all duration-150 active:scale-[0.98] select-none px-6 py-10 overflow-hidden ${
+                className={`relative w-full aspect-[9/16] rounded-2xl cursor-pointer flex flex-col items-center justify-center gap-3 transition-all duration-150 active:scale-[0.98] select-none px-6 py-10 overflow-hidden ${
                     dragOver
                         ? "border-[1.5px] border-solid border-[#C5E89A] bg-[#F4FAE8] shadow-[rgba(197,232,154,0.2)_0px_0px_32px_0px]"
                         : "border-[1.5px] border-dashed border-[#D2EAAA] bg-white hover:border-[#C5E89A] hover:bg-[#F8FCF2]"
@@ -65,33 +71,6 @@ export default function PhotoUploader({
                     className="hidden"
                     onChange={(e) => handleFiles(e.target.files)}
                 />
-
-                {/* Decorative dots */}
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[14%] left-[12%] w-2.5 h-2.5 rounded-full bg-[#C5E89A] opacity-60"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[20%] right-[16%] w-1.5 h-1.5 rounded-full bg-[#F7F6D3]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute bottom-[22%] left-[18%] w-2 h-2 rounded-full border-[1.5px] border-[#D2EAAA]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute bottom-[16%] right-[14%] w-3 h-3 rounded-full bg-[#E8F5D2]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[45%] left-[8%] w-1.5 h-1.5 rounded-full bg-[#FDE7EE]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[60%] right-[8%] w-2 h-2 rounded-full bg-[#F7F6D3] opacity-80"
-                />
-
                 <div
                     className={`relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-200 ${
                         dragOver ? "scale-110" : ""
@@ -103,12 +82,8 @@ export default function PhotoUploader({
                             : "rgba(197,232,154,0.18) 0px 4px 16px",
                     }}
                 >
-                    <Upload
-                        className="w-8 h-8 text-[#9ED06C]"
-                        strokeWidth={1.8}
-                    />
+                    <Upload className="w-8 h-8 text-[#9ED06C]" strokeWidth={1.8} />
                 </div>
-
                 <div className="relative flex flex-col items-center gap-2">
                     <p
                         className="text-[18px] font-semibold text-[#1a1a2e] tracking-[-0.2px]"
@@ -150,11 +125,9 @@ export default function PhotoUploader({
             <Upload className="w-4 h-4 shrink-0 text-[#1a1a2e]" strokeWidth={1.8} />
             <div className="min-w-0">
                 <p className="text-[14px] font-medium text-[#1a1a2e]">
-                    {hasPhoto ? "Upload photo" : "Upload photo"}
+                    {hasPhoto ? "Replace photo" : "Upload photo"}
                 </p>
-                <p className="text-[11px] text-[#9CA3AF]">
-                    PNG &middot; JPG &middot; WEBP
-                </p>
+                <p className="text-[11px] text-[#9CA3AF]">PNG · JPG · WEBP</p>
             </div>
         </label>
     );

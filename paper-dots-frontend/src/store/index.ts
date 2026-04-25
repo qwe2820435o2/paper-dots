@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import decorateReducer from "./slices/decorateSlice";
+import momentCardReducer from "./slices/momentCardSlice";
 
 export const store = configureStore({
     reducer: {
         decorate: decorateReducer,
+        momentCard: momentCardReducer,
     },
 });
 
