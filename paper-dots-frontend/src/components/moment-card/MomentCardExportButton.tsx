@@ -5,9 +5,41 @@ import type Konva from "konva";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
 import { useAppSelector } from "@/store/hooks";
+import { STAGE_W, STAGE_H, PAGE_INSET_X, PAGE_INSET_Y, CARD_RADIUS } from "@/components/moment-card/MomentCardCanvas";
 
 interface Props {
     stageRef: RefObject<Konva.Stage | null>;
+}
+
+function loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    });
+}
+
+async function applyRoundedCorners(dataUrl: string, w: number, h: number, r: number): Promise<string> {
+    const img = await loadImage(dataUrl);
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d")!;
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.lineTo(w - r, 0);
+    ctx.quadraticCurveTo(w, 0, w, r);
+    ctx.lineTo(w, h - r);
+    ctx.quadraticCurveTo(w, h, w - r, h);
+    ctx.lineTo(r, h);
+    ctx.quadraticCurveTo(0, h, 0, h - r);
+    ctx.lineTo(0, r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(img, 0, 0);
+    return canvas.toDataURL("image/png");
 }
 
 export default function MomentCardExportButton({ stageRef }: Props) {
@@ -18,15 +50,25 @@ export default function MomentCardExportButton({ stageRef }: Props) {
         if (!stage) return;
         const prevScale = stage.scaleX();
         stage.scale({ x: 1, y: 1 });
-        const dataUrl = stage.toDataURL({
-            x: 0,
-            y: 0,
-            width: stage.width(),
-            height: stage.height(),
-            pixelRatio: 2,
+        const pixelRatio = 2;
+        const cardW = STAGE_W - PAGE_INSET_X * 2;
+        const cardH = STAGE_H - PAGE_INSET_Y * 2;
+        const rawDataUrl = stage.toDataURL({
+            x: PAGE_INSET_X,
+            y: PAGE_INSET_Y,
+            width: cardW,
+            height: cardH,
+            pixelRatio,
             mimeType: "image/png",
         });
         stage.scale({ x: prevScale, y: prevScale });
+
+        const dataUrl = await applyRoundedCorners(
+            rawDataUrl,
+            cardW * pixelRatio,
+            cardH * pixelRatio,
+            CARD_RADIUS * pixelRatio,
+        );
 
         const filename = `moment-card-${Date.now()}.png`;
         const isMobile = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;

@@ -14,10 +14,10 @@ import { useHTMLImage } from "@/components/decorate/useHTMLImage";
 
 export const STAGE_W = 1080;
 export const STAGE_H = 1350;
-const PAGE_INSET_X = 88;
-const PAGE_INSET_Y = 112;
+export const PAGE_INSET_X = 88;
+export const PAGE_INSET_Y = 112;
 const CARD_GAP = 0;
-const CARD_RADIUS = 44;
+export const CARD_RADIUS = 44;
 const TOP_RATIO = 0.5;
 
 const INNER_H = STAGE_H - PAGE_INSET_Y * 2 - CARD_GAP;
