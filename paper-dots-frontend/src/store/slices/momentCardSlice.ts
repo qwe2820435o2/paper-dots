@@ -7,9 +7,13 @@ export interface MomentCardState {
     photoNaturalWidth: number;
     photoNaturalHeight: number;
     /**
+     * Horizontal pan offset for the photo within the bottom crop frame.
+     * 0 = left edge aligned to frame; 1 = right edge aligned to frame.
+     */
+    cropOffsetX: number;
+    /**
      * Vertical pan offset for the photo within the bottom crop frame.
-     * 0 = top of the photo aligned to top of frame; 1 = bottom aligned to bottom.
-     * Only used when the scaled photo is taller than the frame.
+     * 0 = top edge aligned to frame; 1 = bottom edge aligned to frame.
      */
     cropOffsetY: number;
     bgColor: string;
@@ -22,6 +26,7 @@ const initialState: MomentCardState = {
     photoUrl: null,
     photoNaturalWidth: 0,
     photoNaturalHeight: 0,
+    cropOffsetX: 0.5,
     cropOffsetY: 0.5,
     bgColor: "#C5E89A",
     textColorMode: "auto",
@@ -45,7 +50,12 @@ const momentCardSlice = createSlice({
             state.photoNaturalWidth = action.payload.naturalWidth;
             state.photoNaturalHeight = action.payload.naturalHeight;
             state.bgColor = action.payload.bgColor;
+            state.cropOffsetX = 0.5;
             state.cropOffsetY = 0.5;
+        },
+        setCropOffset(state, action: PayloadAction<{ x: number; y: number }>) {
+            state.cropOffsetX = Math.max(0, Math.min(1, action.payload.x));
+            state.cropOffsetY = Math.max(0, Math.min(1, action.payload.y));
         },
         setCropOffsetY(state, action: PayloadAction<number>) {
             state.cropOffsetY = Math.max(0, Math.min(1, action.payload));
@@ -70,6 +80,7 @@ const momentCardSlice = createSlice({
 
 export const {
     setPhoto,
+    setCropOffset,
     setCropOffsetY,
     setBgColor,
     setTitle,

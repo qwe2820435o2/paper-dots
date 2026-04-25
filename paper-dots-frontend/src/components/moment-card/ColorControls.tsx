@@ -22,10 +22,6 @@ export default function ColorControls() {
     const dispatch = useAppDispatch();
     const bgColor = useAppSelector((s) => s.momentCard.bgColor);
     const photoUrl = useAppSelector((s) => s.momentCard.photoUrl);
-    const naturalW = useAppSelector((s) => s.momentCard.photoNaturalWidth);
-    const naturalH = useAppSelector((s) => s.momentCard.photoNaturalHeight);
-    const cropOffsetY = useAppSelector((s) => s.momentCard.cropOffsetY);
-
     const [hexInput, setHexInput] = useState(bgColor);
     const [isExtracting, setIsExtracting] = useState(false);
 
@@ -37,20 +33,11 @@ export default function ColorControls() {
     }
 
     async function reExtract() {
-        if (!photoUrl || !naturalW || !naturalH) return;
+        if (!photoUrl) return;
         setIsExtracting(true);
         try {
             const img = await loadImage(photoUrl);
-            const visibleSrcW = Math.min(naturalW, naturalH * (1080 / 960));
-            const visibleSrcH = Math.min(naturalH, naturalW * (960 / 1080));
-            const sx = (naturalW - visibleSrcW) / 2;
-            const sy = (naturalH - visibleSrcH) * cropOffsetY;
-            const next = extractDominantColorVivid(img, {
-                sx,
-                sy,
-                sw: visibleSrcW,
-                sh: visibleSrcH,
-            });
+            const next = extractDominantColorVivid(img);
             dispatch(setBgColor(next));
             setHexInput(next);
         } finally {

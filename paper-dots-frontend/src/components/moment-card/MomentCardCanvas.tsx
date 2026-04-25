@@ -4,20 +4,42 @@ import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState }
 import type Konva from "konva";
 import { Stage, Layer, Rect, Image as KonvaImage, Text, Group } from "react-konva";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setBgColor, setCropOffsetY } from "@/store/slices/momentCardSlice";
+import { setBgColor, setCropOffset } from "@/store/slices/momentCardSlice";
 import {
     extractDominantColorVivid,
     getContrastTextColor,
+    rgbToHsl,
+    hslToRgb,
 } from "@/lib/extractDominantColor";
 import { useHTMLImage } from "@/components/decorate/useHTMLImage";
 
 export const STAGE_W = 1080;
-export const STAGE_H = 1920;
-export const TOP_H = 960;
-export const BOTTOM_Y = TOP_H;
-export const BOTTOM_H = STAGE_H - TOP_H;
-const BOTTOM_INSET = 24;
-const BOTTOM_RADIUS = 28;
+export const STAGE_H = 1350;
+const PAGE_INSET_X = 88;
+const PAGE_INSET_Y = 112;
+const CARD_GAP = 0;
+const CARD_RADIUS = 44;
+const TOP_RATIO = 0.5;
+
+const INNER_H = STAGE_H - PAGE_INSET_Y * 2 - CARD_GAP;
+const TOP_H = Math.round(INNER_H * TOP_RATIO);
+const BOTTOM_H = INNER_H - TOP_H;
+const TOP_X = PAGE_INSET_X;
+const TOP_Y = PAGE_INSET_Y;
+const TOP_W = STAGE_W - PAGE_INSET_X * 2;
+const BOTTOM_X = PAGE_INSET_X;
+const BOTTOM_Y = TOP_Y + TOP_H + CARD_GAP;
+const BOTTOM_W = TOP_W;
+
+function darkenHex(hex: string, deltaL = 0.06): string {
+    const n = parseInt(hex.replace("#", ""), 16);
+    const r = (n >> 16) & 0xff;
+    const g = (n >> 8) & 0xff;
+    const b = n & 0xff;
+    const [h, s, l] = rgbToHsl(r, g, b);
+    const [nr, ng, nb] = hslToRgb(h, s, Math.max(0, l - deltaL));
+    return `#${nr.toString(16).padStart(2, "0")}${ng.toString(16).padStart(2, "0")}${nb.toString(16).padStart(2, "0")}`;
+}
 
 interface PhotoLayout {
     scale: number;
@@ -25,44 +47,87 @@ interface PhotoLayout {
     imgH: number;
     imgX: number;
     imgY: number;
-    canDragVertical: boolean;
+    horizontalRange: number;
     verticalRange: number;
+    canDrag: boolean;
 }
+
+/**
+ * Cover overshoot factor. The photo is always scaled to slightly exceed the
+ * frame so it fills the bottom card without letterboxing, and so dragging is
+ * always meaningful for repositioning.
+ */
+const PHOTO_OVERSHOOT = 1.08;
 
 function computePhotoLayout(
     photoW: number,
     photoH: number,
+    cropOffsetX: number,
     cropOffsetY: number,
 ): PhotoLayout {
-    const frameW = STAGE_W - BOTTOM_INSET * 2;
-    const frameH = BOTTOM_H - BOTTOM_INSET * 2;
-    const scale = Math.max(frameW / photoW, frameH / photoH);
+    const coverScale = Math.max(BOTTOM_W / photoW, BOTTOM_H / photoH);
+    const scale = coverScale * PHOTO_OVERSHOOT;
     const imgW = photoW * scale;
     const imgH = photoH * scale;
-    const verticalRange = Math.max(0, imgH - frameH);
-    const canDragVertical = verticalRange > 0.5;
-    const frameX = BOTTOM_INSET;
-    const frameY = BOTTOM_Y + BOTTOM_INSET;
-    const imgX = frameX + (frameW - imgW) / 2;
-    const imgY = canDragVertical
-        ? frameY - cropOffsetY * verticalRange
-        : frameY + (frameH - imgH) / 2;
-    return { scale, imgW, imgH, imgX, imgY, canDragVertical, verticalRange };
+    const horizontalRange = Math.max(0, imgW - BOTTOM_W);
+    const verticalRange = Math.max(0, imgH - BOTTOM_H);
+    const canDrag = horizontalRange > 0.5 || verticalRange > 0.5;
+    const imgX =
+        horizontalRange > 0
+            ? BOTTOM_X - cropOffsetX * horizontalRange
+            : BOTTOM_X + (BOTTOM_W - imgW) / 2;
+    const imgY =
+        verticalRange > 0
+            ? BOTTOM_Y - cropOffsetY * verticalRange
+            : BOTTOM_Y + (BOTTOM_H - imgH) / 2;
+    return { scale, imgW, imgH, imgX, imgY, horizontalRange, verticalRange, canDrag };
 }
 
 function computeSrcRegion(
     photoW: number,
     photoH: number,
+    cropOffsetX: number,
     cropOffsetY: number,
 ) {
-    const frameW = STAGE_W - BOTTOM_INSET * 2;
-    const frameH = BOTTOM_H - BOTTOM_INSET * 2;
-    const scale = Math.max(frameW / photoW, frameH / photoH);
-    const visibleSrcW = Math.min(photoW, frameW / scale);
-    const visibleSrcH = Math.min(photoH, frameH / scale);
-    const sx = (photoW - visibleSrcW) / 2;
+    const coverScale = Math.max(BOTTOM_W / photoW, BOTTOM_H / photoH);
+    const scale = coverScale * PHOTO_OVERSHOOT;
+    const visibleSrcW = Math.min(photoW, BOTTOM_W / scale);
+    const visibleSrcH = Math.min(photoH, BOTTOM_H / scale);
+    const sx = (photoW - visibleSrcW) * cropOffsetX;
     const sy = (photoH - visibleSrcH) * cropOffsetY;
     return { sx, sy, sw: visibleSrcW, sh: visibleSrcH };
+}
+
+interface PathContext {
+    beginPath(): void;
+    moveTo(x: number, y: number): void;
+    lineTo(x: number, y: number): void;
+    quadraticCurveTo(cpx: number, cpy: number, x: number, y: number): void;
+    closePath(): void;
+}
+
+function roundedRectPath(
+    ctx: PathContext,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    radii: [number, number, number, number] | number,
+) {
+    const [tl, tr, br, bl] = typeof radii === "number"
+        ? [radii, radii, radii, radii]
+        : radii;
+    ctx.beginPath();
+    ctx.moveTo(x + tl, y);
+    ctx.lineTo(x + w - tr, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + tr);
+    ctx.lineTo(x + w, y + h - br);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
+    ctx.lineTo(x + bl, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - bl);
+    ctx.lineTo(x, y + tl);
+    ctx.quadraticCurveTo(x, y, x + tl, y);
+    ctx.closePath();
 }
 
 const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, ref) {
@@ -70,6 +135,7 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
     const photoUrl = useAppSelector((s) => s.momentCard.photoUrl);
     const naturalW = useAppSelector((s) => s.momentCard.photoNaturalWidth);
     const naturalH = useAppSelector((s) => s.momentCard.photoNaturalHeight);
+    const cropOffsetX = useAppSelector((s) => s.momentCard.cropOffsetX);
     const cropOffsetY = useAppSelector((s) => s.momentCard.cropOffsetY);
     const bgColor = useAppSelector((s) => s.momentCard.bgColor);
     const title = useAppSelector((s) => s.momentCard.title);
@@ -101,8 +167,8 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
 
     const photoLayout = useMemo(() => {
         if (!naturalW || !naturalH) return null;
-        return computePhotoLayout(naturalW, naturalH, cropOffsetY);
-    }, [naturalW, naturalH, cropOffsetY]);
+        return computePhotoLayout(naturalW, naturalH, cropOffsetX, cropOffsetY);
+    }, [naturalW, naturalH, cropOffsetX, cropOffsetY]);
 
     const textColor = useMemo(() => {
         if (textColorMode === "light") return "#ffffff";
@@ -110,22 +176,42 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
         return getContrastTextColor(bgColor);
     }, [textColorMode, bgColor]);
 
-    const dragState = useRef<{ startY: number; startOffset: number } | null>(null);
+    const pageColor = useMemo(() => darkenHex(bgColor, 0.07), [bgColor]);
 
-    function getStageClientY(clientY: number) {
+    const dragState = useRef<{
+        startX: number;
+        startY: number;
+        startOffsetX: number;
+        startOffsetY: number;
+    } | null>(null);
+
+    function getStagePoint(clientX: number, clientY: number) {
         const stage = stageRef.current;
-        if (!stage) return 0;
+        if (!stage) return { x: 0, y: 0 };
         const rect = stage.container().getBoundingClientRect();
-        return (clientY - rect.top) / displayScale;
+        return {
+            x: (clientX - rect.left) / displayScale,
+            y: (clientY - rect.top) / displayScale,
+        };
     }
 
     function onPointerMove(e: PointerEvent) {
         const drag = dragState.current;
         const layout = photoLayout;
-        if (!drag || !layout || !layout.canDragVertical) return;
-        const dy = getStageClientY(e.clientY) - drag.startY;
-        const next = drag.startOffset - dy / layout.verticalRange;
-        dispatch(setCropOffsetY(Math.max(0, Math.min(1, next))));
+        if (!drag || !layout || !layout.canDrag) return;
+        const p = getStagePoint(e.clientX, e.clientY);
+        const dx = p.x - drag.startX;
+        const dy = p.y - drag.startY;
+        const nextX = layout.horizontalRange > 0
+            ? drag.startOffsetX - dx / layout.horizontalRange
+            : drag.startOffsetX;
+        const nextY = layout.verticalRange > 0
+            ? drag.startOffsetY - dy / layout.verticalRange
+            : drag.startOffsetY;
+        dispatch(setCropOffset({
+            x: Math.max(0, Math.min(1, nextX)),
+            y: Math.max(0, Math.min(1, nextY)),
+        }));
     }
 
     function onPointerUp() {
@@ -134,25 +220,39 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
         window.removeEventListener("pointermove", onPointerMove);
         window.removeEventListener("pointerup", onPointerUp);
         if (photoImg && naturalW && naturalH) {
-            const region = computeSrcRegion(naturalW, naturalH, cropOffsetYRef.current);
+            const region = computeSrcRegion(
+                naturalW,
+                naturalH,
+                cropOffsetXRef.current,
+                cropOffsetYRef.current,
+            );
             const next = extractDominantColorVivid(photoImg, region);
             dispatch(setBgColor(next));
         }
     }
 
+    const cropOffsetXRef = useRef(cropOffsetX);
     const cropOffsetYRef = useRef(cropOffsetY);
+    useEffect(() => {
+        cropOffsetXRef.current = cropOffsetX;
+    }, [cropOffsetX]);
     useEffect(() => {
         cropOffsetYRef.current = cropOffsetY;
     }, [cropOffsetY]);
 
     function handleMouseDown(e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) {
-        if (!photoLayout?.canDragVertical) return;
+        if (!photoLayout?.canDrag) return;
         const evt = e.evt;
+        const clientX =
+            "touches" in evt ? evt.touches[0]?.clientX ?? 0 : (evt as MouseEvent).clientX;
         const clientY =
             "touches" in evt ? evt.touches[0]?.clientY ?? 0 : (evt as MouseEvent).clientY;
+        const p = getStagePoint(clientX, clientY);
         dragState.current = {
-            startY: getStageClientY(clientY),
-            startOffset: cropOffsetYRef.current,
+            startX: p.x,
+            startY: p.y,
+            startOffsetX: cropOffsetXRef.current,
+            startOffsetY: cropOffsetYRef.current,
         };
         window.addEventListener("pointermove", onPointerMove);
         window.addEventListener("pointerup", onPointerUp);
@@ -166,9 +266,9 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const titleFontSize = 64;
-    const subtitleFontSize = 30;
-    const titleY = TOP_H * 0.62;
+    const titleFontSize = 56;
+    const subtitleFontSize = 26;
+    const titleY = TOP_Y + TOP_H * 0.5 - titleFontSize / 2;
 
     return (
         <div
@@ -184,17 +284,25 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
                 scaleY={displayScale}
                 style={{ width: displayW, height: displayH }}
             >
-                {/* Background top color block (also fills full canvas as base) */}
+                {/* Page bg + top card */}
                 <Layer listening={false}>
-                    <Rect x={0} y={0} width={STAGE_W} height={STAGE_H} fill={bgColor} />
+                    <Rect x={0} y={0} width={STAGE_W} height={STAGE_H} fill={pageColor} />
+                    <Rect
+                        x={TOP_X}
+                        y={TOP_Y}
+                        width={TOP_W}
+                        height={TOP_H}
+                        cornerRadius={[CARD_RADIUS, CARD_RADIUS, 0, 0]}
+                        fill={bgColor}
+                    />
                 </Layer>
 
                 {/* Top text */}
                 <Layer listening={false}>
                     <Text
-                        x={0}
+                        x={TOP_X}
                         y={titleY}
-                        width={STAGE_W}
+                        width={TOP_W}
                         text={title || " "}
                         align="center"
                         fontSize={titleFontSize}
@@ -203,9 +311,9 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
                         fill={textColor}
                     />
                     <Text
-                        x={0}
-                        y={titleY + titleFontSize + 18}
-                        width={STAGE_W}
+                        x={TOP_X}
+                        y={titleY + titleFontSize + 14}
+                        width={TOP_W}
                         text={subtitle || ""}
                         align="center"
                         fontSize={subtitleFontSize}
@@ -215,33 +323,25 @@ const MomentCardCanvas = forwardRef<Konva.Stage>(function MomentCardCanvas(_, re
                     />
                 </Layer>
 
-                {/* Bottom photo with rounded clip */}
+                {/* Bottom card with rounded clip */}
                 <Layer>
                     <Group
                         clipFunc={(ctx) => {
-                            const x = BOTTOM_INSET;
-                            const y = BOTTOM_Y + BOTTOM_INSET;
-                            const w = STAGE_W - BOTTOM_INSET * 2;
-                            const h = BOTTOM_H - BOTTOM_INSET * 2;
-                            const r = BOTTOM_RADIUS;
-                            ctx.beginPath();
-                            ctx.moveTo(x + r, y);
-                            ctx.lineTo(x + w - r, y);
-                            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-                            ctx.lineTo(x + w, y + h - r);
-                            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-                            ctx.lineTo(x + r, y + h);
-                            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-                            ctx.lineTo(x, y + r);
-                            ctx.quadraticCurveTo(x, y, x + r, y);
-                            ctx.closePath();
+                            roundedRectPath(
+                                ctx,
+                                BOTTOM_X,
+                                BOTTOM_Y,
+                                BOTTOM_W,
+                                BOTTOM_H,
+                                [0, 0, CARD_RADIUS, CARD_RADIUS],
+                            );
                         }}
                     >
                         <Rect
-                            x={BOTTOM_INSET}
-                            y={BOTTOM_Y + BOTTOM_INSET}
-                            width={STAGE_W - BOTTOM_INSET * 2}
-                            height={BOTTOM_H - BOTTOM_INSET * 2}
+                            x={BOTTOM_X}
+                            y={BOTTOM_Y}
+                            width={BOTTOM_W}
+                            height={BOTTOM_H}
                             fill="#ffffff"
                             onMouseDown={handleMouseDown}
                             onTouchStart={handleMouseDown}

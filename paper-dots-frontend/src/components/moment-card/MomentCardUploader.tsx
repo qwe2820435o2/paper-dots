@@ -59,7 +59,7 @@ export default function MomentCardUploader({ hasPhoto, variant = "sidebar" }: Pr
         return (
             <label
                 {...commonDragHandlers}
-                className={`relative w-full aspect-[9/16] rounded-2xl cursor-pointer flex flex-col items-center justify-center gap-3 transition-all duration-150 active:scale-[0.98] select-none px-6 py-10 overflow-hidden ${
+                className={`relative w-full aspect-[4/5] rounded-2xl cursor-pointer flex flex-col items-center justify-center gap-3 transition-all duration-150 active:scale-[0.98] select-none px-6 py-10 overflow-hidden ${
                     dragOver
                         ? "border-[1.5px] border-solid border-[#C5E89A] bg-[#F4FAE8] shadow-[rgba(197,232,154,0.2)_0px_0px_32px_0px]"
                         : "border-[1.5px] border-dashed border-[#D2EAAA] bg-white hover:border-[#C5E89A] hover:bg-[#F8FCF2]"

@@ -16,7 +16,7 @@ const MomentCardCanvas = dynamic(
         ssr: false,
         loading: () => (
             <div
-                className="aspect-[9/16] h-full max-h-full rounded-xl bg-[#F4FAE8]"
+                className="aspect-[4/5] h-full max-h-full rounded-xl bg-[#F4FAE8]"
                 style={{
                     boxShadow: "rgba(197, 232, 154, 0.25) 0px 0px 0px 1px",
                 }}
@@ -76,7 +76,7 @@ export default function MomentCardApp() {
     const canvasArea = photoUrl ? (
         <MomentCardCanvas ref={stageRef} />
     ) : (
-        <div className="w-full max-w-[min(100vw-24px,calc((100dvh-80px)*9/16))]">
+        <div className="w-full max-w-[min(100vw-24px,calc((100dvh-80px)*4/5))]">
             <MomentCardUploader hasPhoto={false} variant="canvas" />
         </div>
     );
