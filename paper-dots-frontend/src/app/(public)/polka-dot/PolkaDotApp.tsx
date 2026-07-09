@@ -1,14 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Grid3x3, X } from "lucide-react";
+import { Grid3x3, RotateCw, Palette, Download, X } from "lucide-react";
 import PolkaDotPreview from "@/components/polka-dot/PolkaDotPreview";
 import GridControls from "@/components/polka-dot/GridControls";
+import TransformControls from "@/components/polka-dot/TransformControls";
+import PresetControls from "@/components/polka-dot/PresetControls";
+import ExportPanel from "@/components/polka-dot/ExportPanel";
 
-type Panel = "grid" | null;
+type Panel = "grid" | "transform" | "presets" | "export" | null;
 
 const TOOLS: { id: Panel; icon: typeof Grid3x3; label: string }[] = [
     { id: "grid", icon: Grid3x3, label: "Grid" },
+    { id: "transform", icon: RotateCw, label: "Transform" },
+    { id: "presets", icon: Palette, label: "Presets" },
+    { id: "export", icon: Download, label: "Export" },
 ];
 
 export default function PolkaDotApp() {
@@ -27,7 +33,14 @@ export default function PolkaDotApp() {
 
     const activeLabel = TOOLS.find((t) => t.id === activePanel)?.label;
 
-    const panelContent = <>{activePanel === "grid" && <GridControls />}</>;
+    const panelContent = (
+        <>
+            {activePanel === "grid" && <GridControls />}
+            {activePanel === "transform" && <TransformControls />}
+            {activePanel === "presets" && <PresetControls />}
+            {activePanel === "export" && <ExportPanel />}
+        </>
+    );
 
     return (
         <div className="h-[calc(100dvh-56px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">

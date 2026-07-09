@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Arrangement } from "@/lib/polkaDotGrid";
+import { POLKA_DOT_PRESETS, POLKA_DOT_PALETTES } from "@/lib/polkaDotPresets";
 
 export interface PolkaDotState {
     arrangement: Arrangement;
@@ -44,33 +45,76 @@ const polkaDotSlice = createSlice({
     reducers: {
         setArrangement(state, action: PayloadAction<Arrangement>) {
             state.arrangement = action.payload;
+            state.presetId = null;
         },
         setDotSize(state, action: PayloadAction<number>) {
             state.dotSize = Math.max(2, Math.min(100, action.payload));
+            state.presetId = null;
         },
         setSpacing(state, action: PayloadAction<number>) {
             state.spacing = Math.max(4, Math.min(200, action.payload));
+            state.presetId = null;
         },
         setDotColor(state, action: PayloadAction<string>) {
             state.dotColor = action.payload;
+            state.paletteId = null;
         },
         setBackgroundColor(state, action: PayloadAction<string>) {
             state.backgroundColor = action.payload;
+            state.paletteId = null;
         },
         setOpacity(state, action: PayloadAction<number>) {
             state.opacity = Math.max(0, Math.min(100, action.payload));
         },
         setRotation(state, action: PayloadAction<number>) {
             state.rotation = Math.max(-180, Math.min(180, action.payload));
+            state.presetId = null;
         },
         setSkewX(state, action: PayloadAction<number>) {
             state.skewX = Math.max(-60, Math.min(60, action.payload));
+            state.presetId = null;
         },
         setSkewY(state, action: PayloadAction<number>) {
             state.skewY = Math.max(-60, Math.min(60, action.payload));
+            state.presetId = null;
         },
         setZoom(state, action: PayloadAction<number>) {
             state.zoom = Math.max(0.25, Math.min(3, action.payload));
+            state.presetId = null;
+        },
+        applyPreset(state, action: PayloadAction<string>) {
+            const preset = POLKA_DOT_PRESETS.find((p) => p.id === action.payload);
+            if (!preset) return;
+            state.arrangement = preset.arrangement;
+            state.dotSize = preset.dotSize;
+            state.spacing = preset.spacing;
+            state.rotation = preset.rotation;
+            state.skewX = preset.skewX;
+            state.skewY = preset.skewY;
+            state.zoom = preset.zoom;
+            state.presetId = preset.id;
+        },
+        applyPalette(state, action: PayloadAction<string>) {
+            const palette = POLKA_DOT_PALETTES.find((p) => p.id === action.payload);
+            if (!palette) return;
+            state.dotColor = palette.dotColor;
+            state.backgroundColor = palette.backgroundColor;
+            state.paletteId = palette.id;
+        },
+        shuffleAppearance(state) {
+            const preset = POLKA_DOT_PRESETS[Math.floor(Math.random() * POLKA_DOT_PRESETS.length)];
+            const palette = POLKA_DOT_PALETTES[Math.floor(Math.random() * POLKA_DOT_PALETTES.length)];
+            state.arrangement = preset.arrangement;
+            state.dotSize = preset.dotSize;
+            state.spacing = preset.spacing;
+            state.rotation = preset.rotation;
+            state.skewX = preset.skewX;
+            state.skewY = preset.skewY;
+            state.zoom = preset.zoom;
+            state.presetId = preset.id;
+            state.dotColor = palette.dotColor;
+            state.backgroundColor = palette.backgroundColor;
+            state.paletteId = palette.id;
         },
         resetPolkaDot() {
             return initialState;
@@ -89,6 +133,9 @@ export const {
     setSkewX,
     setSkewY,
     setZoom,
+    applyPreset,
+    applyPalette,
+    shuffleAppearance,
     resetPolkaDot,
 } = polkaDotSlice.actions;
 
