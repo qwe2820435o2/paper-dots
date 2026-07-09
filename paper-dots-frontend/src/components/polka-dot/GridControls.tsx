@@ -1,0 +1,157 @@
+"use client";
+
+import { useState } from "react";
+import { Slider } from "@/components/ui/slider";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+    setArrangement,
+    setDotSize,
+    setSpacing,
+    setDotColor,
+    setBackgroundColor,
+    setOpacity,
+} from "@/store/slices/polkaDotSlice";
+import type { Arrangement } from "@/lib/polkaDotGrid";
+import ColorPicker from "@/components/decorate/ColorPicker";
+
+const ARRANGEMENTS: { value: Arrangement; label: string }[] = [
+    { value: "square", label: "Square" },
+    { value: "diagonal", label: "Diagonal" },
+];
+
+export default function GridControls() {
+    const dispatch = useAppDispatch();
+    const config = useAppSelector((s) => s.polkaDot);
+    const [pickerOpen, setPickerOpen] = useState<"dot" | "background" | null>(null);
+
+    return (
+        <div className="px-4 py-4 flex flex-col gap-5">
+            {/* Arrangement */}
+            <div>
+                <label className="block text-[11px] uppercase mb-2 text-[#64748b] tracking-[0.08em]">
+                    Arrangement
+                </label>
+                <div className="grid grid-cols-2 gap-1.5">
+                    {ARRANGEMENTS.map((a) => {
+                        const selected = config.arrangement === a.value;
+                        return (
+                            <button
+                                key={a.value}
+                                type="button"
+                                onClick={() => dispatch(setArrangement(a.value))}
+                                className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium transition-colors"
+                                style={{
+                                    color: selected ? "#C5E89A" : "#64748b",
+                                    background: selected ? "#E8F5D2" : "#F4FAE8",
+                                    boxShadow: selected
+                                        ? "#C5E89A 0px 0px 0px 1.5px"
+                                        : "#D2EAAA 0px 0px 0px 1px",
+                                }}
+                            >
+                                {a.label}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Dot Size */}
+            <div>
+                <div className="flex items-baseline justify-between mb-2">
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Dot Size</label>
+                    <span className="text-[12px] tabular-nums text-[#64748b]">{config.dotSize}</span>
+                </div>
+                <Slider
+                    min={2}
+                    max={100}
+                    step={1}
+                    value={[config.dotSize]}
+                    onValueChange={(v) => dispatch(setDotSize(v[0]))}
+                />
+            </div>
+
+            {/* Spacing */}
+            <div>
+                <div className="flex items-baseline justify-between mb-2">
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Spacing</label>
+                    <span className="text-[12px] tabular-nums text-[#64748b]">{config.spacing}</span>
+                </div>
+                <Slider
+                    min={4}
+                    max={200}
+                    step={1}
+                    value={[config.spacing]}
+                    onValueChange={(v) => dispatch(setSpacing(v[0]))}
+                />
+            </div>
+
+            {/* Opacity */}
+            <div>
+                <div className="flex items-baseline justify-between mb-2">
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Opacity</label>
+                    <span className="text-[12px] tabular-nums text-[#64748b]">{config.opacity}</span>
+                </div>
+                <Slider
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={[config.opacity]}
+                    onValueChange={(v) => dispatch(setOpacity(v[0]))}
+                />
+            </div>
+
+            {/* Dot Color */}
+            <div className="flex flex-col gap-2">
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Dot Color</label>
+                <button
+                    type="button"
+                    onClick={() => setPickerOpen((v) => (v === "dot" ? null : "dot"))}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
+                    style={{
+                        background: "white",
+                        boxShadow:
+                            pickerOpen === "dot" ? "#C5E89A 0px 0px 0px 1.5px" : "#D2EAAA 0px 0px 0px 1px",
+                    }}
+                >
+                    <div
+                        className="w-4 h-4 rounded-full shrink-0"
+                        style={{ backgroundColor: config.dotColor }}
+                    />
+                    <span className="text-[11px] text-[#64748b]">{config.dotColor}</span>
+                </button>
+                {pickerOpen === "dot" && (
+                    <ColorPicker color={config.dotColor} onChange={(hex) => dispatch(setDotColor(hex))} />
+                )}
+            </div>
+
+            {/* Background Color */}
+            <div className="flex flex-col gap-2">
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Background Color</label>
+                <button
+                    type="button"
+                    onClick={() => setPickerOpen((v) => (v === "background" ? null : "background"))}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
+                    style={{
+                        background: "white",
+                        boxShadow:
+                            pickerOpen === "background"
+                                ? "#C5E89A 0px 0px 0px 1.5px"
+                                : "#D2EAAA 0px 0px 0px 1px",
+                    }}
+                >
+                    <div
+                        className="w-4 h-4 rounded-full shrink-0"
+                        style={{ backgroundColor: config.backgroundColor }}
+                    />
+                    <span className="text-[11px] text-[#64748b]">{config.backgroundColor}</span>
+                </button>
+                {pickerOpen === "background" && (
+                    <ColorPicker
+                        color={config.backgroundColor}
+                        onChange={(hex) => dispatch(setBackgroundColor(hex))}
+                    />
+                )}
+            </div>
+        </div>
+    );
+}

@@ -24,6 +24,7 @@ const navLinks: NavLink[] = [
         children: [
             { label: "Dot", href: "/decorate", description: "Decorate a photo with playful dots" },
             { label: "Moment Card", href: "/moment-card", description: "Turn a photo into a color-card" },
+            { label: "Polka Dot", href: "/polka-dot", description: "Generate a seamless polka dot background" },
         ],
     },
     { label: "FAQ", href: "/faq" },
