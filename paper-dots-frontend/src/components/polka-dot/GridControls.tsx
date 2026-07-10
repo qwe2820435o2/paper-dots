@@ -69,11 +69,9 @@ export default function GridControls() {
                 </div>
             </div>
 
-            {/* Icon */}
+            {/* Shape */}
             <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">
-                    Custom Icon
-                </label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Shape</label>
                 <IconUploader />
             </div>
 
