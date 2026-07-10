@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { RotateCcw } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -25,7 +24,6 @@ const ARRANGEMENTS: { value: Arrangement; label: string }[] = [
 export default function GridControls() {
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.polkaDot);
-    const [pickerOpen, setPickerOpen] = useState<"dot" | "background" | null>(null);
 
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
@@ -130,55 +128,17 @@ export default function GridControls() {
             {!config.iconUrl && (
                 <div className="flex flex-col gap-2">
                     <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Dot Color</label>
-                    <button
-                        type="button"
-                        onClick={() => setPickerOpen((v) => (v === "dot" ? null : "dot"))}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
-                        style={{
-                            background: "white",
-                            boxShadow:
-                                pickerOpen === "dot" ? "#C5E89A 0px 0px 0px 1.5px" : "#D2EAAA 0px 0px 0px 1px",
-                        }}
-                    >
-                        <div
-                            className="w-4 h-4 rounded-full shrink-0"
-                            style={{ backgroundColor: config.dotColor }}
-                        />
-                        <span className="text-[11px] text-[#64748b]">{config.dotColor}</span>
-                    </button>
-                    {pickerOpen === "dot" && (
-                        <ColorPicker color={config.dotColor} onChange={(hex) => dispatch(setDotColor(hex))} />
-                    )}
+                    <ColorPicker color={config.dotColor} onChange={(hex) => dispatch(setDotColor(hex))} />
                 </div>
             )}
 
             {/* Background Color */}
             <div className="flex flex-col gap-2">
                 <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Background Color</label>
-                <button
-                    type="button"
-                    onClick={() => setPickerOpen((v) => (v === "background" ? null : "background"))}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            pickerOpen === "background"
-                                ? "#C5E89A 0px 0px 0px 1.5px"
-                                : "#D2EAAA 0px 0px 0px 1px",
-                    }}
-                >
-                    <div
-                        className="w-4 h-4 rounded-full shrink-0"
-                        style={{ backgroundColor: config.backgroundColor }}
-                    />
-                    <span className="text-[11px] text-[#64748b]">{config.backgroundColor}</span>
-                </button>
-                {pickerOpen === "background" && (
-                    <ColorPicker
-                        color={config.backgroundColor}
-                        onChange={(hex) => dispatch(setBackgroundColor(hex))}
-                    />
-                )}
+                <ColorPicker
+                    color={config.backgroundColor}
+                    onChange={(hex) => dispatch(setBackgroundColor(hex))}
+                />
             </div>
         </div>
     );
