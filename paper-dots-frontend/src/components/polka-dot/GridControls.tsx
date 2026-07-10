@@ -15,6 +15,7 @@ import {
 } from "@/store/slices/polkaDotSlice";
 import type { Arrangement } from "@/lib/polkaDotGrid";
 import ColorPicker from "@/components/decorate/ColorPicker";
+import IconUploader from "./IconUploader";
 
 const ARRANGEMENTS: { value: Arrangement; label: string }[] = [
     { value: "square", label: "Square" },
@@ -70,10 +71,20 @@ export default function GridControls() {
                 </div>
             </div>
 
-            {/* Dot Size */}
+            {/* Icon */}
+            <div className="flex flex-col gap-2">
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">
+                    Custom Icon
+                </label>
+                <IconUploader />
+            </div>
+
+            {/* Dot / Icon Size */}
             <div>
                 <div className="flex items-baseline justify-between mb-2">
-                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Dot Size</label>
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">
+                        {config.iconUrl ? "Icon Size" : "Dot Size"}
+                    </label>
                     <span className="text-[12px] tabular-nums text-[#64748b]">{config.dotSize}</span>
                 </div>
                 <Slider
@@ -115,29 +126,31 @@ export default function GridControls() {
                 />
             </div>
 
-            {/* Dot Color */}
-            <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Dot Color</label>
-                <button
-                    type="button"
-                    onClick={() => setPickerOpen((v) => (v === "dot" ? null : "dot"))}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            pickerOpen === "dot" ? "#C5E89A 0px 0px 0px 1.5px" : "#D2EAAA 0px 0px 0px 1px",
-                    }}
-                >
-                    <div
-                        className="w-4 h-4 rounded-full shrink-0"
-                        style={{ backgroundColor: config.dotColor }}
-                    />
-                    <span className="text-[11px] text-[#64748b]">{config.dotColor}</span>
-                </button>
-                {pickerOpen === "dot" && (
-                    <ColorPicker color={config.dotColor} onChange={(hex) => dispatch(setDotColor(hex))} />
-                )}
-            </div>
+            {/* Dot Color (not applicable when a custom icon supplies its own colors) */}
+            {!config.iconUrl && (
+                <div className="flex flex-col gap-2">
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Dot Color</label>
+                    <button
+                        type="button"
+                        onClick={() => setPickerOpen((v) => (v === "dot" ? null : "dot"))}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
+                        style={{
+                            background: "white",
+                            boxShadow:
+                                pickerOpen === "dot" ? "#C5E89A 0px 0px 0px 1.5px" : "#D2EAAA 0px 0px 0px 1px",
+                        }}
+                    >
+                        <div
+                            className="w-4 h-4 rounded-full shrink-0"
+                            style={{ backgroundColor: config.dotColor }}
+                        />
+                        <span className="text-[11px] text-[#64748b]">{config.dotColor}</span>
+                    </button>
+                    {pickerOpen === "dot" && (
+                        <ColorPicker color={config.dotColor} onChange={(hex) => dispatch(setDotColor(hex))} />
+                    )}
+                </div>
+            )}
 
             {/* Background Color */}
             <div className="flex flex-col gap-2">

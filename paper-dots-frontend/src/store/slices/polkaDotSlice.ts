@@ -22,6 +22,10 @@ export interface PolkaDotState {
     zoom: number;
     presetId: string | null;
     paletteId: string | null;
+    /** data URL of an uploaded custom icon; null means render plain dots */
+    iconUrl: string | null;
+    /** naturalWidth / naturalHeight of the uploaded icon, for aspect-correct sizing */
+    iconAspect: number;
 }
 
 const initialState: PolkaDotState = {
@@ -37,6 +41,8 @@ const initialState: PolkaDotState = {
     zoom: 1,
     presetId: null,
     paletteId: null,
+    iconUrl: null,
+    iconAspect: 1,
 };
 
 const polkaDotSlice = createSlice({
@@ -116,6 +122,14 @@ const polkaDotSlice = createSlice({
             state.backgroundColor = palette.backgroundColor;
             state.paletteId = palette.id;
         },
+        setIcon(state, action: PayloadAction<{ url: string; aspect: number }>) {
+            state.iconUrl = action.payload.url;
+            state.iconAspect = action.payload.aspect;
+        },
+        clearIcon(state) {
+            state.iconUrl = null;
+            state.iconAspect = 1;
+        },
         resetTransform(state) {
             state.rotation = 0;
             state.skewX = 0;
@@ -143,6 +157,8 @@ export const {
     applyPreset,
     applyPalette,
     shuffleAppearance,
+    setIcon,
+    clearIcon,
     resetTransform,
     resetPolkaDot,
 } = polkaDotSlice.actions;

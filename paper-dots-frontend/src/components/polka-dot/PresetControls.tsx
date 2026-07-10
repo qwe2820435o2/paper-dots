@@ -60,6 +60,8 @@ export default function PresetControls() {
                                             dotColor: config.dotColor,
                                             backgroundColor: config.backgroundColor,
                                             opacity: config.opacity,
+                                            iconUrl: config.iconUrl,
+                                            iconAspect: config.iconAspect,
                                         }}
                                     />
                                 </div>

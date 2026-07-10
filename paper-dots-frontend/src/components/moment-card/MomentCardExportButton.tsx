@@ -6,6 +6,7 @@ import { Download } from "lucide-react";
 import { toast } from "sonner";
 import { useAppSelector } from "@/store/hooks";
 import { STAGE_W, STAGE_H, PAGE_INSET_X, PAGE_INSET_Y, CARD_RADIUS } from "@/components/moment-card/MomentCardCanvas";
+import { isTouchPrimaryDevice } from "@/lib/device";
 
 interface Props {
     stageRef: RefObject<Konva.Stage | null>;
@@ -71,9 +72,8 @@ export default function MomentCardExportButton({ stageRef }: Props) {
         );
 
         const filename = `moment-card-${Date.now()}.png`;
-        const isMobile = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
 
-        if (isMobile && typeof navigator.canShare === "function") {
+        if (isTouchPrimaryDevice() && typeof navigator.canShare === "function") {
             const blob = await (await fetch(dataUrl)).blob();
             const file = new File([blob], filename, { type: "image/png" });
             if (navigator.canShare({ files: [file] })) {

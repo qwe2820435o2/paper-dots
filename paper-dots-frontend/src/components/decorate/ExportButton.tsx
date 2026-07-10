@@ -6,6 +6,7 @@ import { Download } from "lucide-react";
 import { toast } from "sonner";
 import { useAppSelector } from "@/store/hooks";
 import type { LayoutType } from "@/store/slices/decorateSlice";
+import { isTouchPrimaryDevice } from "@/lib/device";
 
 interface Props {
     stageRef: RefObject<Konva.Stage | null>;
@@ -71,6 +72,7 @@ export default function ExportButton({ stageRef }: Props) {
         const file = new File([blob], filename, { type: "image/png" });
 
         if (
+            isTouchPrimaryDevice() &&
             typeof navigator !== "undefined" &&
             typeof navigator.canShare === "function" &&
             navigator.canShare({ files: [file] })

@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Download, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useAppSelector } from "@/store/hooks";
 import { drawPolkaDotCanvas, buildPolkaDotSvgString, buildPolkaDotCssSnippet } from "@/lib/polkaDotGrid";
+import { useHTMLImage } from "@/components/decorate/useHTMLImage";
+import { isTouchPrimaryDevice } from "@/lib/device";
 
 const MIN_EXPORT_SIZE = 100;
 const MAX_EXPORT_SIZE = 2000;
@@ -30,6 +32,7 @@ function triggerDownload(blob: Blob, filename: string): void {
 
 export default function ExportPanel() {
     const config = useAppSelector((s) => s.polkaDot);
+    const iconImage = useHTMLImage(config.iconUrl);
     const [width, setWidth] = useState(800);
     const [height, setHeight] = useState(800);
     const [format, setFormat] = useState<ImageFormat>("png");
@@ -43,7 +46,7 @@ export default function ExportPanel() {
             canvas.height = height;
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
-            drawPolkaDotCanvas(ctx, config, width, height);
+            drawPolkaDotCanvas(ctx, config, width, height, iconImage);
 
             const mimeType = format === "png" ? "image/png" : "image/jpeg";
             const dataUrl = canvas.toDataURL(mimeType, 0.92);
@@ -52,6 +55,7 @@ export default function ExportPanel() {
             const file = new File([blob], filename, { type: mimeType });
 
             if (
+                isTouchPrimaryDevice() &&
                 typeof navigator !== "undefined" &&
                 typeof navigator.canShare === "function" &&
                 navigator.canShare({ files: [file] })
@@ -88,7 +92,10 @@ export default function ExportPanel() {
         }
     }
 
-    const cssSnippet = buildPolkaDotCssSnippet(config);
+    const cssSnippet = useMemo(
+        () => buildPolkaDotCssSnippet(config, iconImage),
+        [config, iconImage],
+    );
 
     async function copyCssCode() {
         try {

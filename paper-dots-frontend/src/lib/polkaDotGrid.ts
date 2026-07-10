@@ -18,6 +18,15 @@ export interface PolkaDotConfig {
     skewY: number;
     /** multiplier applied to spacing/dotSize */
     zoom: number;
+    /** data URL of an uploaded custom icon; null renders a plain circle dot */
+    iconUrl: string | null;
+    /** naturalWidth / naturalHeight of the icon, for aspect-correct (contain) sizing */
+    iconAspect: number;
+}
+
+/** Contain-fits an icon of the given aspect ratio inside a `box x box` square. */
+function iconDrawSize(box: number, iconAspect: number): { w: number; h: number } {
+    return iconAspect >= 1 ? { w: box, h: box / iconAspect } : { w: box * iconAspect, h: box };
 }
 
 export interface DotGridTile {
@@ -78,23 +87,28 @@ export function matrixToCssString(m: AffineMatrix): string {
     return `matrix(${m.join(",")})`;
 }
 
-export function dotGridBackgroundCss(
-    tile: DotGridTile,
-    dotColor: string,
-): { backgroundImage: string; backgroundSize: string; backgroundPosition: string } {
-    const { dotRadius, tileSize, centers } = tile;
-    // Each layer's gradient is centered in its own tile box (no explicit "at" offset), and
-    // background-position shifts that box so the rendered dot lands on the intended center.
-    // This keeps every dot's raster fully inside one tile's own box, avoiding the seam
-    // artifact that appears when a dot straddles the edge between adjacent repeated tiles.
-    const backgroundImage = centers
-        .map(() => `radial-gradient(circle, ${dotColor} ${dotRadius}px, transparent ${dotRadius}px)`)
-        .join(",");
+// Every layer's content is centered in its own tile box (no explicit "at" offset), and
+// background-position shifts that box so the rendered content lands on the intended
+// center. This keeps every dot/icon's raster fully inside one tile's own box, avoiding the
+// seam artifact that appears when content straddles the edge between adjacent repeated
+// tiles. Shared by the plain-gradient (circle) and image-tile (custom icon) CSS builders.
+function dotGridLayerGeometry(tile: DotGridTile): { backgroundSize: string; backgroundPosition: string } {
+    const { tileSize, centers } = tile;
     const backgroundSize = centers.map(() => `${tileSize}px ${tileSize}px`).join(",");
     const backgroundPosition = centers
         .map((c) => `${c.x - tileSize / 2}px ${c.y - tileSize / 2}px`)
         .join(",");
-    return { backgroundImage, backgroundSize, backgroundPosition };
+    return { backgroundSize, backgroundPosition };
+}
+
+export function dotGridBackgroundCss(
+    tile: DotGridTile,
+    dotColor: string,
+): { backgroundImage: string; backgroundSize: string; backgroundPosition: string } {
+    const backgroundImage = tile.centers
+        .map(() => `radial-gradient(circle, ${dotColor} ${tile.dotRadius}px, transparent ${tile.dotRadius}px)`)
+        .join(",");
+    return { backgroundImage, ...dotGridLayerGeometry(tile) };
 }
 
 export interface Dot {
@@ -170,6 +184,7 @@ export function drawPolkaDotCanvas(
     config: PolkaDotConfig,
     width: number,
     height: number,
+    iconImage?: HTMLImageElement | null,
 ): void {
     ctx.save();
     ctx.fillStyle = config.backgroundColor;
@@ -186,11 +201,19 @@ export function drawPolkaDotCanvas(
     ctx.translate(-cx, -cy);
 
     ctx.globalAlpha = config.opacity / 100;
-    ctx.fillStyle = config.dotColor;
-    for (const dot of dots) {
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
-        ctx.fill();
+
+    if (config.iconUrl && iconImage) {
+        const { w, h } = iconDrawSize(tile.dotRadius * 2, config.iconAspect);
+        for (const dot of dots) {
+            ctx.drawImage(iconImage, dot.x - w / 2, dot.y - h / 2, w, h);
+        }
+    } else {
+        ctx.fillStyle = config.dotColor;
+        for (const dot of dots) {
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
     ctx.restore();
 }
@@ -200,9 +223,11 @@ function round(n: number): number {
 }
 
 /**
- * Builds a standalone SVG string with real <circle> elements (not a <pattern>), so pasting
- * the markup into Figma/Sketch preserves individual, editable dot layers instead of being
- * flattened or dropped, which is what happens with many <pattern>-based SVG importers.
+ * Builds a standalone SVG string. With no custom icon, dots are real <circle> elements
+ * (not a <pattern>), so pasting the markup into Figma/Sketch preserves individual,
+ * editable dot layers instead of being flattened or dropped as many <pattern>-based SVG
+ * importers do. With a custom icon, the icon is embedded once in <defs> and each dot is a
+ * lightweight <use> reference to it (also real, independently selectable layers).
  */
 export function buildPolkaDotSvgString(config: PolkaDotConfig, width: number, height: number): string {
     const tile = computeDotGridTile(config.arrangement, config.spacing, config.dotSize, config.zoom);
@@ -213,6 +238,24 @@ export function buildPolkaDotSvgString(config: PolkaDotConfig, width: number, he
     const cy = height / 2;
     const [a, b, c, d] = matrix;
     const transform = `translate(${round(cx)} ${round(cy)}) matrix(${round(a)} ${round(b)} ${round(c)} ${round(d)} 0 0) translate(${round(-cx)} ${round(-cy)})`;
+    const opacity = round(config.opacity / 100);
+
+    if (config.iconUrl) {
+        const { w, h } = iconDrawSize(tile.dotRadius * 2, config.iconAspect);
+        const uses = dots
+            .map(
+                (dot) =>
+                    `<use href="#polka-dot-icon" xlink:href="#polka-dot-icon" x="${round(dot.x - w / 2)}" y="${round(dot.y - h / 2)}"/>`,
+            )
+            .join("");
+        return (
+            `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">` +
+            `<rect width="${width}" height="${height}" fill="${config.backgroundColor}"/>` +
+            `<defs><image id="polka-dot-icon" href="${config.iconUrl}" xlink:href="${config.iconUrl}" width="${round(w)}" height="${round(h)}"/></defs>` +
+            `<g transform="${transform}" opacity="${opacity}">${uses}</g>` +
+            `</svg>`
+        );
+    }
 
     const circles = dots
         .map((dot) => `<circle cx="${round(dot.x)}" cy="${round(dot.y)}" r="${round(dot.r)}"/>`)
@@ -221,7 +264,7 @@ export function buildPolkaDotSvgString(config: PolkaDotConfig, width: number, he
     return (
         `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">` +
         `<rect width="${width}" height="${height}" fill="${config.backgroundColor}"/>` +
-        `<g transform="${transform}" fill="${config.dotColor}" fill-opacity="${round(config.opacity / 100)}">${circles}</g>` +
+        `<g transform="${transform}" fill="${config.dotColor}" fill-opacity="${opacity}">${circles}</g>` +
         `</svg>`
     );
 }
@@ -235,17 +278,84 @@ function hexToRgba(hex: string, opacity: number): string {
 }
 
 /**
+ * Renders a single icon centered in a transparent tileSize x tileSize canvas and returns a
+ * PNG data URL — a CSS background-image tile for custom icons. Centering the icon in its
+ * own box (rather than at a tile edge) mirrors the trick `dotGridLayerGeometry` uses for
+ * circles via background-position, so CSS's own tiling never clips the icon at a seam.
+ */
+function buildIconTileDataUrl(
+    iconImage: HTMLImageElement,
+    iconAspect: number,
+    dotSize: number,
+    tileSize: number,
+    opacity: number,
+): string {
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(tileSize));
+    canvas.height = Math.max(1, Math.round(tileSize));
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return "";
+    const { w, h } = iconDrawSize(dotSize, iconAspect);
+    ctx.globalAlpha = opacity / 100;
+    ctx.drawImage(iconImage, tileSize / 2 - w / 2, tileSize / 2 - h / 2, w, h);
+    return canvas.toDataURL("image/png");
+}
+
+/**
  * Builds a copy-pasteable CSS snippet reusing the same `dotGridBackgroundCss` /
  * `cssTransformMatrix` output the preview renders with, so the pasted result matches.
  *
  * Without rotation/skew, it emits plain `background-*` properties directly on the element
  * (the idiomatic, dependency-free form developers expect), baking opacity into the dot
- * color. Only when a transform is present does it fall back to the `::before` scaffold,
- * which is the only reliable way to rotate/skew a repeating CSS background.
+ * color (or into the composited icon tile's alpha). Only when a transform is present does
+ * it fall back to the `::before` scaffold, which is the only reliable way to rotate/skew a
+ * repeating CSS background — there, opacity is applied to that pseudo-element instead so
+ * the (always fully opaque) background-color underneath isn't faded along with it.
+ *
+ * `iconImage` is the loaded `HTMLImageElement` for `config.iconUrl` (the caller owns
+ * loading it, e.g. via a `useHTMLImage` hook); without it, a custom icon falls back to
+ * the plain-dot CSS since there's nothing to composite into a tile yet.
  */
-export function buildPolkaDotCssSnippet(config: PolkaDotConfig): string {
+export function buildPolkaDotCssSnippet(config: PolkaDotConfig, iconImage?: HTMLImageElement | null): string {
     const hasTransform = config.rotation !== 0 || config.skewX !== 0 || config.skewY !== 0;
     const tile = computeDotGridTile(config.arrangement, config.spacing, config.dotSize, config.zoom);
+    const dotSizeScaled = tile.dotRadius * 2;
+
+    if (config.iconUrl && iconImage) {
+        if (!hasTransform) {
+            const tileUrl = buildIconTileDataUrl(iconImage, config.iconAspect, dotSizeScaled, tile.tileSize, config.opacity);
+            const backgroundImage = tile.centers.map(() => `url(${tileUrl})`).join(",");
+            const { backgroundSize, backgroundPosition } = dotGridLayerGeometry(tile);
+            return `.polka-dot-background {
+  background-color: ${config.backgroundColor};
+  background-image: ${backgroundImage};
+  background-size: ${backgroundSize};
+  background-position: ${backgroundPosition};
+}`;
+        }
+
+        const tileUrl = buildIconTileDataUrl(iconImage, config.iconAspect, dotSizeScaled, tile.tileSize, 100);
+        const backgroundImage = tile.centers.map(() => `url(${tileUrl})`).join(",");
+        const { backgroundSize, backgroundPosition } = dotGridLayerGeometry(tile);
+        const transform = matrixToCssString(cssTransformMatrix(config.rotation, config.skewX, config.skewY));
+
+        return `.polka-dot-background {
+  position: relative;
+  overflow: hidden;
+  background-color: ${config.backgroundColor};
+}
+
+.polka-dot-background::before {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  background-image: ${backgroundImage};
+  background-size: ${backgroundSize};
+  background-position: ${backgroundPosition};
+  opacity: ${round(config.opacity / 100)};
+  transform: ${transform};
+}`;
+    }
 
     if (!hasTransform) {
         const dotColor = config.opacity === 100 ? config.dotColor : hexToRgba(config.dotColor, config.opacity);
