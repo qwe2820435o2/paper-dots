@@ -49,10 +49,6 @@ const polkaDotSlice = createSlice({
     name: "polkaDot",
     initialState,
     reducers: {
-        setArrangement(state, action: PayloadAction<Arrangement>) {
-            state.arrangement = action.payload;
-            state.presetId = null;
-        },
         setDotSize(state, action: PayloadAction<number>) {
             state.dotSize = Math.max(2, Math.min(100, action.payload));
             state.presetId = null;
@@ -144,7 +140,6 @@ const polkaDotSlice = createSlice({
 });
 
 export const {
-    setArrangement,
     setDotSize,
     setSpacing,
     setDotColor,

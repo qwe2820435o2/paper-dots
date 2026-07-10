@@ -4,7 +4,6 @@ import { RotateCcw } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-    setArrangement,
     setDotSize,
     setSpacing,
     setDotColor,
@@ -12,14 +11,8 @@ import {
     setOpacity,
     resetPolkaDot,
 } from "@/store/slices/polkaDotSlice";
-import type { Arrangement } from "@/lib/polkaDotGrid";
 import ColorPicker from "@/components/decorate/ColorPicker";
 import IconUploader from "./IconUploader";
-
-const ARRANGEMENTS: { value: Arrangement; label: string }[] = [
-    { value: "square", label: "Square" },
-    { value: "diagonal", label: "Diagonal" },
-];
 
 export default function GridControls() {
     const dispatch = useAppDispatch();
@@ -37,36 +30,6 @@ export default function GridControls() {
                     <RotateCcw className="w-3.5 h-3.5 shrink-0" />
                     Reset all
                 </button>
-            </div>
-
-            {/* Arrangement */}
-            <div>
-                <label className="block text-[11px] uppercase mb-2 text-[#64748b] tracking-[0.08em]">
-                    Arrangement
-                </label>
-                <div className="grid grid-cols-2 gap-1.5">
-                    {ARRANGEMENTS.map((a) => {
-                        const selected = config.arrangement === a.value;
-                        return (
-                            <button
-                                key={a.value}
-                                type="button"
-                                onClick={() => dispatch(setArrangement(a.value))}
-                                aria-pressed={selected}
-                                className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium transition-colors"
-                                style={{
-                                    color: selected ? "#C5E89A" : "#64748b",
-                                    background: selected ? "#E8F5D2" : "#F4FAE8",
-                                    boxShadow: selected
-                                        ? "#C5E89A 0px 0px 0px 1.5px"
-                                        : "#D2EAAA 0px 0px 0px 1px",
-                                }}
-                            >
-                                {a.label}
-                            </button>
-                        );
-                    })}
-                </div>
             </div>
 
             {/* Shape */}
