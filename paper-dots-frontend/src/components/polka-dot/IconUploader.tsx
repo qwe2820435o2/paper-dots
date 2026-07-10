@@ -1,13 +1,14 @@
 "use client";
 
-import { useCallback, useState, type ComponentType } from "react";
+import { useCallback, useEffect, useState, type ComponentType } from "react";
 import { Upload, X, Circle, Flower2, Diamond, Heart, Star, Crown, Leaf, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIcon, clearIcon } from "@/store/slices/polkaDotSlice";
 import { SAMPLE_ICONS } from "@/lib/polkaDotSampleIcons";
+import { EMOJI_OPTIONS, toDataUrl } from "@/lib/polkaDotEmojis";
 
-const MAX_ICON_BYTES = 2 * 1024 * 1024;
+const MAX_ICON_BYTES = 10 * 1024 * 1024;
 
 type IconComponent = ComponentType<{ className?: string }>;
 
@@ -46,15 +47,34 @@ export default function IconUploader() {
     const dispatch = useAppDispatch();
     const iconUrl = useAppSelector((s) => s.polkaDot.iconUrl);
     const [dragOver, setDragOver] = useState(false);
+    const [emojiDataUrls, setEmojiDataUrls] = useState<Record<string, string>>({});
 
-    const isCustomUpload = !!iconUrl && !SAMPLE_ICONS.some((s) => s.dataUrl === iconUrl);
+    // Prefetch + convert every emoji once on mount (small static files, near-instant), so
+    // clicking one applies instantly and the current selection can be matched by value.
+    useEffect(() => {
+        let cancelled = false;
+        Promise.all(EMOJI_OPTIONS.map(async (e) => [e.id, await toDataUrl(e.src)] as const))
+            .then((pairs) => {
+                if (!cancelled) setEmojiDataUrls(Object.fromEntries(pairs));
+            })
+            .catch(() => {
+                /* thumbnails still render from the static path; selection just won't be prefetched */
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    const isSampleOrEmoji =
+        SAMPLE_ICONS.some((s) => s.dataUrl === iconUrl) || Object.values(emojiDataUrls).includes(iconUrl ?? "");
+    const isCustomUpload = !!iconUrl && !isSampleOrEmoji;
 
     const handleFiles = useCallback(
         async (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
             if (file.size > MAX_ICON_BYTES) {
-                toast.error("Icon must be under 2MB");
+                toast.error("Icon must be under 10MB");
                 return;
             }
             try {
@@ -67,6 +87,18 @@ export default function IconUploader() {
             }
         },
         [dispatch],
+    );
+
+    const handleEmojiClick = useCallback(
+        async (emojiId: string, src: string) => {
+            try {
+                const dataUrl = emojiDataUrls[emojiId] ?? (await toDataUrl(src));
+                dispatch(setIcon({ url: dataUrl, aspect: 1 }));
+            } catch {
+                toast.error("Could not load that emoji");
+            }
+        },
+        [dispatch, emojiDataUrls],
     );
 
     const dragHandlers = {
@@ -116,7 +148,31 @@ export default function IconUploader() {
                 })}
             </div>
 
-            {/* Upload your own — its own row, separate from the shape grid */}
+            {/* Emoji quick-picks — a horizontal strip so 15 options don't push everything else down */}
+            <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">Emoji</span>
+                <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
+                    {EMOJI_OPTIONS.map((emoji) => {
+                        const selected = !!emojiDataUrls[emoji.id] && iconUrl === emojiDataUrls[emoji.id];
+                        return (
+                            <button
+                                key={emoji.id}
+                                type="button"
+                                onClick={() => handleEmojiClick(emoji.id, emoji.src)}
+                                aria-pressed={selected}
+                                title={emoji.label}
+                                className="w-11 h-11 rounded-xl shrink-0 flex items-center justify-center transition-all"
+                                style={selected ? selectedTileStyle : unselectedTileStyle}
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={emoji.src} alt={emoji.label} className="w-7 h-7 object-contain" />
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Upload your own — its own row, separate from the shape/emoji pickers */}
             {isCustomUpload ? (
                 <div
                     className="flex items-center gap-3 px-3 py-2.5 rounded-lg"
@@ -154,8 +210,8 @@ export default function IconUploader() {
                     />
                     <Upload className="w-4 h-4 shrink-0 text-[#9ED06C]" strokeWidth={1.8} />
                     <div className="min-w-0">
-                        <p className="text-[13px] font-medium text-[#1a1a2e]">Upload icon</p>
-                        <p className="text-[11px] text-[#9CA3AF]">SVG &middot; PNG &middot; JPG &middot; up to 2MB</p>
+                        <p className="text-[13px] font-medium text-[#1a1a2e]">Custom Icon</p>
+                        <p className="text-[11px] text-[#9CA3AF]">SVG &middot; PNG &middot; JPG &middot; up to 10MB</p>
                     </div>
                 </label>
             )}
