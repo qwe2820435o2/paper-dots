@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Shuffle } from "lucide-react";
+import { Shuffle, Check } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { applyPreset, applyPalette, shuffleAppearance } from "@/store/slices/polkaDotSlice";
 import { POLKA_DOT_PRESETS, POLKA_DOT_PALETTES } from "@/lib/polkaDotPresets";
@@ -31,7 +31,7 @@ export default function PresetControls() {
                         Shuffle
                     </button>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-2">
                     {POLKA_DOT_PRESETS.map((preset) => {
                         const selected = config.presetId === preset.id;
                         return (
@@ -39,35 +39,49 @@ export default function PresetControls() {
                                 key={preset.id}
                                 type="button"
                                 onClick={() => dispatch(applyPreset(preset.id))}
-                                className="flex flex-col gap-1.5 rounded-xl p-1.5 transition-all"
-                                style={{
-                                    background: selected ? "#E8F5D2" : "white",
-                                    boxShadow: selected
-                                        ? "#C5E89A 0px 0px 0px 1.5px"
-                                        : "#D2EAAA 0px 0px 0px 1px",
-                                }}
+                                className="flex flex-col items-center gap-1"
                             >
-                                <div className="aspect-square rounded-lg overflow-hidden">
-                                    <PolkaDotPreview
-                                        config={{
-                                            arrangement: preset.arrangement,
-                                            dotSize: preset.dotSize,
-                                            spacing: preset.spacing,
-                                            rotation: preset.rotation,
-                                            skewX: preset.skewX,
-                                            skewY: preset.skewY,
-                                            zoom: preset.zoom,
-                                            dotColor: config.dotColor,
-                                            backgroundColor: config.backgroundColor,
-                                            opacity: config.opacity,
-                                            iconUrl: config.iconUrl,
-                                            iconAspect: config.iconAspect,
-                                        }}
-                                    />
+                                <div
+                                    className="relative w-full aspect-square rounded-lg transition-all"
+                                    style={{
+                                        boxShadow: selected
+                                            ? "#C5E89A 0px 0px 0px 2px"
+                                            : "#D2EAAA 0px 0px 0px 1px",
+                                    }}
+                                >
+                                    <div className="w-full h-full rounded-lg overflow-hidden">
+                                        <PolkaDotPreview
+                                            config={{
+                                                arrangement: preset.arrangement,
+                                                dotSize: preset.dotSize,
+                                                spacing: preset.spacing,
+                                                rotation: preset.rotation,
+                                                skewX: preset.skewX,
+                                                skewY: preset.skewY,
+                                                zoom: preset.zoom,
+                                                dotColor: config.dotColor,
+                                                backgroundColor: config.backgroundColor,
+                                                opacity: config.opacity,
+                                                iconUrl: config.iconUrl,
+                                                iconAspect: config.iconAspect,
+                                            }}
+                                        />
+                                    </div>
+                                    {selected && (
+                                        <div
+                                            className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center"
+                                            style={{ background: "#9ED06C", boxShadow: "0 0 0 1.5px white" }}
+                                        >
+                                            <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                                        </div>
+                                    )}
                                 </div>
                                 <span
-                                    className="text-[11px]"
-                                    style={{ color: selected ? "#C5E89A" : "#64748b" }}
+                                    className="text-[10px] truncate max-w-full"
+                                    style={{
+                                        color: selected ? "#9ED06C" : "#64748b",
+                                        fontWeight: selected ? 600 : 400,
+                                    }}
                                 >
                                     {preset.label}
                                 </span>
