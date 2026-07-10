@@ -16,6 +16,18 @@ function clampSize(value: number): number {
     return Math.max(MIN_EXPORT_SIZE, Math.min(MAX_EXPORT_SIZE, Math.round(value)));
 }
 
+function triggerDownload(blob: Blob, filename: string): void {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.rel = "noopener";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export default function ExportPanel() {
     const config = useAppSelector((s) => s.polkaDot);
     const [width, setWidth] = useState(800);
@@ -52,16 +64,7 @@ export default function ExportPanel() {
                 }
             }
 
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = filename;
-            link.rel = "noopener";
-            link.target = "_blank";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            triggerDownload(blob, filename);
             toast.success("Saved to your downloads");
         } finally {
             setExporting(false);
@@ -71,15 +74,7 @@ export default function ExportPanel() {
     function downloadSvg() {
         const svg = buildPolkaDotSvgString(config, width, height);
         const blob = new Blob([svg], { type: "image/svg+xml" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `polka-dot-${Date.now()}.svg`;
-        link.rel = "noopener";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        triggerDownload(blob, `polka-dot-${Date.now()}.svg`);
         toast.success("Saved to your downloads");
     }
 
@@ -141,6 +136,7 @@ export default function ExportPanel() {
                                 key={f}
                                 type="button"
                                 onClick={() => setFormat(f)}
+                                aria-pressed={selected}
                                 className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium uppercase transition-colors"
                                 style={{
                                     color: selected ? "#C5E89A" : "#64748b",

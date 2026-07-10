@@ -116,6 +116,13 @@ const polkaDotSlice = createSlice({
             state.backgroundColor = palette.backgroundColor;
             state.paletteId = palette.id;
         },
+        resetTransform(state) {
+            state.rotation = 0;
+            state.skewX = 0;
+            state.skewY = 0;
+            state.zoom = 1;
+            state.presetId = null;
+        },
         resetPolkaDot() {
             return initialState;
         },
@@ -136,6 +143,7 @@ export const {
     applyPreset,
     applyPalette,
     shuffleAppearance,
+    resetTransform,
     resetPolkaDot,
 } = polkaDotSlice.actions;
 

@@ -4,28 +4,19 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Menu, X } from "lucide-react";
-
-interface NavChild {
-    label: string;
-    href: string;
-    description?: string;
-}
+import { CREATE_TOOLS, type CreateTool } from "@/lib/tools";
 
 interface NavLink {
     label: string;
     href: string;
-    children?: NavChild[];
+    children?: CreateTool[];
 }
 
 const navLinks: NavLink[] = [
     {
         label: "Create",
         href: "/decorate",
-        children: [
-            { label: "Dot", href: "/decorate", description: "Decorate a photo with playful dots" },
-            { label: "Moment Card", href: "/moment-card", description: "Turn a photo into a color-card" },
-            { label: "Polka Dot", href: "/polka-dot", description: "Generate a seamless polka dot background" },
-        ],
+        children: CREATE_TOOLS,
     },
     { label: "FAQ", href: "/faq" },
     { label: "Contact", href: "/contact" },

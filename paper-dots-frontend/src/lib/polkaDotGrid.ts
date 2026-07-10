@@ -226,16 +226,40 @@ export function buildPolkaDotSvgString(config: PolkaDotConfig, width: number, he
     );
 }
 
+/** Converts a 6-digit hex color plus a 0-100 opacity into an `rgba(...)` string. */
+function hexToRgba(hex: string, opacity: number): string {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${round(opacity / 100)})`;
+}
+
 /**
- * Builds a copy-pasteable CSS snippet using the exact same `dotGridBackgroundCss` and
- * `cssTransformMatrix` output the live preview renders with, so the pasted result matches
- * what's on screen.
+ * Builds a copy-pasteable CSS snippet reusing the same `dotGridBackgroundCss` /
+ * `cssTransformMatrix` output the preview renders with, so the pasted result matches.
+ *
+ * Without rotation/skew, it emits plain `background-*` properties directly on the element
+ * (the idiomatic, dependency-free form developers expect), baking opacity into the dot
+ * color. Only when a transform is present does it fall back to the `::before` scaffold,
+ * which is the only reliable way to rotate/skew a repeating CSS background.
  */
 export function buildPolkaDotCssSnippet(config: PolkaDotConfig): string {
+    const hasTransform = config.rotation !== 0 || config.skewX !== 0 || config.skewY !== 0;
     const tile = computeDotGridTile(config.arrangement, config.spacing, config.dotSize, config.zoom);
+
+    if (!hasTransform) {
+        const dotColor = config.opacity === 100 ? config.dotColor : hexToRgba(config.dotColor, config.opacity);
+        const { backgroundImage, backgroundSize, backgroundPosition } = dotGridBackgroundCss(tile, dotColor);
+        return `.polka-dot-background {
+  background-color: ${config.backgroundColor};
+  background-image: ${backgroundImage};
+  background-size: ${backgroundSize};
+  background-position: ${backgroundPosition};
+}`;
+    }
+
     const { backgroundImage, backgroundSize, backgroundPosition } = dotGridBackgroundCss(tile, config.dotColor);
     const transform = matrixToCssString(cssTransformMatrix(config.rotation, config.skewX, config.skewY));
-    const opacity = round(config.opacity / 100);
 
     return `.polka-dot-background {
   position: relative;
@@ -250,7 +274,7 @@ export function buildPolkaDotCssSnippet(config: PolkaDotConfig): string {
   background-image: ${backgroundImage};
   background-size: ${backgroundSize};
   background-position: ${backgroundPosition};
-  opacity: ${opacity};
+  opacity: ${round(config.opacity / 100)};
   transform: ${transform};
 }`;
 }

@@ -2,18 +2,11 @@
 
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setRotation, setSkewX, setSkewY, setZoom } from "@/store/slices/polkaDotSlice";
+import { setRotation, setSkewX, setSkewY, setZoom, resetTransform } from "@/store/slices/polkaDotSlice";
 
 export default function TransformControls() {
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.polkaDot);
-
-    function resetTransform() {
-        dispatch(setRotation(0));
-        dispatch(setSkewX(0));
-        dispatch(setSkewY(0));
-        dispatch(setZoom(1));
-    }
 
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
@@ -21,7 +14,7 @@ export default function TransformControls() {
                 <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Transform</label>
                 <button
                     type="button"
-                    onClick={resetTransform}
+                    onClick={() => dispatch(resetTransform())}
                     className="px-2.5 h-7 rounded-lg transition-colors text-[#C5E89A] bg-[#E8F5D2] hover:bg-[#d5edba] text-[11px] font-medium"
                 >
                     Reset Transform

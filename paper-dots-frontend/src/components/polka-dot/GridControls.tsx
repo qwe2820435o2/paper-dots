@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { RotateCcw } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -10,6 +11,7 @@ import {
     setDotColor,
     setBackgroundColor,
     setOpacity,
+    resetPolkaDot,
 } from "@/store/slices/polkaDotSlice";
 import type { Arrangement } from "@/lib/polkaDotGrid";
 import ColorPicker from "@/components/decorate/ColorPicker";
@@ -26,6 +28,18 @@ export default function GridControls() {
 
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
+            {/* Reset all */}
+            <div className="flex justify-end -mb-2">
+                <button
+                    type="button"
+                    onClick={() => dispatch(resetPolkaDot())}
+                    className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2] text-[11px] font-medium"
+                >
+                    <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+                    Reset all
+                </button>
+            </div>
+
             {/* Arrangement */}
             <div>
                 <label className="block text-[11px] uppercase mb-2 text-[#64748b] tracking-[0.08em]">
@@ -39,6 +53,7 @@ export default function GridControls() {
                                 key={a.value}
                                 type="button"
                                 onClick={() => dispatch(setArrangement(a.value))}
+                                aria-pressed={selected}
                                 className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium transition-colors"
                                 style={{
                                     color: selected ? "#C5E89A" : "#64748b",
