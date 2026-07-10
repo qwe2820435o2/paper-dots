@@ -85,10 +85,21 @@ export default function PolkaDotApp() {
                 </div>
             )}
 
-            {/* Preview area */}
-            <div className="flex-1 min-w-0 min-h-0 p-3 md:p-6 overflow-hidden">
-                <PolkaDotPreview />
+            {/* Preview area: a bounded square card floating on the background */}
+            <div className="flex-1 min-w-0 min-h-0 flex items-center justify-center p-4 md:p-8 overflow-hidden">
+                <div
+                    className="w-full aspect-square rounded-xl"
+                    style={{
+                        maxWidth: "min(100%, calc(100dvh - 56px - 96px))",
+                        boxShadow: "rgba(15, 23, 42, 0.08) 0px 12px 32px",
+                    }}
+                >
+                    <PolkaDotPreview />
+                </div>
             </div>
+
+            {/* Desktop spacer: mirrors the left toolbar + panel so the preview centers under the page (menu) center */}
+            <div className={`hidden md:block shrink-0 ${activePanel ? "w-[352px]" : "w-16"}`} aria-hidden />
 
             {/* Mobile: bottom drawer */}
             {activePanel && (

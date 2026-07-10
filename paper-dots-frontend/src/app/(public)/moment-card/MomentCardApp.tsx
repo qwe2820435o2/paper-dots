@@ -126,6 +126,9 @@ export default function MomentCardApp() {
                 {canvasArea}
             </div>
 
+            {/* Desktop spacer: mirrors the left toolbar + panel so the preview centers under the page (menu) center */}
+            <div className={`hidden md:block shrink-0 ${activePanel ? "w-[352px]" : "w-16"}`} aria-hidden />
+
             {/* Mobile: bottom drawer */}
             {activePanel && (
                 <div
