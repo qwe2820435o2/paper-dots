@@ -12,7 +12,7 @@ export default function CtaSection() {
 
   function handleEnter() {
     setIsLoading(true);
-    router.push("/decorate");
+    router.push("/polka-dot");
   }
 
   return (

@@ -102,7 +102,7 @@ export default function Header() {
                     {/* Desktop CTA */}
                     <div className="hidden md:flex items-center">
                         <Link
-                            href="/decorate"
+                            href="/polka-dot"
                             className="bg-[#C5E89A] text-white text-[14px] font-medium px-5 py-2 rounded-full hover:bg-[#9ED06C] transition-colors"
                         >
                             Get Started
@@ -156,7 +156,7 @@ export default function Header() {
                             );
                         })}
                         <Link
-                            href="/decorate"
+                            href="/polka-dot"
                             className="mt-3 bg-[#C5E89A] text-white text-[14px] font-medium px-5 py-2.5 rounded-full text-center hover:bg-[#9ED06C] transition-colors"
                             onClick={() => setMenuOpen(false)}
                         >

@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import DecorativeBlob from "./DecorativeBlob";
 import DotPattern from "./DotPattern";
 import { useAppDispatch } from "@/store/hooks";
-import { resetDecorate } from "@/store/slices/decorateSlice";
+import { resetPolkaDot } from "@/store/slices/polkaDotSlice";
 
 const container = {
   hidden: {},
@@ -31,9 +31,9 @@ export default function HeroSection() {
   const dispatch = useAppDispatch();
 
   function handleEnter() {
-    dispatch(resetDecorate());
+    dispatch(resetPolkaDot());
     setIsLoading(true);
-    router.push("/decorate");
+    router.push("/polka-dot");
   }
 
   return (
