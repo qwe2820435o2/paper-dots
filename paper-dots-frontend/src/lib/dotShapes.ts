@@ -68,8 +68,9 @@ export const SHAPE_PATHS: Record<DotShape, string | null> = {
     flower:
         "M0,0 Q0.35,-0.25 0,-0.5 Q-0.35,-0.25 0,0 Q0.25,0.35 0.5,0 Q0.25,-0.35 0,0 Q-0.35,0.25 0,0.5 Q0.35,0.25 0,0 Q-0.25,-0.35 -0.5,0 Q-0.25,0.35 0,0 Z",
     character: null,
-    // Faceted diamond / gem shape.
-    diamond: "M0,-0.5 L0.35,-0.1 L0.5,0.05 L0,0.5 L-0.5,0.05 L-0.35,-0.1 Z",
+    // Elongated rhombus (taller than wide) — an equal-diagonal rhombus is a square in
+    // disguise and reads as one at any rotation, so the diagonals must differ.
+    diamond: "M0,-0.5 L0.33,0 L0,0.5 L-0.33,0 Z",
     // Classic two-lobe heart, point at the bottom.
     heart:
         "M0,0.5 C-0.5,0.15 -0.5,-0.35 -0.25,-0.5 C-0.1,-0.5 0,-0.35 0,-0.2 C0,-0.35 0.1,-0.5 0.25,-0.5 C0.5,-0.35 0.5,0.15 0,0.5 Z",
