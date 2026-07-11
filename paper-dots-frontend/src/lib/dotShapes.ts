@@ -71,9 +71,10 @@ export const SHAPE_PATHS: Record<DotShape, string | null> = {
     // Elongated rhombus (taller than wide) — an equal-diagonal rhombus is a square in
     // disguise and reads as one at any rotation, so the diagonals must differ.
     diamond: "M0,-0.5 L0.33,0 L0,0.5 L-0.33,0 Z",
-    // Classic two-lobe heart, point at the bottom.
+    // Two-lobe heart built from two circular lobes tangent to a bottom point,
+    // point at the bottom — reads as a clean, rounded heart at any rotation.
     heart:
-        "M0,0.5 C-0.5,0.15 -0.5,-0.35 -0.25,-0.5 C-0.1,-0.5 0,-0.35 0,-0.2 C0,-0.35 0.1,-0.5 0.25,-0.5 C0.5,-0.35 0.5,0.15 0,0.5 Z",
+        "M0,0.5 L-0.411,0.0932 A0.3,0.3 0 0 1 0,-0.3436 A0.3,0.3 0 0 1 0.411,0.0932 L0,0.5 Z",
     // 5-pointed star, outer radius 0.5, inner radius 0.2.
     star:
         "M0,-0.5 L0.118,-0.162 L0.476,-0.155 L0.190,0.062 L0.294,0.405 L0,0.2 L-0.294,0.405 L-0.190,0.062 L-0.476,-0.155 L-0.118,-0.162 Z",
