@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
-import { Upload, X, Circle, Flower2, Diamond, Heart, Star, Crown, Leaf, Moon } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ComponentType } from "react";
+import { Upload, X, Circle, Type, Diamond, Heart, Star, Crown, Leaf, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setIcon, clearIcon } from "@/store/slices/polkaDotSlice";
-import { SAMPLE_ICONS } from "@/lib/polkaDotSampleIcons";
+import { setIcon, clearIcon, setCharacterText } from "@/store/slices/polkaDotSlice";
+import { SAMPLE_ICONS, buildCharacterIconDataUrl } from "@/lib/polkaDotSampleIcons";
 import { EMOJI_OPTIONS, toDataUrl } from "@/lib/polkaDotEmojis";
 
 const MAX_ICON_BYTES = 10 * 1024 * 1024;
@@ -13,7 +13,6 @@ const MAX_ICON_BYTES = 10 * 1024 * 1024;
 type IconComponent = ComponentType<{ className?: string }>;
 
 const SAMPLE_ICON_GLYPHS: Record<string, IconComponent> = {
-    flower: Flower2,
     diamond: Diamond,
     heart: Heart,
     star: Star,
@@ -46,8 +45,12 @@ const unselectedTileStyle = { border: "1.5px solid #D2EAAA", background: "white"
 export default function IconUploader() {
     const dispatch = useAppDispatch();
     const iconUrl = useAppSelector((s) => s.polkaDot.iconUrl);
+    const characterText = useAppSelector((s) => s.polkaDot.characterText);
     const [dragOver, setDragOver] = useState(false);
     const [emojiDataUrls, setEmojiDataUrls] = useState<Record<string, string>>({});
+
+    const characterIconDataUrl = useMemo(() => buildCharacterIconDataUrl(characterText), [characterText]);
+    const isCharacterSelected = iconUrl === characterIconDataUrl;
 
     const emojiScrollRef = useRef<HTMLDivElement>(null);
     const [emojiScrollMetrics, setEmojiScrollMetrics] = useState({ scrollLeft: 0, scrollWidth: 0, clientWidth: 0 });
@@ -126,7 +129,7 @@ export default function IconUploader() {
 
     const isSampleOrEmoji =
         SAMPLE_ICONS.some((s) => s.dataUrl === iconUrl) || Object.values(emojiDataUrls).includes(iconUrl ?? "");
-    const isCustomUpload = !!iconUrl && !isSampleOrEmoji;
+    const isCustomUpload = !!iconUrl && !isSampleOrEmoji && !isCharacterSelected;
 
     const handleFiles = useCallback(
         async (files: FileList | null) => {
@@ -160,6 +163,18 @@ export default function IconUploader() {
         [dispatch, emojiDataUrls],
     );
 
+    const handleCharacterSelect = useCallback(() => {
+        dispatch(setIcon({ url: characterIconDataUrl, aspect: 1 }));
+    }, [dispatch, characterIconDataUrl]);
+
+    const handleCharacterTextChange = useCallback(
+        (text: string) => {
+            dispatch(setCharacterText(text));
+            dispatch(setIcon({ url: buildCharacterIconDataUrl(text), aspect: 1 }));
+        },
+        [dispatch],
+    );
+
     const dragHandlers = {
         onDragOver: (e: React.DragEvent<HTMLLabelElement>) => {
             e.preventDefault();
@@ -188,6 +203,17 @@ export default function IconUploader() {
                     <Circle className="w-5 h-5" />
                 </button>
 
+                <button
+                    type="button"
+                    onClick={handleCharacterSelect}
+                    aria-pressed={isCharacterSelected}
+                    title="Character"
+                    className="w-11 h-11 rounded-xl flex items-center justify-center transition-all"
+                    style={isCharacterSelected ? selectedTileStyle : unselectedTileStyle}
+                >
+                    <Type className="w-5 h-5" />
+                </button>
+
                 {SAMPLE_ICONS.map((sample) => {
                     const Icon = SAMPLE_ICON_GLYPHS[sample.id];
                     const selected = iconUrl === sample.dataUrl;
@@ -206,6 +232,21 @@ export default function IconUploader() {
                     );
                 })}
             </div>
+
+            {/* Character text input — only shown while the Character shape is active */}
+            {isCharacterSelected && (
+                <div className="flex flex-col gap-1.5">
+                    <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">Character</span>
+                    <input
+                        type="text"
+                        value={characterText}
+                        onChange={(e) => handleCharacterTextChange(e.target.value)}
+                        placeholder="A"
+                        className="w-full px-3 py-2 rounded-lg text-[13px] outline-none"
+                        style={{ border: "1.5px solid #D2EAAA", background: "white" }}
+                    />
+                </div>
+            )}
 
             {/* Emoji quick-picks — a horizontal strip so 15 options don't push everything else down */}
             <div className="flex flex-col gap-1.5">

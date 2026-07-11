@@ -26,6 +26,8 @@ export interface PolkaDotState {
     iconUrl: string | null;
     /** naturalWidth / naturalHeight of the uploaded icon, for aspect-correct sizing */
     iconAspect: number;
+    /** text typed into the Character shape option */
+    characterText: string;
 }
 
 const initialState: PolkaDotState = {
@@ -43,6 +45,7 @@ const initialState: PolkaDotState = {
     paletteId: null,
     iconUrl: null,
     iconAspect: 1,
+    characterText: "A",
 };
 
 const polkaDotSlice = createSlice({
@@ -126,6 +129,9 @@ const polkaDotSlice = createSlice({
             state.iconUrl = null;
             state.iconAspect = 1;
         },
+        setCharacterText(state, action: PayloadAction<string>) {
+            state.characterText = action.payload;
+        },
         resetTransform(state) {
             state.rotation = 0;
             state.skewX = 0;
@@ -154,6 +160,7 @@ export const {
     shuffleAppearance,
     setIcon,
     clearIcon,
+    setCharacterText,
     resetTransform,
     resetPolkaDot,
 } = polkaDotSlice.actions;
