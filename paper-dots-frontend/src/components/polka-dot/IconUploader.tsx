@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ComponentType } from "react";
+import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { Upload, X, Circle, Flower2, Diamond, Heart, Star, Crown, Leaf, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -48,6 +48,65 @@ export default function IconUploader() {
     const iconUrl = useAppSelector((s) => s.polkaDot.iconUrl);
     const [dragOver, setDragOver] = useState(false);
     const [emojiDataUrls, setEmojiDataUrls] = useState<Record<string, string>>({});
+
+    const emojiScrollRef = useRef<HTMLDivElement>(null);
+    const [emojiScrollMetrics, setEmojiScrollMetrics] = useState({ scrollLeft: 0, scrollWidth: 0, clientWidth: 0 });
+
+    // Native scrollbars are hidden on the emoji strip (see .no-scrollbar); this custom
+    // track/thumb below it stays visible on every platform instead of following each
+    // browser's own auto-hide behavior (e.g. macOS trackpad overlay scrollbars).
+    useEffect(() => {
+        const el = emojiScrollRef.current;
+        if (!el) return;
+
+        const updateMetrics = () =>
+            setEmojiScrollMetrics({ scrollLeft: el.scrollLeft, scrollWidth: el.scrollWidth, clientWidth: el.clientWidth });
+
+        updateMetrics();
+        el.addEventListener("scroll", updateMetrics);
+        const resizeObserver = new ResizeObserver(updateMetrics);
+        resizeObserver.observe(el);
+
+        return () => {
+            el.removeEventListener("scroll", updateMetrics);
+            resizeObserver.disconnect();
+        };
+    }, []);
+
+    const emojiCanScroll = emojiScrollMetrics.scrollWidth > emojiScrollMetrics.clientWidth;
+    const emojiThumbWidthPercent = emojiCanScroll
+        ? (emojiScrollMetrics.clientWidth / emojiScrollMetrics.scrollWidth) * 100
+        : 100;
+    const emojiMaxScrollLeft = emojiScrollMetrics.scrollWidth - emojiScrollMetrics.clientWidth;
+    const emojiThumbLeftPercent =
+        emojiCanScroll && emojiMaxScrollLeft > 0
+            ? (emojiScrollMetrics.scrollLeft / emojiMaxScrollLeft) * (100 - emojiThumbWidthPercent)
+            : 0;
+
+    const handleEmojiThumbPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+        const thumbEl = e.currentTarget;
+        const trackEl = thumbEl.parentElement;
+        const scrollEl = emojiScrollRef.current;
+        if (!trackEl || !scrollEl) return;
+        e.preventDefault();
+
+        const thumbTravel = trackEl.clientWidth - thumbEl.clientWidth;
+        const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+        const startX = e.clientX;
+        const startScrollLeft = scrollEl.scrollLeft;
+
+        const handlePointerMove = (moveEvent: PointerEvent) => {
+            if (thumbTravel <= 0) return;
+            const deltaScroll = ((moveEvent.clientX - startX) / thumbTravel) * maxScroll;
+            scrollEl.scrollLeft = Math.min(Math.max(startScrollLeft + deltaScroll, 0), maxScroll);
+        };
+        const handlePointerUp = () => {
+            window.removeEventListener("pointermove", handlePointerMove);
+            window.removeEventListener("pointerup", handlePointerUp);
+        };
+        window.addEventListener("pointermove", handlePointerMove);
+        window.addEventListener("pointerup", handlePointerUp);
+    }, []);
 
     // Prefetch + convert every emoji once on mount (small static files, near-instant), so
     // clicking one applies instantly and the current selection can be matched by value.
@@ -151,7 +210,7 @@ export default function IconUploader() {
             {/* Emoji quick-picks — a horizontal strip so 15 options don't push everything else down */}
             <div className="flex flex-col gap-1.5">
                 <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">Emoji</span>
-                <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 thin-scrollbar">
+                <div ref={emojiScrollRef} className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar">
                     {EMOJI_OPTIONS.map((emoji) => {
                         const selected = !!emojiDataUrls[emoji.id] && iconUrl === emojiDataUrls[emoji.id];
                         return (
@@ -170,6 +229,19 @@ export default function IconUploader() {
                         );
                     })}
                 </div>
+                {emojiCanScroll && (
+                    <div className="relative h-1.5 mx-1 rounded-full overflow-hidden" style={{ background: "#F4FAE8" }}>
+                        <div
+                            onPointerDown={handleEmojiThumbPointerDown}
+                            className="absolute inset-y-0 rounded-full cursor-pointer touch-none"
+                            style={{
+                                width: `${emojiThumbWidthPercent}%`,
+                                left: `${emojiThumbLeftPercent}%`,
+                                background: "#C5E89A",
+                            }}
+                        />
+                    </div>
+                )}
             </div>
 
             {/* Upload your own — its own row, separate from the shape/emoji pickers */}
