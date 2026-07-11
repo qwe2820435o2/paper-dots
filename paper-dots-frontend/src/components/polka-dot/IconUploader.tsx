@@ -151,7 +151,7 @@ export default function IconUploader() {
             {/* Emoji quick-picks — a horizontal strip so 15 options don't push everything else down */}
             <div className="flex flex-col gap-1.5">
                 <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">Emoji</span>
-                <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
+                <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 thin-scrollbar">
                     {EMOJI_OPTIONS.map((emoji) => {
                         const selected = !!emojiDataUrls[emoji.id] && iconUrl === emojiDataUrls[emoji.id];
                         return (

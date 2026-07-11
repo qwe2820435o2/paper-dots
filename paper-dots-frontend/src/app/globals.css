@@ -144,6 +144,29 @@
       rgba(255, 255, 255, 0.1) 0px 0.5px 0px 0.5px,
       rgba(0, 0, 0, 0.25) 0px 10px 30px;
   }
+
+  .thin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #D2EAAA transparent;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background: #D2EAAA;
+    border-radius: 999px;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-button {
+    display: none;
+  }
 }
 
 @keyframes float {
