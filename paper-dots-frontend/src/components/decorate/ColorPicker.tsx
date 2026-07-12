@@ -35,6 +35,8 @@ function hexToHsv(hex: string): { h: number; s: number; v: number } {
     return { h, s: max === 0 ? 0 : d / max, v: max };
 }
 
+const HEX_RE = /^#?[0-9a-fA-F]{6}$/;
+
 interface Props {
     color: string;
     onChange: (hex: string) => void;
@@ -44,6 +46,7 @@ export default function ColorPicker({ color, onChange }: Props) {
     const gradientRef = useRef<HTMLDivElement>(null);
     const [hue, setHue] = useState(180);
     const [pos, setPos] = useState({ x: 0.15, y: 0.2 });
+    const [hexInput, setHexInput] = useState(color);
 
     useEffect(() => {
         if (/^#[0-9a-f]{6}$/i.test(color)) {
@@ -105,6 +108,27 @@ export default function ColorPicker({ color, onChange }: Props) {
     const pureHue = `hsl(${hue},100%,50%)`;
     const preview = hsvToHex(hue, pos.x, 1 - pos.y);
 
+    useEffect(() => {
+        setHexInput(preview);
+    }, [preview]);
+
+    const commitHex = useCallback(
+        (value: string) => {
+            const v = value.startsWith("#") ? value : `#${value}`;
+            if (HEX_RE.test(v)) {
+                const hex = v.toLowerCase();
+                const { h, s, v: val } = hexToHsv(hex);
+                setHue(h);
+                setPos({ x: s, y: 1 - val });
+                setHexInput(hex);
+                onChange(hex);
+            } else {
+                setHexInput(preview);
+            }
+        },
+        [preview, onChange],
+    );
+
     return (
         <div className="flex flex-col gap-3">
             {/* 2D gradient */}
@@ -136,40 +160,56 @@ export default function ColorPicker({ color, onChange }: Props) {
                 />
             </div>
 
-            {/* Preview + hue slider */}
+            {/* Preview + hue slider + hex input */}
             <div className="flex items-center gap-3">
                 <div
-                    className="shrink-0 w-7 h-7 rounded-full"
+                    className="shrink-0 w-9 h-9 rounded-full"
                     style={{
                         backgroundColor: preview,
                         boxShadow: "rgba(255,255,255,0.12) 0px 0px 0px 1px",
                     }}
                 />
-                <div
-                    className="relative flex-1 h-[14px] rounded-full overflow-hidden"
-                    style={{
-                        background:
-                            "linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)",
-                    }}
-                >
-                    <input
-                        type="range"
-                        min={0}
-                        max={360}
-                        step={1}
-                        value={hue}
-                        onChange={(e) => handleHue(Number(e.target.value))}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
+                <div className="flex-1 flex flex-col gap-2">
                     <div
-                        className="absolute top-1/2 w-[14px] h-[14px] rounded-full pointer-events-none"
+                        className="relative h-[14px] rounded-full overflow-hidden"
                         style={{
-                            left: `${(hue / 360) * 100}%`,
-                            transform: "translate(-50%, -50%)",
-                            backgroundColor: pureHue,
-                            border: "2px solid #fff",
-                            boxShadow: "0 0 0 1px rgba(0,0,0,0.5)",
+                            background:
+                                "linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)",
                         }}
+                    >
+                        <input
+                            type="range"
+                            min={0}
+                            max={360}
+                            step={1}
+                            value={hue}
+                            onChange={(e) => handleHue(Number(e.target.value))}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        />
+                        <div
+                            className="absolute top-1/2 w-[14px] h-[14px] rounded-full pointer-events-none"
+                            style={{
+                                left: `${(hue / 360) * 100}%`,
+                                transform: "translate(-50%, -50%)",
+                                backgroundColor: pureHue,
+                                border: "2px solid #fff",
+                                boxShadow: "0 0 0 1px rgba(0,0,0,0.5)",
+                            }}
+                        />
+                    </div>
+                    <input
+                        type="text"
+                        value={hexInput}
+                        onChange={(e) => setHexInput(e.target.value)}
+                        onBlur={(e) => commitHex(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                commitHex((e.target as HTMLInputElement).value);
+                                (e.target as HTMLInputElement).blur();
+                            }
+                        }}
+                        placeholder="#1AC8CE"
+                        className="w-full px-2 py-1 rounded-lg border border-[#D2EAAA] bg-white text-[13px] font-mono text-center text-[#1a1a2e] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#C5E89A] focus:ring-2 focus:ring-[#E8F5D2]"
                     />
                 </div>
             </div>
