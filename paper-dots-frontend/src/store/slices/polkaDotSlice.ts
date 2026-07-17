@@ -35,7 +35,7 @@ const initialState: PolkaDotState = {
     dotSize: 16,
     spacing: 40,
     dotColor: "#1a1a2e",
-    backgroundColor: "#F8FCF2",
+    backgroundColor: "#FFFFFF",
     opacity: 100,
     rotation: 0,
     skewX: 0,
