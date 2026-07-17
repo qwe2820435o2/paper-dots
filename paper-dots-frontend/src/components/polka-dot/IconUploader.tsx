@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ComponentType } from "react";
+import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { Upload, X, Circle, Type, Diamond, Heart, Star, Crown, Leaf, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setIcon, clearIcon, setCharacterText } from "@/store/slices/polkaDotSlice";
-import { SAMPLE_ICONS, buildCharacterIconDataUrl } from "@/lib/polkaDotSampleIcons";
+import { setIcon, clearIcon, setCharacterText, selectSampleShape, selectCharacterShape } from "@/store/slices/polkaDotSlice";
+import { SAMPLE_ICONS } from "@/lib/polkaDotSampleIcons";
 import { EMOJI_OPTIONS, toDataUrl } from "@/lib/polkaDotEmojis";
 
 const MAX_ICON_BYTES = 10 * 1024 * 1024;
@@ -46,11 +46,11 @@ export default function IconUploader() {
     const dispatch = useAppDispatch();
     const iconUrl = useAppSelector((s) => s.polkaDot.iconUrl);
     const characterText = useAppSelector((s) => s.polkaDot.characterText);
+    const shapeId = useAppSelector((s) => s.polkaDot.shapeId);
     const [dragOver, setDragOver] = useState(false);
     const [emojiDataUrls, setEmojiDataUrls] = useState<Record<string, string>>({});
 
-    const characterIconDataUrl = useMemo(() => buildCharacterIconDataUrl(characterText), [characterText]);
-    const isCharacterSelected = iconUrl === characterIconDataUrl;
+    const isCharacterSelected = shapeId === "character";
 
     const emojiScrollRef = useRef<HTMLDivElement>(null);
     const [emojiScrollMetrics, setEmojiScrollMetrics] = useState({ scrollLeft: 0, scrollWidth: 0, clientWidth: 0 });
@@ -127,9 +127,7 @@ export default function IconUploader() {
         };
     }, []);
 
-    const isSampleOrEmoji =
-        SAMPLE_ICONS.some((s) => s.dataUrl === iconUrl) || Object.values(emojiDataUrls).includes(iconUrl ?? "");
-    const isCustomUpload = !!iconUrl && !isSampleOrEmoji && !isCharacterSelected;
+    const isCustomUpload = !!iconUrl && !shapeId && !Object.values(emojiDataUrls).includes(iconUrl);
 
     const handleFiles = useCallback(
         async (files: FileList | null) => {
@@ -164,13 +162,12 @@ export default function IconUploader() {
     );
 
     const handleCharacterSelect = useCallback(() => {
-        dispatch(setIcon({ url: characterIconDataUrl, aspect: 1 }));
-    }, [dispatch, characterIconDataUrl]);
+        dispatch(selectCharacterShape());
+    }, [dispatch]);
 
     const handleCharacterTextChange = useCallback(
         (text: string) => {
             dispatch(setCharacterText(text));
-            dispatch(setIcon({ url: buildCharacterIconDataUrl(text), aspect: 1 }));
         },
         [dispatch],
     );
@@ -216,12 +213,12 @@ export default function IconUploader() {
 
                 {SAMPLE_ICONS.map((sample) => {
                     const Icon = SAMPLE_ICON_GLYPHS[sample.id];
-                    const selected = iconUrl === sample.dataUrl;
+                    const selected = shapeId === sample.id;
                     return (
                         <button
                             key={sample.id}
                             type="button"
-                            onClick={() => dispatch(setIcon({ url: sample.dataUrl, aspect: 1 }))}
+                            onClick={() => dispatch(selectSampleShape(sample.id))}
                             aria-pressed={selected}
                             title={sample.label}
                             className="w-11 h-11 rounded-xl flex items-center justify-center transition-all"

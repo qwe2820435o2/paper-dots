@@ -1,6 +1,9 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Arrangement } from "@/lib/polkaDotGrid";
 import { POLKA_DOT_PRESETS, POLKA_DOT_PALETTES } from "@/lib/polkaDotPresets";
+import { buildCharacterIconDataUrl, buildSampleShapeIconDataUrl, type SampleShapeId } from "@/lib/polkaDotSampleIcons";
+
+export type PolkaDotShapeId = SampleShapeId | "character";
 
 export interface PolkaDotState {
     arrangement: Arrangement;
@@ -28,6 +31,8 @@ export interface PolkaDotState {
     iconAspect: number;
     /** text typed into the Character shape option */
     characterText: string;
+    /** which built-in shape (or "character") is generating iconUrl, so it can be recolored when dotColor changes; null for plain dots, emoji, and custom uploads */
+    shapeId: PolkaDotShapeId | null;
 }
 
 const initialState: PolkaDotState = {
@@ -46,7 +51,17 @@ const initialState: PolkaDotState = {
     iconUrl: null,
     iconAspect: 1,
     characterText: "A",
+    shapeId: null,
 };
+
+/** Re-renders iconUrl at the current dotColor when the active shape is a built-in one; no-op for plain dots, emoji, and custom uploads. */
+function recolorActiveShape(state: PolkaDotState) {
+    if (state.shapeId === "character") {
+        state.iconUrl = buildCharacterIconDataUrl(state.characterText, state.dotColor);
+    } else if (state.shapeId) {
+        state.iconUrl = buildSampleShapeIconDataUrl(state.shapeId, state.dotColor);
+    }
+}
 
 const polkaDotSlice = createSlice({
     name: "polkaDot",
@@ -63,6 +78,7 @@ const polkaDotSlice = createSlice({
         setDotColor(state, action: PayloadAction<string>) {
             state.dotColor = action.payload;
             state.paletteId = null;
+            recolorActiveShape(state);
         },
         setBackgroundColor(state, action: PayloadAction<string>) {
             state.backgroundColor = action.payload;
@@ -105,6 +121,7 @@ const polkaDotSlice = createSlice({
             state.dotColor = palette.dotColor;
             state.backgroundColor = palette.backgroundColor;
             state.paletteId = palette.id;
+            recolorActiveShape(state);
         },
         shuffleAppearance(state) {
             const preset = POLKA_DOT_PRESETS[Math.floor(Math.random() * POLKA_DOT_PRESETS.length)];
@@ -120,17 +137,33 @@ const polkaDotSlice = createSlice({
             state.dotColor = palette.dotColor;
             state.backgroundColor = palette.backgroundColor;
             state.paletteId = palette.id;
+            recolorActiveShape(state);
+        },
+        selectSampleShape(state, action: PayloadAction<SampleShapeId>) {
+            state.shapeId = action.payload;
+            state.iconUrl = buildSampleShapeIconDataUrl(action.payload, state.dotColor);
+            state.iconAspect = 1;
+        },
+        selectCharacterShape(state) {
+            state.shapeId = "character";
+            state.iconUrl = buildCharacterIconDataUrl(state.characterText, state.dotColor);
+            state.iconAspect = 1;
         },
         setIcon(state, action: PayloadAction<{ url: string; aspect: number }>) {
             state.iconUrl = action.payload.url;
             state.iconAspect = action.payload.aspect;
+            state.shapeId = null;
         },
         clearIcon(state) {
             state.iconUrl = null;
             state.iconAspect = 1;
+            state.shapeId = null;
         },
         setCharacterText(state, action: PayloadAction<string>) {
             state.characterText = action.payload;
+            if (state.shapeId === "character") {
+                state.iconUrl = buildCharacterIconDataUrl(action.payload, state.dotColor);
+            }
         },
         resetTransform(state) {
             state.rotation = 0;
@@ -158,6 +191,8 @@ export const {
     applyPreset,
     applyPalette,
     shuffleAppearance,
+    selectSampleShape,
+    selectCharacterShape,
     setIcon,
     clearIcon,
     setCharacterText,
