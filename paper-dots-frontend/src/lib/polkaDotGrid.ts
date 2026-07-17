@@ -187,6 +187,8 @@ export function drawPolkaDotCanvas(
     iconImage?: HTMLImageElement | null,
 ): void {
     ctx.save();
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
     ctx.fillStyle = config.backgroundColor;
     ctx.fillRect(0, 0, width, height);
 
