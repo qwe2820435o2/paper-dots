@@ -9,4 +9,5 @@ export const CREATE_TOOLS: CreateTool[] = [
     { label: "Dot", href: "/dot", description: "Decorate a photo with playful dots" },
     { label: "Moment Card", href: "/moment-card", description: "Turn a photo into a color-card" },
     { label: "Polka Dot", href: "/polka-dot", description: "Generate a seamless polka dot background" },
+    { label: "Geo Pattern", href: "/geometric-patterns", description: "Generate seamless geometric background patterns" },
 ];
