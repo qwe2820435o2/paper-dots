@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
   },
   compress: true,
   devIndicators: false,
+  async redirects() {
+    return [
+      { source: "/decorate", destination: "/dot", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

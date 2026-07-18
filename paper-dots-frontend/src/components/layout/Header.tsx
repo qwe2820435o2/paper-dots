@@ -15,7 +15,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
     {
         label: "Create",
-        href: "/decorate",
+        href: "/dot",
         children: CREATE_TOOLS,
     },
     { label: "FAQ", href: "/faq" },

@@ -17,7 +17,7 @@ export default function NotFound() {
         <Link href="/">
           <Button className="rounded-full px-6">Back to Home</Button>
         </Link>
-        <Link href="/decorate">
+        <Link href="/dot">
           <Button variant="outline" className="rounded-full px-6">Start Decorating</Button>
         </Link>
       </div>
