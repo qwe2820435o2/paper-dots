@@ -41,6 +41,10 @@ const geometricSlice = createSlice({
         setFrontColor(state, action: PayloadAction<string>) {
             state.frontColor = action.payload;
         },
+        setColorPair(state, action: PayloadAction<{ background: string; front: string }>) {
+            state.backgroundColor = action.payload.background;
+            state.frontColor = action.payload.front;
+        },
         shuffle(state) {
             state.seed = randomSeed();
         },
@@ -56,6 +60,7 @@ export const {
     setColumns,
     setBackgroundColor,
     setFrontColor,
+    setColorPair,
     shuffle,
     resetGeometric,
 } = geometricSlice.actions;
