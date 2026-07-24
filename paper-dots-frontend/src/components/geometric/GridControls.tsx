@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Minus, Plus, Grid3x3, LayoutGrid, Info } from "lucide-react";
+import { Minus, Plus, LayoutGrid, Grid2x2, Info } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -120,16 +120,14 @@ function LabeledSlider({
 
 type GridStyle = "even" | "staggered";
 
-// Mock-only local state below (Grid Style, Duotone Tiles, Unique Nearby Tile) is a static UI
-// preview for layout/visual sign-off — it doesn't touch geometricSlice or affect the rendered
-// pattern yet. Density/Spacing/Rotation/Opacity/Randomize are wired to real state below.
+// Mock-only local state below (Grid Style) is a static UI preview for layout/visual sign-off —
+// it doesn't touch geometricSlice or affect the rendered pattern yet. Density/Spacing/Rotation/
+// Opacity/Randomize are wired to real state below.
 export default function GridControls() {
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.geometric);
 
     const [gridStyle, setGridStyle] = useState<GridStyle>("even");
-    const [duotoneTiles, setDuotoneTiles] = useState(false);
-    const [uniqueNearbyTile, setUniqueNearbyTile] = useState(true);
 
     // Toggling either direction sets the flag and immediately shuffles so the new
     // uniform-vs-independent-random behavior is visible right away.
@@ -156,34 +154,24 @@ export default function GridControls() {
                     <button
                         type="button"
                         onClick={() => setGridStyle("even")}
-                        className={`w-14 h-14 rounded-lg flex items-center justify-center transition-colors ${
+                        className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors ${
                             gridStyle === "even" ? "bg-[#1a1a2e] text-white" : "bg-[#F4FAE8] text-[#64748b] hover:bg-[#E8F5D2]"
                         }`}
                     >
-                        <Grid3x3 className="w-5 h-5" strokeWidth={1.6} />
+                        <LayoutGrid className="w-5 h-5" strokeWidth={1.5} />
                     </button>
                     <button
                         type="button"
                         onClick={() => setGridStyle("staggered")}
-                        className={`w-14 h-14 rounded-lg flex items-center justify-center transition-colors ${
+                        className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors ${
                             gridStyle === "staggered"
                                 ? "bg-[#1a1a2e] text-white"
                                 : "bg-[#F4FAE8] text-[#64748b] hover:bg-[#E8F5D2]"
                         }`}
                     >
-                        <LayoutGrid className="w-5 h-5" strokeWidth={1.6} />
+                        <Grid2x2 className="w-5 h-5" strokeWidth={1.5} />
                     </button>
                 </div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-                <ToggleRow label="Duotone Tiles" checked={duotoneTiles} onChange={setDuotoneTiles} />
-                <ToggleRow
-                    label="Unique Nearby Tile"
-                    checked={uniqueNearbyTile}
-                    onChange={setUniqueNearbyTile}
-                    info="Avoids placing the same shape in neighboring cells"
-                />
             </div>
 
             <div className="flex flex-col gap-3 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>
