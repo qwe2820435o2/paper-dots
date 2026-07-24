@@ -14,6 +14,10 @@ const initialState: GeometricState = {
     backgroundColor: "#1a1a2e",
     frontColor: "#9ED06C",
     seed: 1,
+    density: 100,
+    spacing: 0,
+    rotation: 0,
+    opacity: 100,
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
@@ -45,6 +49,18 @@ const geometricSlice = createSlice({
             state.backgroundColor = action.payload.background;
             state.frontColor = action.payload.front;
         },
+        setDensity(state, action: PayloadAction<number>) {
+            state.density = clamp(Math.round(action.payload), 0, 100);
+        },
+        setSpacing(state, action: PayloadAction<number>) {
+            state.spacing = clamp(Math.round(action.payload), 0, 100);
+        },
+        setRotation(state, action: PayloadAction<number>) {
+            state.rotation = clamp(Math.round(action.payload), 0, 360);
+        },
+        setOpacity(state, action: PayloadAction<number>) {
+            state.opacity = clamp(Math.round(action.payload), 0, 100);
+        },
         shuffle(state) {
             state.seed = randomSeed();
         },
@@ -61,6 +77,10 @@ export const {
     setBackgroundColor,
     setFrontColor,
     setColorPair,
+    setDensity,
+    setSpacing,
+    setRotation,
+    setOpacity,
     shuffle,
     resetGeometric,
 } = geometricSlice.actions;

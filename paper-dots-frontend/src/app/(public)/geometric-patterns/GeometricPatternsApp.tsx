@@ -14,7 +14,7 @@ type Panel = "shapes" | "grid" | "colors" | "export" | null;
 
 const TOOLS: { id: Panel; icon: typeof Shapes; label: string }[] = [
     { id: "shapes", icon: Shapes, label: "Shapes" },
-    { id: "grid", icon: Grid3x3, label: "Grid" },
+    { id: "grid", icon: Grid3x3, label: "Layout" },
     { id: "colors", icon: Palette, label: "Colors" },
     { id: "export", icon: Download, label: "Export" },
 ];

@@ -11,12 +11,23 @@ export interface GeometricConfig {
     frontColor: string;
     /** drives the deterministic PRNG; changing it (Shuffle) reshuffles both layout and colors */
     seed: number;
+    /** 0-100: percentage of cells that get a shape; the rest stay empty (background only) */
+    density: number;
+    /** 0-100: shrinks each shape's fill of its cell, from 80% (0) down to 20% (100) */
+    spacing: number;
+    /** 0-360: max degrees of random rotation jitter added on top of each shape's base rotation */
+    rotation: number;
+    /** 0-100: opacity applied to each shape group */
+    opacity: number;
 }
 
 /** The fixed "punched through to reveal white" color a shape can land on, alongside frontColor. */
 export const CUTOUT_COLOR = "#FFFFFF";
 
-/** Fraction of a cell's box a shape's own 100x100 box is scaled to fill (fixed — no longer a slider). */
+/** Fraction of a cell's box a shape's own 100x100 box is scaled to fill in the icon-set
+ *  thumbnail spec sheet (fixed — that preview is intentionally decoupled from the live
+ *  density/spacing/rotation/opacity sliders). The live grid derives its own ratio from
+ *  `config.spacing` instead — see `buildIconGridSvgString`. */
 const SHAPE_PADDING_RATIO = 0.8;
 
 interface ShapeVariant {
@@ -84,23 +95,38 @@ export function buildIconGridSvgString(config: GeometricConfig, width: number, h
     const rng = mulberry32(config.seed);
     const variants = getShapeVariants(config.iconSetId);
     const cellCount = config.rows * config.columns;
-    const placed = fillVariants(variants, cellCount, rng);
+
+    // Density picks which cells get a shape at all; the rest stay empty (background only).
+    const filledCount = Math.round(cellCount * (config.density / 100));
+    const cellIndices = shuffle(
+        Array.from({ length: cellCount }, (_, i) => i),
+        rng,
+    )
+        .slice(0, filledCount)
+        .sort((a, b) => a - b);
+    const placed = fillVariants(variants, filledCount, rng);
 
     const cellW = width / config.columns;
     const cellH = height / config.rows;
     // A single uniform scale (not independent x/y) so a shape's own proportions never stretch —
-    // a circle stays a circle even when rows != columns makes cells non-square.
-    const s0 = round((Math.min(cellW, cellH) * SHAPE_PADDING_RATIO) / 100);
+    // a circle stays a circle even when rows != columns makes cells non-square. Spacing shrinks
+    // this ratio from 0.8 (0%) down to 0.2 (100%), opening up more gap around each shape.
+    const paddingRatio = 0.8 - (config.spacing / 100) * 0.6;
+    const s0 = round((Math.min(cellW, cellH) * paddingRatio) / 100);
+    const opacity = round(config.opacity / 100);
 
     let cellsMarkup = "";
-    placed.forEach((variant, i) => {
-        const col = i % config.columns;
-        const row = Math.floor(i / config.columns);
+    cellIndices.forEach((cellIndex, i) => {
+        const variant = placed[i];
+        const col = cellIndex % config.columns;
+        const row = Math.floor(cellIndex / config.columns);
         const cx = round(cellW * (col + 0.5));
         const cy = round(cellH * (row + 0.5));
         const color = rng() < 0.5 ? config.frontColor : CUTOUT_COLOR;
+        const jitter = round(rng() * config.rotation);
+        const rotation = variant.rotation + jitter;
 
-        cellsMarkup += `<g transform="translate(${cx} ${cy}) rotate(${variant.rotation}) scale(${s0})">${variant.shape.primary(color)}</g>`;
+        cellsMarkup += `<g transform="translate(${cx} ${cy}) rotate(${rotation}) scale(${s0})" opacity="${opacity}">${variant.shape.primary(color)}</g>`;
     });
 
     return (

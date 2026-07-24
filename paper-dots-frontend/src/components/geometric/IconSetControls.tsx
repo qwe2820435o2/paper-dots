@@ -28,6 +28,10 @@ export default function IconSetControls() {
                         backgroundColor: config.backgroundColor,
                         frontColor: config.frontColor,
                         seed: 1,
+                        density: 100,
+                        spacing: 0,
+                        rotation: 0,
+                        opacity: 100,
                     };
                     return (
                         <button
