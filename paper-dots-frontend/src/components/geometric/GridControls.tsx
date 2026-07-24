@@ -4,7 +4,17 @@ import { useState } from "react";
 import { Minus, Plus, Grid3x3, LayoutGrid, Info } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setRows, setColumns, setDensity, setSpacing, setRotation, setOpacity } from "@/store/slices/geometricSlice";
+import {
+    setRows,
+    setColumns,
+    setDensity,
+    setSpacing,
+    setRotation,
+    setOpacity,
+    setRandomizeRotation,
+    setRandomizeSpacing,
+    shuffle,
+} from "@/store/slices/geometricSlice";
 
 const MIN_CELLS = 1;
 const MAX_CELLS = 12;
@@ -110,9 +120,9 @@ function LabeledSlider({
 
 type GridStyle = "even" | "staggered";
 
-// Mock-only local state below (Grid Style, Duotone Tiles, Unique Nearby Tile, Randomize) is a
-// static UI preview for layout/visual sign-off — it doesn't touch geometricSlice or affect the
-// rendered pattern yet. Density/Spacing/Rotation/Opacity are wired to real state below.
+// Mock-only local state below (Grid Style, Duotone Tiles, Unique Nearby Tile) is a static UI
+// preview for layout/visual sign-off — it doesn't touch geometricSlice or affect the rendered
+// pattern yet. Density/Spacing/Rotation/Opacity/Randomize are wired to real state below.
 export default function GridControls() {
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.geometric);
@@ -120,8 +130,18 @@ export default function GridControls() {
     const [gridStyle, setGridStyle] = useState<GridStyle>("even");
     const [duotoneTiles, setDuotoneTiles] = useState(false);
     const [uniqueNearbyTile, setUniqueNearbyTile] = useState(true);
-    const [randomizeRotation, setRandomizeRotation] = useState(false);
-    const [randomizeSpacing, setRandomizeSpacing] = useState(false);
+
+    // Toggling either direction sets the flag and immediately shuffles so the new
+    // uniform-vs-independent-random behavior is visible right away.
+    function handleRandomizeRotation(next: boolean) {
+        dispatch(setRandomizeRotation(next));
+        dispatch(shuffle());
+    }
+
+    function handleRandomizeSpacing(next: boolean) {
+        dispatch(setRandomizeSpacing(next));
+        dispatch(shuffle());
+    }
 
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
@@ -168,8 +188,8 @@ export default function GridControls() {
 
             <div className="flex flex-col gap-3 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>
                 <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">Randomize</label>
-                <ToggleRow label="Rotation" checked={randomizeRotation} onChange={setRandomizeRotation} />
-                <ToggleRow label="Spacing" checked={randomizeSpacing} onChange={setRandomizeSpacing} />
+                <ToggleRow label="Rotation" checked={config.randomizeRotation} onChange={handleRandomizeRotation} />
+                <ToggleRow label="Spacing" checked={config.randomizeSpacing} onChange={handleRandomizeSpacing} />
             </div>
 
             <div className="flex flex-col gap-5 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>

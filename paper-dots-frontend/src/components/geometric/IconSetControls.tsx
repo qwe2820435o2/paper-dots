@@ -32,6 +32,8 @@ export default function IconSetControls() {
                         spacing: 0,
                         rotation: 0,
                         opacity: 100,
+                        randomizeRotation: false,
+                        randomizeSpacing: false,
                     };
                     return (
                         <button

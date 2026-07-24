@@ -15,10 +15,18 @@ export interface GeometricConfig {
     density: number;
     /** 0-100: shrinks each shape's fill of its cell, from 80% (0) down to 20% (100) */
     spacing: number;
-    /** 0-360: max degrees of random rotation jitter added on top of each shape's base rotation */
+    /** 0-360: extra rotation added on top of each shape's base rotation — a uniform offset
+     *  applied to every shape when `randomizeRotation` is off, or the max of an independent
+     *  per-shape random offset when it's on */
     rotation: number;
     /** 0-100: opacity applied to each shape group */
     opacity: number;
+    /** when true, each shape gets its own independent random rotation in [0, rotation] instead
+     *  of the same uniform `rotation` offset */
+    randomizeRotation: boolean;
+    /** when true, each shape gets its own independent random spacing in [0, spacing] instead of
+     *  the same uniform `spacing` ratio */
+    randomizeSpacing: boolean;
 }
 
 /** The fixed "punched through to reveal white" color a shape can land on, alongside frontColor. */
@@ -108,11 +116,12 @@ export function buildIconGridSvgString(config: GeometricConfig, width: number, h
 
     const cellW = width / config.columns;
     const cellH = height / config.rows;
+    const minCell = Math.min(cellW, cellH);
     // A single uniform scale (not independent x/y) so a shape's own proportions never stretch —
     // a circle stays a circle even when rows != columns makes cells non-square. Spacing shrinks
-    // this ratio from 0.8 (0%) down to 0.2 (100%), opening up more gap around each shape.
-    const paddingRatio = 0.8 - (config.spacing / 100) * 0.6;
-    const s0 = round((Math.min(cellW, cellH) * paddingRatio) / 100);
+    // the padding ratio from 0.8 (0%) down to 0.2 (100%), opening up more gap around each shape.
+    const paddingRatioForSpacing = (spacing: number) => 0.8 - (spacing / 100) * 0.6;
+    const uniformS0 = round((minCell * paddingRatioForSpacing(config.spacing)) / 100);
     const opacity = round(config.opacity / 100);
 
     let cellsMarkup = "";
@@ -123,8 +132,11 @@ export function buildIconGridSvgString(config: GeometricConfig, width: number, h
         const cx = round(cellW * (col + 0.5));
         const cy = round(cellH * (row + 0.5));
         const color = rng() < 0.5 ? config.frontColor : CUTOUT_COLOR;
-        const jitter = round(rng() * config.rotation);
+        const jitter = config.randomizeRotation ? round(rng() * config.rotation) : config.rotation;
         const rotation = variant.rotation + jitter;
+        const s0 = config.randomizeSpacing
+            ? round((minCell * paddingRatioForSpacing(rng() * config.spacing)) / 100)
+            : uniformS0;
 
         cellsMarkup += `<g transform="translate(${cx} ${cy}) rotate(${rotation}) scale(${s0})" opacity="${opacity}">${variant.shape.primary(color)}</g>`;
     });

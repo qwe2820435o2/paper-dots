@@ -18,6 +18,8 @@ const initialState: GeometricState = {
     spacing: 0,
     rotation: 0,
     opacity: 100,
+    randomizeRotation: false,
+    randomizeSpacing: false,
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
@@ -61,6 +63,12 @@ const geometricSlice = createSlice({
         setOpacity(state, action: PayloadAction<number>) {
             state.opacity = clamp(Math.round(action.payload), 0, 100);
         },
+        setRandomizeRotation(state, action: PayloadAction<boolean>) {
+            state.randomizeRotation = action.payload;
+        },
+        setRandomizeSpacing(state, action: PayloadAction<boolean>) {
+            state.randomizeSpacing = action.payload;
+        },
         shuffle(state) {
             state.seed = randomSeed();
         },
@@ -81,6 +89,8 @@ export const {
     setSpacing,
     setRotation,
     setOpacity,
+    setRandomizeRotation,
+    setRandomizeSpacing,
     shuffle,
     resetGeometric,
 } = geometricSlice.actions;
