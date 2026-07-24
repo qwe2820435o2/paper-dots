@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { Minus, Plus, LayoutGrid, Grid2x2, Info } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
     setRows,
     setColumns,
+    setGridStyle,
     setDensity,
     setSpacing,
     setRotation,
@@ -118,19 +118,17 @@ function LabeledSlider({
     );
 }
 
-type GridStyle = "even" | "staggered";
-
-// Mock-only local state below (Grid Style) is a static UI preview for layout/visual sign-off —
-// it doesn't touch geometricSlice or affect the rendered pattern yet. Density/Spacing/Rotation/
-// Opacity/Randomize are wired to real state below.
 export default function GridControls() {
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.geometric);
 
-    const [gridStyle, setGridStyle] = useState<GridStyle>("even");
-
     // Toggling either direction sets the flag and immediately shuffles so the new
-    // uniform-vs-independent-random behavior is visible right away.
+    // behavior is visible right away.
+    function handleGridStyle(next: "even" | "compact") {
+        dispatch(setGridStyle(next));
+        dispatch(shuffle());
+    }
+
     function handleRandomizeRotation(next: boolean) {
         dispatch(setRandomizeRotation(next));
         dispatch(shuffle());
@@ -153,18 +151,20 @@ export default function GridControls() {
                 <div className="flex gap-2.5">
                     <button
                         type="button"
-                        onClick={() => setGridStyle("even")}
+                        onClick={() => handleGridStyle("even")}
                         className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors ${
-                            gridStyle === "even" ? "bg-[#1a1a2e] text-white" : "bg-[#F4FAE8] text-[#64748b] hover:bg-[#E8F5D2]"
+                            config.gridStyle === "even"
+                                ? "bg-[#1a1a2e] text-white"
+                                : "bg-[#F4FAE8] text-[#64748b] hover:bg-[#E8F5D2]"
                         }`}
                     >
                         <LayoutGrid className="w-5 h-5" strokeWidth={1.5} />
                     </button>
                     <button
                         type="button"
-                        onClick={() => setGridStyle("staggered")}
+                        onClick={() => handleGridStyle("compact")}
                         className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors ${
-                            gridStyle === "staggered"
+                            config.gridStyle === "compact"
                                 ? "bg-[#1a1a2e] text-white"
                                 : "bg-[#F4FAE8] text-[#64748b] hover:bg-[#E8F5D2]"
                         }`}

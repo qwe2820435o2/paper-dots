@@ -1,11 +1,16 @@
 import { getShapesForSet, type IconShape } from "./geometricIconSets";
 
+export type GridStyle = "even" | "compact";
+
 export interface GeometricConfig {
     iconSetId: string;
     /** 1-12 */
     rows: number;
     /** 1-12 */
     columns: number;
+    /** shifts the baseline of the spacing padding ratio — "compact" fills more of each cell
+     *  than "even" at the same `spacing` value; see `PADDING_RATIO_BY_STYLE` */
+    gridStyle: GridStyle;
     backgroundColor: string;
     /** the solid color a shape gets when it doesn't land on the cutout color */
     frontColor: string;
@@ -37,6 +42,14 @@ export const CUTOUT_COLOR = "#FFFFFF";
  *  density/spacing/rotation/opacity sliders). The live grid derives its own ratio from
  *  `config.spacing` instead — see `buildIconGridSvgString`. */
 const SHAPE_PADDING_RATIO = 0.8;
+
+/** Baseline padding-ratio range per grid style: `max` is the ratio at spacing=0%, `span` is how
+ *  much spacing=100% subtracts from it. "compact" keeps the same span as "even" but starts from
+ *  a fuller baseline, so it reads as consistently tighter at any given spacing value. */
+const PADDING_RATIO_BY_STYLE: Record<GridStyle, { max: number; span: number }> = {
+    even: { max: 0.8, span: 0.6 },
+    compact: { max: 1.0, span: 0.6 },
+};
 
 interface ShapeVariant {
     shape: IconShape;
@@ -119,8 +132,9 @@ export function buildIconGridSvgString(config: GeometricConfig, width: number, h
     const minCell = Math.min(cellW, cellH);
     // A single uniform scale (not independent x/y) so a shape's own proportions never stretch —
     // a circle stays a circle even when rows != columns makes cells non-square. Spacing shrinks
-    // the padding ratio from 0.8 (0%) down to 0.2 (100%), opening up more gap around each shape.
-    const paddingRatioForSpacing = (spacing: number) => 0.8 - (spacing / 100) * 0.6;
+    // the padding ratio down from the style's baseline as it goes from 0% to 100%.
+    const { max: paddingMax, span: paddingSpan } = PADDING_RATIO_BY_STYLE[config.gridStyle];
+    const paddingRatioForSpacing = (spacing: number) => paddingMax - (spacing / 100) * paddingSpan;
     const uniformS0 = round((minCell * paddingRatioForSpacing(config.spacing)) / 100);
     const opacity = round(config.opacity / 100);
 

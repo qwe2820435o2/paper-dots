@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { DEFAULT_ICON_SET_ID } from "@/lib/geometricIconSets";
-import type { GeometricConfig } from "@/lib/geometricGrid";
+import type { GeometricConfig, GridStyle } from "@/lib/geometricGrid";
 
 export type GeometricState = GeometricConfig;
 
@@ -11,6 +11,7 @@ const initialState: GeometricState = {
     iconSetId: DEFAULT_ICON_SET_ID,
     rows: 3,
     columns: 4,
+    gridStyle: "even",
     backgroundColor: "#1a1a2e",
     frontColor: "#9ED06C",
     seed: 1,
@@ -40,6 +41,9 @@ const geometricSlice = createSlice({
         },
         setColumns(state, action: PayloadAction<number>) {
             state.columns = clamp(Math.round(action.payload), 1, 12);
+        },
+        setGridStyle(state, action: PayloadAction<GridStyle>) {
+            state.gridStyle = action.payload;
         },
         setBackgroundColor(state, action: PayloadAction<string>) {
             state.backgroundColor = action.payload;
@@ -82,6 +86,7 @@ export const {
     setIconSetId,
     setRows,
     setColumns,
+    setGridStyle,
     setBackgroundColor,
     setFrontColor,
     setColorPair,

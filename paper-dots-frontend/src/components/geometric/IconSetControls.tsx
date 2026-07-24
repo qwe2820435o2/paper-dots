@@ -25,6 +25,7 @@ export default function IconSetControls() {
                         iconSetId: set.id,
                         rows: 4,
                         columns: 4,
+                        gridStyle: "even",
                         backgroundColor: config.backgroundColor,
                         frontColor: config.frontColor,
                         seed: 1,
