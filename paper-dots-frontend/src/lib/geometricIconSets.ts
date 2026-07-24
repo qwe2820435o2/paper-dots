@@ -21,11 +21,58 @@ export const ICON_SHAPES: Record<string, IconShape> = {
         label: "Quarter circle",
         primary: (fg) => `<path d="M -50,-50 L 50,-50 A 100 100 0 0 1 -50,50 Z" fill="${fg}"/>`,
     },
-    "round-blob": {
-        id: "round-blob",
-        label: "Round blob",
+    "sector-circle": {
+        id: "sector-circle",
+        label: "Circle",
+        primary: (fg) => `<circle r="40" fill="${fg}"/>`,
+        symmetry: 1,
+    },
+    "sector-square": {
+        id: "sector-square",
+        label: "Square",
+        primary: (fg) => `<rect x="-40" y="-40" width="80" height="80" fill="${fg}"/>`,
+        symmetry: 1,
+    },
+    "sector-disc-square-corner": {
+        id: "sector-disc-square-corner",
+        label: "Disc square corner",
+        primary: (fg) => `<path d="M -40,0 L -40,-40 L 0,-40 A 40 40 0 1 1 -40,0 Z" fill="${fg}"/>`,
+    },
+    "sector-half-disc": {
+        id: "sector-half-disc",
+        label: "Half disc",
+        primary: (fg) => `<path d="M -40,40 A 40 40 0 0 1 40,40 Z" fill="${fg}"/>`,
+    },
+    "sector-half-disc-narrow": {
+        id: "sector-half-disc-narrow",
+        label: "Half disc narrow",
+        primary: (fg) => `<path d="M -40,-40 A 26 40 0 0 1 -40,40 Z" fill="${fg}"/>`,
+    },
+    "sector-quarter-disc": {
+        id: "sector-quarter-disc",
+        label: "Quarter disc",
+        primary: (fg) => `<path d="M -40,-40 L 40,-40 A 80 80 0 0 1 -40,40 Z" fill="${fg}"/>`,
+    },
+    "sector-double-half-disc": {
+        id: "sector-double-half-disc",
+        label: "Double half disc",
         primary: (fg) =>
-            `<path d="M -50,-30.74 L -50,30.74 A 12 12 0 0 0 -33.64,41.92 A 45 45 0 0 0 -33.64,-41.92 A 12 12 0 0 0 -50,-30.74 Z" fill="${fg}"/>`,
+            `<path d="M -40,-40 A 32 40 0 0 1 -40,40 Z" fill="${fg}"/>` + `<path d="M 2,-40 A 32 40 0 0 1 2,40 Z" fill="${fg}"/>`,
+    },
+    "sector-square-notch": {
+        id: "sector-square-notch",
+        label: "Square notch",
+        primary: (fg) => `<path d="M -40,-40 L 40,-40 L 40,40 A 40 40 0 0 0 -40,40 Z" fill="${fg}"/>`,
+    },
+    "sector-square-round": {
+        id: "sector-square-round",
+        label: "Square round",
+        primary: (fg) => `<path d="M -40,-40 L 40,-40 L 40,0 A 40 40 0 0 1 -40,0 Z" fill="${fg}"/>`,
+    },
+    "sector-square-round-corner": {
+        id: "sector-square-round-corner",
+        label: "Square round corner",
+        primary: (fg) => `<path d="M -40,-40 L 40,-40 L 40,0 A 40 40 0 0 1 0,40 L -40,40 Z" fill="${fg}"/>`,
     },
     semicircle: {
         id: "semicircle",
@@ -101,13 +148,6 @@ export const ICON_SHAPES: Record<string, IconShape> = {
         label: "Arc strip",
         primary: (fg) =>
             `<path d="M -20,-35 Q 20,-35 20,0 Q 20,35 -20,35" fill="none" stroke="${fg}" stroke-width="12" stroke-linecap="round"/>`,
-    },
-    "semicircle-pair": {
-        id: "semicircle-pair",
-        label: "Semicircle pair",
-        primary: (fg) =>
-            `<path d="M -41,-4 A 41 41 0 0 1 41,-4 Z" fill="${fg}"/>` + `<path d="M -41,4 A 41 41 0 0 0 41,4 Z" fill="${fg}"/>`,
-        symmetry: 2,
     },
     comma: {
         id: "comma",
@@ -217,7 +257,18 @@ export const GEOMETRIC_ICON_SETS: IconSet[] = [
     {
         id: "sector",
         label: "Sector",
-        shapeIds: ["quarter-circle", "round-blob", "semicircle", "semicircle-pair", "square", "circle"],
+        shapeIds: [
+            "sector-circle",
+            "sector-square",
+            "sector-disc-square-corner",
+            "sector-half-disc",
+            "sector-half-disc-narrow",
+            "sector-quarter-disc",
+            "sector-double-half-disc",
+            "sector-square-notch",
+            "sector-square-round",
+            "sector-square-round-corner",
+        ],
     },
     {
         id: "pennant",
