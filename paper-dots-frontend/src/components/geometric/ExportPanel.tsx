@@ -3,14 +3,13 @@
 import { useState } from "react";
 import { Download, Copy } from "lucide-react";
 import { toast } from "sonner";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setExportWidth, setExportHeight, setExportFormat, type ExportFormat } from "@/store/slices/geometricSlice";
 import { buildIconGridSvgString, rasterizeIconGridSvg } from "@/lib/geometricGrid";
 import { isTouchPrimaryDevice } from "@/lib/device";
 
 const MIN_EXPORT_SIZE = 100;
 const MAX_EXPORT_SIZE = 4000;
-
-type ExportFormat = "svg" | "png" | "jpeg";
 
 const FORMATS: ExportFormat[] = ["svg", "png", "jpeg"];
 
@@ -32,12 +31,12 @@ function triggerDownload(blob: Blob, filename: string): void {
 }
 
 export default function ExportPanel() {
+    const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.geometric);
-    // Defaults to a columns:rows-proportional size so cells export square by default, same as
-    // the live preview; the user can still freely override either dimension afterwards.
-    const [width, setWidth] = useState(800);
-    const [height, setHeight] = useState(() => Math.round((800 * config.rows) / config.columns));
-    const [format, setFormat] = useState<ExportFormat>("svg");
+    // width/height/format live in Redux (not local state) so the desktop and mobile copies of
+    // this panel — both mounted at once, see GeometricPatternsApp — always agree on the same
+    // values instead of silently diverging when the viewport crosses the md breakpoint.
+    const { exportWidth: width, exportHeight: height, exportFormat: format } = config;
     const [exporting, setExporting] = useState(false);
 
     async function handleExport() {
@@ -100,8 +99,8 @@ export default function ExportPanel() {
                         min={MIN_EXPORT_SIZE}
                         max={MAX_EXPORT_SIZE}
                         value={width}
-                        onChange={(e) => setWidth(Number(e.target.value))}
-                        onBlur={(e) => setWidth(clampSize(Number(e.target.value)))}
+                        onChange={(e) => dispatch(setExportWidth(Number(e.target.value)))}
+                        onBlur={(e) => dispatch(setExportWidth(clampSize(Number(e.target.value))))}
                         className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#D2EAAA] focus:border-[#C5E89A]"
                     />
                     <span className="text-[12px] text-[#9CA3AF] shrink-0">×</span>
@@ -110,8 +109,8 @@ export default function ExportPanel() {
                         min={MIN_EXPORT_SIZE}
                         max={MAX_EXPORT_SIZE}
                         value={height}
-                        onChange={(e) => setHeight(Number(e.target.value))}
-                        onBlur={(e) => setHeight(clampSize(Number(e.target.value)))}
+                        onChange={(e) => dispatch(setExportHeight(Number(e.target.value)))}
+                        onBlur={(e) => dispatch(setExportHeight(clampSize(Number(e.target.value))))}
                         className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#D2EAAA] focus:border-[#C5E89A]"
                     />
                 </div>
@@ -126,7 +125,7 @@ export default function ExportPanel() {
                             <button
                                 key={f}
                                 type="button"
-                                onClick={() => setFormat(f)}
+                                onClick={() => dispatch(setExportFormat(f))}
                                 aria-pressed={selected}
                                 className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium uppercase transition-colors"
                                 style={{

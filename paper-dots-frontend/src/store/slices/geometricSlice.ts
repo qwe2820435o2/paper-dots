@@ -2,7 +2,17 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { DEFAULT_ICON_SET_ID } from "@/lib/geometricIconSets";
 import type { GeometricConfig, GridStyle } from "@/lib/geometricGrid";
 
-export type GeometricState = GeometricConfig;
+export type ExportFormat = "svg" | "png" | "jpeg";
+
+// The Export panel's width/height/format live here (not in local component state) because the
+// page shell mounts a desktop and a mobile copy of the panel at the same time (CSS-hidden, not
+// unmounted) — independent useState in each copy would silently diverge whenever the viewport
+// crosses the md breakpoint. Redux gives both copies the same value for free.
+export type GeometricState = GeometricConfig & {
+    exportWidth: number;
+    exportHeight: number;
+    exportFormat: ExportFormat;
+};
 
 // backgroundColor defaults to a non-white color so the fixed cutout white (see
 // geometricGrid.ts's CUTOUT_COLOR) is actually visible out of the box — a white background
@@ -21,6 +31,11 @@ const initialState: GeometricState = {
     opacity: 100,
     randomizeRotation: false,
     randomizeSpacing: false,
+    // Proportional to the default 3:4 rows:columns so cells export square by default, same as
+    // the live preview.
+    exportWidth: 800,
+    exportHeight: 600,
+    exportFormat: "svg",
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
@@ -73,6 +88,15 @@ const geometricSlice = createSlice({
         setRandomizeSpacing(state, action: PayloadAction<boolean>) {
             state.randomizeSpacing = action.payload;
         },
+        setExportWidth(state, action: PayloadAction<number>) {
+            state.exportWidth = action.payload;
+        },
+        setExportHeight(state, action: PayloadAction<number>) {
+            state.exportHeight = action.payload;
+        },
+        setExportFormat(state, action: PayloadAction<ExportFormat>) {
+            state.exportFormat = action.payload;
+        },
         shuffle(state) {
             state.seed = randomSeed();
         },
@@ -96,6 +120,9 @@ export const {
     setOpacity,
     setRandomizeRotation,
     setRandomizeSpacing,
+    setExportWidth,
+    setExportHeight,
+    setExportFormat,
     shuffle,
     resetGeometric,
 } = geometricSlice.actions;

@@ -32,13 +32,19 @@ export default function GeometricPatternsApp() {
         };
     }, []);
 
-    // Space reshuffles the grid layout (matches the Export panel's non-interactive areas);
-    // guarded so typing a space into a number input doesn't also trigger a shuffle.
+    // Space reshuffles the grid layout, but only when focus isn't on something that already
+    // handles Space itself (buttons, switches, tabs, links, form fields) — otherwise pressing
+    // Space to activate any button on the page would get hijacked into an unrelated shuffle.
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
             if (e.code !== "Space") return;
-            const tag = (e.target as HTMLElement | null)?.tagName;
-            if (tag === "INPUT" || tag === "TEXTAREA") return;
+            const target = e.target as HTMLElement | null;
+            if (
+                target?.closest(
+                    'button, [role="button"], [role="switch"], [role="tab"], a[href], input, textarea, select, [contenteditable="true"]',
+                )
+            )
+                return;
             e.preventDefault();
             dispatch(shuffle());
         }
