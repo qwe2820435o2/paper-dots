@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <rect width="120" height="120" fill="#F1F2FE"/>
+  <g fill="#444BF7">
+    <g transform="translate(0,0)"><path d="M60,0 L60,60 L0,60 Z" fill-opacity="0.2"/></g>
+    <g transform="translate(60,0)"><path d="M60,0 L60,60 L0,60 Z" fill-opacity="0.4"/></g>
+    <g transform="translate(0,60)"><path d="M60,0 L60,60 L0,60 Z" fill-opacity="0.6"/></g>
+    <g transform="translate(60,60)"><path d="M60,0 L60,60 L0,60 Z"/></g>
+  </g>
+</svg>

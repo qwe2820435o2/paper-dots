@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <rect width="120" height="120" fill="#F1F2FE"/>
+  <g fill="#444BF7"><path d="M120,0 A124,124 0 0,1 0,120 A124,124 0 0,1 120,0 Z" fill-opacity="0.2"/><defs><clipPath id="leaf-a-clip"><path d="M120,0 A124,124 0 0,1 0,120 A124,124 0 0,1 120,0 Z"/></clipPath></defs><g clip-path="url(#leaf-a-clip)"><polygon points="120,0 240,0 240,240 0,240 0,120"/></g></g>
+</svg>

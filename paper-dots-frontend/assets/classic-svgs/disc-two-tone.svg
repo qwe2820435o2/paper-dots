@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <rect width="120" height="120" fill="#F1F2FE"/>
+  <g fill="#444BF7"><defs><clipPath id="dtt-outline"><path d="M0,0 L120,0 L120,59 A60.5,60.5 0 0,1 -1,59 L0,59 Z"/></clipPath></defs><g clip-path="url(#dtt-outline)"><rect width="120" height="120" fill-opacity="0.3"/><path d="M60,0 L120,0 L120,120 L60,120 Z"/><circle cx="125" cy="64" r="65"/></g></g>
+</svg>
