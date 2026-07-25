@@ -101,6 +101,9 @@ function getShapeVariants(iconSetId: string): ShapeVariant[] {
 /** Fills `count` slots with shape variants, reshuffling the full variant list every time it runs
  *  out — so a variant only repeats once every other variant has appeared. */
 function fillVariants(variants: ShapeVariant[], count: number, rng: () => number): ShapeVariant[] {
+    // An icon set with no valid shapes (or a non-positive count) would otherwise spin forever
+    // below, since `filled.length` could never reach `count`.
+    if (variants.length === 0 || count <= 0) return [];
     const filled: ShapeVariant[] = [];
     while (filled.length < count) {
         filled.push(...shuffle([...variants], rng));
@@ -141,6 +144,7 @@ export function buildIconGridSvgString(config: GeometricConfig, width: number, h
     let cellsMarkup = "";
     cellIndices.forEach((cellIndex, i) => {
         const variant = placed[i];
+        if (!variant) return;
         const col = cellIndex % config.columns;
         const row = Math.floor(cellIndex / config.columns);
         const cx = round(cellW * (col + 0.5));

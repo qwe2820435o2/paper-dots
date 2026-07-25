@@ -1,8 +1,9 @@
 /**
  * Base shape primitives for the geometric grid tool, each authored once in a -50..50
  * centered box (so rotation in geometricGrid.ts is a plain `rotate()` around the origin).
- * A few compound shapes (comma, flag-dot, square-dot, checker-2x2, target, double-ring,
- * twin-dot, dot-grid) bake more than one element directly into `primary`.
+ * A few compound shapes (pennant-checkerboard, classic-dot-grid-6x6, mosaic-target-dot-ring,
+ * mosaic-bullseye-double-ring, pennant-nested-squares-dot) bake more than one element directly
+ * into `primary`.
  */
 
 export interface IconShape {
@@ -505,6 +506,10 @@ export const ICON_SHAPES: Record<string, IconShape> = {
             `<path d="M -50,26.67 A 49.17,23.33 0 0,1 50,26.67 Z" fill="${fg}"/>` +
             `<path d="M -50,26.67 A 49.17,23.33 0 0,0 50,26.67 Z" fill="${fg}" fill-opacity="0.2"/>`,
     },
+    // The 6 vessel shapes below (cylinder/box) are visually asymmetric but deliberately declare
+    // `symmetry: 1` anyway — not because they're symmetric, but to lock them to their upright 0°
+    // orientation in the variant pool, since a sideways/upside-down vase would look broken. This
+    // repurposes the field as an "orientation lock" rather than its literal documented meaning.
     "flowers-cylinder-tall-dark": {
         id: "flowers-cylinder-tall-dark",
         label: "Cylinder tall dark",
@@ -610,12 +615,6 @@ export const ICON_SHAPES: Record<string, IconShape> = {
         id: "triangle",
         label: "Triangle",
         primary: (fg) => `<path d="M -50,-50 L 50,-50 L 50,50 Z" fill="${fg}"/>`,
-    },
-    dot: {
-        id: "dot",
-        label: "Dot",
-        primary: (fg) => `<circle r="10" fill="${fg}"/>`,
-        symmetry: 1,
     },
 };
 
@@ -768,5 +767,9 @@ export function getIconSet(iconSetId: string): IconSet {
 }
 
 export function getShapesForSet(iconSetId: string): IconShape[] {
-    return getIconSet(iconSetId).shapeIds.map((id) => ICON_SHAPES[id]);
+    // Drops any shapeId that doesn't resolve to a real shape (e.g. a typo) instead of leaking
+    // `undefined` into callers that assume every entry is a valid IconShape.
+    return getIconSet(iconSetId)
+        .shapeIds.map((id) => ICON_SHAPES[id])
+        .filter((shape): shape is IconShape => shape !== undefined);
 }
