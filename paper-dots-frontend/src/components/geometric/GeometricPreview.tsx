@@ -30,8 +30,11 @@ export default function GeometricPreview({
     size = PREVIEW_DESIGN_SIZE,
     thumbnail = false,
 }: Props) {
-    const liveConfig = useAppSelector((s) => s.geometric);
-    const config = configOverride ?? liveConfig;
+    // When configOverride is set (thumbnail mode), this closure never reads s.geometric at all —
+    // `??` short-circuits — so useSelector's reference-equality check sees the same output on
+    // every dispatch and skips re-rendering. Without this, every thumbnail card would re-render
+    // on any live config change (rotation, density, ...) despite never using it.
+    const config = useAppSelector((s) => configOverride ?? s.geometric);
 
     const svgDataUrl = useMemo(() => {
         // Generate the SVG itself at a columns:rows-proportional size (not a fixed square) so

@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setExportWidth, setExportHeight, setExportFormat, type ExportFormat } from "@/store/slices/geometricSlice";
 import { buildIconGridSvgString, rasterizeIconGridSvg } from "@/lib/geometricGrid";
 import { isTouchPrimaryDevice } from "@/lib/device";
+import ToggleChip from "./ToggleChip";
 
 const MIN_EXPORT_SIZE = 100;
 const MAX_EXPORT_SIZE = 4000;
@@ -92,52 +93,51 @@ export default function ExportPanel() {
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Size (px)</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Size (px)</label>
                 <div className="flex items-center gap-2">
                     <input
                         type="number"
                         min={MIN_EXPORT_SIZE}
                         max={MAX_EXPORT_SIZE}
                         value={width}
-                        onChange={(e) => dispatch(setExportWidth(Number(e.target.value)))}
+                        onChange={(e) => {
+                            const n = Number(e.target.value);
+                            if (!Number.isNaN(n)) dispatch(setExportWidth(n));
+                        }}
                         onBlur={(e) => dispatch(setExportWidth(clampSize(Number(e.target.value))))}
-                        className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#D2EAAA] focus:border-[#C5E89A]"
+                        className="w-full px-3 py-2 rounded-lg text-[14px] text-foreground text-center outline-none transition-colors bg-card border border-border focus:border-primary"
                     />
-                    <span className="text-[12px] text-[#9CA3AF] shrink-0">×</span>
+                    <span className="text-[12px] text-gray-400 shrink-0">×</span>
                     <input
                         type="number"
                         min={MIN_EXPORT_SIZE}
                         max={MAX_EXPORT_SIZE}
                         value={height}
-                        onChange={(e) => dispatch(setExportHeight(Number(e.target.value)))}
+                        onChange={(e) => {
+                            const n = Number(e.target.value);
+                            if (!Number.isNaN(n)) dispatch(setExportHeight(n));
+                        }}
                         onBlur={(e) => dispatch(setExportHeight(clampSize(Number(e.target.value))))}
-                        className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#D2EAAA] focus:border-[#C5E89A]"
+                        className="w-full px-3 py-2 rounded-lg text-[14px] text-foreground text-center outline-none transition-colors bg-card border border-border focus:border-primary"
                     />
                 </div>
             </div>
 
             <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Format</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Format</label>
                 <div className="grid grid-cols-3 gap-1.5">
-                    {FORMATS.map((f) => {
-                        const selected = format === f;
-                        return (
-                            <button
-                                key={f}
-                                type="button"
-                                onClick={() => dispatch(setExportFormat(f))}
-                                aria-pressed={selected}
-                                className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium uppercase transition-colors"
-                                style={{
-                                    color: selected ? "#C5E89A" : "#64748b",
-                                    background: selected ? "#E8F5D2" : "#F4FAE8",
-                                    boxShadow: selected ? "#C5E89A 0px 0px 0px 1.5px" : "#D2EAAA 0px 0px 0px 1px",
-                                }}
-                            >
-                                {f}
-                            </button>
-                        );
-                    })}
+                    {FORMATS.map((f) => (
+                        <ToggleChip
+                            key={f}
+                            selected={format === f}
+                            onClick={() => dispatch(setExportFormat(f))}
+                            className="min-h-[36px] py-1.5 rounded-lg text-[11px] font-medium uppercase"
+                            selectedClassName="text-primary bg-secondary ring-1 ring-primary"
+                            unselectedClassName="text-muted-foreground bg-muted ring-1 ring-border"
+                        >
+                            {f}
+                        </ToggleChip>
+                    ))}
                 </div>
             </div>
 
@@ -145,10 +145,8 @@ export default function ExportPanel() {
                 type="button"
                 onClick={handleExport}
                 disabled={exporting}
-                className="w-full flex items-center justify-center gap-2 text-[14px] font-medium py-2.5 rounded-full transition-all"
+                className="w-full flex items-center justify-center gap-2 text-[14px] font-medium py-2.5 rounded-full transition-all bg-primary text-primary-foreground"
                 style={{
-                    background: "#C5E89A",
-                    color: "#ffffff",
                     cursor: exporting ? "not-allowed" : "pointer",
                     opacity: exporting ? 0.6 : 1,
                 }}
@@ -157,12 +155,12 @@ export default function ExportPanel() {
                 Download {format.toUpperCase()}
             </button>
 
-            <div className="flex flex-col gap-2 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">SVG</label>
+            <div className="flex flex-col gap-2 pt-1 border-t border-border">
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">SVG</label>
                 <button
                     type="button"
                     onClick={copySvgCode}
-                    className="w-full flex items-center justify-center gap-2 text-[13px] font-medium py-2.5 rounded-full transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2]"
+                    className="w-full flex items-center justify-center gap-2 text-[13px] font-medium py-2.5 rounded-full transition-colors text-muted-foreground bg-muted hover:bg-secondary"
                 >
                     <Copy className="w-4 h-4" strokeWidth={2} />
                     Copy SVG Code

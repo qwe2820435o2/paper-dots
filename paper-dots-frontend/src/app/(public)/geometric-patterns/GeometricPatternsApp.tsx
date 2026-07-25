@@ -4,20 +4,59 @@ import { useEffect, useState } from "react";
 import { Shapes, Grid3x3, Palette, Download, X, RefreshCw } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { shuffle } from "@/store/slices/geometricSlice";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import GeometricPreview from "@/components/geometric/GeometricPreview";
 import IconSetControls from "@/components/geometric/IconSetControls";
-import GridControls from "@/components/geometric/GridControls";
+import LayoutControls from "@/components/geometric/LayoutControls";
 import ColorControls from "@/components/geometric/ColorControls";
 import ExportPanel from "@/components/geometric/ExportPanel";
 
-type Panel = "shapes" | "grid" | "colors" | "export" | null;
+type Panel = "shapes" | "layout" | "colors" | "export" | null;
 
 const TOOLS: { id: Panel; icon: typeof Shapes; label: string }[] = [
     { id: "shapes", icon: Shapes, label: "Shapes" },
-    { id: "grid", icon: Grid3x3, label: "Layout" },
+    { id: "layout", icon: Grid3x3, label: "Layout" },
     { id: "colors", icon: Palette, label: "Colors" },
     { id: "export", icon: Download, label: "Export" },
 ];
+
+function ToolButton({
+    icon: Icon,
+    label,
+    isActive,
+    onClick,
+    variant,
+}: {
+    icon: typeof Shapes;
+    label: string;
+    isActive: boolean;
+    onClick: () => void;
+    variant: "desktop" | "mobile";
+}) {
+    const activeClasses = "bg-secondary text-primary";
+    const inactiveClasses =
+        variant === "desktop"
+            ? "text-gray-400 hover:bg-muted hover:text-primary"
+            : "text-gray-400 active:bg-muted active:text-primary";
+    const layoutClasses =
+        variant === "desktop"
+            ? "w-14 h-12"
+            : "flex-1 min-h-[52px]";
+
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            aria-pressed={isActive}
+            className={`${layoutClasses} rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
+                isActive ? activeClasses : inactiveClasses
+            }`}
+        >
+            <Icon size={variant === "desktop" ? 18 : 20} strokeWidth={1.6} />
+            <span className="text-[10px] leading-none font-semibold">{label}</span>
+        </button>
+    );
+}
 
 export default function GeometricPatternsApp() {
     const dispatch = useAppDispatch();
@@ -25,12 +64,7 @@ export default function GeometricPatternsApp() {
     const [activePanel, setActivePanel] = useState<Panel>("shapes");
     const [spinning, setSpinning] = useState(false);
 
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, []);
+    useLockBodyScroll();
 
     // Space reshuffles the grid layout, but only when focus isn't on something that already
     // handles Space itself (buttons, switches, tabs, links, form fields) — otherwise pressing
@@ -61,50 +95,32 @@ export default function GeometricPatternsApp() {
     const panelContent = (
         <>
             {activePanel === "shapes" && <IconSetControls />}
-            {activePanel === "grid" && <GridControls />}
+            {activePanel === "layout" && <LayoutControls />}
             {activePanel === "colors" && <ColorControls />}
             {activePanel === "export" && <ExportPanel />}
         </>
     );
 
     return (
-        <div className="h-[calc(100dvh-56px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">
+        <div className="h-[calc(100dvh-56px)] overflow-hidden bg-sidebar flex flex-col md:flex-row">
             {/* Desktop: left icon toolbar */}
-            <div
-                className="hidden md:flex shrink-0 w-16 flex-col items-center py-3 gap-1 bg-white"
-                style={{ borderRight: "1px solid #D2EAAA" }}
-            >
-                {TOOLS.map(({ id, icon: Icon, label }) => {
-                    const isActive = activePanel === id;
-                    return (
-                        <button
-                            key={id}
-                            type="button"
-                            onClick={() => togglePanel(id)}
-                            aria-pressed={isActive}
-                            className={`w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
-                                isActive
-                                    ? "bg-[#E8F5D2] text-[#C5E89A]"
-                                    : "text-[#9CA3AF] hover:bg-[#F4FAE8] hover:text-[#C5E89A]"
-                            }`}
-                        >
-                            <Icon size={18} strokeWidth={1.6} />
-                            <span className="text-[10px] leading-none font-semibold">{label}</span>
-                        </button>
-                    );
-                })}
+            <div className="hidden md:flex shrink-0 w-16 flex-col items-center py-3 gap-1 bg-card border-r border-border">
+                {TOOLS.map(({ id, icon, label }) => (
+                    <ToolButton
+                        key={id}
+                        icon={icon}
+                        label={label}
+                        isActive={activePanel === id}
+                        onClick={() => togglePanel(id)}
+                        variant="desktop"
+                    />
+                ))}
             </div>
 
             {/* Desktop: expandable side panel */}
             {activePanel && (
-                <div
-                    className="hidden md:flex shrink-0 w-72 flex-col bg-white overflow-hidden"
-                    style={{ borderRight: "1px solid #D2EAAA" }}
-                >
-                    <div
-                        className="shrink-0 px-4 py-3 text-[13px] font-medium text-[#1a1a2e]"
-                        style={{ borderBottom: "1px solid #D2EAAA" }}
-                    >
+                <div className="hidden md:flex shrink-0 w-72 flex-col bg-card overflow-hidden border-r border-border">
+                    <div className="shrink-0 px-4 py-3 text-[13px] font-medium text-foreground border-b border-border">
                         {activeLabel}
                     </div>
                     <div className="flex-1 overflow-y-auto min-h-0">{panelContent}</div>
@@ -135,7 +151,7 @@ export default function GeometricPatternsApp() {
                         onAnimationEnd={() => setSpinning(false)}
                         aria-label="Shuffle pattern (Space)"
                         title="Shuffle pattern (Space)"
-                        className="absolute left-1/2 -bottom-5 -translate-x-1/2 w-11 h-11 rounded-full flex items-center justify-center bg-[#1a1a2e] text-white transition-colors hover:bg-[#2a2a3e]"
+                        className="absolute left-1/2 -bottom-5 -translate-x-1/2 w-11 h-11 rounded-full flex items-center justify-center bg-foreground text-background transition-colors hover:bg-foreground/90"
                         style={{ boxShadow: "rgba(15, 23, 42, 0.25) 0px 6px 16px" }}
                     >
                         <RefreshCw className={`w-4 h-4 ${spinning ? "animate-spin-once" : ""}`} strokeWidth={2} />
@@ -143,24 +159,19 @@ export default function GeometricPatternsApp() {
                 </div>
             </div>
 
-            {/* Desktop spacer: mirrors the left toolbar + panel so the preview centers under the page (menu) center */}
+            {/* Desktop spacer: mirrors the left toolbar (w-16 = 64px) + panel (w-72 = 288px) = 352px,
+                so the preview centers under the page (menu) center whether or not a panel is open. */}
             <div className={`hidden md:block shrink-0 ${activePanel ? "w-[352px]" : "w-16"}`} aria-hidden />
 
             {/* Mobile: bottom drawer */}
             {activePanel && (
-                <div
-                    className="md:hidden shrink-0 bg-white flex flex-col max-h-[45dvh]"
-                    style={{ borderTop: "1px solid #D2EAAA" }}
-                >
-                    <div
-                        className="shrink-0 flex items-center justify-between px-4 py-3"
-                        style={{ borderBottom: "1px solid #D2EAAA" }}
-                    >
-                        <span className="text-[13px] font-medium text-[#1a1a2e]">{activeLabel}</span>
+                <div className="md:hidden shrink-0 bg-card flex flex-col max-h-[45dvh] border-t border-border">
+                    <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-border">
+                        <span className="text-[13px] font-medium text-foreground">{activeLabel}</span>
                         <button
                             type="button"
                             onClick={() => setActivePanel(null)}
-                            className="p-1 -mr-1 text-[#9CA3AF] active:text-[#1a1a2e]"
+                            className="p-1 -mr-1 text-gray-400 active:text-foreground"
                             aria-label="Close"
                         >
                             <X size={18} />
@@ -172,31 +183,19 @@ export default function GeometricPatternsApp() {
 
             {/* Mobile: bottom icon toolbar */}
             <div
-                className="md:hidden shrink-0 flex flex-row items-stretch justify-around bg-white px-1 pt-1"
-                style={{
-                    borderTop: "1px solid #D2EAAA",
-                    paddingBottom: "max(0.25rem, env(safe-area-inset-bottom))",
-                }}
+                className="md:hidden shrink-0 flex flex-row items-stretch justify-around bg-card px-1 pt-1 border-t border-border"
+                style={{ paddingBottom: "max(0.25rem, env(safe-area-inset-bottom))" }}
             >
-                {TOOLS.map(({ id, icon: Icon, label }) => {
-                    const isActive = activePanel === id;
-                    return (
-                        <button
-                            key={id}
-                            type="button"
-                            onClick={() => togglePanel(id)}
-                            aria-pressed={isActive}
-                            className={`flex-1 min-h-[52px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
-                                isActive
-                                    ? "bg-[#E8F5D2] text-[#C5E89A]"
-                                    : "text-[#9CA3AF] active:bg-[#F4FAE8] active:text-[#C5E89A]"
-                            }`}
-                        >
-                            <Icon size={20} strokeWidth={1.6} />
-                            <span className="text-[10px] leading-none font-semibold">{label}</span>
-                        </button>
-                    );
-                })}
+                {TOOLS.map(({ id, icon, label }) => (
+                    <ToolButton
+                        key={id}
+                        icon={icon}
+                        label={label}
+                        isActive={activePanel === id}
+                        onClick={() => togglePanel(id)}
+                        variant="mobile"
+                    />
+                ))}
             </div>
         </div>
     );

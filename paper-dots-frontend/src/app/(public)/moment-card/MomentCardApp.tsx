@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import type Konva from "konva";
 import { ImagePlus, Type, Download, X } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import MomentCardUploader from "@/components/moment-card/MomentCardUploader";
 import TextControls from "@/components/moment-card/TextControls";
 import MomentCardExportButton from "@/components/moment-card/MomentCardExportButton";
@@ -37,12 +38,7 @@ export default function MomentCardApp() {
     const stageRef = useRef<Konva.Stage | null>(null);
     const [activePanel, setActivePanel] = useState<Panel>(null);
 
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, []);
+    useLockBodyScroll();
 
     useEffect(() => {
         if (photoUrl) setActivePanel("text");

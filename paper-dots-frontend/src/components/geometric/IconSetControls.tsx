@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Check } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIconSetId } from "@/store/slices/geometricSlice";
@@ -14,28 +15,38 @@ const THUMB_SIZE = 150;
 
 export default function IconSetControls() {
     const dispatch = useAppDispatch();
-    const config = useAppSelector((s) => s.geometric);
+    const iconSetId = useAppSelector((s) => s.geometric.iconSetId);
+    const backgroundColor = useAppSelector((s) => s.geometric.backgroundColor);
+    const frontColor = useAppSelector((s) => s.geometric.frontColor);
+
+    // Rebuilt only when the colors actually change, so selecting a set (which only changes
+    // iconSetId) doesn't create ~90 new config objects and defeat GeometricPreview's memoization.
+    const thumbConfigs = useMemo<GeometricConfig[]>(
+        () =>
+            GEOMETRIC_ICON_SETS.map((set) => ({
+                iconSetId: set.id,
+                rows: 4,
+                columns: 4,
+                gridStyle: "even",
+                backgroundColor,
+                frontColor,
+                seed: 1,
+                density: 100,
+                spacing: 0,
+                rotation: 0,
+                opacity: 100,
+                randomizeRotation: false,
+                randomizeSpacing: false,
+            })),
+        [backgroundColor, frontColor],
+    );
 
     return (
         <div className="px-4 py-4">
             <div className="grid grid-cols-2 gap-2">
-                {GEOMETRIC_ICON_SETS.map((set) => {
-                    const selected = config.iconSetId === set.id;
-                    const thumbConfig: GeometricConfig = {
-                        iconSetId: set.id,
-                        rows: 4,
-                        columns: 4,
-                        gridStyle: "even",
-                        backgroundColor: config.backgroundColor,
-                        frontColor: config.frontColor,
-                        seed: 1,
-                        density: 100,
-                        spacing: 0,
-                        rotation: 0,
-                        opacity: 100,
-                        randomizeRotation: false,
-                        randomizeSpacing: false,
-                    };
+                {GEOMETRIC_ICON_SETS.map((set, i) => {
+                    const selected = iconSetId === set.id;
+                    const thumbConfig = thumbConfigs[i];
                     return (
                         <button
                             key={set.id}
@@ -45,10 +56,9 @@ export default function IconSetControls() {
                             className="flex flex-col items-center gap-1"
                         >
                             <div
-                                className="relative w-full aspect-square rounded-lg transition-all"
-                                style={{
-                                    boxShadow: selected ? "#C5E89A 0px 0px 0px 2px" : "#D2EAAA 0px 0px 0px 1px",
-                                }}
+                                className={`relative w-full aspect-square rounded-lg transition-all ${
+                                    selected ? "ring-2 ring-primary" : "ring-1 ring-border"
+                                }`}
                             >
                                 <div className="w-full h-full rounded-lg overflow-hidden">
                                     <GeometricPreview config={thumbConfig} size={THUMB_SIZE} alt={set.label} thumbnail />
@@ -63,9 +73,9 @@ export default function IconSetControls() {
                                 )}
                             </div>
                             <span
-                                className="text-[11px] truncate max-w-full"
+                                className={`text-[11px] truncate max-w-full ${selected ? "" : "text-muted-foreground"}`}
                                 style={{
-                                    color: selected ? "#9ED06C" : "#64748b",
+                                    color: selected ? "#9ED06C" : undefined,
                                     fontWeight: selected ? 600 : 400,
                                 }}
                             >

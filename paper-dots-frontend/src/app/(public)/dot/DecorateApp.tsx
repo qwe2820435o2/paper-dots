@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import PhotoUploader from "@/components/decorate/PhotoUploader";
 import LayoutPicker from "@/components/decorate/LayoutPicker";
 import PaperPicker from "@/components/decorate/PaperPicker";
@@ -48,12 +49,7 @@ export default function DecorateApp() {
   const stageRef = useRef<Konva.Stage | null>(null);
   const [activePanel, setActivePanel] = useState<Panel>(null);
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
+  useLockBodyScroll();
 
   useEffect(() => {
     if (photoUrl) setActivePanel("layout");

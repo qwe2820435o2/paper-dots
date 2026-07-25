@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Grid3x3, RotateCw, Palette, Download, X } from "lucide-react";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import PolkaDotPreview from "@/components/polka-dot/PolkaDotPreview";
 import GridControls from "@/components/polka-dot/GridControls";
 import TransformControls from "@/components/polka-dot/TransformControls";
@@ -20,12 +21,7 @@ const TOOLS: { id: Panel; icon: typeof Grid3x3; label: string }[] = [
 export default function PolkaDotApp() {
     const [activePanel, setActivePanel] = useState<Panel>("grid");
 
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, []);
+    useLockBodyScroll();
 
     function togglePanel(panel: Panel) {
         setActivePanel((prev) => (prev === panel ? null : panel));

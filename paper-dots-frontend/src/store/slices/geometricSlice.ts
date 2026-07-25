@@ -4,6 +4,11 @@ import type { GeometricConfig, GridStyle } from "@/lib/geometricGrid";
 
 export type ExportFormat = "svg" | "png" | "jpeg";
 
+// The valid range for rows/columns, shared with LayoutControls.tsx's Stepper so its disabled
+// state can't drift out of sync with what the reducers below actually allow.
+export const MIN_CELLS = 1;
+export const MAX_CELLS = 12;
+
 // The Export panel's width/height/format live here (not in local component state) because the
 // page shell mounts a desktop and a mobile copy of the panel at the same time (CSS-hidden, not
 // unmounted) — independent useState in each copy would silently diverge whenever the viewport
@@ -57,13 +62,13 @@ const geometricSlice = createSlice({
             state.iconSetId = action.payload;
         },
         setRows(state, action: PayloadAction<number>) {
-            state.rows = clamp(Math.round(action.payload), 1, 12);
+            state.rows = clamp(Math.round(action.payload), MIN_CELLS, MAX_CELLS);
             if (!state.exportSizeCustomized) {
                 state.exportHeight = Math.round((state.exportWidth * state.rows) / state.columns);
             }
         },
         setColumns(state, action: PayloadAction<number>) {
-            state.columns = clamp(Math.round(action.payload), 1, 12);
+            state.columns = clamp(Math.round(action.payload), MIN_CELLS, MAX_CELLS);
             if (!state.exportSizeCustomized) {
                 state.exportHeight = Math.round((state.exportWidth * state.rows) / state.columns);
             }

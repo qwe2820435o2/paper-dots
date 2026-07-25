@@ -8,7 +8,8 @@ import { GEOMETRIC_COLOR_PRESETS } from "@/lib/geometricColorPresets";
 
 export default function ColorControls() {
     const dispatch = useAppDispatch();
-    const config = useAppSelector((s) => s.geometric);
+    const backgroundColor = useAppSelector((s) => s.geometric.backgroundColor);
+    const frontColor = useAppSelector((s) => s.geometric.frontColor);
 
     const handleRandomColors = () => {
         const preset = GEOMETRIC_COLOR_PRESETS[Math.floor(Math.random() * GEOMETRIC_COLOR_PRESETS.length)];
@@ -22,7 +23,7 @@ export default function ColorControls() {
                 <button
                     type="button"
                     onClick={handleRandomColors}
-                    className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2] text-[11px] font-medium"
+                    className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-muted-foreground bg-muted hover:bg-secondary text-[11px] font-medium"
                 >
                     <Shuffle className="w-3.5 h-3.5 shrink-0" />
                     Use Random Colors
@@ -30,7 +31,7 @@ export default function ColorControls() {
                 <button
                     type="button"
                     onClick={() => dispatch(resetGeometric())}
-                    className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2] text-[11px] font-medium"
+                    className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-muted-foreground bg-muted hover:bg-secondary text-[11px] font-medium"
                 >
                     <RotateCcw className="w-3.5 h-3.5 shrink-0" />
                     Reset all
@@ -38,7 +39,7 @@ export default function ColorControls() {
             </div>
 
             <div className="flex flex-col gap-3">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Presets</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Presets</label>
                 <div className="flex flex-wrap gap-2.5">
                     {GEOMETRIC_COLOR_PRESETS.map((preset, i) => (
                         <button
@@ -58,17 +59,13 @@ export default function ColorControls() {
             </div>
 
             <div className="flex flex-col gap-3">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Background</label>
-                <ColorPicker
-                    color={config.backgroundColor}
-                    onChange={(hex) => dispatch(setBackgroundColor(hex))}
-                    label="Background"
-                />
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Background</label>
+                <ColorPicker color={backgroundColor} onChange={(hex) => dispatch(setBackgroundColor(hex))} label="Background" />
             </div>
 
-            <div className="flex flex-col gap-3 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">Front</label>
-                <ColorPicker color={config.frontColor} onChange={(hex) => dispatch(setFrontColor(hex))} label="Front" />
+            <div className="flex flex-col gap-3 pt-1 border-t border-border">
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">Front</label>
+                <ColorPicker color={frontColor} onChange={(hex) => dispatch(setFrontColor(hex))} label="Front" />
             </div>
         </div>
     );
