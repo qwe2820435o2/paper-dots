@@ -12,6 +12,10 @@ export type GeometricState = GeometricConfig & {
     exportWidth: number;
     exportHeight: number;
     exportFormat: ExportFormat;
+    // False until the user directly edits an export size field. While false, setRows/setColumns
+    // keep exportHeight proportional to the live columns:rows ratio; once true, row/column edits
+    // stop touching export size so a user's explicit choice is never silently overwritten.
+    exportSizeCustomized: boolean;
 };
 
 // backgroundColor defaults to a non-white color so the fixed cutout white (see
@@ -36,6 +40,7 @@ const initialState: GeometricState = {
     exportWidth: 800,
     exportHeight: 600,
     exportFormat: "svg",
+    exportSizeCustomized: false,
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
@@ -53,9 +58,15 @@ const geometricSlice = createSlice({
         },
         setRows(state, action: PayloadAction<number>) {
             state.rows = clamp(Math.round(action.payload), 1, 12);
+            if (!state.exportSizeCustomized) {
+                state.exportHeight = Math.round((state.exportWidth * state.rows) / state.columns);
+            }
         },
         setColumns(state, action: PayloadAction<number>) {
             state.columns = clamp(Math.round(action.payload), 1, 12);
+            if (!state.exportSizeCustomized) {
+                state.exportHeight = Math.round((state.exportWidth * state.rows) / state.columns);
+            }
         },
         setGridStyle(state, action: PayloadAction<GridStyle>) {
             state.gridStyle = action.payload;
@@ -90,9 +101,11 @@ const geometricSlice = createSlice({
         },
         setExportWidth(state, action: PayloadAction<number>) {
             state.exportWidth = action.payload;
+            state.exportSizeCustomized = true;
         },
         setExportHeight(state, action: PayloadAction<number>) {
             state.exportHeight = action.payload;
+            state.exportSizeCustomized = true;
         },
         setExportFormat(state, action: PayloadAction<ExportFormat>) {
             state.exportFormat = action.payload;
@@ -102,6 +115,12 @@ const geometricSlice = createSlice({
         },
         resetGeometric() {
             return initialState;
+        },
+        // Replaces the whole slice with a persisted snapshot, dispatched once after mount (see
+        // Providers.tsx) so the store starts from initialState during SSR/first client render
+        // and only picks up localStorage afterwards, avoiding a hydration mismatch.
+        hydrateGeometric(_state, action: PayloadAction<GeometricState>) {
+            return action.payload;
         },
     },
 });
@@ -125,6 +144,7 @@ export const {
     setExportFormat,
     shuffle,
     resetGeometric,
+    hydrateGeometric,
 } = geometricSlice.actions;
 
 export default geometricSlice.reducer;

@@ -49,23 +49,25 @@ export default function ColorPicker({ color, onChange, label = "Color" }: Props)
     const [hue, setHue] = useState(180);
     const [pos, setPos] = useState({ x: 0.15, y: 0.2 });
     const [hexInput, setHexInput] = useState(color);
+    // Tracks the last hex value *we* emitted, so the sync effect below can tell "color changed
+    // because we changed it" (skip — avoids hsv/hex round-trip jitter while dragging) apart from
+    // "color changed externally" (random colors, presets, reset — always resync).
+    const lastEmittedRef = useRef<string | null>(null);
 
     useEffect(() => {
+        if (color === lastEmittedRef.current) return;
         if (/^#[0-9a-f]{6}$/i.test(color)) {
             const { h, s, v } = hexToHsv(color);
-            // Only restore position for custom colors with meaningful saturation/value.
-            // Preset colors (near-black, near-white) keep the bright default position.
-            if (s > 0.1 && v > 0.2) {
-                setHue(h);
-                setPos({ x: s, y: 1 - v });
-            }
+            setHue(h);
+            setPos({ x: s, y: 1 - v });
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [color]);
 
     const emit = useCallback(
         (h: number, x: number, y: number) => {
-            onChange(hsvToHex(h, x, 1 - y));
+            const hex = hsvToHex(h, x, 1 - y);
+            lastEmittedRef.current = hex;
+            onChange(hex);
         },
         [onChange],
     );
@@ -156,6 +158,7 @@ export default function ColorPicker({ color, onChange, label = "Color" }: Props)
                 setHue(h);
                 setPos({ x: s, y: 1 - val });
                 setHexInput(hex);
+                lastEmittedRef.current = hex;
                 onChange(hex);
             } else {
                 setHexInput(preview);
