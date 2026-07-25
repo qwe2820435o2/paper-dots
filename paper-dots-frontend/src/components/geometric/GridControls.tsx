@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Minus, Plus, LayoutGrid, Grid2x2, Info } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -28,6 +29,7 @@ function Stepper({ label, value, onChange }: { label: string; value: number; onC
                     type="button"
                     onClick={() => onChange(value - 1)}
                     disabled={value <= MIN_CELLS}
+                    aria-label={`Decrease ${label}`}
                     className="w-7 h-7 rounded-full flex items-center justify-center transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2] disabled:opacity-40"
                 >
                     <Minus className="w-3.5 h-3.5" />
@@ -37,6 +39,7 @@ function Stepper({ label, value, onChange }: { label: string; value: number; onC
                     type="button"
                     onClick={() => onChange(value + 1)}
                     disabled={value >= MAX_CELLS}
+                    aria-label={`Increase ${label}`}
                     className="w-7 h-7 rounded-full flex items-center justify-center transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2] disabled:opacity-40"
                 >
                     <Plus className="w-3.5 h-3.5" />
@@ -57,13 +60,16 @@ function ToggleRow({
     onChange: (v: boolean) => void;
     info?: string;
 }) {
+    const labelId = useId();
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
-                <span className="text-[13px] text-[#1a1a2e]">{label}</span>
+                <span id={labelId} className="text-[13px] text-[#1a1a2e]">
+                    {label}
+                </span>
                 {info && (
                     <span title={info}>
-                        <Info className="w-3.5 h-3.5 text-[#9CA3AF]" />
+                        <Info className="w-3.5 h-3.5 text-[#9CA3AF]" aria-hidden="true" />
                     </span>
                 )}
             </div>
@@ -71,6 +77,7 @@ function ToggleRow({
                 type="button"
                 role="switch"
                 aria-checked={checked}
+                aria-labelledby={labelId}
                 onClick={() => onChange(!checked)}
                 className={`relative w-9 h-5 rounded-full shrink-0 transition-colors ${
                     checked ? "bg-[#9ED06C]" : "bg-[#E5E7EB]"
@@ -113,7 +120,7 @@ function LabeledSlider({
                     {unit}
                 </span>
             </div>
-            <Slider min={min} max={max} step={step} value={[value]} onValueChange={(v) => onChange(v[0])} />
+            <Slider min={min} max={max} step={step} value={[value]} onValueChange={(v) => onChange(v[0])} aria-label={label} />
         </div>
     );
 }
@@ -152,6 +159,8 @@ export default function GridControls() {
                     <button
                         type="button"
                         onClick={() => handleGridStyle("even")}
+                        aria-label="Even grid"
+                        aria-pressed={config.gridStyle === "even"}
                         className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors ${
                             config.gridStyle === "even"
                                 ? "bg-[#1a1a2e] text-white"
@@ -163,6 +172,8 @@ export default function GridControls() {
                     <button
                         type="button"
                         onClick={() => handleGridStyle("compact")}
+                        aria-label="Compact grid"
+                        aria-pressed={config.gridStyle === "compact"}
                         className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors ${
                             config.gridStyle === "compact"
                                 ? "bg-[#1a1a2e] text-white"

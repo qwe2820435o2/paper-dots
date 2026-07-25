@@ -45,6 +45,7 @@ export default function ColorControls() {
                             key={i}
                             type="button"
                             title={`${preset.background} / ${preset.front}`}
+                            aria-label={`Preset: background ${preset.background}, front ${preset.front}`}
                             onClick={() => dispatch(setColorPair(preset))}
                             className="shrink-0 w-7 h-7 rounded-full transition-transform hover:scale-110"
                             style={{
@@ -58,12 +59,16 @@ export default function ColorControls() {
 
             <div className="flex flex-col gap-3">
                 <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Background</label>
-                <ColorPicker color={config.backgroundColor} onChange={(hex) => dispatch(setBackgroundColor(hex))} />
+                <ColorPicker
+                    color={config.backgroundColor}
+                    onChange={(hex) => dispatch(setBackgroundColor(hex))}
+                    label="Background"
+                />
             </div>
 
             <div className="flex flex-col gap-3 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>
                 <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">Front</label>
-                <ColorPicker color={config.frontColor} onChange={(hex) => dispatch(setFrontColor(hex))} />
+                <ColorPicker color={config.frontColor} onChange={(hex) => dispatch(setFrontColor(hex))} label="Front" />
             </div>
         </div>
     );

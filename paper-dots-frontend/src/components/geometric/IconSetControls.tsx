@@ -41,6 +41,7 @@ export default function IconSetControls() {
                             key={set.id}
                             type="button"
                             onClick={() => dispatch(setIconSetId(set.id))}
+                            aria-pressed={selected}
                             className="flex flex-col items-center gap-1"
                         >
                             <div

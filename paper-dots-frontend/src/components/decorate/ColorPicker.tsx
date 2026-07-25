@@ -40,9 +40,11 @@ const HEX_RE = /^#?[0-9a-fA-F]{6}$/;
 interface Props {
     color: string;
     onChange: (hex: string) => void;
+    /** Used to build accessible names for the gradient pad and hue slider, e.g. "Background". */
+    label?: string;
 }
 
-export default function ColorPicker({ color, onChange }: Props) {
+export default function ColorPicker({ color, onChange, label = "Color" }: Props) {
     const gradientRef = useRef<HTMLDivElement>(null);
     const [hue, setHue] = useState(180);
     const [pos, setPos] = useState({ x: 0.15, y: 0.2 });
@@ -97,6 +99,39 @@ export default function ColorPicker({ color, onChange }: Props) {
         [readGradientPos],
     );
 
+    const handleGradientKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLDivElement>) => {
+            const step = e.shiftKey ? 0.1 : 0.02;
+            let { x, y } = pos;
+            switch (e.key) {
+                case "ArrowRight":
+                    x = Math.min(1, x + step);
+                    break;
+                case "ArrowLeft":
+                    x = Math.max(0, x - step);
+                    break;
+                case "ArrowUp":
+                    y = Math.max(0, y - step);
+                    break;
+                case "ArrowDown":
+                    y = Math.min(1, y + step);
+                    break;
+                case "Home":
+                    x = 0;
+                    break;
+                case "End":
+                    x = 1;
+                    break;
+                default:
+                    return;
+            }
+            e.preventDefault();
+            setPos({ x, y });
+            emit(hue, x, y);
+        },
+        [pos, hue, emit],
+    );
+
     const handleHue = useCallback(
         (h: number) => {
             setHue(h);
@@ -134,7 +169,15 @@ export default function ColorPicker({ color, onChange }: Props) {
             {/* 2D gradient */}
             <div
                 ref={gradientRef}
-                className="relative w-full rounded-[8px] overflow-hidden"
+                role="slider"
+                tabIndex={0}
+                aria-label={`${label} saturation and brightness`}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(pos.x * 100)}
+                aria-valuetext={`Saturation ${Math.round(pos.x * 100)}%, brightness ${Math.round((1 - pos.y) * 100)}%`}
+                onKeyDown={handleGradientKeyDown}
+                className="relative w-full rounded-[8px] overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1a2e]"
                 style={{ height: 140, cursor: "crosshair" }}
                 onPointerDown={handleGradientDown}
                 onPointerMove={handleGradientMove}
@@ -184,6 +227,7 @@ export default function ColorPicker({ color, onChange }: Props) {
                             step={1}
                             value={hue}
                             onChange={(e) => handleHue(Number(e.target.value))}
+                            aria-label={`${label} hue`}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
                         <div
@@ -209,6 +253,7 @@ export default function ColorPicker({ color, onChange }: Props) {
                             }
                         }}
                         placeholder="#1AC8CE"
+                        aria-label={`${label} hex value`}
                         className="w-full px-2 py-1 rounded-lg border border-[#D2EAAA] bg-white text-[13px] font-mono text-center text-[#1a1a2e] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#C5E89A] focus:ring-2 focus:ring-[#E8F5D2]"
                     />
                 </div>

@@ -81,6 +81,7 @@ export default function GeometricPatternsApp() {
                             key={id}
                             type="button"
                             onClick={() => togglePanel(id)}
+                            aria-pressed={isActive}
                             className={`w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
                                 isActive
                                     ? "bg-[#E8F5D2] text-[#C5E89A]"
@@ -184,6 +185,7 @@ export default function GeometricPatternsApp() {
                             key={id}
                             type="button"
                             onClick={() => togglePanel(id)}
+                            aria-pressed={isActive}
                             className={`flex-1 min-h-[52px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
                                 isActive
                                     ? "bg-[#E8F5D2] text-[#C5E89A]"
