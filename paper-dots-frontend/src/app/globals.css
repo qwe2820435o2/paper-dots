@@ -1,7 +1,41 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./guide.css";
 
 @custom-variant dark (&:is(.dark *));
+
+/* Design tokens for the marketing guide pages, from the `dottypic-desktop` mockup.
+ *
+ * Plain `@theme` rather than `@theme inline` because these are literal values, not aliases
+ * of the `:root` variables below. Every name carries a `guide-` prefix, so none of it can
+ * shadow an existing shadcn token — `bg-guide-lime` and `bg-primary` stay independent. */
+@theme {
+  --color-guide-ink: #15200d;
+  --color-guide-ink-2: #3c4a30;
+  --color-guide-mute: #6f7d62;
+  --color-guide-paper: #fbfcf7;
+  --color-guide-card: #ffffff;
+  --color-guide-lime: #c5e89a;
+  --color-guide-lime-hover: #d5f0ae;
+  --color-guide-lime-2: #dcf0c2;
+  --color-guide-lime-3: #eef7e2;
+  --color-guide-edge: #e3e9d8;
+  --color-guide-edge-strong: #a9cf7c;
+  --color-guide-pop: #ff5d8f;
+  --color-guide-accent: #8fd0e0;
+
+  /* Inverted band behind the "why" section. */
+  --color-guide-band: #1c2a12;
+  --color-guide-band-edge: #34432a;
+  --color-guide-band-fg: #f3f7ec;
+  --color-guide-band-mute: #c2d1b0;
+
+  --radius-guide: 26px;
+  --radius-guide-sm: 16px;
+
+  --shadow-guide: 0 14px 34px rgb(29 48 14 / 0.09);
+  --shadow-guide-lg: 0 26px 60px rgb(29 48 14 / 0.14);
+}
 
 @theme inline {
   --color-background: var(--background);

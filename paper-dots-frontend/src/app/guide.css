@@ -1,0 +1,163 @@
+/* Styling for the marketing guide pages, ported from the `dottypic-desktop` mockup.
+ *
+ * Only the things Tailwind utilities express badly live here: the clamp() type scale, the
+ * gradient highlighter behind <strong>, box-decoration-break on the headline swash, the
+ * dotted rail, and the <details> marker. Layout, spacing and colour go through the
+ * `guide-*` tokens declared in globals.css.
+ *
+ * Every selector is prefixed with `.guide-scope`, which is what makes it structurally
+ * impossible for any of this to reach the Header, the Footer or the existing pages. */
+
+.guide-scope {
+    --guide-display: var(--font-bricolage), var(--font-dm-sans), system-ui, sans-serif;
+    --guide-body: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+    --guide-mono: var(--font-dm-mono), ui-monospace, SFMono-Regular, monospace;
+
+    background: var(--color-guide-paper);
+    color: var(--color-guide-ink);
+    font-family: var(--guide-body);
+    font-size: 17px;
+    line-height: 1.65;
+}
+
+.guide-scope h1,
+.guide-scope h2,
+.guide-scope h3,
+.guide-scope h4 {
+    font-family: var(--guide-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+}
+
+.guide-scope h1 {
+    font-size: clamp(44px, 4.4vw, 64px);
+}
+
+.guide-scope h2 {
+    font-size: clamp(30px, 2.6vw, 40px);
+    letter-spacing: -0.025em;
+}
+
+.guide-scope h3 {
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.guide-scope p {
+    color: var(--color-guide-ink-2);
+}
+
+/* Keyword highlighter. The sync script only ever lets <strong>, <em>, <br> and
+ * <span class="swash"> through, so this is the full set of inline styling in play. */
+.guide-scope strong {
+    font-weight: 700;
+    color: var(--color-guide-ink);
+    background: linear-gradient(transparent 62%, var(--color-guide-lime) 62%);
+    padding: 0 1px;
+}
+
+/* Hand-drawn underline on a headline fragment. box-decoration-break keeps the stroke
+ * intact when the fragment wraps across lines. */
+.guide-scope .swash {
+    background-image: linear-gradient(var(--color-guide-lime), var(--color-guide-lime));
+    background-size: 100% 14px;
+    background-position: 0 92%;
+    background-repeat: no-repeat;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+.guide-scope .guide-mono {
+    font-family: var(--guide-mono);
+}
+
+.guide-scope .guide-rail {
+    height: 9px;
+    background-image: radial-gradient(circle, var(--color-guide-lime) 3.2px, transparent 3.4px);
+    background-size: 18px 9px;
+    background-position: center;
+}
+
+/* Same dotted texture as the rail, tiled, standing in for imagery the sheet has not
+ * supplied yet. */
+.guide-scope .guide-placeholder {
+    background-color: var(--color-guide-lime-3);
+    background-image: radial-gradient(circle, var(--color-guide-lime) 4px, transparent 4.2px);
+    background-size: 26px 26px;
+}
+
+.guide-scope .guide-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--guide-display);
+    font-weight: 700;
+    font-size: 17px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    background: var(--color-guide-lime);
+    color: var(--color-guide-ink);
+    box-shadow: 0 5px 0 var(--color-guide-ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+}
+
+.guide-scope .guide-btn:hover {
+    background: var(--color-guide-lime-hover);
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 var(--color-guide-ink);
+}
+
+.guide-scope .guide-btn:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 var(--color-guide-ink);
+}
+
+/* Native <details> keeps every answer in the server-rendered HTML, which the FAQPage
+ * structured data on this page depends on. */
+.guide-scope details > summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+.guide-scope details > summary::-webkit-details-marker {
+    display: none;
+}
+
+.guide-scope details > summary::after {
+    content: "";
+    flex: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background-color: var(--color-guide-lime-3);
+    background-image:
+        linear-gradient(var(--color-guide-ink), var(--color-guide-ink)),
+        linear-gradient(var(--color-guide-ink), var(--color-guide-ink));
+    background-size: 11px 2px, 2px 11px;
+    background-position: center, center;
+    background-repeat: no-repeat;
+    transition: transform 0.25s ease, background-size 0.25s ease;
+}
+
+/* Collapse the vertical stroke so the plus reads as a minus. */
+.guide-scope details[open] > summary::after {
+    background-size: 11px 2px, 2px 0;
+    transform: rotate(180deg);
+}
+
+.guide-scope :focus-visible {
+    outline: 3px solid var(--color-guide-ink);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .guide-scope *,
+    .guide-scope *::before,
+    .guide-scope *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
