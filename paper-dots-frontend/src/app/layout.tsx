@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Providers from "@/components/common/Providers";
+import { SITE_URL } from "@/lib/site";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -13,7 +14,6 @@ const nunito = Nunito({
 
 import type { Metadata, Viewport } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dottypic.com";
 const GA_ID = "G-BWMB2S8Z1N";
 
 const SITE_TITLE = "Free Dot Image Generator | Automatic Photo Collage Maker with Polka Dot Pattern";

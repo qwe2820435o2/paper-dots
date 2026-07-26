@@ -349,7 +349,7 @@ scope 用 `spreadsheets.readonly`。表格把服务账号邮箱加为**查看者
 - [x] **M3** 引导页基础组件
 - [x] **M4** polka-dot 路由迁移 + 首屏
 - [x] **M5** 其余 section
-- [ ] **M6** SEO
+- [x] **M6** SEO
 - [ ] **M7** 同步脚本
 - [ ] **M8a** geometric-patterns
 - [ ] **M8b** moment-card

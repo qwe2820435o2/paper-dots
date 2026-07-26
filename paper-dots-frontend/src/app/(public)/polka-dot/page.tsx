@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
 import { getGuideContent } from "@/content/guides";
 import { getGuideRoute } from "@/content/guides/registry";
+import { buildGuideMetadata, buildGuideJsonLd } from "@/lib/guideSeo";
 import GuideTemplate from "@/components/guide/GuideTemplate";
 
 const SLUG = "polka-dot" as const;
 const content = getGuideContent(SLUG);
 const route = getGuideRoute(SLUG);
 
-// Canonical + JSON-LD land in a follow-up SEO module (src/lib/guideSeo.ts); this is the
-// minimal metadata needed to ship the guide itself.
-export const metadata: Metadata = {
-    title: content.meta.title,
-    description: content.meta.description,
-};
+export const metadata: Metadata = buildGuideMetadata(content, route);
+
+const jsonLd = buildGuideJsonLd(content, route);
 
 export default function PolkaDotGuidePage() {
-    return <GuideTemplate content={content} appPath={route.appPath} />;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <GuideTemplate content={content} appPath={route.appPath} />
+        </>
+    );
 }
