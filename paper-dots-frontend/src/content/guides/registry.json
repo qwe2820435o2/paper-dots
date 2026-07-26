@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "polka-dot",
+    "sheetTab": "Polka Dot Generator",
+    "guidePath": "/polka-dot",
+    "appPath": "/polka-dot/app"
+  },
+  {
+    "slug": "geometric-patterns",
+    "sheetTab": "Geometric Pattern Generator",
+    "guidePath": "/geometric-patterns",
+    "appPath": "/geometric-patterns/app"
+  },
+  {
+    "slug": "moment-card",
+    "sheetTab": "Photo Quote Maker",
+    "guidePath": "/moment-card",
+    "appPath": "/moment-card/app"
+  },
+  {
+    "slug": "dot",
+    "sheetTab": "Photo Overlay Editor",
+    "guidePath": "/dot",
+    "appPath": "/dot/app"
+  }
+]
