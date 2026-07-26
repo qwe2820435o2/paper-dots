@@ -1,0 +1,6 @@
+# core.autocrlf is on, which would hand the sync script a CRLF working copy while it emits
+# LF. The byte comparison in `npm run sync:guides:check` would then report drift on every
+# run even when the copy is identical. Pin the content layer to LF so what the script writes
+# is what stays on disk.
+src/content/guides/**/*.ts    eol=lf
+src/content/guides/**/*.json  eol=lf
