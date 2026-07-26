@@ -396,15 +396,29 @@ Travis 配好服务账号凭据后还需要跑一遍（这部分我没有凭据�
 
 ## 8. 进度
 
-- [x] **M0** 本文档
-- [x] **M1** 内容层骨架
-- [x] **M2** 样式地基
-- [x] **M3** 引导页基础组件
-- [x] **M4** polka-dot 路由迁移 + 首屏
-- [x] **M5** 其余 section
-- [x] **M6** SEO
-- [x] **M7** 同步脚本（逻辑已实现并本地测过；真表格联调需要 Travis 配凭据后自己跑一遍）
-- [ ] **M8a** geometric-patterns
-- [ ] **M8b** moment-card
-- [ ] **M8c** dot
-- [ ] **M9** 可选打磨
+状态更新于 2026-07-26。本地 11 个 commit（`fe3d67c` .. `3d29d0e`），**全部未 push**，工作区干净。每个 commit 提交前都跑过 `rm -rf .next && npm run build`（干净重建，不是增量）、`npx tsc --noEmit`、`npm run lint`，均无新增错误/告警。
+
+### 已完成
+
+- [x] **M0** 本文档 —— `fe3d67c`
+- [x] **M1** 内容层骨架 —— `5b76199`（+ `bd16e65` 修 CRLF/LF 问题）。`types.ts` / `registry.json` / `registry.ts` / `index.ts` / `generated/polka-dot.ts`（手工誊写设计稿文案，作为 M7 的对照基准）。
+- [x] **M2** 样式地基 —— `9af7b65`。`guide-` 前缀 token、`guide.css`、三套字体只作用于引导页。已验证：产物 CSS 里 guide 规则全部带 `.guide-scope` 前缀，`/faq` 等其他页面不加载 Bricolage。
+- [x] **M3** 引导页基础组件 —— `3219d0c`。`RichText`/`GuideMedia`/`GuideMediaPlaceholder`/`GuideCtaButton`/`GuideRail`。`GuideCtaButton` 实现时改成了 client component（打 GA 事件），是引导页组件树里唯一的 `"use client"` 边界。
+- [x] **M4** polka-dot 路由迁移 + 首屏 —— `b359de9`。`/polka-dot` = 引导页首屏（Hero + 工具推荐条），`/polka-dot/app` = 原编辑器（纯移动，未改内容）。Header/HeroSection/CtaSection 的入口按钮已重指向 `/polka-dot/app`。已在生产构建下实测所有路由 200，字体作用域生效（`/polka-dot` 预加载 5 个字体文件，`/faq` 只有 1 个）。**滚动锁定的浏览器回归（引导页→编辑器→后退→引导页应能滚动）没有实测**——这个环境没有浏览器自动化工具，只做了代码走读确认 `useLockBodyScroll` 的 cleanup 逻辑是对的，建议 Travis 找时间在浏览器里点一遍。
+- [x] **M5** 其余 section —— `8202a91`。Features/How To/Why/FAQ（原生 `<details>`）/Final CTA，全部接进 `GuideTemplate`。过程中发现并修了一个真 bug：`guide.css` 里一条全局 `p` 颜色规则的特异性高于 Tailwind 类，会静默吃掉暗色区块里设置的浅色文字。
+- [x] **M6** SEO —— `d7c9e27`。`buildGuideMetadata`/`buildGuideJsonLd`（`SoftwareApplication` + `FAQPage` + `BreadcrumbList`）、`/polka-dot/app` 加自指 canonical + `noindex,follow`、sitemap 改遍历 `GUIDE_REGISTRY`。已验证 canonical、robots meta、JSON-LD 结构、sitemap 内容均符合预期。
+- [x] **M7** 同步脚本 —— `3d29d0e`。CLI + `lib/sheets-client.mjs`（网络）+ `lib/transform.mjs`（纯函数，行→内容）+ `lib/emit.mjs`（确定性写盘）+ 3 个本地测试，全部通过：
+  - `transform.smoke.mjs`：合成表格行还原 `generated/polka-dot.ts` 逐字节一致
+  - `transform.edgecases.mjs`：12 个边界用例（必填缺失中止、ID 跳号压实、HTML 白名单转义、工具卡片解析/自链接丢弃、Url 校验、JA 不完整整体省略……）
+  - `emit.smoke.mjs`：写盘幂等性
+
+### 未完成 / 被阻塞
+
+- [ ] **M7 的真实联调** —— 没有验证的部分：Google 服务账号鉴权、真实拉取表格这条网络路径完全没跑过（没有凭据）；`scripts/lib/sheet-schema.mjs` 里的 Field Name 字符串只有 Name/Meta/Hero/Tool Recommendation 是照你发的截图核对过的，Feature/How To/Why/FAQ/Final CTA 是按措辞习惯**推断**的，没见过真表格。第一次跑 `npm run sync:guides` 大概率会报 "unrecognized Field Name" 告警——预期行为，不是 bug，`docs/guide-pages.md` §M7 里有完整对照表，照着改字符串即可。
+- [ ] **M8a** geometric-patterns 引导页 —— 未开始
+- [ ] **M8b** moment-card 引导页 —— 未开始
+- [ ] **M8c** dot 引导页 —— 未开始
+
+**M8 被阻塞的原因**：这三个工具的引导页文案要来自 Google Sheet 对应 tab。我既没有服务账号凭据读表格，也没有这三个工具的设计稿（`dottypic-desktop (2).html` 只做了 polka-dot 一个）。继续做意味着要替 Travis 编造三个工具的营销文案——这正是整个项目要避免的事，所以停在这里，等 Travis 提供文案，或自己配好凭据跑通同步脚本、用完整度摘要作为放行闸门逐个上线。
+
+- [ ] **M9** 可选打磨 —— 未开始（滚动进场动画、per-guide OG 图、`/faq` 迁移到原生 `<details>`、删除死掉的 `tailwind.config.ts`）
