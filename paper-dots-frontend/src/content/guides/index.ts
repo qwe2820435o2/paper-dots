@@ -26,4 +26,14 @@ export function getGuideContent(slug: GuideSlug, locale: GuideLocale = "en"): Gu
     return byLocale[locale] ?? byLocale.en;
 }
 
-export type { GuideContent, GuideContentByLocale, GuideLocale } from "./types";
+export type {
+    GuideContent,
+    GuideContentByLocale,
+    GuideLocale,
+    GuideImage,
+    GuideCta,
+    GuideItem,
+    GuideFeature,
+    GuideFaqItem,
+    GuideToolLink,
+} from "./types";
