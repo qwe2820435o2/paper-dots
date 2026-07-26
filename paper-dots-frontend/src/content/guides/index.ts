@@ -9,11 +9,13 @@ import type { GuideSlug } from "./registry";
 import polkaDot from "./generated/polka-dot";
 import geometricPatterns from "./generated/geometric-patterns";
 import momentCard from "./generated/moment-card";
+import dot from "./generated/dot";
 
 const GUIDES: Partial<Record<GuideSlug, GuideContentByLocale>> = {
     "polka-dot": polkaDot,
     "geometric-patterns": geometricPatterns,
     "moment-card": momentCard,
+    "dot": dot,
 };
 
 export function hasGuideContent(slug: GuideSlug): boolean {

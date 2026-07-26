@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
-import DecorateApp from "./DecorateApp";
+import { getGuideContent } from "@/content/guides";
+import { getGuideRoute } from "@/content/guides/registry";
+import { buildGuideMetadata, buildGuideJsonLd } from "@/lib/guideSeo";
+import GuideTemplate from "@/components/guide/GuideTemplate";
 
-export const metadata: Metadata = {
-  title: "Dot · Dottypic",
-  description: "Upload a photo, pick a paper, scatter dots.",
-};
+const SLUG = "dot" as const;
+const content = getGuideContent(SLUG);
+const route = getGuideRoute(SLUG);
 
-export default function DecoratePage() {
-  return <DecorateApp />;
+export const metadata: Metadata = buildGuideMetadata(content, route);
+
+const jsonLd = buildGuideJsonLd(content, route);
+
+export default function DotGuidePage() {
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <GuideTemplate content={content} appPath={route.appPath} />
+        </>
+    );
 }
