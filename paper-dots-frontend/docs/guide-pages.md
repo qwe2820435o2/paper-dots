@@ -393,10 +393,11 @@ Travis 配好服务账号凭据后还需要跑一遍（这部分我没有凭据�
 6. **提交图片二进制但没有任何管线。** `public/guides/<tool>/` 会放约 6 张 × 4 个工具，没有东西约束体积。现在就定约定：预先切好的 WebP，≤200 KB，hero 宽度 ≤1600px。（`next.config.ts` 里对 `.webp` 的一年 immutable 缓存头已经覆盖了。）
 7. **真正的关键路径是文案产能。** 4 个工具 × 约 30 行 × 2 种语言 ≈ 240 格原创 SEO 文案。代码一定会比表格先就绪。M8 的排期应该围绕文案就绪度来定，并用脚本的完整度摘要当闸门。
 8. **Header 与引导页的背景接缝。** 白色 sticky header 压在 `#fbfcf7` 纸色上，两者差 2%。属观感问题，M4 验收时确认能否接受。
+9. **三个精简引导页正文单薄就直接上线索引。** geometric-patterns/moment-card/dot 的引导页只有 Hero + 工具推荐条，没有 Features/FAQ 等 SEO 正文，且 Travis 决定不走 noindex 过渡期、直接 index 上线——这和风险 1 是同一类问题，但没有风险 1 那样先核对 GSC 排名词的缓解措施。这几个 URL 原本是全屏编辑器（交易型意图），换成单薄的信息型页面后，短期内的排名/互动指标值得盯一下；等 Sheet 同步补全 Features/How To/Why/FAQ 后风险会自然消退。
 
 ## 8. 进度
 
-状态更新于 2026-07-26。本地 11 个 commit（`fe3d67c` .. `3d29d0e`），**全部未 push**，工作区干净。每个 commit 提交前都跑过 `rm -rf .next && npm run build`（干净重建，不是增量）、`npx tsc --noEmit`、`npm run lint`，均无新增错误/告警。
+状态更新于 2026-07-26。本地 14 个 commit（`fe3d67c` .. `10810e3`），**全部未 push**，工作区干净。每个 commit 提交前都跑过 `rm -rf .next && npm run build`（干净重建，不是增量）、`npx tsc --noEmit`、`npm run lint`，均无新增错误/告警。
 
 ### 已完成
 
@@ -411,14 +412,15 @@ Travis 配好服务账号凭据后还需要跑一遍（这部分我没有凭据�
   - `transform.smoke.mjs`：合成表格行还原 `generated/polka-dot.ts` 逐字节一致
   - `transform.edgecases.mjs`：12 个边界用例（必填缺失中止、ID 跳号压实、HTML 白名单转义、工具卡片解析/自链接丢弃、Url 校验、JA 不完整整体省略……）
   - `emit.smoke.mjs`：写盘幂等性
+- [x] **M8a** geometric-patterns 引导页 —— `750114b`。精简版：仅 Hero + 工具推荐条，`features: []`、`howTo`/`why`/`faq`/`finalCta` 全部 `null`。`meta`/`hero` 文案手写，来源是 `tools.ts` 的一句话描述、原 `page.tsx` 的 meta description，以及 `ExportPanel.tsx` 里实际支持的导出格式（SVG/PNG/JPEG），没有编造功能或素材。`hero.image: null`，`GuideHero` 走内建的居中单列布局。
+- [x] **M8b** moment-card 引导页 —— `e53f134`。同上模式，导出格式据 `MomentCardExportButton.tsx` 只有 PNG。
+- [x] **M8c** dot 引导页 —— `10810e3`。同上模式，导出格式据 `ExportButton.tsx` 只有 PNG。顺带把 `not-found.tsx:20` 的 `/dot` 改成 `/dot/app`（这是编辑器意图的链接）。
+
+三个工具都已直接 index 上线（未走 noindex 过渡），`npm run build` 确认全部 8 条工具路由（4 引导 + 4 编辑器）为静态，`tsc`/`lint` 均无新增错误。
 
 ### 未完成 / 被阻塞
 
 - [ ] **M7 的真实联调** —— 没有验证的部分：Google 服务账号鉴权、真实拉取表格这条网络路径完全没跑过（没有凭据）；`scripts/lib/sheet-schema.mjs` 里的 Field Name 字符串只有 Name/Meta/Hero/Tool Recommendation 是照你发的截图核对过的，Feature/How To/Why/FAQ/Final CTA 是按措辞习惯**推断**的，没见过真表格。第一次跑 `npm run sync:guides` 大概率会报 "unrecognized Field Name" 告警——预期行为，不是 bug，`docs/guide-pages.md` §M7 里有完整对照表，照着改字符串即可。
-- [ ] **M8a** geometric-patterns 引导页 —— 未开始
-- [ ] **M8b** moment-card 引导页 —— 未开始
-- [ ] **M8c** dot 引导页 —— 未开始
-
-**M8 被阻塞的原因**：这三个工具的引导页文案要来自 Google Sheet 对应 tab。我既没有服务账号凭据读表格，也没有这三个工具的设计稿（`dottypic-desktop (2).html` 只做了 polka-dot 一个）。继续做意味着要替 Travis 编造三个工具的营销文案——这正是整个项目要避免的事，所以停在这里，等 Travis 提供文案，或自己配好凭据跑通同步脚本、用完整度摘要作为放行闸门逐个上线。
+- [ ] **三个工具的 Sheet 文案同步** —— M8a/b/c 目前是手写的精简占位版（Hero + 工具推荐条），不是从 Sheet 同步出来的。等 Travis 把 `Geometric Pattern Generator` / `Photo Quote Maker` / `Photo Overlay Editor` 三个 tab 填好、配好凭据、跑通 `npm run sync:guides`，脚本会整份重写对应的 `generated/<slug>.ts`，把 Features/How To/Why/FAQ/Final CTA 补上，不需要再手动改页面代码。
 
 - [ ] **M9** 可选打磨 —— 未开始（滚动进场动画、per-guide OG 图、`/faq` 迁移到原生 `<details>`、删除死掉的 `tailwind.config.ts`）
