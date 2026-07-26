@@ -33,7 +33,7 @@ export default function HeroSection() {
   function handleEnter() {
     dispatch(resetPolkaDot());
     setIsLoading(true);
-    router.push("/polka-dot");
+    router.push("/polka-dot/app");
   }
 
   return (

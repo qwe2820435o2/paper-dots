@@ -157,7 +157,7 @@ export type GuideContentByLocale =
 | `RichText.tsx` | `{ as, html, className }`，白名单 HTML 渲染 |
 | `GuideMedia.tsx` | `image === null` 时渲染占位组件，否则 `next/image` 用 `fill` + 固定宽高比容器（`fill` 让表格不必提供图片尺寸） |
 | `GuideMediaPlaceholder.tsx` | 青柠点阵占位板，复用 `.rail` 的 radial-gradient |
-| `GuideCtaButton.tsx` | 设计稿的 `.btn` 硬阴影 + 按压动效 |
+| `GuideCtaButton.tsx` | 设计稿的 `.btn` 硬阴影 + 按压动效。**实现时改为 client component**——M4 要求它打 GA 点击事件（见下），这是整棵引导页组件树里唯一的 `"use client"` 边界，其余全部维持 server component |
 | `GuideRail.tsx` | 点线分隔条 |
 
 ### M4 · polka-dot 路由迁移 + 引导页首屏（**必须单个 commit**）
@@ -346,8 +346,8 @@ scope 用 `spreadsheets.readonly`。表格把服务账号邮箱加为**查看者
 - [x] **M0** 本文档
 - [x] **M1** 内容层骨架
 - [x] **M2** 样式地基
-- [ ] **M3** 引导页基础组件
-- [ ] **M4** polka-dot 路由迁移 + 首屏
+- [x] **M3** 引导页基础组件
+- [x] **M4** polka-dot 路由迁移 + 首屏
 - [ ] **M5** 其余 section
 - [ ] **M6** SEO
 - [ ] **M7** 同步脚本
