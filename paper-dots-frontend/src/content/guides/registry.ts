@@ -15,6 +15,10 @@ export type GuideSlug = (typeof GUIDE_SLUGS)[number];
 
 export interface GuideRegistryEntry {
     slug: GuideSlug;
+    /** Human label, kept in sync with CREATE_TOOLS in src/lib/tools.ts by hand — the sync
+     *  script reads this (not tools.ts, which it can't import as plain JS) to resolve a Tool
+     *  Recommendation card's href when the sheet only gave a name. */
+    label: string;
     /** Title of the Google Sheet tab holding this tool's copy. */
     sheetTab: string;
     /** Marketing guide page — the clean, indexable URL. */
@@ -27,6 +31,7 @@ export interface GuideRegistryEntry {
  *  literal union, which the runtime check immediately below actually earns. */
 const entries = registryJson satisfies {
     slug: string;
+    label: string;
     sheetTab: string;
     guidePath: string;
     appPath: string;

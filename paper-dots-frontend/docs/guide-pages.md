@@ -214,16 +214,35 @@ git mv "src/app/(public)/polka-dot/PolkaDotApp.tsx" "src/app/(public)/polka-dot/
 
 **不需要新增任何 redirect。** 引导页占的是既有 URL，`/x/app` 是全新路径，没有 URL 会 404，也不损失外链权重。`next.config.ts` 里既有的 `/decorate → /dot` 保持不变。
 
-### M7 · 同步脚本（3 新文件，2 修改）
+### M7 · 同步脚本
 
 只依赖 M1 的 schema，**不依赖任何组件，可与 M3–M6 并行**。
 
 ```
 scripts/
-  sync-guide-content.mjs   入口
-  lib/sheet-schema.mjs     FIELD_MAP + COLLECTIONS + REQUIRED
-  lib/emit.mjs             确定性 TS 输出
+  sync-guide-content.mjs      入口：CLI 参数、拉取、逐 tab 处理、汇总、退出码
+  lib/sheets-client.mjs       唯一碰网络的模块：env 校验、JWT 鉴权、拉 tab 列表/行
+  lib/registry.mjs            读 registry.json（与 app 端 registry.ts 共享同一份文件）
+  lib/sheet-schema.mjs        FIELD_MAP + COLLECTIONS + REQUIRED_PATHS + 富文本白名单
+  lib/rich-text.mjs           行内 HTML 校验（允许 tag 直通，其余转义）
+  lib/transform.mjs           纯函数：行数组 → GuideContentByLocale（无网络/文件 IO，可单测）
+  lib/emit.mjs                确定性 TS 输出 + 只在字节变化时才写盘
+  test/
+    transform.smoke.mjs       用合成行还原 M1 手写的 generated/polka-dot.ts，逐字节比对
+    transform.edgecases.mjs   12 个边界用例：必填缺失中止、ID 跳号压实、HTML 白名单、
+                               工具推荐解析/自链接丢弃、Url 校验、JA 不完整则整体省略……
+    emit.smoke.mjs            writeIfChanged 的幂等性：内容不变不写盘、变了才写、dryRun 不落盘
 ```
+
+**已实现，本地跑法（无需真实凭据）：**
+
+```
+node scripts/test/transform.smoke.mjs      # 合成表格行 -> 与 generated/polka-dot.ts 逐字节一致
+node scripts/test/transform.edgecases.mjs  # 12 个边界用例
+node scripts/test/emit.smoke.mjs           # 写盘幂等性
+```
+
+三个测试当前全部通过。`npm run sync:guides` 本身需要真实的服务账号凭据才能跑（见下方一次性配置），我没有这些凭据，所以脚本对私有表格的实际拉取路径未经真实验证——写好之后 Travis 第一次跑通时,大概率会因为下面这份 **Field Name 猜测表** 与真实表格措辞不完全一致而报"unrecognized Field Name"告警,属预期,照告警提示改 `scripts/lib/sheet-schema.mjs` 里的字符串即可,不是逻辑 bug。
 
 ```jsonc
 "sync:guides":       "node --env-file-if-exists=.env.local scripts/sync-guide-content.mjs",
@@ -251,7 +270,33 @@ scope 用 `spreadsheets.readonly`。表格把服务账号邮箱加为**查看者
 1. GCP 建项目 → 启用 Google Sheets API
 2. 建 service account → 生成 JSON 密钥并下载
 3. Sheet 点共享，把 `xxx@xxx.iam.gserviceaccount.com` 加为查看者
-4. `base64 -w0 <key.json 里的 private_key>` → 写进 `.env.local`
+4. `base64 -w0 <key.json 里的 private_key>` → 写进 `.env.local`（可参考仓库里的 `.env.example`）
+
+#### 脚本认的 Section / Field Name
+
+以下是 `scripts/lib/sheet-schema.mjs` 里 `FIELD_MAP` / `COLLECTIONS` 当前认的字符串（大小写、多余空格不敏感）。Name/Meta/Hero/Tool Recommendation 这几行是照着已经填好的表格截图核对过的；Feature/How To/Why/FAQ/Final CTA 是按同一措辞习惯（Field Name 一般不重复 Section 名，除非像"Hero Image"这种有歧义的）推断的，还没有对着真表格跑过。跑第一次遇到"unrecognized Field Name"告警，十有八九是这里猜的字眼和表格实际用词对不上，改这个文件里的字符串即可，不用改代码逻辑。
+
+| Section | Item ID | Field Name | 落到 |
+|---|---|---|---|
+| Name | – | Name | `name` |
+| Meta Information | – | Meta Title / Meta Description | `meta.title` / `meta.description` |
+| Meta Information | – | Url | 仅做交叉校验，不落地 |
+| Hero | – | Headline / Subheadline | `hero.headline` / `hero.subheadline` |
+| Hero | – | Hero Image / Hero Image Alt | `hero.image.src` / `.alt`（留空则整个 `image` 为 `null`） |
+| Hero | – | Primary CTA Text / Primary CTA Link | `hero.cta.text` / `.href`（Link 留空则用编辑器路由兜底） |
+| Hero | – 或 1..n | Format | `hero.formats[]`（单个逗号分隔格或多行均可） |
+| Tool Recommendation | – | Lead | `toolLinks.lead` |
+| Tool Recommendation | 1..n | Tool Name / Tool Link | `toolLinks.items[]`（Link 留空则按 Name 去 registry 解析，解析不到或指向自己会被丢弃并告警） |
+| Feature | 1..n | Heading / Body / Image / Image Alt | `features[]`（Body 允许 `<strong>`） |
+| How To | – | Heading | `howTo.heading` |
+| How To | 1..n | Heading / Body | `howTo.steps[]` |
+| Why | – | Heading | `why.heading` |
+| Why | 1..n | Heading / Body | `why.cards[]` |
+| FAQ | – | Heading | `faq.heading` |
+| FAQ | 1..n | Question / Answer | `faq.items[]`（Answer 允许 `<strong>`） |
+| Final CTA | – | Heading / Body / CTA Text / CTA Link | `finalCta.*` |
+
+只有 `Hero::Headline`、`Feature::Body`、`FAQ::Answer` 这三类字段会经 `RichText` 渲染，允许携带 `<strong>`/`<em>`/`<br>`/`<span class="swash">`；其余字段一律纯文本渲染，混进标签会被原样保留但打告警（不是安全问题，是会在页面上显示出尖括号的排版事故）。
 
 #### tab 发现
 
@@ -282,7 +327,7 @@ scope 用 `spreadsheets.readonly`。表格把服务账号邮箱加为**查看者
 
 **脚本永不执行 `git`。** 这句话写在文件头注释里。
 
-跑完后把重新生成的 `generated/polka-dot.ts` 和 M1 手写的对照——**diff 应该只有文案，没有结构变化**。如果有结构差异，说明 M1 的 schema 设计错了。这是整条映射链路真正的端到端验证。
+这条"跑完后与 M1 手写版对照"的端到端验证已经自动化成 `transform.smoke.mjs`，不用等真实凭据就能确认映射逻辑本身是对的；等 Travis 配好凭据、第一次对着真表格跑 `npm run sync:guides` 之后，再看一次 `git diff generated/polka-dot.ts`，理论上应该是空的或者只有文案层面的出入——如果出现结构性差异（多/少了字段、数组顺序变了），说明 schema 猜的字段名和真表格对不上，回到上面那张表去修。
 
 顺带：`.gitignore` 加 `!.env.example` 否定规则，或者把三个环境变量写进 README。
 
@@ -321,12 +366,20 @@ scope 用 `spreadsheets.readonly`。表格把服务账号邮箱加为**查看者
 
 **M6** —— `grep 'rel="canonical"'` → `/polka-dot`。把 `application/ld+json` 内容贴进 Google Rich Results Test，`FAQPage` 和 `SoftwareApplication` 都要零错误通过。`curl -s localhost:3000/sitemap.xml` → 4 个引导页 URL 在、`/app` 不在。
 
-**M7** —— 干净工作区跑 `npm run sync:guides`，`git diff --stat` 应只动一个文件。
+**M7** —— 无凭据也能跑的部分（已验证，全部通过）：
 
-- **连跑两次，第二次必须零 diff**（确定性测试）
-- `--check` → exit 0；手改生成文件里一个字符再 `--check` → exit 1 并打出 diff
+- `node scripts/test/transform.smoke.mjs` —— 合成表格行还原 `generated/polka-dot.ts` 逐字节一致
+- `node scripts/test/transform.edgecases.mjs` —— 必填缺失中止、ID 跳号压实、HTML 白名单转义、工具推荐解析/自链接丢弃、Url 校验、JA 不完整整体省略等 12 项
+- `node scripts/test/emit.smoke.mjs` —— 内容不变不写盘、变了才写、`dryRun` 不落盘
+- `node scripts/sync-guide-content.mjs`（不设环境变量）→ 干净报错，exit 1，不是裸 crash
+
+Travis 配好服务账号凭据后还需要跑一遍（这部分我没有凭据，没法替你验证）：
+
+- 干净工作区跑 `npm run sync:guides`，`git diff --stat` 看一下改了哪些文件、diff 是否只有文案
+- **连跑两次，第二次必须零 diff**（确定性测试，跑真实网络请求这条路径我没法本地模拟）
+- `npm run sync:guides:check` → exit 0；手改生成文件里一个字符再跑 → exit 1 并打出 diff
 - 把表格某个必填格清空 → 该 tab 中止、不写盘、exit 非零
-- 加一行垃圾 Section → 告警但 exit 0，加 `--strict` → exit 1
+- 如果告警里出现"unrecognized Field Name"，对照上面那张 Field Name 表调整 `scripts/lib/sheet-schema.mjs`
 
 **M8** —— 每个工具重复 M4/M5 的点击路径，并确认另外三个工具没坏。`npm run build` 输出里应有 8 条工具路由（4 引导 + 4 编辑器）为静态。
 
@@ -350,7 +403,7 @@ scope 用 `spreadsheets.readonly`。表格把服务账号邮箱加为**查看者
 - [x] **M4** polka-dot 路由迁移 + 首屏
 - [x] **M5** 其余 section
 - [x] **M6** SEO
-- [ ] **M7** 同步脚本
+- [x] **M7** 同步脚本（逻辑已实现并本地测过；真表格联调需要 Travis 配凭据后自己跑一遍）
 - [ ] **M8a** geometric-patterns
 - [ ] **M8b** moment-card
 - [ ] **M8c** dot
