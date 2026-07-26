@@ -44,10 +44,6 @@
     line-height: 1.2;
 }
 
-.guide-scope p {
-    color: var(--color-guide-ink-2);
-}
-
 /* Keyword highlighter. The sync script only ever lets <strong>, <em>, <br> and
  * <span class="swash"> through, so this is the full set of inline styling in play. */
 .guide-scope strong {
@@ -117,6 +113,10 @@
 /* Native <details> keeps every answer in the server-rendered HTML, which the FAQPage
  * structured data on this page depends on. */
 .guide-scope details > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     list-style: none;
     cursor: pointer;
 }

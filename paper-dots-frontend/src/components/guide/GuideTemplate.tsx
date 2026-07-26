@@ -3,6 +3,11 @@ import { guideFontClass } from "@/lib/fonts";
 import GuideHero from "./GuideHero";
 import GuideRail from "./GuideRail";
 import GuideToolLinks from "./GuideToolLinks";
+import GuideFeatures from "./GuideFeatures";
+import GuideHowTo from "./GuideHowTo";
+import GuideWhy from "./GuideWhy";
+import GuideFaq from "./GuideFaq";
+import GuideFinalCta from "./GuideFinalCta";
 
 interface GuideTemplateProps {
     content: GuideContent;
@@ -25,6 +30,11 @@ export default function GuideTemplate({ content, appPath }: GuideTemplateProps) 
                     <GuideToolLinks toolLinks={content.toolLinks} />
                 </>
             )}
+            {content.features.length > 0 && <GuideFeatures features={content.features} />}
+            {content.howTo && <GuideHowTo howTo={content.howTo} />}
+            {content.why && <GuideWhy why={content.why} />}
+            {content.faq && <GuideFaq faq={content.faq} />}
+            {content.finalCta && <GuideFinalCta finalCta={content.finalCta} appPath={appPath} />}
         </div>
     );
 }
