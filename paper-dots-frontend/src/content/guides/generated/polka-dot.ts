@@ -10,64 +10,39 @@ const content: GuideContentByLocale = {
       "description": "Need a free Polka dot generator without design software? Customize colors, shapes, and spacing, then download PNG, JPEG, SVG, or CSS. Try it free & no sign up."
     },
     "hero": {
-      "headline": "Polka Dot Generator for <span class=\"swash\">Custom Dot</span> Backgrounds",
+      "headline": "Polka Dot Generator for Custom Dot Backgrounds",
       "subheadline": "Skip the blank canvas. DottyPic helps you build a playful dotted look, tweak every detail, and export clean files for web or print in minutes.",
       "image": null,
       "cta": {
         "text": "Generate Polka Dots",
         "href": null
       },
-      "formats": [
-        "PNG",
-        "JPEG",
-        "SVG",
-        "CSS code",
-        "custom size"
-      ]
+      "formats": []
     },
-    "toolLinks": {
-      "lead": "More tools",
-      "items": [
-        {
-          "id": "1",
-          "label": "Geo Pattern",
-          "href": "/geometric-patterns"
-        },
-        {
-          "id": "2",
-          "label": "Moment Card",
-          "href": "/moment-card"
-        },
-        {
-          "id": "3",
-          "label": "Dot",
-          "href": "/dot"
-        }
-      ]
-    },
+    "toolLinks": null,
     "features": [
       {
         "id": "1",
-        "heading": "Polka dot generator in One Click",
-        "body": "You feel rushed when a simple dotted look takes too long to build from scratch. In a few clicks, you already have a clean pattern on screen ready to refine. Generate polka dots instantly in DottyPic, then keep editing until your <strong>polka dot background</strong> feels right for posts, banners, or print without opening heavy design software at all.",
+        "heading": "Polka Dot Generator in One Click",
+        "body": "You feel rushed when a simple dotted look takes too long to build from scratch. In a few clicks, you already have a clean pattern on screen ready to refine. Generate polka dots instantly in DottyPic, then keep editing until your polka dot background feels right for posts, banners, or print without opening heavy design software at all.",
         "image": null
       },
       {
         "id": "2",
         "heading": "Shapes, Emoji, and Text as Dots",
-        "body": "Plain round dots leave your layout feeling stuck and too basic for the mood you want. Your pattern can look playful and personal instead of like a stock fill. Choose preset shapes, emoji, or custom text as the repeating unit, so your <strong>polka dots pattern</strong> carries personality while still reading as a classic dotted field across the canvas.",
+        "body": "Plain round dots leave your layout feeling stuck and too basic for the mood you want. Your pattern can look playful and personal instead of like a stock fill. Choose preset shapes, emoji, or custom text as the repeating unit, so your polka dots pattern carries personality while still reading as a classic dotted field across the canvas.",
         "image": null
       },
       {
         "id": "3",
         "heading": "Upload Images as Polka Dots",
-        "body": "Brand work feels mismatched when every tool only offers plain circles. Now your own art can repeat across the whole canvas as dots. Upload an image and use it as the repeating unit to build a branded <strong>dot pattern background</strong> that still keeps the familiar polka rhythm your audience recognizes at a glance on every surface.",
+        "body": "Brand work feels mismatched when every tool only offers plain circles. Now your own art can repeat across the whole canvas as dots. Upload an image and use it as the repeating unit to build a branded dot pattern background that still keeps the familiar polka rhythm your audience recognizes at a glance on every surface.",
         "image": null
       },
       {
         "id": "4",
         "heading": "How Size, Spacing, Colors, and Tilt Work",
-        "body": "You get impatient when colors, spacing, and angle will not line up with your frame. After a few tweaks, the pattern sits where you need it and matches your palette. Adjust size, spacing, opacity, colors, direction, and tilt, then pick themes like muted tones, sunset, or mono for a balanced <strong>dotted pattern</strong> or <strong>polka dot texture</strong>.",
+        "body": "You get impatient when colors, spacing, and angle will not line up with your frame. After a few tweaks, the pattern sits where you need it and matches your palette. Adjust size, spacing, opacity, colors, direction, and tilt, then pick themes like muted tones, sunset, or mono for a balanced dotted pattern or polka dot texture.",
         "image": null
       },
       {
@@ -128,7 +103,7 @@ const content: GuideContentByLocale = {
         {
           "id": "1",
           "question": "How do I make a polka dot pattern without Photoshop?",
-          "answer": "Open the online generator, adjust size, spacing, and colors, then download your file. You can skip design software and still get a clean <strong>polka dot pattern</strong> for web or print."
+          "answer": "Open the online generator, adjust size, spacing, and colors, then download your file. You can skip design software and still get a clean polka dot pattern for web or print."
         },
         {
           "id": "2",
@@ -143,7 +118,7 @@ const content: GuideContentByLocale = {
         {
           "id": "4",
           "question": "Can I upload my own image to use as a polka dot?",
-          "answer": "Yes. Upload an image and use it as the repeating unit. That helps when you want a branded <strong>dot pattern</strong> instead of a plain circle fill."
+          "answer": "Yes. Upload an image and use it as the repeating unit. That helps when you want a branded dot pattern instead of a plain circle fill."
         },
         {
           "id": "5",
@@ -163,7 +138,7 @@ const content: GuideContentByLocale = {
         {
           "id": "8",
           "question": "How do I add tilt or change the direction of the dots?",
-          "answer": "Use the direction and tilt controls to angle the pattern. Small changes can make a <strong>dotted background pattern</strong> feel more dynamic without redrawing it."
+          "answer": "Use the direction and tilt controls to angle the pattern. Small changes can make a dotted background pattern feel more dynamic without redrawing it."
         }
       ]
     },
@@ -172,6 +147,154 @@ const content: GuideContentByLocale = {
       "body": "Try the free Polka dot generator, tweak every detail, and download a clean pattern when it feels right for your next project.",
       "cta": {
         "text": "Start Generating",
+        "href": null
+      }
+    }
+  },
+  "ja": {
+    "name": "ポルカドットジェネレーター",
+    "meta": {
+      "title": "ポルカドットジェネレーター｜ポルカドット柄＆ポルカドット背景",
+      "description": "デザインソフトなしで使える無料のポルカドットジェネレーターが必要ですか？色・形・間隔を調整して、PNG、JPEG、SVG、CSSでダウンロード。今すぐ無料で試せます。"
+    },
+    "hero": {
+      "headline": "カスタムドット背景が作れるポルカドットジェネレーター",
+      "subheadline": "真っ白なキャンバスで悩まなくて大丈夫。DottyPicなら、遊び心のあるドット柄をサッと作って細かく調整し、Webや印刷用のきれいなファイルを数分で書き出せます。",
+      "image": null,
+      "cta": {
+        "text": "ポルカドットを生成",
+        "href": null
+      },
+      "formats": []
+    },
+    "toolLinks": null,
+    "features": [
+      {
+        "id": "1",
+        "heading": "ワンクリックのポルカドットジェネレーター",
+        "body": "ちょっとしたドット柄なのに、いちから作ると時間がかかって焦ってしまいますよね。数回クリックするだけで、画面上にきれいなパターンが出て、あとは整えるだけ。DottyPicならその場でポルカドットを生成し、重いデザインソフトを開かなくても、投稿・バナー・印刷に合う**ポルカドット背景**になるまで調整を続けられます。",
+        "image": null
+      },
+      {
+        "id": "2",
+        "heading": "形・絵文字・文字をドットに",
+        "body": "丸い点だけだと、レイアウトが単調で、狙った雰囲気に届かない感じがしますよね。ストック素材っぽさではなく、もっと遊び心のある自分らしい柄にできます。プリセットの形、絵文字、好きな文字を繰り返し単位に選べば、クラシックなドットの並びはそのままに、**ポルカドット柄**に個性を乗せられます。",
+        "image": null
+      },
+      {
+        "id": "3",
+        "heading": "画像をアップロードしてポルカドットに",
+        "body": "どのツールもただの円しか出せないと、ブランド向けの仕事がどうも噛み合いません。今度は自分の素材をドットとしてキャンバス全体に並べられます。画像をアップロードして繰り返し単位にすれば、ひと目でわかるポルカのリズムはそのままに、ブランドらしい**ドットパターン背景**が作れます。",
+        "image": null
+      },
+      {
+        "id": "4",
+        "heading": "サイズ・間隔・色・傾きの調整方法",
+        "body": "色や間隔、角度がフレームに合わなくて、もどかしくなることありますよね。少し触るだけで、パターンが欲しい位置に収まり、パレットにもなじみます。サイズ、間隔、透明度、色、向き、傾きを調整し、くすみカラーやサンセット、モノトーンなどのテーマを選べば、バランスのよい**ドット柄**や**ポルカドットテクスチャ**に仕上がります。",
+        "image": null
+      },
+      {
+        "id": "5",
+        "heading": "書き出せる形式とサイズ",
+        "body": "サイズや形式が次の作業を止めてしまうと、書き出しはただストレスです。必要な寸法と形式で持ち帰れます。ダウンロードサイズを指定して PNG、JPEG、SVG、CSSコードで保存。透かしなし、広告なし、回数制限なしなので、レイアウトを仕上げる手が止まりません。しかも無料です。",
+        "image": null
+      }
+    ],
+    "howTo": {
+      "heading": "オンラインでポルカドット柄を作る方法",
+      "steps": [
+        {
+          "id": "1",
+          "heading": "ジェネレーターを開く",
+          "body": "オンラインツールを開き、白紙のキャンバスかシンプルなプリセットから始めて、編集するたびにパターンが更新される様子を確認しましょう。"
+        },
+        {
+          "id": "2",
+          "heading": "ドットをカスタマイズ",
+          "body": "サイズ、間隔、色、傾きに加え、必要なら形・絵文字・文字、またはアップロードした画像を繰り返し単位に設定します。"
+        },
+        {
+          "id": "3",
+          "heading": "ファイルをダウンロード",
+          "body": "キャンバスサイズを選び、Web・SNS・印刷向けに PNG、JPEG、SVG、または CSSコードで書き出します。"
+        }
+      ]
+    },
+    "why": {
+      "heading": "DottyPicのポルカドットジェネレーターを選ぶ理由",
+      "cards": [
+        {
+          "id": "1",
+          "heading": "丸い点だけじゃない",
+          "body": "多くのツールは円で止まります。ここでは形、絵文字、文字、自分でアップロードした画像を繰り返し単位にできるので、ストック感ではなく自分らしい柄になります。"
+        },
+        {
+          "id": "2",
+          "heading": "手間なく細かくコントロール",
+          "body": "サイズ、間隔、透明度、色、傾き、向きを一か所で調整。複雑なデザインソフトに移らなくても、思いどおりの仕上がりが得られます。"
+        },
+        {
+          "id": "3",
+          "heading": "実務にすぐ使える書き出し",
+          "body": "好きなサイズで PNG、JPEG、SVG、CSSコードとしてダウンロード可能。プレビューで作った柄を、そのままWebや印刷の作業に回せます。"
+        },
+        {
+          "id": "4",
+          "heading": "無料・回数無制限・すっきり",
+          "body": "透かしも広告もないので、必要なだけ何度でも作成できます。気にするのは制限管理ではなく、柄づくりそのものです。"
+        }
+      ]
+    },
+    "faq": {
+      "heading": "よくある質問",
+      "items": [
+        {
+          "id": "1",
+          "question": "Photoshopなしでポルカドット柄を作るには？",
+          "answer": "オンラインのジェネレーターを開き、サイズ・間隔・色を調整してファイルをダウンロードしてください。デザインソフトを使わなくても、Webや印刷向けのきれいな**ポルカドット柄**が手に入ります。"
+        },
+        {
+          "id": "2",
+          "question": "好きな色でポルカドット背景は作れますか？",
+          "answer": "はい。ドット色と背景色を自分で設定できるほか、くすみカラー、サンセット、モノトーンなどのテーマパレットから始めて、ブランドに合うまで詰められます。"
+        },
+        {
+          "id": "3",
+          "question": "ドットは円以外に、形・絵文字・文字にもできますか？",
+          "answer": "はい。丸い点に加えて、プリセットの形、絵文字、好きな文字を繰り返し単位にできるので、もっと遊び心のある、ブランドに沿った柄にできます。"
+        },
+        {
+          "id": "4",
+          "question": "自分の画像をアップロードしてポルカドットに使えますか？",
+          "answer": "はい。画像をアップロードして繰り返し単位にできます。ただの円の塗りつぶしではなく、ブランドらしい**ドットパターン**にしたいときに便利です。"
+        },
+        {
+          "id": "5",
+          "question": "ダウンロードできるファイル形式は？",
+          "answer": "PNG、JPEG、SVG、CSSコードに対応しています。フラットな画像が欲しいときも、サイト用のコードが欲しいときも、作業に合う形式を選べます。"
+        },
+        {
+          "id": "6",
+          "question": "ダウンロードサイズは指定できますか？",
+          "answer": "はい。書き出す前に必要な寸法を選べるので、バナー、投稿、印刷レイアウト向けのファイルを、あとからリサイズしなくても用意できます。"
+        },
+        {
+          "id": "7",
+          "question": "ポルカドットジェネレーターは無料で使えますか？",
+          "answer": "はい。DottyPicは無料で、利用回数の制限もなく、透かしも、編集やダウンロードを妨げる広告もありません。"
+        },
+        {
+          "id": "8",
+          "question": "ドットの傾きや向きはどう変えますか？",
+          "answer": "向きと傾きのコントロールでパターンに角度を付けられます。少し動かすだけで、描き直さなくても**ドット背景パターン**に動きが出ます。"
+        }
+      ]
+    },
+    "finalCta": {
+      "heading": "ドットのある見た目を作ろう",
+      "body": "無料のポルカドットジェネレーターで細部まで調整して、次のプロジェクトにしっくりくるきれいな柄をダウンロードしましょう。",
+      "cta": {
+        "text": "生成をはじめる",
         "href": null
       }
     }

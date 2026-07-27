@@ -12,7 +12,7 @@ export default function CtaSection() {
 
   function handleEnter() {
     setIsLoading(true);
-    router.push("/polka-dot/app");
+    router.push("/create/polka-dot");
   }
 
   return (

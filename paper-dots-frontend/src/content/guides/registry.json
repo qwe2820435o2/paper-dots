@@ -4,27 +4,27 @@
     "label": "Polka Dot",
     "sheetTab": "Polka Dot Generator",
     "guidePath": "/polka-dot",
-    "appPath": "/polka-dot/app"
+    "appPath": "/create/polka-dot"
   },
   {
     "slug": "geometric-patterns",
     "label": "Geo Pattern",
     "sheetTab": "Geometric Pattern Generator",
-    "guidePath": "/geometric-patterns",
-    "appPath": "/geometric-patterns/app"
+    "guidePath": "/geometric-pattern-generator",
+    "appPath": "/create/geometric-patterns"
   },
   {
     "slug": "moment-card",
     "label": "Moment Card",
     "sheetTab": "Photo Quote Maker",
-    "guidePath": "/moment-card",
-    "appPath": "/moment-card/app"
+    "guidePath": "/photo-quote-maker",
+    "appPath": "/create/moment-card"
   },
   {
     "slug": "dot",
     "label": "Dot",
     "sheetTab": "Photo Overlay Editor",
-    "guidePath": "/dot",
-    "appPath": "/dot/app"
+    "guidePath": "/photo-overlay-editor",
+    "appPath": "/create/dot"
   }
 ]

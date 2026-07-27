@@ -26,8 +26,8 @@ const content: GuideContentByLocale = {
             lead: "More tools",
             items: [
                 { id: "1", label: "Polka Dot", href: "/polka-dot" },
-                { id: "2", label: "Moment Card", href: "/moment-card" },
-                { id: "3", label: "Dot", href: "/dot" },
+                { id: "2", label: "Moment Card", href: "/photo-quote-maker" },
+                { id: "3", label: "Dot", href: "/photo-overlay-editor" },
             ],
         },
         features: [],

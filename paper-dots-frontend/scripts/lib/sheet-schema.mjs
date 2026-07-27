@@ -1,12 +1,14 @@
 // Maps the Google Sheet's flat rows (Section | Item ID | Field Name | EN | HTML Tag | JP)
 // onto the GuideContent shape declared in src/content/guides/types.ts.
 //
-// The exact Field Name strings below are the sync script's best-effort read of the sheet
-// structure — confirmed for Name/Url/Meta/Hero/Tool Recommendation from the columns Travis
-// has already filled in, inferred by pattern for Feature/How To/Why/FAQ/Final CTA. A sheet
-// row that doesn't match anything here is never silently dropped: it prints an "unknown
-// Section/Field Name" warning naming the tab and row, so a mismatch is a five-minute fix to
-// this file rather than a copy that quietly never made it into the page.
+// The exact Field Name strings below are confirmed against a live pull of the real sheet
+// (Polka Dot Generator tab). A few fields that show up in the sheet have no home in
+// GuideContent yet (Meta::OG Title/OG Description/OG Image Alt, Feature::Feature Button,
+// How To::How To Image) — they're deliberately left unmapped and keep warning until the
+// content type grows to carry them. A sheet row that doesn't match anything here is never
+// silently dropped: it prints an "unknown Section/Field Name" warning naming the tab and
+// row, so a mismatch is a five-minute fix to this file rather than a copy that quietly
+// never made it into the page.
 
 export function normalize(value) {
     return String(value ?? "")
@@ -34,14 +36,14 @@ export const FIELD_MAP = {
 
     "tool recommendation::lead": "toolLinks.lead",
 
-    "how to::heading": "howTo.heading",
-    "why::heading": "why.heading",
-    "faq::heading": "faq.heading",
+    "how to::how to title": "howTo.heading",
+    "why::why title": "why.heading",
+    "faq::faq title": "faq.heading",
 
-    "final cta::heading": "finalCta.heading",
-    "final cta::body": "finalCta.body",
-    "final cta::cta text": "finalCta.cta.text",
-    "final cta::cta link": "finalCta.cta.href",
+    "cta::cta headline": "finalCta.heading",
+    "cta::cta subtext": "finalCta.body",
+    "cta::button text": "finalCta.cta.text",
+    "cta::button link": "finalCta.cta.href",
 };
 
 /** Section/Field Name pairs that repeat once per Item ID. `path` is where the array lives
@@ -59,24 +61,24 @@ export const COLLECTIONS = {
     feature: {
         path: "features",
         fields: {
-            heading: "heading",
-            body: "body",
-            image: "image.src",
-            "image alt": "image.alt",
+            "feature title": "heading",
+            "feature description": "body",
+            "feature image": "image.src",
+            "feature image alt": "image.alt",
         },
     },
     "how to": {
         path: "howTo.steps",
         fields: {
-            heading: "heading",
-            body: "body",
+            "step title": "heading",
+            "step description": "body",
         },
     },
     why: {
         path: "why.cards",
         fields: {
-            heading: "heading",
-            body: "body",
+            "why title": "heading",
+            "why description": "body",
         },
     },
     faq: {

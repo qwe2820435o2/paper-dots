@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# service account keys
+dottypic-guide-sync-*.json
+
 # debug
 npm-debug.log*
 yarn-debug.log*

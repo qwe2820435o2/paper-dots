@@ -8,7 +8,14 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   async redirects() {
     return [
-      { source: "/decorate", destination: "/dot", permanent: true },
+      { source: "/decorate", destination: "/photo-overlay-editor", permanent: true },
+      { source: "/dot", destination: "/photo-overlay-editor", permanent: true },
+      { source: "/moment-card", destination: "/photo-quote-maker", permanent: true },
+      { source: "/geometric-patterns", destination: "/geometric-pattern-generator", permanent: true },
+      { source: "/dot/app", destination: "/create/dot", permanent: true },
+      { source: "/moment-card/app", destination: "/create/moment-card", permanent: true },
+      { source: "/polka-dot/app", destination: "/create/polka-dot", permanent: true },
+      { source: "/geometric-patterns/app", destination: "/create/geometric-patterns", permanent: true },
     ];
   },
   async headers() {

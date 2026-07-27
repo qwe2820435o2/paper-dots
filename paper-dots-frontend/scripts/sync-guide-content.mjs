@@ -68,7 +68,15 @@ async function main() {
             continue;
         }
 
-        const rows = await fetchTabRows(sheets, spreadsheetId, entry.sheetTab);
+        let rows;
+        try {
+            rows = await fetchTabRows(sheets, spreadsheetId, entry.sheetTab);
+        } catch (err) {
+            console.error(`✗ ${entry.slug}: failed to read sheet tab "${entry.sheetTab}": ${err.message}`);
+            anyFailed = true;
+            continue;
+        }
+
         const { content, errors, warnings } = transformSheetRows(rows, {
             registryEntry: entry,
             toolLabelResolver: resolveToolLabel,

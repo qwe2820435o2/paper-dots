@@ -32,7 +32,7 @@ const rows = [
         "Meta Description",
         "Need a free Polka dot generator without design software? Customize colors, shapes, and spacing, then download PNG, JPEG, SVG, or CSS. Try it free & no sign up."
     ),
-    row("Meta Information", null, "Url", "/polka-dot"),
+    row("Url", null, "URL", "/polka-dot"),
     row("Hero", null, "Headline", 'Polka Dot Generator for <span class="swash">Custom Dot</span> Backgrounds'),
     row(
         "Hero",
@@ -50,91 +50,96 @@ const rows = [
     row("Tool Recommendation", 2, "Tool Name", "Moment Card"),
     row("Tool Recommendation", 3, "Tool Name", "Dot"),
 
-    row("Feature", 1, "Heading", "Polka dot generator in One Click"),
+    row("Feature", 1, "Feature Title", "Polka dot generator in One Click"),
     row(
         "Feature",
         1,
-        "Body",
+        "Feature Description",
         "You feel rushed when a simple dotted look takes too long to build from scratch. In a few clicks, you already have a clean pattern on screen ready to refine. Generate polka dots instantly in DottyPic, then keep editing until your <strong>polka dot background</strong> feels right for posts, banners, or print without opening heavy design software at all."
     ),
-    row("Feature", 2, "Heading", "Shapes, Emoji, and Text as Dots"),
+    row("Feature", 2, "Feature Title", "Shapes, Emoji, and Text as Dots"),
     row(
         "Feature",
         2,
-        "Body",
+        "Feature Description",
         "Plain round dots leave your layout feeling stuck and too basic for the mood you want. Your pattern can look playful and personal instead of like a stock fill. Choose preset shapes, emoji, or custom text as the repeating unit, so your <strong>polka dots pattern</strong> carries personality while still reading as a classic dotted field across the canvas."
     ),
-    row("Feature", 3, "Heading", "Upload Images as Polka Dots"),
+    row("Feature", 3, "Feature Title", "Upload Images as Polka Dots"),
     row(
         "Feature",
         3,
-        "Body",
+        "Feature Description",
         "Brand work feels mismatched when every tool only offers plain circles. Now your own art can repeat across the whole canvas as dots. Upload an image and use it as the repeating unit to build a branded <strong>dot pattern background</strong> that still keeps the familiar polka rhythm your audience recognizes at a glance on every surface."
     ),
-    row("Feature", 4, "Heading", "How Size, Spacing, Colors, and Tilt Work"),
+    row("Feature", 4, "Feature Title", "How Size, Spacing, Colors, and Tilt Work"),
     row(
         "Feature",
         4,
-        "Body",
+        "Feature Description",
         "You get impatient when colors, spacing, and angle will not line up with your frame. After a few tweaks, the pattern sits where you need it and matches your palette. Adjust size, spacing, opacity, colors, direction, and tilt, then pick themes like muted tones, sunset, or mono for a balanced <strong>dotted pattern</strong> or <strong>polka dot texture</strong>."
     ),
-    row("Feature", 5, "Heading", "What Formats and Sizes You Can Export"),
+    row("Feature", 5, "Feature Title", "What Formats and Sizes You Can Export"),
     row(
         "Feature",
         5,
-        "Body",
+        "Feature Description",
         "Exports feel frustrating when the file size or format blocks your next step. You leave with the dimensions and format your project actually needs. Set a custom download size and save as PNG, JPEG, SVG, or CSS code, free with no watermarks, no ads, and no usage limits getting in the way of finishing your layout."
     ),
 
-    row("How To", null, "Heading", "How to Make a Polka Dot Pattern Online"),
-    row("How To", 1, "Heading", "Open the Generator"),
+    row("How To", null, "How To Title", "How to Make a Polka Dot Pattern Online"),
+    row("How To", 1, "Step Title", "Open the Generator"),
     row(
         "How To",
         1,
-        "Body",
+        "Step Description",
         "Open the online tool and start from a blank canvas or a simple preset so you can see the pattern update as you edit."
     ),
-    row("How To", 2, "Heading", "Customize Your Dots"),
+    row("How To", 2, "Step Title", "Customize Your Dots"),
     row(
         "How To",
         2,
-        "Body",
+        "Step Description",
         "Set size, spacing, colors, tilt, and optional shapes, emoji, text, or an uploaded image as the repeating unit."
     ),
-    row("How To", 3, "Heading", "Download Your File"),
-    row("How To", 3, "Body", "Choose your canvas size, then export PNG, JPEG, SVG, or CSS code for web, social, or print use."),
+    row("How To", 3, "Step Title", "Download Your File"),
+    row(
+        "How To",
+        3,
+        "Step Description",
+        "Choose your canvas size, then export PNG, JPEG, SVG, or CSS code for web, social, or print use."
+    ),
 
-    row("Why", null, "Heading", "Why Choose DottyPic Polka Dot Generator?"),
-    row("Why", 1, "Heading", "More Than Round Dots"),
+    row("Why", null, "Why Title", "Why Choose DottyPic Polka Dot Generator?"),
+    row("Why", 1, "Why Title", "More Than Round Dots"),
     row(
         "Why",
         1,
-        "Body",
+        "Why Description",
         "Most tools stop at circles. Here you can use shapes, emoji, text, or your own upload as the repeating unit, so the pattern feels personal instead of stock."
     ),
-    row("Why", 2, "Heading", "Full Control Without Friction"),
+    row("Why", 2, "Why Title", "Full Control Without Friction"),
     row(
         "Why",
         2,
-        "Body",
+        "Why Description",
         "Tune size, spacing, opacity, colors, tilt, and direction in one place. You get a custom look without jumping into complex design software."
     ),
-    row("Why", 3, "Heading", "Export Ready for Real Projects"),
+    row("Why", 3, "Why Title", "Export Ready for Real Projects"),
     row(
         "Why",
         3,
-        "Body",
+        "Why Description",
         "Download at a custom size as PNG, JPEG, SVG, or CSS code. That means the same pattern can move from a quick preview into web or print work."
     ),
-    row("Why", 4, "Heading", "Free, Unlimited, and Uncluttered"),
+    row("Why", 4, "Why Title", "Free, Unlimited, and Uncluttered"),
     row(
         "Why",
         4,
-        "Body",
+        "Why Description",
         "Create as many times as you need with no watermark and no ads in the way. The focus stays on making the pattern, not managing limits."
     ),
 
-    row("FAQ", null, "Heading", "FAQs"),
+    row("FAQ", null, "FAQ Title", "FAQs"),
     row("FAQ", 1, "Question", "How do I make a polka dot pattern without Photoshop?"),
     row(
         "FAQ",
@@ -192,15 +197,15 @@ const rows = [
         "Use the direction and tilt controls to angle the pattern. Small changes can make a <strong>dotted background pattern</strong> feel more dynamic without redrawing it."
     ),
 
-    row("Final CTA", null, "Heading", "Make Your Dotted Look"),
+    row("CTA", null, "CTA Headline", "Make Your Dotted Look"),
     row(
-        "Final CTA",
+        "CTA",
         null,
-        "Body",
+        "CTA Subtext",
         "Try the free Polka dot generator, tweak every detail, and download a clean pattern when it feels right for your next project."
     ),
-    row("Final CTA", null, "CTA Text", "Start Generating"),
-    row("Final CTA", null, "CTA Link", ""),
+    row("CTA", null, "Button Text", "Start Generating"),
+    row("CTA", null, "Button Link", ""),
 ];
 
 async function main() {

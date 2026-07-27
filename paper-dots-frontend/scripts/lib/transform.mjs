@@ -69,8 +69,8 @@ function buildLocaleDraft(rows, locale, { registryEntry, toolLabelResolver }, di
         const fieldName = normalize(row.fieldName);
         const itemId = parseItemId(row.itemId);
 
-        if (section === "meta information" && fieldName === "url") {
-            if (value !== registryEntry.guidePath) {
+        if (section === "url" && fieldName === "url") {
+            if (locale === "en" && value !== registryEntry.guidePath) {
                 diagnostics.errors.push(
                     `row ${row.rowNumber}: sheet Url "${value}" does not match registry.guidePath ` +
                         `"${registryEntry.guidePath}" for slug "${registryEntry.slug}" — the registry is authoritative, fix the sheet`

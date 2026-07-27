@@ -49,11 +49,11 @@ async function main() {
     {
         const rows = [
             ...minimalRequired,
-            row("Why", null, "Heading", "Why"),
-            row("Why", 1, "Heading", "First"),
-            row("Why", 1, "Body", "First body"),
-            row("Why", 4, "Heading", "Second"), // gap: 1, 4
-            row("Why", 4, "Body", "Second body"),
+            row("Why", null, "Why Title", "Why"),
+            row("Why", 1, "Why Title", "First"),
+            row("Why", 1, "Why Description", "First body"),
+            row("Why", 4, "Why Title", "Second"), // gap: 1, 4
+            row("Why", 4, "Why Description", "Second body"),
         ];
         const { content, warnings } = transformSheetRows(rows, ctx);
         check("gap compaction -> exactly 2 why cards", content.en.why.cards.length === 2);
@@ -65,8 +65,8 @@ async function main() {
     {
         const rows = [
             ...minimalRequired,
-            row("Feature", 1, "Heading", "Heading"),
-            row("Feature", 1, "Body", 'Body with <script>alert(1)</script> and <em>ok</em>'),
+            row("Feature", 1, "Feature Title", "Heading"),
+            row("Feature", 1, "Feature Description", 'Body with <script>alert(1)</script> and <em>ok</em>'),
         ];
         const { content, warnings } = transformSheetRows(rows, ctx);
         const body = content.en.features[0].body;
@@ -79,8 +79,8 @@ async function main() {
     {
         const rows = [
             ...minimalRequired,
-            row("Feature", 1, "Heading", "Heading"),
-            row("Feature", 1, "Body", "Body with <strong>bold</strong> and <em>em</em> and<br>a break"),
+            row("Feature", 1, "Feature Title", "Heading"),
+            row("Feature", 1, "Feature Description", "Body with <strong>bold</strong> and <em>em</em> and<br>a break"),
         ];
         const { content, warnings } = transformSheetRows(rows, ctx);
         check(
@@ -96,9 +96,9 @@ async function main() {
     {
         const rows = [
             ...minimalRequired,
-            row("Why", null, "Heading", "Why"),
-            row("Why", 1, "Heading", "A <strong>bold</strong> title"),
-            row("Why", 1, "Body", "plain body"),
+            row("Why", null, "Why Title", "Why"),
+            row("Why", 1, "Why Title", "A <strong>bold</strong> title"),
+            row("Why", 1, "Why Description", "plain body"),
         ];
         const { content, warnings } = transformSheetRows(rows, ctx);
         check(
@@ -143,7 +143,7 @@ async function main() {
 
     // 11. Sheet's Url column mismatching the registry is a hard error.
     {
-        const rows = [...minimalRequired, row("Meta Information", null, "Url", "/wrong-path")];
+        const rows = [...minimalRequired, row("Url", null, "URL", "/wrong-path")];
         const { errors } = transformSheetRows(rows, ctx);
         check("Url mismatch -> error", errors.some((e) => e.includes("does not match registry.guidePath")));
     }
