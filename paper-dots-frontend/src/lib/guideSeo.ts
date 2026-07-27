@@ -15,18 +15,23 @@ export function buildGuideMetadata(
     route: GuideRegistryEntry,
     locale: GuideLocale = "en"
 ): Metadata {
+    const title = `${content.name} · Dottypic`;
     return {
-        title: content.meta.title,
+        title,
         description: content.meta.description,
         alternates: {
             canonical: route.guidePath,
         },
         openGraph: {
-            title: content.meta.title,
+            title,
             description: content.meta.description,
             url: route.guidePath,
             type: "website",
             locale: OG_LOCALE[locale],
+        },
+        twitter: {
+            title,
+            description: content.meta.description,
         },
     };
 }
