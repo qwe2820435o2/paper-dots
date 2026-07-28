@@ -68,6 +68,13 @@
     font-family: var(--guide-mono);
 }
 
+/* For non-heading elements that need the display face (the mockup's `.tools-lead`, `.tool`
+ * card labels, etc.) — headings get it automatically from the `.guide-scope h1..h4` rule
+ * above. */
+.guide-scope .guide-display {
+    font-family: var(--guide-display);
+}
+
 .guide-scope .guide-rail {
     height: 9px;
     background-image: radial-gradient(circle, var(--color-guide-lime) 3.2px, transparent 3.4px);
@@ -110,6 +117,16 @@
     box-shadow: 0 0 0 var(--color-guide-ink);
 }
 
+/* Contrast variant for a CTA button sitting on top of an already-lime band (the mockup's
+ * `.cta-band .btn`) — a plain lime button would disappear into a lime background. */
+.guide-scope .guide-btn.guide-btn-invert {
+    background: var(--color-guide-paper);
+}
+
+.guide-scope .guide-btn.guide-btn-invert:hover {
+    background: #fff;
+}
+
 /* Native <details> keeps every answer in the server-rendered HTML, which the FAQPage
  * structured data on this page depends on. */
 .guide-scope details > summary {
@@ -150,6 +167,18 @@
 .guide-scope :focus-visible {
     outline: 3px solid var(--color-guide-ink);
     outline-offset: 2px;
+}
+
+/* Live-preview indicator dot on GuideHeroStudio, referenced via the arbitrary Tailwind
+ * utility `animate-[guide-live-blink_2.4s_infinite]`. */
+@keyframes guide-live-blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.25;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

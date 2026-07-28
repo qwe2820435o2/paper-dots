@@ -8,21 +8,26 @@ interface GuideHeroProps {
     hero: GuideContent["hero"];
     /** Editor route, used whenever the sheet leaves a CTA link cell empty. */
     appPath: string;
+    /** Tool-specific right-column visual (e.g. GuideHeroStudio for polka-dot) that overrides
+     *  the sheet-image/placeholder fallback below. Takes priority over `hero.image`. */
+    heroVisual?: React.ReactNode;
 }
 
-/** Single-column and centered when the sheet has not supplied a hero image yet — deliberately
- *  not a two-column layout with an empty box on the right, which is what the mockup's
- *  interactive "studio" panel is being replaced with (see docs/guide-pages.md risk #3). */
-export default function GuideHero({ hero, appPath }: GuideHeroProps) {
+/** Single-column and centered when neither a hero visual nor a sheet image is supplied —
+ *  deliberately not a two-column layout with an empty box on the right (see
+ *  docs/guide-pages.md risk #3). Tools that have a real static-preview component to show
+ *  instead pass one in via `heroVisual`. */
+export default function GuideHero({ hero, appPath, heroVisual }: GuideHeroProps) {
     const ctaHref = hero.cta.href ?? appPath;
+    const twoColumn = Boolean(heroVisual) || Boolean(hero.image);
 
     return (
         <section className="pb-12 pt-14 lg:pt-20">
             <div className={GUIDE_WRAP}>
                 <div
                     className={
-                        hero.image
-                            ? "grid items-center gap-12 lg:grid-cols-2"
+                        twoColumn
+                            ? "grid items-center gap-14 lg:grid-cols-[0.86fr_1.14fr]"
                             : "mx-auto max-w-3xl text-center"
                     }
                 >
@@ -32,7 +37,7 @@ export default function GuideHero({ hero, appPath }: GuideHeroProps) {
 
                         <div
                             className={
-                                hero.image
+                                twoColumn
                                     ? "mt-8 flex flex-wrap items-center gap-4"
                                     : "mt-8 flex flex-wrap items-center justify-center gap-4"
                             }
@@ -45,7 +50,7 @@ export default function GuideHero({ hero, appPath }: GuideHeroProps) {
                         {hero.formats.length > 0 && (
                             <ul
                                 className={
-                                    hero.image
+                                    twoColumn
                                         ? "mt-6 flex flex-wrap gap-2"
                                         : "mt-6 flex flex-wrap justify-center gap-2"
                                 }
@@ -62,7 +67,7 @@ export default function GuideHero({ hero, appPath }: GuideHeroProps) {
                         )}
                     </div>
 
-                    {hero.image && <GuideMedia image={hero.image} aspect="aspect-[4/3]" priority />}
+                    {heroVisual ?? (hero.image && <GuideMedia image={hero.image} aspect="aspect-[4/3]" priority />)}
                 </div>
             </div>
         </section>

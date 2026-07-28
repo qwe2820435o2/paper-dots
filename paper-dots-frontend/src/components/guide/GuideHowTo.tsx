@@ -1,5 +1,6 @@
 import type { GuideContent } from "@/content/guides";
-import { GUIDE_WRAP } from "./guideLayout";
+import { GUIDE_WRAP, GUIDE_SEC_HEAD } from "./guideLayout";
+import { cn } from "@/lib/utils";
 
 interface GuideHowToProps {
     howTo: NonNullable<GuideContent["howTo"]>;
@@ -11,7 +12,9 @@ export default function GuideHowTo({ howTo }: GuideHowToProps) {
     return (
         <section className="bg-guide-lime-3 py-20">
             <div className={GUIDE_WRAP}>
-                <h2 className="text-center">{howTo.heading}</h2>
+                <div className={cn(GUIDE_SEC_HEAD, "mx-auto text-center")}>
+                    <h2>{howTo.heading}</h2>
+                </div>
                 <ol className="mt-12 grid gap-8 lg:grid-cols-3">
                     {howTo.steps.map((step, i) => (
                         <li key={step.id} className="rounded-guide bg-guide-card p-8 shadow-guide">
