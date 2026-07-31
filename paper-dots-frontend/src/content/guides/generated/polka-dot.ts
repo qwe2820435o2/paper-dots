@@ -19,16 +19,7 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": {
-      // TEMP-MOCK: Sheet's Tool Recommendation rows are still empty; this stand-in is only
-      // for checking the "More tools" layout locally. `npm run sync:guides` overwrites it.
-      "lead": "More tools",
-      "items": [
-        { "id": "1", "label": "Photo Overlay Editor", "href": "/photo-overlay-editor" },
-        { "id": "2", "label": "Photo Quote Maker", "href": "/photo-quote-maker" },
-        { "id": "3", "label": "Geometric Pattern Generator", "href": "/geometric-pattern-generator" }
-      ]
-    },
+    "toolLinks": null,
     "features": [
       {
         "id": "1",

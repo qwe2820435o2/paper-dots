@@ -26,8 +26,9 @@ const POSITION_CLASSES: Record<NonNullable<GuideFeaturePatternProps["overlayPosi
  *  for (see the dropped-overlay note in GuideFeatureBlock.tsx). Same reasoning as
  *  GuideHeroStudio: the dot grid is real, server-rendered with the same pure SVG builder the
  *  editor's PNG export uses; the floating card on top is decorative art matching the mockup,
- *  not wired to anything. Only used where a page opts in via `featureVisuals` — once the
- *  sheet supplies a real `Feature Image`, that takes over automatically and this is unused. */
+ *  not wired to anything. Used via GUIDE_DEFAULT_FEATURE_VISUALS (guideDefaultFeatureVisuals.tsx)
+ *  as the fallback for feature ids "1"-"5" on every guide page — once a sheet supplies a real
+ *  `Feature Image` for that id, GuideFeatureBlock prefers it automatically. */
 export default function GuideFeaturePattern({
     config,
     overlayTitle,

@@ -19,7 +19,7 @@ export default function DotGuidePage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <GuideTemplate content={content} appPath={route.appPath} />
+            <GuideTemplate content={content} slug={SLUG} appPath={route.appPath} />
         </>
     );
 }

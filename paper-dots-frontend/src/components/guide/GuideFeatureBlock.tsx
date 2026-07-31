@@ -1,5 +1,6 @@
 import type { GuideFeature } from "@/content/guides";
 import { GUIDE_WRAP, GUIDE_FEATURE_SHOT_ASPECT } from "./guideLayout";
+import { GUIDE_DEFAULT_FEATURE_VISUALS } from "./guideDefaultFeatureVisuals";
 import RichText from "./RichText";
 import GuideMedia from "./GuideMedia";
 import { cn } from "@/lib/utils";
@@ -8,17 +9,20 @@ interface GuideFeatureBlockProps {
     feature: GuideFeature;
     /** Alternates media/copy sides, matching blocks 2 and 4 in the mockup. */
     flip: boolean;
-    /** Overrides the sheet-image/placeholder media below — see GuideFeaturePattern, opted
-     *  into per feature id via GuideTemplate's `featureVisuals` map. Once the sheet supplies
-     *  a real `Feature Image` for that id, remove the override and `feature.image` takes
-     *  over automatically. */
-    visual?: React.ReactNode;
 }
 
-/** The mockup's decorative overlay card on top of each feature image is otherwise dropped —
- *  it was hand-authored per feature and has no corresponding sheet field — unless a page
- *  passes one in via `visual`. */
-export default function GuideFeatureBlock({ feature, flip, visual }: GuideFeatureBlockProps) {
+/** A real sheet image takes priority; otherwise every feature id falls back to the shared
+ *  GUIDE_DEFAULT_FEATURE_VISUALS dot-pattern mocks (same on every guide page, not just
+ *  polka-dot's own). An id with no matching preset falls back further to
+ *  GuideMediaPlaceholder. The mockup's decorative overlay card is otherwise dropped entirely:
+ *  it was hand-authored per feature and has no corresponding sheet field. */
+export default function GuideFeatureBlock({ feature, flip }: GuideFeatureBlockProps) {
+    const media = feature.image ? (
+        <GuideMedia image={feature.image} aspect={GUIDE_FEATURE_SHOT_ASPECT} />
+    ) : (
+        GUIDE_DEFAULT_FEATURE_VISUALS[feature.id] ?? <GuideMedia image={null} aspect={GUIDE_FEATURE_SHOT_ASPECT} />
+    );
+
     return (
         <div className={GUIDE_WRAP}>
             <div className={cn("grid items-center gap-16 lg:grid-cols-2", flip && "lg:[&>*:first-child]:order-2")}>
@@ -26,7 +30,7 @@ export default function GuideFeatureBlock({ feature, flip, visual }: GuideFeatur
                     <RichText as="h2" html={feature.heading} />
                     <RichText as="p" html={feature.body} className="mt-4 text-guide-ink-2" />
                 </div>
-                {visual ?? <GuideMedia image={feature.image} aspect={GUIDE_FEATURE_SHOT_ASPECT} />}
+                {media}
             </div>
         </div>
     );
