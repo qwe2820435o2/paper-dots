@@ -4,8 +4,8 @@
   "description": "Turn photos into art with our Automatic Photo Collage Maker. Customize your polka dot background with hearts, stars, and dots. Use the best dot image generator for free, no sign-up required!",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#fbfcf7",
+  "theme_color": "#15200d",
   "icons": [
     {
       "src": "/icon-192.png",

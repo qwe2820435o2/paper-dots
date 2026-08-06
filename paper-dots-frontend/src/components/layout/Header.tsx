@@ -8,12 +8,10 @@ import { CREATE_TOOLS, type CreateTool } from "@/lib/tools";
 import { guideFontClass } from "@/lib/fonts";
 import { GUIDE_WRAP } from "@/components/guide/guideLayout";
 
-/** Nav-row typography borrows the guide pages' DM Sans / DM Mono / Bricolage Grotesque faces
- *  to match home-desktop.html's header 1:1 — everything except the logo (kept as-is) and the
- *  nav item labels/structure (kept as Create/FAQ/Contact, not the mockup's anchor nav). Only
- *  `guideFontClass` (the three CSS-variable classes) is applied, never `guide-scope` itself,
- *  so none of guide.css's scoped rules (background, base font-size, h1-h4 sizing) leak into
- *  the header — it stays a normal component, just with these font variables in scope. */
+/** Nav-row typography borrows the guide pages' DM Sans / DM Mono / Bricolage Grotesque faces.
+ *  Only `guideFontClass` (the three CSS-variable classes) is applied, never `guide-scope`
+ *  itself, so none of guide.css's scoped rules (background, base font-size, h1-h4 sizing)
+ *  leak into the header — it stays a normal component, just with these font variables in scope. */
 const NAV_LINK_STYLE = { fontFamily: "var(--font-dm-sans)" };
 const LANG_STYLE = { fontFamily: "var(--font-dm-mono)" };
 const CTA_STYLE = { fontFamily: "var(--font-bricolage)" };
@@ -31,9 +29,6 @@ const navLinks: NavLink[] = [
         href: "/#tools",
         children: CREATE_TOOLS,
     },
-    { label: "Color matching", href: "/#engine" },
-    { label: "Why DottyPic", href: "/#why" },
-    { label: "FAQ", href: "/faq" },
 ];
 
 export default function Header() {
@@ -44,12 +39,8 @@ export default function Header() {
         <header className={`${guideFontClass} sticky top-0 z-50 border-b border-[#e3e9d8] bg-[#fbfcf7]/[0.86] backdrop-blur-md`}>
             <div className={GUIDE_WRAP}>
                 <div className="flex h-[74px] items-center gap-[34px]">
-                    {/* Logo — kept as-is */}
-                    <Link href="/" className="flex items-center gap-2 shrink-0">
-                        <Image src="/logo.png" alt="Dottypic" width={44} height={44} className="rounded" />
-                        <span className="text-[#1a1a2e] text-[24px] font-extrabold tracking-[-0.15px]">
-                            Dottypic
-                        </span>
+                    <Link href="/" className="flex items-center shrink-0">
+                        <Image src="/logo-dark.svg" alt="Dottypic" width={176} height={32} className="h-8 w-auto" />
                     </Link>
 
                     {/* Desktop nav */}
