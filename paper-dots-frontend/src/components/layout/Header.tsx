@@ -42,11 +42,8 @@ export default function Header() {
             <div className={GUIDE_WRAP}>
                 <div className="flex h-[74px] items-center gap-[34px]">
                     {/* Logo — kept as-is */}
-                    <Link href="/" className="flex items-center gap-2 shrink-0">
-                        <Image src="/logo.png" alt="Dottypic" width={44} height={44} className="rounded" />
-                        <span className="text-[#1a1a2e] text-[24px] font-extrabold tracking-[-0.15px]">
-                            Dottypic
-                        </span>
+                    <Link href="/" className="flex items-center shrink-0">
+                        <Image src="/logo-dark.svg" alt="Dottypic" width={176} height={32} className="h-8 w-auto" />
                     </Link>
 
                     {/* Desktop nav */}

@@ -19,17 +19,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-2 mb-4">
-              <Image
-                src="/logo.png"
-                alt="Dottypic"
-                width={44}
-                height={44}
-                className="rounded"
-              />
-              <span className="text-[#1a1a2e] text-[24px] font-medium tracking-[-0.15px]">
-                Dottypic
-              </span>
+            <Link href="/" className="inline-flex items-center mb-4">
+              <Image src="/logo-dark.svg" alt="Dottypic" width={176} height={32} className="h-8 w-auto" />
             </Link>
             <p className="text-[14px] leading-[1.6] max-w-[260px] text-[#64748b]">
               Decorate your photos with hand-drawn paper textures and scattered

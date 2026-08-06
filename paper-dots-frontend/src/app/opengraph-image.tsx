@@ -114,11 +114,11 @@ export default async function OGImage() {
           <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${base}/logo.png`}
+              src={`${base}/icon.svg`}
               alt="Dottypic"
               width={48}
               height={48}
-              style={{ borderRadius: 10, display: "block" }}
+              style={{ display: "block" }}
             />
             <span
               style={{
