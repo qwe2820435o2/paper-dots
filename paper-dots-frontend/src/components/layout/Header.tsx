@@ -31,9 +31,6 @@ const navLinks: NavLink[] = [
         href: "/#tools",
         children: CREATE_TOOLS,
     },
-    { label: "Color matching", href: "/#engine" },
-    { label: "Why DottyPic", href: "/#why" },
-    { label: "FAQ", href: "/faq" },
 ];
 
 export default function Header() {
