@@ -3,8 +3,21 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Globe, Menu, X } from "lucide-react";
 import { CREATE_TOOLS, type CreateTool } from "@/lib/tools";
+import { guideFontClass } from "@/lib/fonts";
+import { GUIDE_WRAP } from "@/components/guide/guideLayout";
+
+/** Nav-row typography borrows the guide pages' DM Sans / DM Mono / Bricolage Grotesque faces
+ *  to match home-desktop.html's header 1:1 — everything except the logo (kept as-is) and the
+ *  nav item labels/structure (kept as Create/FAQ/Contact, not the mockup's anchor nav). Only
+ *  `guideFontClass` (the three CSS-variable classes) is applied, never `guide-scope` itself,
+ *  so none of guide.css's scoped rules (background, base font-size, h1-h4 sizing) leak into
+ *  the header — it stays a normal component, just with these font variables in scope. */
+const NAV_LINK_STYLE = { fontFamily: "var(--font-dm-sans)" };
+const LANG_STYLE = { fontFamily: "var(--font-dm-mono)" };
+const CTA_STYLE = { fontFamily: "var(--font-bricolage)" };
+const NAV_LINK_CLASS = "text-[15.5px] font-medium text-[#3c4a30] transition-colors hover:text-[#15200d]";
 
 interface NavLink {
     label: string;
@@ -14,12 +27,13 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     {
-        label: "Create",
-        href: "/photo-overlay-editor",
+        label: "Tools",
+        href: "/#tools",
         children: CREATE_TOOLS,
     },
+    { label: "Color matching", href: "/#engine" },
+    { label: "Why DottyPic", href: "/#why" },
     { label: "FAQ", href: "/faq" },
-    { label: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -27,27 +41,23 @@ export default function Header() {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
     return (
-        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
-            <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
-                <div className="flex items-center justify-between h-14">
-                    {/* Logo */}
+        <header className={`${guideFontClass} sticky top-0 z-50 border-b border-[#e3e9d8] bg-[#fbfcf7]/[0.86] backdrop-blur-md`}>
+            <div className={GUIDE_WRAP}>
+                <div className="flex h-[74px] items-center gap-[34px]">
+                    {/* Logo — kept as-is */}
                     <Link href="/" className="flex items-center gap-2 shrink-0">
                         <Image src="/logo.png" alt="Dottypic" width={44} height={44} className="rounded" />
-                        <span className="text-[#1a1a2e] text-[24px] font-medium tracking-[-0.15px]">
+                        <span className="text-[#1a1a2e] text-[24px] font-extrabold tracking-[-0.15px]">
                             Dottypic
                         </span>
                     </Link>
 
                     {/* Desktop nav */}
-                    <nav className="hidden md:flex items-center gap-8">
+                    <nav className="ml-3 hidden items-center gap-[26px] md:flex">
                         {navLinks.map((item) => {
                             if (!item.children) {
                                 return (
-                                    <Link
-                                        key={item.label}
-                                        href={item.href}
-                                        className="text-[15px] text-[#64748b] hover:text-[#1a1a2e] transition-colors"
-                                    >
+                                    <Link key={item.label} href={item.href} className={NAV_LINK_CLASS} style={NAV_LINK_STYLE}>
                                         {item.label}
                                     </Link>
                                 );
@@ -62,7 +72,8 @@ export default function Header() {
                                 >
                                     <Link
                                         href={item.href}
-                                        className="flex items-center gap-1 text-[15px] text-[#64748b] hover:text-[#1a1a2e] transition-colors"
+                                        className={`flex items-center gap-1 ${NAV_LINK_CLASS}`}
+                                        style={NAV_LINK_STYLE}
                                     >
                                         {item.label}
                                         <ChevronDown
@@ -100,18 +111,29 @@ export default function Header() {
                     </nav>
 
                     {/* Desktop CTA */}
-                    <div className="hidden md:flex items-center">
+                    <div className="hidden items-center gap-3.5 md:ml-auto md:flex">
+                        <button
+                            type="button"
+                            className="inline-flex items-center gap-[7px] rounded-full border border-[#e3e9d8] bg-white px-3.5 py-2 text-[13px] text-[#3c4a30] transition-colors hover:border-[#15200d]"
+                            style={LANG_STYLE}
+                            aria-label="Change language"
+                        >
+                            <Globe size={14} strokeWidth={1.4} />
+                            EN
+                            <ChevronDown size={9} strokeWidth={1.6} />
+                        </button>
                         <Link
                             href="/create/polka-dot"
-                            className="bg-[#C5E89A] text-white text-[14px] font-medium px-5 py-2 rounded-full hover:bg-[#9ED06C] transition-colors"
+                            className="inline-flex items-center gap-2 rounded-full border-2 border-[#15200d] bg-[#c5e89a] px-[22px] py-[11px] text-[15px] font-bold text-[#15200d] shadow-[0_4px_0_#15200d] transition-all hover:translate-y-[3px] hover:bg-[#d5f0ae] hover:shadow-[0_2px_0_#15200d] active:translate-y-[5px] active:shadow-none"
+                            style={CTA_STYLE}
                         >
-                            Get Started
+                            Upload a photo
                         </Link>
                     </div>
 
                     {/* Mobile menu button */}
                     <button
-                        className="md:hidden p-2 text-[#1a1a2e]"
+                        className="ml-auto p-2 text-[#15200d] md:hidden"
                         onClick={() => setMenuOpen(!menuOpen)}
                         aria-label="Toggle menu"
                     >
@@ -122,7 +144,7 @@ export default function Header() {
 
             {/* Mobile menu */}
             {menuOpen && (
-                <div className="md:hidden bg-white border-t border-slate-200 px-5 py-4">
+                <div className="md:hidden bg-white border-t border-[#e3e9d8] px-5 py-4">
                     <nav className="flex flex-col gap-1">
                         {navLinks.map((item) => {
                             if (!item.children) {
@@ -130,7 +152,8 @@ export default function Header() {
                                     <Link
                                         key={item.label}
                                         href={item.href}
-                                        className="text-[15px] text-[#64748b] hover:text-[#1a1a2e] py-2 transition-colors"
+                                        className={`py-2 ${NAV_LINK_CLASS}`}
+                                        style={NAV_LINK_STYLE}
                                         onClick={() => setMenuOpen(false)}
                                     >
                                         {item.label}
@@ -157,10 +180,11 @@ export default function Header() {
                         })}
                         <Link
                             href="/create/polka-dot"
-                            className="mt-3 bg-[#C5E89A] text-white text-[14px] font-medium px-5 py-2.5 rounded-full text-center hover:bg-[#9ED06C] transition-colors"
+                            className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#15200d] bg-[#c5e89a] px-5 py-2.5 text-[14px] font-bold text-[#15200d] shadow-[0_4px_0_#15200d] transition-colors hover:bg-[#d5f0ae]"
+                            style={CTA_STYLE}
                             onClick={() => setMenuOpen(false)}
                         >
-                            Get Started
+                            Upload a photo
                         </Link>
                     </nav>
                 </div>

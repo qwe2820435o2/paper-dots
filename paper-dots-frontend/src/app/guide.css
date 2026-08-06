@@ -100,6 +100,7 @@
     font-size: 17px;
     padding: 14px 26px;
     border-radius: 999px;
+    border: 2px solid var(--color-guide-ink);
     background: var(--color-guide-lime);
     color: var(--color-guide-ink);
     box-shadow: 0 5px 0 var(--color-guide-ink);
