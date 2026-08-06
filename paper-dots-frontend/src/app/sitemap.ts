@@ -2,11 +2,17 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { GUIDE_REGISTRY } from "@/content/guides/registry";
 
+const DISABLE_INDEXING = process.env.DISABLE_INDEXING === "true";
+
 // The editor route (registry entry's appPath) is deliberately excluded: it's noindex'd (see
 // src/lib/guideSeo.ts) so the guide is the only URL search engines should ever be pointed at
 // for a given tool — listing both would just split the signal between two pages about the
 // same thing.
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (DISABLE_INDEXING) {
+    return [];
+  }
+
   return [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     ...GUIDE_REGISTRY.map((tool) => ({

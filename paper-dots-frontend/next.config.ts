@@ -19,15 +19,21 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    const rootHeaders = [
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "X-XSS-Protection", value: "1; mode=block" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+    ];
+
+    if (process.env.DISABLE_INDEXING === "true") {
+      rootHeaders.push({ key: "X-Robots-Tag", value: "noindex, nofollow" });
+    }
+
     return [
       {
         source: "/:path*",
-        headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-XSS-Protection", value: "1; mode=block" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-        ],
+        headers: rootHeaders,
       },
       {
         source: "/papers/:path*",
