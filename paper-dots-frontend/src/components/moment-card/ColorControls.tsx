@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { RefreshCw } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setBgColor } from "@/store/slices/momentCardSlice";
@@ -19,6 +20,7 @@ function loadImage(url: string): Promise<HTMLImageElement> {
 }
 
 export default function ColorControls() {
+    const t = useTranslations("editor.momentCard.colors");
     const dispatch = useAppDispatch();
     const bgColor = useAppSelector((s) => s.momentCard.bgColor);
     const photoUrl = useAppSelector((s) => s.momentCard.photoUrl);
@@ -49,7 +51,7 @@ export default function ColorControls() {
         <div className="p-4 flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
                 <span className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
-                    Background color
+                    {t("backgroundColor")}
                 </span>
                 <div className="flex items-center gap-3">
                     <span
@@ -81,11 +83,11 @@ export default function ColorControls() {
                 }}
             >
                 <RefreshCw className="w-3.5 h-3.5" strokeWidth={2} />
-                {isExtracting ? "Extracting…" : "Re-extract from current frame"}
+                {isExtracting ? t("extracting") : t("reExtract")}
             </button>
 
             <p className="text-[11px] text-[#9CA3AF] leading-[1.5]">
-                Drag the bottom photo to reposition it. The background color updates automatically when you release.
+                {t("dragHint")}
             </p>
         </div>
     );

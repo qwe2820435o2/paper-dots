@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -9,20 +10,17 @@ import {
   type LayoutType,
 } from "@/store/slices/decorateSlice";
 
-const LAYOUT_OPTIONS: { value: LayoutType; label: string }[] = [
-  { value: "main-left", label: "Main on Left" },
-  { value: "main-right", label: "Main on Right" },
-  { value: "main-top", label: "Main on Top" },
-  { value: "main-bottom", label: "Main on Bottom" },
-  { value: "border", label: "Polaroid Border" },
+/** Each entry doubles as the key under `editor.dot.layout.options`. */
+const LAYOUT_OPTIONS: LayoutType[] = [
+  "main-left",
+  "main-right",
+  "main-top",
+  "main-bottom",
+  "border",
 ];
 
-function ratioLabel(type: LayoutType): string {
-  if (type === "border") return "Border";
-  return "Ratio";
-}
-
 export default function LayoutPicker() {
+  const t = useTranslations("editor.dot.layout");
   const dispatch = useAppDispatch();
   const layout = useAppSelector((s) => s.decorate.layout);
 
@@ -33,7 +31,7 @@ export default function LayoutPicker() {
         <label
           className="block text-[11px] uppercase mb-2 text-[#64748b] tracking-[0.08em]"
         >
-          Stitch
+          {t("stitch")}
         </label>
         <div className="relative">
           <select
@@ -43,9 +41,9 @@ export default function LayoutPicker() {
             }
             className="w-full appearance-none px-3 py-2 pr-8 rounded-lg text-[13px] text-[#1a1a2e] outline-none transition-colors cursor-pointer bg-white border border-[#D2EAAA] focus:border-[#C5E89A]"
           >
-            {LAYOUT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
+            {LAYOUT_OPTIONS.map((value) => (
+              <option key={value} value={value}>
+                {t(`options.${value}`)}
               </option>
             ))}
           </select>
@@ -59,7 +57,9 @@ export default function LayoutPicker() {
       <div>
         <div className="flex items-baseline justify-between mb-2">
           <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">
-            {ratioLabel(layout.type)}
+            {/* The slider means "how thick is the frame" in the Polaroid layout and "how is
+                the space split" in the others, so the label swaps with the mode. */}
+            {layout.type === "border" ? t("border") : t("ratio")}
           </label>
           <span className="text-[12px] tabular-nums text-[#64748b]">
             {layout.ratio}

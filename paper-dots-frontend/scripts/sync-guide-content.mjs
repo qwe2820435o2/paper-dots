@@ -108,7 +108,7 @@ async function main() {
             `${result === "written" ? (flags.check ? "would update" : "updated") : "unchanged"}  ${entry.slug}: ` +
                 `${en.features.length} features, ${en.howTo?.steps.length ?? 0} steps, ` +
                 `${en.why?.cards.length ?? 0} why-cards, ${en.faq?.items.length ?? 0} faq, ` +
-                `ja: ${content.ja ? "yes" : "no"}`
+                `jp: ${content.jp ? "yes" : "no"}, id: ${content.id ? "yes" : "no"}`
         );
     }
 

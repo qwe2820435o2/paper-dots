@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Shuffle, Check } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { applyPreset, applyPalette, shuffleAppearance } from "@/store/slices/polkaDotSlice";
@@ -8,6 +9,8 @@ import { POLKA_DOT_PRESETS, POLKA_DOT_PALETTES } from "@/lib/polkaDotPresets";
 import PolkaDotPreview from "./PolkaDotPreview";
 
 export default function PresetControls() {
+    const t = useTranslations("editor");
+    const tLabels = useTranslations("labels");
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.polkaDot);
     const [spinning, setSpinning] = useState(false);
@@ -17,7 +20,7 @@ export default function PresetControls() {
             {/* Presets */}
             <div>
                 <div className="flex items-center justify-between mb-2">
-                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Presets</label>
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.presets")}</label>
                     <button
                         type="button"
                         onClick={() => {
@@ -28,7 +31,7 @@ export default function PresetControls() {
                         className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#C5E89A] bg-[#E8F5D2] hover:bg-[#d5edba] text-[11px] font-medium"
                     >
                         <Shuffle className={`w-3.5 h-3.5 shrink-0 ${spinning ? "animate-spin-once" : ""}`} />
-                        Shuffle
+                        {t("common.shuffle")}
                     </button>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -83,7 +86,7 @@ export default function PresetControls() {
                                         fontWeight: selected ? 600 : 400,
                                     }}
                                 >
-                                    {preset.label}
+                                    {tLabels(`polkaDotPresets.${preset.id}`)}
                                 </span>
                             </button>
                         );
@@ -93,7 +96,7 @@ export default function PresetControls() {
 
             {/* Palettes */}
             <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Palettes</label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("polkaDot.presets.palettes")}</label>
                 <div className="flex flex-col gap-2">
                     {POLKA_DOT_PALETTES.map((palette) => {
                         const selected = config.paletteId === palette.id;
@@ -130,7 +133,7 @@ export default function PresetControls() {
                                     className="text-[12px]"
                                     style={{ color: selected ? "#C5E89A" : "#64748b" }}
                                 >
-                                    {palette.label}
+                                    {tLabels(`polkaDotPalettes.${palette.id}`)}
                                 </span>
                             </button>
                         );

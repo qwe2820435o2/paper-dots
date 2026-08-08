@@ -4,15 +4,6 @@ export const SAMPLE_SHAPE_IDS = ["diamond", "heart", "star", "crown", "leaf", "c
 
 export type SampleShapeId = (typeof SAMPLE_SHAPE_IDS)[number];
 
-const SAMPLE_SHAPE_LABELS: Record<SampleShapeId, string> = {
-    diamond: "Diamond",
-    heart: "Heart",
-    star: "Star",
-    crown: "Crown",
-    leaf: "Leaf",
-    crescent: "Crescent",
-};
-
 const SAMPLE_SHAPE_PATHS: Record<SampleShapeId, string> = Object.fromEntries(
     SAMPLE_SHAPE_IDS.map((id) => [id, SHAPE_PATHS[id]!]),
 ) as Record<SampleShapeId, string>;
@@ -51,12 +42,9 @@ export function buildCharacterIconDataUrl(text: string, color: string): string {
 }
 
 export interface SampleIcon {
+    /** Doubles as the key under the `labels.sampleShapes` message namespace. */
     id: SampleShapeId;
-    label: string;
 }
 
 /** Sample shape catalog from the same shape library the decorate tool uses; colored on demand via buildSampleShapeIconDataUrl. */
-export const SAMPLE_ICONS: SampleIcon[] = SAMPLE_SHAPE_IDS.map((id) => ({
-    id,
-    label: SAMPLE_SHAPE_LABELS[id],
-}));
+export const SAMPLE_ICONS: SampleIcon[] = SAMPLE_SHAPE_IDS.map((id) => ({ id }));

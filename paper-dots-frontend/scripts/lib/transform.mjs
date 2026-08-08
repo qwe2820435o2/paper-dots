@@ -358,7 +358,14 @@ function toOrderedContent(draft) {
     };
 }
 
-/** @param {Array<{rowNumber:number, section:string, itemId:string, fieldName:string, en:string, htmlTag:string, ja:string}>} rows
+/** Translated locales, keyed by the app's routing code. The value is the sheet column header
+ *  the copy is authored under, used only for diagnostics wording. */
+const TRANSLATED_LOCALES = [
+    { locale: "jp", column: "JP" },
+    { locale: "id", column: "ID" },
+];
+
+/** @param {Array<{rowNumber:number, section:string, itemId:string, fieldName:string, en:string, htmlTag:string, jp:string, id:string}>} rows
  *  @param {{ registryEntry: object, toolLabelResolver: (label: string) => string|null }} context
  *  @returns {{ content: object|null, errors: string[], warnings: string[] }} */
 export function transformSheetRows(rows, context) {
@@ -375,21 +382,27 @@ export function transformSheetRows(rows, context) {
         return { content: null, errors: diagnostics.errors, warnings: diagnostics.warnings };
     }
 
-    const hasJaCell = rows.some((r) => String(r.ja ?? "").trim() !== "");
-    let jaContent = null;
-    if (hasJaCell) {
-        const jaDraft = buildLocaleDraft(rows, "ja", context, diagnostics);
-        finalizeImages(jaDraft);
-        nullifyEmptySections(jaDraft);
-        const candidate = toOrderedContent(jaDraft);
-        const jaMissing = missingRequiredPaths(candidate);
-        if (jaMissing.length > 0) {
-            diagnostics.warnings.push(`JA column incomplete (missing ${jaMissing.join(", ")}) — omitting ja from this tool`);
-        } else {
-            jaContent = candidate;
+    // A locale is emitted only when its column filled in every required field. A half-translated
+    // column is dropped entirely rather than shipped, because `getGuideContent` falls back to EN
+    // per *locale*, not per field — a partial draft would render blank headings, not English ones.
+    const content = { en: enContent };
+    for (const { locale, column } of TRANSLATED_LOCALES) {
+        const hasCell = rows.some((r) => String(r[locale] ?? "").trim() !== "");
+        if (!hasCell) continue;
+
+        const draft = buildLocaleDraft(rows, locale, context, diagnostics);
+        finalizeImages(draft);
+        nullifyEmptySections(draft);
+        const candidate = toOrderedContent(draft);
+        const missingForLocale = missingRequiredPaths(candidate);
+        if (missingForLocale.length > 0) {
+            diagnostics.warnings.push(
+                `${column} column incomplete (missing ${missingForLocale.join(", ")}) — omitting ${locale} from this tool`
+            );
+            continue;
         }
+        content[locale] = candidate;
     }
 
-    const content = jaContent ? { en: enContent, ja: jaContent } : { en: enContent };
     return { content, errors: diagnostics.errors, warnings: diagnostics.warnings };
 }

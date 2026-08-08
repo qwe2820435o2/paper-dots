@@ -7,7 +7,7 @@
  *  Route information deliberately lives in `registry.json`, not here: it is locale-invariant,
  *  so keeping it out of `GuideContent` means a translation can never drift the URL. */
 
-export type GuideLocale = "en" | "ja";
+export type GuideLocale = "en" | "jp" | "id";
 
 /** `src` is a path under `public/`. The whole object is `null` when no image was supplied,
  *  so the renderer only ever has one emptiness check to make. */
@@ -88,6 +88,6 @@ export interface GuideContent {
 }
 
 /** `en` is mandatory, every other locale optional: the sync script omits a locale entirely
- *  unless that column filled in all the required fields. `getGuideContent` falls back to
- *  `en`, so adding a `/ja` route later is a routing change with no content-layer edits. */
+ *  unless that column filled in all the required fields. `getGuideContent` falls back to `en`,
+ *  so a guide can be routed under `/jp` or `/id` before its column has been translated. */
 export type GuideContentByLocale = { en: GuideContent } & Partial<Record<GuideLocale, GuideContent>>;

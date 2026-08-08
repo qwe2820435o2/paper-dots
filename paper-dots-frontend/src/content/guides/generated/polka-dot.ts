@@ -151,7 +151,7 @@ const content: GuideContentByLocale = {
       }
     }
   },
-  "ja": {
+  "jp": {
     "name": "ポルカドットジェネレーター",
     "meta": {
       "title": "ポルカドットジェネレーター｜ポルカドット柄＆ポルカドット背景",

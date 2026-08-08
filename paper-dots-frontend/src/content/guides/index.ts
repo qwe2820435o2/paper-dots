@@ -22,8 +22,9 @@ export function hasGuideContent(slug: GuideSlug): boolean {
     return slug in GUIDES;
 }
 
-/** Falls back to English whenever the requested locale was not translated. Only `en` is
- *  routed today; the parameter exists so that adding `/ja` touches routing and nothing else. */
+/** Falls back to English whenever the requested locale was not translated — the Google Sheet
+ *  rolls translations out one tool at a time, so an untranslated guide renders in English
+ *  rather than 404ing or showing blanks. */
 export function getGuideContent(slug: GuideSlug, locale: GuideLocale = "en"): GuideContent {
     const byLocale = GUIDES[slug];
     if (!byLocale) {
