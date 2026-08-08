@@ -18,7 +18,12 @@ interface GuideHeroProps {
 export default function GuideHero({ hero, appPath }: GuideHeroProps) {
     const ctaHref = hero.cta.href ?? appPath;
     const visual = hero.image ? (
-        <GuideMedia image={hero.image} aspect="aspect-[4/3]" priority />
+        <GuideMedia
+            image={hero.image}
+            aspect="aspect-[1012/1164]"
+            priority
+            className="rounded-none shadow-none"
+        />
     ) : (
         <GuideHeroStudio />
     );

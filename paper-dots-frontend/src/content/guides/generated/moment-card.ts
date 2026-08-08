@@ -12,7 +12,10 @@ const content: GuideContentByLocale = {
     "hero": {
       "headline": "Photo Quote Maker for IG-Ready Mood Posts",
       "subheadline": "Upload a photo, add your words, and DottyPic builds a clean color block layout with smart crop so your quote feels ready to post today.",
-      "image": null,
+      "image": {
+        "src": "/photo-quote-hero-preview.png",
+        "alt": "Before and after preview of a photo quote card"
+      },
       "cta": {
         "text": "Make a Photo Quote",
         "href": null
@@ -160,7 +163,10 @@ const content: GuideContentByLocale = {
     "hero": {
       "headline": "インスタにすぐ出せるムード投稿向けの写真クオートメーカー",
       "subheadline": "写真をアップして言葉を足すだけ。DottyPicがカラーブロックのレイアウトとスマートな切り抜きを組み立てて、今日そのまま投稿できそうなクオートに仕上げます。",
-      "image": null,
+      "image": {
+        "src": "/photo-quote-hero-preview.png",
+        "alt": "Before and after preview of a photo quote card"
+      },
       "cta": {
         "text": "写真クオートを作る",
         "href": null
