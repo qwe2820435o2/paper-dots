@@ -28,31 +28,46 @@ const content: GuideContentByLocale = {
         "id": "1",
         "heading": "Photo Quote Maker With Clean Text Space",
         "body": "You feel stuck when quote text sits on top of faces and ruins the shot. Now your words live in their own calm field above the photo. Text sits in a separate color block, with no overlay layers, so your photo with quote stays readable without covering the moment you care about in the frame you shot.",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-1-preview.png",
+          "alt": "Before and after preview showing quote text kept off the photo in its own color block"
+        }
       },
       {
         "id": "2",
         "heading": "Auto Colors From Your Photo",
         "body": "Mismatched backgrounds make a quote look cheap next to the picture. The finished frame feels coordinated, almost magazine-clean. The tool reads your photo's main colors and builds a matching solid backdrop, so your quote photo looks intentional instead of randomly filled or clashing with the image.",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-2-preview.png",
+          "alt": "Preview of a solid background color automatically matched to the photo's tones"
+        }
       },
       {
         "id": "3",
         "heading": "Smart Crop for Better Composition",
         "body": "You get impatient when cropping for Instagram cuts off the subject. The key person or object lands where it should in the frame. Crop to your target ratio and keep the subject in place, so your quotes photo maker result looks composed before you even touch a slider or guess where to cut.",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-3-preview.png",
+          "alt": "Preview of a photo smart-cropped to keep the subject in frame"
+        }
       },
       {
         "id": "4",
         "heading": "No Templates or Layer Fuss",
         "body": "Design tools feel rushed when every post starts with picking a template and moving layers. In a few seconds you already have a finished mood image. Skip template hunting and layer edits. Add your line, let the layout build itself, and leave with a post-ready photo with quotes maker look for social feeds.",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-4-preview.png",
+          "alt": "Preview of a finished photo quote layout built without templates or layers"
+        }
       },
       {
         "id": "5",
         "heading": "Your Words, Free and Unwatermarked",
         "body": "You hesitate when a free tool asks for login or stamps a watermark on your mood. You keep full credit and full freedom to say what you feel. Type your own quote, download without a watermark, and create in DottyPic with no account required whenever inspiration hits your next feed plan.",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-5-preview.png",
+          "alt": "Preview of a downloaded photo quote with no watermark"
+        }
       }
     ],
     "howTo": {
@@ -179,31 +194,46 @@ const content: GuideContentByLocale = {
         "id": "1",
         "heading": "文字スペースがきれいな写真クオートメーカー",
         "body": "顔の上にクオートが乗って写真が台無しになると、どうにも行き詰まった感じになりますよね。いまは言葉が写真の上、落ち着いた専用エリアに収まります。テキストは重ねレイヤーではなく独立したカラーブロックに入るので、撮ったコマの大事な瞬間を隠さず、写真付きのクオートもきちんと読めます。",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-1-preview.png",
+          "alt": "Before and after preview showing quote text kept off the photo in its own color block"
+        }
       },
       {
         "id": "2",
         "heading": "写真から自動で色を合わせる",
         "body": "背景の色が写真と合っていないと、クオートが一気に安っぽく見えます。完成した画面はまとまりがあり、雑誌のページみたいにきれい。ツールが写真のメインカラーを読み取り、合う単色背景を作るので、クオート写真は適当な塗りつぶしやチグハグな印象ではなく、意図のある仕上がりになります。",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-2-preview.png",
+          "alt": "Preview of a solid background color automatically matched to the photo's tones"
+        }
       },
       {
         "id": "3",
         "heading": "構図が整うスマートな切り抜き",
         "body": "インスタ用に切ったら主役が欠けていて、もどかしくなりますよね。大事な人や被写体が、フレーム内のしかるべき位置に収まります。目的の比率に切り抜きつつ被写体をキープするので、スライダーを触ったり切り位置を当てずっぽうに決めたりする前から、写真クオートメーカーの結果がきちんと構図立てされています。",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-3-preview.png",
+          "alt": "Preview of a photo smart-cropped to keep the subject in frame"
+        }
       },
       {
         "id": "4",
         "heading": "テンプレもレイヤー操作も不要",
         "body": "毎回テンプレを選んでレイヤーを動かすところから始まると、デザインツールって急かされている感じがします。数秒で、もうムードのある完成画像ができています。テンプレ探しとレイヤー編集はスキップ。一文を足せばレイアウトが自分で立ち上がり、SNS向けにすぐ出せる写真付きクオートメーカーの見た目で持ち帰れます。",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-4-preview.png",
+          "alt": "Preview of a finished photo quote layout built without templates or layers"
+        }
       },
       {
         "id": "5",
         "heading": "自分の言葉で、透かしなし・無料",
         "body": "無料ツールなのにログインを求められたり、ムードのある一枚に透かしが押されたりすると、手が止まります。クレジットも、言いたいことも、あなたのもの。好きなクオートを打って透かしなしでダウンロード。次の投稿プランにひらめきが来たら、アカウントなしでDottyPicで作れます。",
-        "image": null
+        "image": {
+          "src": "/photo-quote-feature-5-preview.png",
+          "alt": "Preview of a downloaded photo quote with no watermark"
+        }
       }
     ],
     "howTo": {
