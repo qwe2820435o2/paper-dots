@@ -15,10 +15,12 @@ interface GuideFeatureBlockProps {
  *  GUIDE_DEFAULT_FEATURE_VISUALS dot-pattern mocks (same on every guide page, not just
  *  polka-dot's own). An id with no matching preset falls back further to
  *  GuideMediaPlaceholder. The mockup's decorative overlay card is otherwise dropped entirely:
- *  it was hand-authored per feature and has no corresponding sheet field. */
+ *  it was hand-authored per feature and has no corresponding sheet field. A real image uses
+ *  its own native pixel ratio rather than the shared GUIDE_FEATURE_SHOT_ASPECT (which stays
+ *  reserved for the mocks/placeholder), so object-cover never has to crop it. */
 export default function GuideFeatureBlock({ feature, flip }: GuideFeatureBlockProps) {
     const media = feature.image ? (
-        <GuideMedia image={feature.image} aspect={GUIDE_FEATURE_SHOT_ASPECT} />
+        <GuideMedia image={feature.image} aspect="aspect-[1794/1260]" className="shadow-none" />
     ) : (
         GUIDE_DEFAULT_FEATURE_VISUALS[feature.id] ?? <GuideMedia image={null} aspect={GUIDE_FEATURE_SHOT_ASPECT} />
     );
