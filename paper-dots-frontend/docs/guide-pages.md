@@ -434,8 +434,8 @@ Travis 配好服务账号凭据后还需要跑一遍（这部分我没有凭据�
 
 ### 未完成 / 被阻塞
 
-- [ ] **geometric-patterns 的 Sheet 同步** —— 表头 A1 单元格空着，等文案同事补上 `Section` 之后跑 `npm run sync:guides -- --slug=geometric-patterns` 才能拿到真实内容；目前这个工具仍是 M8a 的手写占位版（仅 Hero + 工具推荐条）
-- [ ] **Tool Recommendation（工具推荐卡片）暂时是空的** —— 真实 Sheet 里 `polka-dot`/`moment-card`/`dot` 三个 tab 的 Tool Recommendation 区目前一行都没填（Tool Name/Tool Link 都是空），所以这次真实同步出来的 `toolLinks` 都是 `null`。等 Sheet 补上后重新跑同步即可，不用改代码
+- [x] **geometric-patterns 的 Sheet 同步**（2026-08-21）—— 文案同事补上了 A1 表头 `Section`，`npm run sync:guides --slug=geometric-patterns` 已跑通，`generated/geometric-patterns.ts` 从 M8a 手写占位版换成了真实 Sheet 内容（5 features、3 how-to steps、4 why-cards、8 faq，含 JA/ID 两个 locale）。本地起 dev server 核对过 Hero/CTA/Feature 1 渲染文案与 Sheet 一致。
+- [ ] **Tool Recommendation（工具推荐卡片）暂时是空的** —— 真实 Sheet 里 `polka-dot`/`moment-card`/`dot`/`geometric-patterns` 四个 tab 的 Tool Recommendation 区目前一行都没填（Tool Name/Tool Link 都是空），所以这次真实同步出来的 `toolLinks` 都是 `null`。等 Sheet 补上后重新跑同步即可，不用改代码
 - [ ] **`scripts/test/transform.smoke.mjs` 需要重做 fixture** —— 这个本地测试拿 `generated/polka-dot.ts` 当比对基准，这次被真实内容覆盖后基准变了，本地再跑这个测试会失败（不影响 `build`/`lint`，两者都没接入这个测试）。测试设计前提"`polka-dot.ts` 保持 M1 手写内容不变"已经不成立，需要用当前真实内容重做一份合成 fixture，或者换一种验证方式
 - [ ] **M9** 可选打磨 —— 未开始（滚动进场动画、per-guide OG 图、`/faq` 迁移到原生 `<details>`、删除死掉的 `tailwind.config.ts`）
 
