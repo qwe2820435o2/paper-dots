@@ -10,10 +10,16 @@
 export type GuideLocale = "en" | "jp" | "id";
 
 /** `src` is a path under `public/`. The whole object is `null` when no image was supplied,
- *  so the renderer only ever has one emptiness check to make. */
+ *  so the renderer only ever has one emptiness check to make. `aspect` is an optional Tailwind
+ *  aspect-ratio utility (e.g. `"aspect-[1012/1164]"`) that overrides the renderer's default
+ *  when the asset's real proportions don't match it — see GuideMedia. `frameless` skips the
+ *  renderer's own rounded-corner + shadow card for assets (like UI screenshots) that already
+ *  render their own frame, so the two don't stack into a double border. */
 export interface GuideImage {
     src: string;
     alt: string;
+    aspect?: string;
+    frameless?: boolean;
 }
 
 /** `href` is `null` when the sheet left the link cell empty, which means "send the user to

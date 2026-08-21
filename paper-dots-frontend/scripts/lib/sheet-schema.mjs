@@ -29,8 +29,6 @@ export const FIELD_MAP = {
 
     "hero::headline": "hero.headline",
     "hero::subheadline": "hero.subheadline",
-    "hero::hero image": "hero.image.src",
-    "hero::hero image alt": "hero.image.alt",
     "hero::primary cta text": "hero.cta.text",
     "hero::primary cta link": "hero.cta.href",
 
@@ -63,8 +61,6 @@ export const COLLECTIONS = {
         fields: {
             "feature title": "heading",
             "feature description": "body",
-            "feature image": "image.src",
-            "feature image alt": "image.alt",
         },
     },
     "how to": {
