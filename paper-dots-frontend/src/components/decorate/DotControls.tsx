@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ComponentType } from "react";
+import { useTranslations } from "next-intl";
 import {
   Circle as CircleIcon,
   Flower2,
@@ -52,6 +53,8 @@ const SHAPE_ICONS: Record<DotShape, IconComponent> = {
 };
 
 export default function DotControls() {
+  const t = useTranslations("editor");
+  const tLabels = useTranslations("labels");
   const dispatch = useAppDispatch();
   const dotConfig = useAppSelector((s) => s.decorate.dotConfig);
   const [pickerOpen, setPickerOpen] = useState<"single" | "grad1" | "grad2" | null>(null);
@@ -78,7 +81,7 @@ export default function DotControls() {
       {/* Shape */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Shape</label>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.shape")}</label>
           <button
             type="button"
             onClick={() => {
@@ -89,7 +92,7 @@ export default function DotControls() {
             className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#C5E89A] bg-[#E8F5D2] hover:bg-[#d5edba] text-[11px] font-medium"
           >
             <Shuffle className={`w-3.5 h-3.5 shrink-0 ${spinning ? "animate-spin-once" : ""}`} />
-            Shuffle
+            {t("common.shuffle")}
           </button>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -104,8 +107,8 @@ export default function DotControls() {
                 }}
                 type="button"
                 onClick={() => dispatch(setDotShape(s.value))}
-                aria-label={s.label}
-                title={s.label}
+                aria-label={tLabels(`dotShapes.${s.value}`)}
+                title={tLabels(`dotShapes.${s.value}`)}
                 aria-pressed={selected}
                 className="w-11 h-11 rounded-xl flex items-center justify-center transition-all"
                 style={
@@ -133,13 +136,13 @@ export default function DotControls() {
       {dotConfig.shape === "character" && (
         <div>
           <label className="block text-[11px] uppercase mb-2 text-[#64748b] tracking-[0.08em]">
-            Character
+            {t("common.character")}
           </label>
           <input
             type="text"
             value={dotConfig.character}
             onChange={(e) => dispatch(setCharacter(e.target.value))}
-            placeholder="A"
+            placeholder={t("common.characterPlaceholder")}
             className="w-full px-3 py-2 rounded-lg text-[14px] text-[#1a1a2e] text-center outline-none transition-colors bg-white border border-[#D2EAAA] focus:border-[#C5E89A]"
           />
         </div>
@@ -148,7 +151,7 @@ export default function DotControls() {
       {/* Count */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Count</label>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("dot.dots.count")}</label>
           <span className="text-[12px] tabular-nums text-[#64748b]">{dotConfig.count}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[dotConfig.count]} onValueChange={(v) => dispatch(setDotCount(v[0]))} />
@@ -157,7 +160,7 @@ export default function DotControls() {
       {/* Size */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Size</label>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.size")}</label>
           <span className="text-[12px] tabular-nums text-[#64748b]">{Math.round(dotConfig.size * 2)}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[Math.round(dotConfig.size * 2)]} onValueChange={(v) => dispatch(setDotSize(v[0] / 2))} />
@@ -166,7 +169,7 @@ export default function DotControls() {
       {/* Variance */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Variance</label>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("dot.dots.variance")}</label>
           <span className="text-[12px] tabular-nums text-[#64748b]">{dotConfig.variance}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[dotConfig.variance]} onValueChange={(v) => dispatch(setDotVariance(v[0]))} />
@@ -175,7 +178,7 @@ export default function DotControls() {
       {/* Opacity */}
       <div>
         <div className="flex items-baseline justify-between mb-2">
-          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Opacity</label>
+          <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.opacity")}</label>
           <span className="text-[12px] tabular-nums text-[#64748b]">{dotConfig.opacity}</span>
         </div>
         <Slider min={0} max={100} step={1} value={[dotConfig.opacity]} onValueChange={(v) => dispatch(setDotOpacity(v[0]))} />
@@ -183,17 +186,11 @@ export default function DotControls() {
 
       {/* Color */}
       <div className="flex flex-col gap-3">
-        <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Color</label>
+        <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.color")}</label>
 
         {/* Mode selector */}
         <div className="grid grid-cols-4 gap-1.5">
           {(["auto", "single", "palette", "gradient"] as const).map((mode) => {
-            const labels: Record<string, string> = {
-              auto: "Auto",
-              single: "Single",
-              palette: "Palette",
-              gradient: "Gradient",
-            };
             const selected = colorMode === mode;
             return (
               <button
@@ -212,7 +209,7 @@ export default function DotControls() {
                     : "#D2EAAA 0px 0px 0px 1px",
                 }}
               >
-                {labels[mode]}
+                {t(`dot.dots.colorModes.${mode}`)}
               </button>
             );
           })}
@@ -226,13 +223,13 @@ export default function DotControls() {
                 const selected = dotConfig.color === c.value && pickerOpen !== "single";
                 return (
                   <button
-                    key={c.value}
+                    key={c.id}
                     type="button"
                     onClick={() => {
                       dispatch(setDotColor(c.value));
                       setPickerOpen(null);
                     }}
-                    aria-label={c.label}
+                    aria-label={tLabels(`dotColors.${c.id}`)}
                     className="aspect-square rounded-full transition-all"
                     style={{
                       backgroundColor: c.value,
@@ -246,7 +243,7 @@ export default function DotControls() {
               <button
                 type="button"
                 onClick={() => setPickerOpen((v) => (v === "single" ? null : "single"))}
-                aria-label="Custom color"
+                aria-label={t("common.customColor")}
                 className="aspect-square rounded-full transition-all"
                 style={{
                   background: "conic-gradient(from 0deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
@@ -296,7 +293,7 @@ export default function DotControls() {
                     className="text-[12px]"
                     style={{ color: selected ? "#C5E89A" : "#64748b" }}
                   >
-                    {preset.label}
+                    {tLabels(`palettes.${preset.id}`)}
                   </span>
                 </button>
               );
@@ -309,11 +306,6 @@ export default function DotControls() {
           <div className="flex flex-col gap-3">
             <div className="flex gap-1.5">
               {(["x", "y", "radial"] as GradientDirection[]).map((dir) => {
-                const labels: Record<GradientDirection, string> = {
-                  x: "Horizontal",
-                  y: "Vertical",
-                  radial: "Radial",
-                };
                 const sel = dotConfig.gradientDirection === dir;
                 return (
                   <button
@@ -329,7 +321,7 @@ export default function DotControls() {
                         : "#D2EAAA 0px 0px 0px 1px",
                     }}
                   >
-                    {labels[dir]}
+                    {t(`dot.dots.gradientDirections.${dir}`)}
                   </button>
                 );
               })}
@@ -337,7 +329,7 @@ export default function DotControls() {
             <div className="flex gap-2">
               {(["grad1", "grad2"] as const).map((key) => {
                 const color = key === "grad1" ? dotConfig.gradientColor1 : dotConfig.gradientColor2;
-                const label = key === "grad1" ? "Start" : "End";
+                const label = key === "grad1" ? t("dot.dots.gradientStart") : t("dot.dots.gradientEnd");
                 const isOpen = pickerOpen === key;
                 return (
                   <button

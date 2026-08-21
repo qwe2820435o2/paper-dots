@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 function hsvToHex(h: number, s: number, v: number): string {
     const c = v * s;
@@ -40,11 +41,14 @@ const HEX_RE = /^#?[0-9a-fA-F]{6}$/;
 interface Props {
     color: string;
     onChange: (hex: string) => void;
-    /** Used to build accessible names for the gradient pad and hue slider, e.g. "Background". */
+    /** Used to build accessible names for the gradient pad and hue slider, e.g. "Background".
+     *  Callers pass an already-translated string; the generic fallback is resolved here. */
     label?: string;
 }
 
-export default function ColorPicker({ color, onChange, label = "Color" }: Props) {
+export default function ColorPicker({ color, onChange, label }: Props) {
+    const t = useTranslations("editor.common");
+    const fieldLabel = label ?? t("color");
     const gradientRef = useRef<HTMLDivElement>(null);
     const [hue, setHue] = useState(180);
     const [pos, setPos] = useState({ x: 0.15, y: 0.2 });
@@ -174,7 +178,7 @@ export default function ColorPicker({ color, onChange, label = "Color" }: Props)
                 ref={gradientRef}
                 role="slider"
                 tabIndex={0}
-                aria-label={`${label} saturation and brightness`}
+                aria-label={t("colorPickerSaturation", { label: fieldLabel })}
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-valuenow={Math.round(pos.x * 100)}
@@ -230,7 +234,7 @@ export default function ColorPicker({ color, onChange, label = "Color" }: Props)
                             step={1}
                             value={hue}
                             onChange={(e) => handleHue(Number(e.target.value))}
-                            aria-label={`${label} hue`}
+                            aria-label={t("colorPickerHue", { label: fieldLabel })}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
                         <div
@@ -256,7 +260,7 @@ export default function ColorPicker({ color, onChange, label = "Color" }: Props)
                             }
                         }}
                         placeholder="#1AC8CE"
-                        aria-label={`${label} hex value`}
+                        aria-label={t("colorPickerHex", { label: fieldLabel })}
                         className="w-full px-2 py-1 rounded-lg border border-[#D2EAAA] bg-white text-[13px] font-mono text-center text-[#1a1a2e] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#C5E89A] focus:ring-2 focus:ring-[#E8F5D2]"
                     />
                 </div>

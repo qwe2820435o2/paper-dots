@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/store/hooks";
 import { buildPolkaDotSvgString, drawPolkaDotCanvas, type PolkaDotConfig } from "@/lib/polkaDotGrid";
 import { useHTMLImage } from "@/components/decorate/useHTMLImage";
@@ -16,6 +17,7 @@ interface Props {
 const PREVIEW_DESIGN_SIZE = 800;
 
 export default function PolkaDotPreview({ config: configOverride }: Props) {
+    const t = useTranslations("editor");
     const liveConfig = useAppSelector((s) => s.polkaDot);
     const config = configOverride ?? liveConfig;
     const iconImage = useHTMLImage(config.iconUrl);
@@ -64,7 +66,7 @@ export default function PolkaDotPreview({ config: configOverride }: Props) {
                 />
             ) : (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={circleSvgDataUrl ?? undefined} alt="Polka dot pattern preview" className="w-full h-full object-cover" />
+                <img src={circleSvgDataUrl ?? undefined} alt={t("polkaDot.previewAlt")} className="w-full h-full object-cover" />
             )}
         </div>
     );

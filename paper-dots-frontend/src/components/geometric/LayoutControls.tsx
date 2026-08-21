@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef } from "react";
 import { shallowEqual } from "react-redux";
+import { useTranslations } from "next-intl";
 import { Minus, Plus, LayoutGrid, Grid2x2, Info } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ToggleChip from "./ToggleChip";
@@ -149,6 +150,7 @@ function LabeledSlider({
 }
 
 export default function LayoutControls() {
+    const t = useTranslations("editor");
     const dispatch = useAppDispatch();
     const config = useAppSelector(
         (s) => ({
@@ -185,17 +187,17 @@ export default function LayoutControls() {
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
             <div className="grid grid-cols-2 gap-3">
-                <Stepper label="Rows" value={config.rows} onChange={(v) => dispatch(setRows(v))} />
-                <Stepper label="Columns" value={config.columns} onChange={(v) => dispatch(setColumns(v))} />
+                <Stepper label={t("geometric.layout.rows")} value={config.rows} onChange={(v) => dispatch(setRows(v))} />
+                <Stepper label={t("geometric.layout.columns")} value={config.columns} onChange={(v) => dispatch(setColumns(v))} />
             </div>
 
             <div className="flex flex-col gap-3 pt-1 border-t border-border">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">Grid Style</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">{t("geometric.layout.gridStyle")}</label>
                 <div className="flex gap-2.5">
                     <ToggleChip
                         selected={config.gridStyle === "even"}
                         onClick={() => handleGridStyle("even")}
-                        ariaLabel="Even grid"
+                        ariaLabel={t("geometric.layout.evenGrid")}
                         className="w-11 h-11 rounded-lg flex items-center justify-center"
                         selectedClassName="bg-foreground text-background"
                         unselectedClassName="bg-muted text-muted-foreground hover:bg-secondary"
@@ -205,7 +207,7 @@ export default function LayoutControls() {
                     <ToggleChip
                         selected={config.gridStyle === "compact"}
                         onClick={() => handleGridStyle("compact")}
-                        ariaLabel="Compact grid"
+                        ariaLabel={t("geometric.layout.compactGrid")}
                         className="w-11 h-11 rounded-lg flex items-center justify-center"
                         selectedClassName="bg-foreground text-background"
                         unselectedClassName="bg-muted text-muted-foreground hover:bg-secondary"
@@ -216,15 +218,15 @@ export default function LayoutControls() {
             </div>
 
             <div className="flex flex-col gap-3 pt-1 border-t border-border">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">Randomize</label>
-                <ToggleRow label="Rotation" checked={config.randomizeRotation} onChange={handleRandomizeRotation} />
-                <ToggleRow label="Spacing" checked={config.randomizeSpacing} onChange={handleRandomizeSpacing} />
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">{t("geometric.layout.randomize")}</label>
+                <ToggleRow label={t("common.rotation")} checked={config.randomizeRotation} onChange={handleRandomizeRotation} />
+                <ToggleRow label={t("common.spacing")} checked={config.randomizeSpacing} onChange={handleRandomizeSpacing} />
             </div>
 
             <div className="flex flex-col gap-5 pt-1 border-t border-border">
                 <div className="pt-3">
                     <LabeledSlider
-                        label="Density"
+                        label={t("geometric.layout.density")}
                         value={config.density}
                         min={0}
                         max={100}
@@ -234,7 +236,7 @@ export default function LayoutControls() {
                     />
                 </div>
                 <LabeledSlider
-                    label="Spacing"
+                    label={t("common.spacing")}
                     value={config.spacing}
                     min={0}
                     max={100}
@@ -243,7 +245,7 @@ export default function LayoutControls() {
                     onChange={(v) => dispatch(setSpacing(v))}
                 />
                 <LabeledSlider
-                    label="Rotation"
+                    label={t("common.rotation")}
                     value={config.rotation}
                     min={0}
                     max={360}
@@ -252,7 +254,7 @@ export default function LayoutControls() {
                     onChange={(v) => dispatch(setRotation(v))}
                 />
                 <LabeledSlider
-                    label="Opacity"
+                    label={t("common.opacity")}
                     value={config.opacity}
                     min={0}
                     max={100}

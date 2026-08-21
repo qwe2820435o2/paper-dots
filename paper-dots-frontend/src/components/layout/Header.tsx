@@ -1,37 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import { ChevronDown, Globe, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { CREATE_TOOLS, type CreateTool } from "@/lib/tools";
 import { guideFontClass } from "@/lib/fonts";
 import { GUIDE_WRAP } from "@/components/guide/guideLayout";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 
 /** Nav-row typography borrows the guide pages' DM Sans / DM Mono / Bricolage Grotesque faces.
  *  Only `guideFontClass` (the three CSS-variable classes) is applied, never `guide-scope`
  *  itself, so none of guide.css's scoped rules (background, base font-size, h1-h4 sizing)
  *  leak into the header — it stays a normal component, just with these font variables in scope. */
 const NAV_LINK_STYLE = { fontFamily: "var(--font-dm-sans)" };
-const LANG_STYLE = { fontFamily: "var(--font-dm-mono)" };
 const CTA_STYLE = { fontFamily: "var(--font-bricolage)" };
 const NAV_LINK_CLASS = "text-[15.5px] font-medium text-[#3c4a30] transition-colors hover:text-[#15200d]";
 
 interface NavLink {
-    label: string;
+    /** Stable across locales — used for React keys and dropdown open-state, which a
+     *  translated label cannot be. */
+    id: string;
+    labelKey: string;
     href: string;
     children?: CreateTool[];
 }
 
 const navLinks: NavLink[] = [
     {
-        label: "Tools",
+        id: "tools",
+        labelKey: "navTools",
         href: "/#tools",
         children: CREATE_TOOLS,
     },
 ];
 
 export default function Header() {
+    const t = useTranslations("header");
+    const tTools = useTranslations("tools");
     const [menuOpen, setMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -48,17 +55,17 @@ export default function Header() {
                         {navLinks.map((item) => {
                             if (!item.children) {
                                 return (
-                                    <Link key={item.label} href={item.href} className={NAV_LINK_CLASS} style={NAV_LINK_STYLE}>
-                                        {item.label}
+                                    <Link key={item.id} href={item.href} className={NAV_LINK_CLASS} style={NAV_LINK_STYLE}>
+                                        {t(item.labelKey)}
                                     </Link>
                                 );
                             }
-                            const isOpen = openDropdown === item.label;
+                            const isOpen = openDropdown === item.id;
                             return (
                                 <div
-                                    key={item.label}
+                                    key={item.id}
                                     className="relative"
-                                    onMouseEnter={() => setOpenDropdown(item.label)}
+                                    onMouseEnter={() => setOpenDropdown(item.id)}
                                     onMouseLeave={() => setOpenDropdown(null)}
                                 >
                                     <Link
@@ -66,7 +73,7 @@ export default function Header() {
                                         className={`flex items-center gap-1 ${NAV_LINK_CLASS}`}
                                         style={NAV_LINK_STYLE}
                                     >
-                                        {item.label}
+                                        {t(item.labelKey)}
                                         <ChevronDown
                                             size={14}
                                             strokeWidth={2}
@@ -78,19 +85,17 @@ export default function Header() {
                                             <div className="min-w-[220px] bg-white rounded-xl border border-[#D2EAAA] shadow-[0_8px_24px_rgba(15,23,42,0.08)] py-2">
                                                 {item.children.map((child) => (
                                                     <Link
-                                                        key={child.label}
+                                                        key={child.key}
                                                         href={child.href}
                                                         className="block px-4 py-2 hover:bg-[#F4FAE8] transition-colors"
                                                         onClick={() => setOpenDropdown(null)}
                                                     >
                                                         <div className="text-[14px] font-medium text-[#1a1a2e]">
-                                                            {child.label}
+                                                            {tTools(`${child.key}.label`)}
                                                         </div>
-                                                        {child.description && (
-                                                            <div className="text-[11px] text-[#9CA3AF] leading-[1.5] mt-0.5">
-                                                                {child.description}
-                                                            </div>
-                                                        )}
+                                                        <div className="text-[11px] text-[#9CA3AF] leading-[1.5] mt-0.5">
+                                                            {tTools(`${child.key}.navDescription`)}
+                                                        </div>
                                                     </Link>
                                                 ))}
                                             </div>
@@ -103,22 +108,13 @@ export default function Header() {
 
                     {/* Desktop CTA */}
                     <div className="hidden items-center gap-3.5 md:ml-auto md:flex">
-                        <button
-                            type="button"
-                            className="inline-flex items-center gap-[7px] rounded-full border border-[#e3e9d8] bg-white px-3.5 py-2 text-[13px] text-[#3c4a30] transition-colors hover:border-[#15200d]"
-                            style={LANG_STYLE}
-                            aria-label="Change language"
-                        >
-                            <Globe size={14} strokeWidth={1.4} />
-                            EN
-                            <ChevronDown size={9} strokeWidth={1.6} />
-                        </button>
+                        <LanguageSwitcher />
                         <Link
                             href="/create/polka-dot"
                             className="inline-flex items-center gap-2 rounded-full border-2 border-[#15200d] bg-[#c5e89a] px-[22px] py-[11px] text-[15px] font-bold text-[#15200d] shadow-[0_4px_0_#15200d] transition-all hover:translate-y-[3px] hover:bg-[#d5f0ae] hover:shadow-[0_2px_0_#15200d] active:translate-y-[5px] active:shadow-none"
                             style={CTA_STYLE}
                         >
-                            Upload a photo
+                            {t("cta")}
                         </Link>
                     </div>
 
@@ -126,7 +122,7 @@ export default function Header() {
                     <button
                         className="ml-auto p-2 text-[#15200d] md:hidden"
                         onClick={() => setMenuOpen(!menuOpen)}
-                        aria-label="Toggle menu"
+                        aria-label={t("toggleMenu")}
                     >
                         {menuOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
@@ -141,29 +137,29 @@ export default function Header() {
                             if (!item.children) {
                                 return (
                                     <Link
-                                        key={item.label}
+                                        key={item.id}
                                         href={item.href}
                                         className={`py-2 ${NAV_LINK_CLASS}`}
                                         style={NAV_LINK_STYLE}
                                         onClick={() => setMenuOpen(false)}
                                     >
-                                        {item.label}
+                                        {t(item.labelKey)}
                                     </Link>
                                 );
                             }
                             return (
-                                <div key={item.label} className="flex flex-col">
+                                <div key={item.id} className="flex flex-col">
                                     <span className="text-[12px] font-semibold text-[#9CA3AF] uppercase tracking-[0.06em] pt-3 pb-1">
-                                        {item.label}
+                                        {t(item.labelKey)}
                                     </span>
                                     {item.children.map((child) => (
                                         <Link
-                                            key={child.label}
+                                            key={child.key}
                                             href={child.href}
                                             className="text-[15px] text-[#1a1a2e] py-2 pl-2 hover:text-[#9ED06C] transition-colors"
                                             onClick={() => setMenuOpen(false)}
                                         >
-                                            {child.label}
+                                            {tTools(`${child.key}.label`)}
                                         </Link>
                                     ))}
                                 </div>
@@ -175,8 +171,11 @@ export default function Header() {
                             style={CTA_STYLE}
                             onClick={() => setMenuOpen(false)}
                         >
-                            Upload a photo
+                            {t("cta")}
                         </Link>
+                        <div className="mt-4 border-t border-[#e3e9d8] pt-4">
+                            <LanguageSwitcher variant="inline" onSwitch={() => setMenuOpen(false)} />
+                        </div>
                     </nav>
                 </div>
             )}

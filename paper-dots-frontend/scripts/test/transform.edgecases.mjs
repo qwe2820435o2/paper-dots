@@ -7,9 +7,9 @@ import { transformSheetRows } from "../lib/transform.mjs";
 import { loadRegistry, makeToolLabelResolver } from "../lib/registry.mjs";
 
 let rowNumber = 1;
-function row(section, itemId, fieldName, en, ja = "") {
+function row(section, itemId, fieldName, en, jp = "") {
     rowNumber++;
-    return { rowNumber, section, itemId: itemId === null ? "" : String(itemId), fieldName, en, htmlTag: "", ja };
+    return { rowNumber, section, itemId: itemId === null ? "" : String(itemId), fieldName, en, htmlTag: "", jp, id: "" };
 }
 
 const failures = [];
@@ -148,12 +148,12 @@ async function main() {
         check("Url mismatch -> error", errors.some((e) => e.includes("does not match registry.guidePath")));
     }
 
-    // 12. Incomplete JA column omits ja entirely rather than emitting half-translated content.
+    // 12. Incomplete JP column omits jp entirely rather than emitting half-translated content.
     {
-        const rows = [...minimalRequired, row("Hero", null, "Headline", "H", "JA headline only, no meta title")];
+        const rows = [...minimalRequired, row("Hero", null, "Headline", "H", "JP headline only, no meta title")];
         const { content, warnings } = transformSheetRows(rows, ctx);
-        check("incomplete ja -> ja omitted", content.ja === undefined);
-        check("incomplete ja -> warns", warnings.some((w) => w.includes("JA column incomplete")));
+        check("incomplete jp -> jp omitted", content.jp === undefined);
+        check("incomplete jp -> warns", warnings.some((w) => w.includes("JP column incomplete")));
     }
 
     if (failures.length > 0) {

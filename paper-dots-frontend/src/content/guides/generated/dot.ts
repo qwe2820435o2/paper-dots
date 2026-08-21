@@ -151,7 +151,7 @@ const content: GuideContentByLocale = {
       }
     }
   },
-  "ja": {
+  "jp": {
     "name": "写真オーバーレイ編集ツール",
     "meta": {
       "title": "写真オーバーレイ編集｜写真に重ねる効果＆オンライン画像オーバーレイ",

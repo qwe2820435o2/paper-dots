@@ -1,13 +1,16 @@
 export interface CreateTool {
-    label: string;
+    /** Key under the `tools` message namespace, holding `label` and `navDescription`. Copy
+     *  deliberately does not live here: the header and footer render this list in three
+     *  locales, and a hardcoded label would silently stay English in two of them. */
+    key: string;
+    /** Locale-invariant — the locale prefix is added by `Link` from `@/i18n/navigation`. */
     href: string;
-    description: string;
 }
 
-/** Shared source of truth for the "Create" tools, consumed by the header, footer, and sitemap. */
+/** Shared source of truth for the "Create" tools, consumed by the header and footer. */
 export const CREATE_TOOLS: CreateTool[] = [
-    { label: "Photo Quote Maker", href: "/photo-quote-maker", description: "Turn a photo into a color-card" },
-    { label: "Photo Overlay Editor", href: "/photo-overlay-editor", description: "Decorate a photo with playful dots" },
-    { label: "Polka Dot Generator", href: "/polka-dot", description: "Generate a seamless polka dot background" },
-    { label: "Geometric Pattern Generator", href: "/geometric-pattern-generator", description: "Generate seamless geometric background patterns" },
+    { key: "momentCard", href: "/photo-quote-maker" },
+    { key: "dot", href: "/photo-overlay-editor" },
+    { key: "polkaDot", href: "/polka-dot" },
+    { key: "geometricPatterns", href: "/geometric-pattern-generator" },
 ];

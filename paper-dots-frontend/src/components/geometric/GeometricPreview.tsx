@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/store/hooks";
 import { buildIconGridSvgString, buildIconSetThumbnailSvgString, type GeometricConfig } from "@/lib/geometricGrid";
 
@@ -26,10 +27,13 @@ const PREVIEW_DESIGN_SIZE = 800;
 
 export default function GeometricPreview({
     config: configOverride,
-    alt = "Geometric pattern preview",
+    alt,
     size = PREVIEW_DESIGN_SIZE,
     thumbnail = false,
 }: Props) {
+    const t = useTranslations("editor.geometric");
+    /** Thumbnails pass their icon-set name; the full preview falls back to the generic label. */
+    const altText = alt ?? t("previewAlt");
     // When configOverride is set (thumbnail mode), this closure never reads s.geometric at all —
     // `??` short-circuits — so useSelector's reference-equality check sees the same output on
     // every dispatch and skips re-rendering. Without this, every thumbnail card would re-render
@@ -64,7 +68,7 @@ export default function GeometricPreview({
             style={{ boxShadow: "rgba(197, 232, 154, 0.25) 0px 0px 0px 1px" }}
         >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={svgDataUrl} alt={alt} className="w-full h-full object-cover" />
+            <img src={svgDataUrl} alt={altText} className="w-full h-full object-cover" />
         </div>
     );
 }

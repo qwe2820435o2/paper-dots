@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Download, Copy } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/store/hooks";
 import { drawPolkaDotCanvas, buildPolkaDotSvgString, buildPolkaDotCssSnippet } from "@/lib/polkaDotGrid";
 import { useHTMLImage } from "@/components/decorate/useHTMLImage";
@@ -31,6 +32,7 @@ function triggerDownload(blob: Blob, filename: string): void {
 }
 
 export default function ExportPanel() {
+    const t = useTranslations("editor");
     const config = useAppSelector((s) => s.polkaDot);
     const iconImage = useHTMLImage(config.iconUrl);
     const [width, setWidth] = useState(800);
@@ -69,7 +71,7 @@ export default function ExportPanel() {
             }
 
             triggerDownload(blob, filename);
-            toast.success("Saved to your downloads");
+            toast.success(t("toast.saved"));
         } finally {
             setExporting(false);
         }
@@ -79,16 +81,16 @@ export default function ExportPanel() {
         const svg = buildPolkaDotSvgString(config, width, height);
         const blob = new Blob([svg], { type: "image/svg+xml" });
         triggerDownload(blob, `polka-dot-${Date.now()}.svg`);
-        toast.success("Saved to your downloads");
+        toast.success(t("toast.saved"));
     }
 
     async function copySvgCode() {
         const svg = buildPolkaDotSvgString(config, width, height);
         try {
             await navigator.clipboard.writeText(svg);
-            toast.success("SVG code copied");
+            toast.success(t("toast.svgCopied"));
         } catch {
-            toast.error("Could not copy to clipboard");
+            toast.error(t("toast.copyFailed"));
         }
     }
 
@@ -100,16 +102,16 @@ export default function ExportPanel() {
     async function copyCssCode() {
         try {
             await navigator.clipboard.writeText(cssSnippet);
-            toast.success("CSS code copied");
+            toast.success(t("toast.cssCopied"));
         } catch {
-            toast.error("Could not copy to clipboard");
+            toast.error(t("toast.copyFailed"));
         }
     }
 
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Size (px)</label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.sizePx")}</label>
                 <div className="flex items-center gap-2">
                     <input
                         type="number"
@@ -134,7 +136,7 @@ export default function ExportPanel() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Format</label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.format")}</label>
                 <div className="grid grid-cols-2 gap-1.5">
                     {(["png", "jpeg"] as ImageFormat[]).map((f) => {
                         const selected = format === f;
@@ -173,18 +175,18 @@ export default function ExportPanel() {
                 }}
             >
                 <Download className="w-4 h-4" strokeWidth={2} />
-                Download {format.toUpperCase()}
+                {t("common.downloadFormat", { format: format.toUpperCase() })}
             </button>
 
             <div className="flex flex-col gap-2 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">SVG</label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">{t("common.svg")}</label>
                 <button
                     type="button"
                     onClick={downloadSvg}
                     className="w-full flex items-center justify-center gap-2 text-[13px] font-medium py-2.5 rounded-full transition-colors text-[#C5E89A] bg-[#E8F5D2] hover:bg-[#d5edba]"
                 >
                     <Download className="w-4 h-4" strokeWidth={2} />
-                    Download SVG
+                    {t("common.downloadSvg")}
                 </button>
                 <button
                     type="button"
@@ -192,12 +194,12 @@ export default function ExportPanel() {
                     className="w-full flex items-center justify-center gap-2 text-[13px] font-medium py-2.5 rounded-full transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2]"
                 >
                     <Copy className="w-4 h-4" strokeWidth={2} />
-                    Copy SVG Code
+                    {t("common.copySvgCode")}
                 </button>
             </div>
 
             <div className="flex flex-col gap-2 pt-1" style={{ borderTop: "1px solid #D2EAAA" }}>
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">CSS</label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em] pt-3">{t("common.css")}</label>
                 <pre className="w-full max-h-40 overflow-auto rounded-lg px-3 py-2 text-[11px] leading-[1.6] whitespace-pre-wrap break-all bg-[#F4FAE8] text-[#1a1a2e]">
                     {cssSnippet}
                 </pre>
@@ -207,7 +209,7 @@ export default function ExportPanel() {
                     className="w-full flex items-center justify-center gap-2 text-[13px] font-medium py-2.5 rounded-full transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2]"
                 >
                     <Copy className="w-4 h-4" strokeWidth={2} />
-                    Copy CSS Code
+                    {t("common.copyCssCode")}
                 </button>
             </div>
         </div>

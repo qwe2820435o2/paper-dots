@@ -169,7 +169,7 @@ const content: GuideContentByLocale = {
       }
     }
   },
-  "ja": {
+  "jp": {
     "name": "写真クオートメーカー",
     "meta": {
       "title": "写真クオートメーカー｜写真付き名言メーカー＆写真に文字を入れるツール",

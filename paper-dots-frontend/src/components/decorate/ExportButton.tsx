@@ -4,6 +4,7 @@ import type { RefObject } from "react";
 import type Konva from "konva";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/store/hooks";
 import type { LayoutType } from "@/store/slices/decorateSlice";
 import { isTouchPrimaryDevice } from "@/lib/device";
@@ -55,6 +56,7 @@ function computeExportCrop(type: LayoutType, p: number, W: number, H: number): C
 }
 
 export default function ExportButton({ stageRef }: Props) {
+    const t = useTranslations("editor");
     const photoUrl = useAppSelector((s) => s.decorate.photoUrl);
     const layout = useAppSelector((s) => s.decorate.layout);
 
@@ -95,7 +97,7 @@ export default function ExportButton({ stageRef }: Props) {
         link.click();
         document.body.removeChild(link);
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-        toast.success("Saved to your downloads");
+        toast.success(t("toast.saved"));
     }
 
     return (
@@ -118,7 +120,7 @@ export default function ExportButton({ stageRef }: Props) {
             }}
         >
             <Download className="w-4 h-4" strokeWidth={2} />
-            Download PNG
+            {t("common.downloadPng")}
         </button>
     );
 }

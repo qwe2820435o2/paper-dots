@@ -9,9 +9,9 @@
  * impossible for any of this to reach the Header, the Footer or the existing pages. */
 
 .guide-scope {
-    --guide-display: var(--font-bricolage), var(--font-dm-sans), system-ui, sans-serif;
-    --guide-body: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
-    --guide-mono: var(--font-dm-mono), ui-monospace, SFMono-Regular, monospace;
+    --guide-display: var(--font-bricolage), var(--font-dm-sans), var(--font-cjk);
+    --guide-body: var(--font-dm-sans), var(--font-cjk);
+    --guide-mono: var(--font-dm-mono), ui-monospace, SFMono-Regular, var(--font-cjk);
 
     background: var(--color-guide-paper);
     color: var(--color-guide-ink);
