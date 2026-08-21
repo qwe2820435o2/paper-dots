@@ -121,4 +121,44 @@ export const MANUAL_GUIDE_IMAGES: Partial<Record<GuideSlug, ManualGuideImages>> 
             },
         },
     },
+    "geometric-patterns": {
+        hero: {
+            src: "/geometric-pattern-generator/geometric-pattern-generator-hero-1012x1164.png",
+            alt: "Geometric pattern generator hero showing a randomized shape grid and controls",
+            aspect: "aspect-[1012/1164]",
+            frameless: true,
+        },
+        features: {
+            "1": {
+                src: "/geometric-pattern-generator/Feature-01-geo-one-click.png",
+                alt: "Geometric pattern generated in one click",
+                aspect: "aspect-[1794/1260]",
+                frameless: true,
+            },
+            "2": {
+                src: "/geometric-pattern-generator/Feature-02-geo-shape-families.png",
+                alt: "Eight shape families to choose from",
+                aspect: "aspect-[1794/1260]",
+                frameless: true,
+            },
+            "3": {
+                src: "/geometric-pattern-generator/Feature-03-geo-shuffle.png",
+                alt: "Shuffle for instant layout variations",
+                aspect: "aspect-[1794/1260]",
+                frameless: true,
+            },
+            "4": {
+                src: "/geometric-pattern-generator/Feature-04-geo-colors.png",
+                alt: "Color presets or a fully custom palette",
+                aspect: "aspect-[1794/1260]",
+                frameless: true,
+            },
+            "5": {
+                src: "/geometric-pattern-generator/Feature-05-geo-export.png",
+                alt: "Export at any size, in any format",
+                aspect: "aspect-[1794/1260]",
+                frameless: true,
+            },
+        },
+    },
 };
