@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import type { GuideContent, GuideLocale } from "@/content/guides";
 import type { GuideRegistryEntry } from "@/content/guides/registry";
 import { SITE_URL } from "@/lib/site";
@@ -7,12 +8,14 @@ import { buildAlternates, localizedPath, ogImages } from "@/lib/i18nSeo";
 
 /** The guide locales are exactly the app's routing locales, so `og:locale` comes from the
  *  same table the `<html lang>` and hreflang values do rather than a second copy here. */
-export function buildGuideMetadata(
+export async function buildGuideMetadata(
     content: GuideContent,
     route: GuideRegistryEntry,
     locale: GuideLocale = "en"
-): Metadata {
+): Promise<Metadata> {
     const title = content.meta.title;
+    const t = await getTranslations({ locale, namespace: "og" });
+    const images = ogImages(locale, t("alt"));
     return {
         title,
         description: content.meta.description,
@@ -23,13 +26,13 @@ export function buildGuideMetadata(
             url: route.guidePath,
             type: "website",
             locale: LOCALE_META[locale].ogLocale,
-            images: ogImages(locale),
+            images,
         },
         twitter: {
             card: "summary_large_image",
             title,
             description: content.meta.description,
-            images: ogImages(locale).map((image) => image.url),
+            images: images.map((image) => image.url),
         },
     };
 }

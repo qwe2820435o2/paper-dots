@@ -16,6 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "terms.meta" });
+  const tOg = await getTranslations({ locale, namespace: "og" });
 
   return {
     title: t("title"),
@@ -27,7 +28,7 @@ export async function generateMetadata({
       type: "website",
       siteName: "Dottypic",
       locale: LOCALE_META[locale].ogLocale,
-      images: ogImages(locale),
+      images: ogImages(locale, tOg("alt")),
     },
     alternates: buildAlternates("/terms", locale),
   };
