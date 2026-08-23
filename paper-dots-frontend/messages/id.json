@@ -9,11 +9,11 @@
       "navDescription": "Hiasi foto dengan titik-titik ceria"
     },
     "polkaDot": {
-      "label": "Generator Polka Dot",
+      "label": "Pembuat Polkadot",
       "navDescription": "Buat latar polka dot tanpa sambungan"
     },
     "geometricPatterns": {
-      "label": "Generator Pola Geometris",
+      "label": "Pembuat Pola Geometris",
       "navDescription": "Buat pola latar geometris tanpa sambungan"
     }
   },
@@ -36,7 +36,7 @@
     "toggleMenu": "Buka atau tutup menu"
   },
   "footer": {
-    "tagline": "Hiasi fotomu dengan tekstur kertas gambar tangan dan taburan titik. Gratis dan mudah dipakai.",
+    "tagline": "Editor Foto Estetik Gratis untuk Semua Orang",
     "tools": "Alat",
     "support": "Bantuan",
     "legal": "Legal",
@@ -48,25 +48,28 @@
   },
   "home": {
     "meta": {
-      "title": "DottyPic: Editor Foto Estetik Gratis untuk Semua Orang",
-      "description": "DottyPic adalah editor foto estetik gratis dengan alat-alat kecil dan mudah untuk postingan kutipan, overlay, dan latar berpola. Tanpa perlu keahlian, tanpa watermark, tanpa daftar."
+      "title": "DottyPic: Editor foto estetis gratis untuk semua",
+      "description": "DottyPic adalah editor foto estetis gratis dengan alat kecil dan mudah untuk post kutipan, overlay, dan latar bermotif. Tanpa skill, tanpa tanda air, tanpa daftar akun.",
+      "ogTitle": "DottyPic: Editor foto estetis gratis untuk semua",
+      "ogDescription": "Alat foto kecil dan mudah yang membuat apa pun terlihat rapi. Gratis, tanpa tanda air, tanpa daftar akun.",
+      "ogImageAlt": "Editor foto estetis DottyPic yang menampilkan hasil post kutipan, overlay, dan latar bermotif"
     },
     "hero": {
-      "headline": "Editor Foto Estetik Gratis untuk <swash>Semua Orang</swash>",
-      "subheadline": "Alat-alat kecil dan mudah yang mengubah foto apa pun jadi sesuatu yang benar-benar layak kamu posting. Tanpa layer, tanpa kurva belajar, tanpa perlu instal apa pun.",
+      "headline": "Editor foto estetis gratis untuk semua",
+      "subheadline": "Alat kecil dan mudah yang mengubah foto apa pun menjadi sesuatu yang benar-benar ingin Anda unggah. Tanpa lapisan, tanpa kurva belajar, tanpa instalasi.",
       "cta": "Unggah foto",
-      "badge": "Gratis · Tanpa watermark · Tanpa daftar",
+      "badge": "Gratis · Tanpa tanda air · Tanpa daftar akun",
       "scrollLabel": "Lihat alatnya"
     },
     "toolGrid": {
-      "heading": "Kenali alat edit foto estetik online gratisnya",
-      "lead": "Setiap alat mengerjakan satu hal saja dan butuh sekitar satu menit untuk dipahami. Cukup sederhana kalau kamu belum pernah mengedit foto, dan cukup cepat sampai desainer pun memakainya agar tak perlu membuka aplikasi yang lebih berat.",
+      "heading": "Kenalan dengan alat edit foto estetis daring yang gratis",
+      "lead": "Setiap alat mengerjakan satu hal dan butuh sekitar satu menit untuk dipahami. Cukup sederhana jika Anda belum pernah mengedit foto, cukup cepat sehingga desainer memakainya agar tidak perlu membuka aplikasi yang lebih berat.",
       "tryItNow": "Coba sekarang",
       "cards": {
-        "momentCard": "Kata-katamu punya blok warna sendiri, bukan ditumpuk di atas foto.",
-        "dot": "Taburkan kepingan salju, hati, atau bintang di fotomu, dengan warna yang serasi.",
-        "polkaDot": "Latar polka dot dengan ukuran, jarak, dan warna bebas. Alat yang mengawali semuanya.",
-        "geometricPatterns": "Gelombang, grid, segitiga, terrazzo. Latar untuk postingan, slide, atau wallpaper."
+        "momentCard": "Kata-kata Anda mendapat blok warna sendiri, bukan menumpuk di atas foto.",
+        "dot": "Taburkan kepingan salju, hati, atau bintang di foto Anda, dengan warna yang cocok dengannya.",
+        "polkaDot": "Latar polkadot dengan ukuran, jarak, dan warna apa pun. Inilah yang memulai semuanya.",
+        "geometricPatterns": "Gelombang, kisi, segitiga, terrazzo. Latar untuk unggahan, slide, atau wallpaper."
       },
       "more": {
         "heading": "Segera menyusul",
@@ -74,8 +77,8 @@
       }
     },
     "colorEngine": {
-      "heading": "Pencocokan warna otomatis, langsung dari fotomu",
-      "body": "Setiap alat membaca fotomu, menarik warna-warna utamanya, lalu membangun dari situ. Blok teks, bentuk overlay, pola latar, semuanya sudah serasi sebelum kamu menyentuh apa pun. Kamu tetap bisa mengubahnya. Kebanyakan orang tidak pernah merasa perlu.",
+      "heading": "Pencocokan warna otomatis, langsung dari foto Anda",
+      "body": "Setiap alat membaca foto Anda, mengambil nada warna utamanya, dan membangun dari situ. Blok teks, bentuk overlay, pola latar, semuanya sudah cocok sebelum Anda menyentuh apa pun. Anda tetap bisa mengubahnya. Kebanyakan orang tidak pernah perlu.",
       "cta": "Coba sekarang",
       "downloadGraphic": "Unduh grafik",
       "art": {
@@ -92,87 +95,87 @@
       }
     },
     "why": {
-      "heading": "Kenapa memilih DottyPic?",
+      "heading": "Mengapa memilih DottyPic?",
       "cards": {
         "free": {
-          "heading": "Gratis, dan bukan gratis yang ada habisnya",
-          "body": "Setiap alat, setiap bentuk, dan setiap ukuran ekspor gratis sekarang dan akan tetap begitu. Tidak ada paket premium yang menyembunyikan pilihan yang lebih bagus, tidak ada kredit yang harus dibeli, dan tidak ada hitung mundur empat belas hari yang diam-diam berjalan saat kamu bekerja. Apa yang bisa kamu buat hari ini masih bisa kamu buat bulan depan."
+          "heading": "Gratis, dan bukan yang cepat habis",
+          "body": "Setiap alat, setiap bentuk, dan setiap ukuran ekspor gratis sekarang dan akan tetap begitu. Tidak ada tingkatan premium yang menahan opsi lebih baik, tidak ada kredit untuk dibeli, dan tidak ada jam 14 hari yang diam-diam menghitung mundur saat Anda bekerja. Apa yang bisa Anda buat hari ini, tetap bisa Anda buat bulan depan."
         },
         "noWatermark": {
-          "heading": "Tidak ada cap apa pun di karyamu, selamanya",
-          "body": "Tidak ada logo di pojok, tidak ada tulisan miring samar di tengah, dan tidak ada apa pun yang tertanam di file untuk mengumumkan alat mana yang kamu pakai. Kamu tidak akan pernah sampai di tombol unduh lalu diberi tahu bahwa menghapus cap itu berbayar. Gambar yang kamu ekspor adalah gambar yang kamu buat, dan itu milikmu untuk diposting di mana saja."
+          "heading": "Tidak ada yang dicap di karya Anda, sama sekali",
+          "body": "Tidak ada logo di sudut, tidak ada teks diagonal samar di tengah, dan tidak ada apa pun yang tertanam di file yang mengumumkan alat mana yang Anda pakai. Anda tidak akan sampai ke tombol unduh lalu tahu bahwa menghapus tanda itu berbayar. Gambar yang Anda ekspor adalah gambar yang Anda buat, dan itu milik Anda untuk diunggah ke mana pun."
         },
         "unlimited": {
-          "heading": "Buat sebanyak yang kamu mau",
-          "body": "Tidak ada batas harian, tidak ada penghitung ekspor yang menyusut di pojok, dan tidak ada antrean saat situs sedang ramai. Coba sepuluh versi dari foto yang sama lalu simpan yang paling kamu suka. Tidak ada yang dihitung di sini, jadi tidak ada alasan untuk berhemat memakainya."
+          "heading": "Buat sebanyak yang Anda mau",
+          "body": "Tidak ada batas harian, tidak ada penghitung ekspor yang berdetak di sudut, dan tidak ada antrean saat situs ramai. Coba sepuluh versi foto yang sama dan simpan yang Anda suka. Tidak ada yang diukur di sini, jadi tidak ada alasan untuk hemat-hemat memakai."
         },
         "noAccount": {
           "heading": "Tanpa akun, tanpa email, tanpa menunggu",
-          "body": "Tidak ada layar pendaftaran yang berdiri di antara kamu dan alatnya. Tidak ada kata sandi yang harus dikarang, tidak ada tautan verifikasi yang harus dicari di folder spam, dan tidak ada kotak newsletter yang sudah dicentang atas namamu. Buka halamannya dan semuanya sudah jalan. Kalau kamu mau membuat satu gambar lalu tidak pernah kembali, itu sama sekali tidak masalah."
+          "body": "Tidak ada layar daftar akun yang berdiri di antara Anda dan alatnya. Tidak ada kata sandi yang harus dibuat, tidak ada tautan verifikasi yang digali dari folder spam, dan tidak ada kotak newsletter yang sudah tercentang untuk Anda. Buka halaman dan langsung jalan. Jika Anda ingin membuat satu gambar lalu tidak pernah kembali, itu sama sekali tidak masalah."
         }
       }
     },
     "reviews": {
-      "heading": "Apa kata mereka tentang kami",
+      "heading": "Apa kata orang tentang kami",
       "items": {
         "mira": {
-          "quote": "Kemampuan desain saya nol dan sekarang semua postingan Instagram saya dibuat di sini. Pencocokan warnanya yang bikin saya jatuh hati. Saya tidak pernah lagi menebak-nebak warna mana yang cocok.",
+          "quote": "Skill desain saya nol, dan sekarang semua unggahan Instagram saya dibuat di sini. Pencocokan warnanya yang membuat saya yakin. Saya tidak perlu menebak lagi warna mana yang cocok.",
           "name": "Mira K."
         },
         "dan": {
-          "quote": "Saya pakai editor overlay untuk mockup kampanye musim dingin. Lebih cepat daripada membangunnya di Illustrator, dan jujur hasilnya lebih bagus.",
+          "quote": "Pakai editor overlay untuk mockup kampanye musim dingin. Lebih cepat daripada menyusun hal yang sama di software desain, dan jujur hasilnya terlihat lebih bagus.",
           "name": "Dan R."
         },
         "kenji": {
-          "quote": "Saya butuh latar polka dot untuk deck presentasi dan tidak mau bikin akun di mana pun. Selesai dalam sekitar dua menit dari awal sampai akhir.",
+          "quote": "Saya butuh latar polkadot untuk slide deck dan tidak mau membuat akun di mana pun. Butuh sekitar dua menit dari awal sampai selesai.",
           "name": "Kenji S."
         },
         "priya": {
-          "quote": "Soal tanpa watermark itulah alasan saya bertahan. Editor gratis lain menaruh logo di karyamu lalu meminta bayaran untuk melepasnya.",
+          "quote": "Hal tanpa tanda air yang membuat saya bertahan. Editor gratis lain menempelkan logo di karya Anda lalu meminta bayar untuk menghapusnya.",
           "name": "Priya N."
         }
       }
     },
     "faq": {
-      "heading": "FAQ",
+      "heading": "Pertanyaan umum",
       "items": {
         "free": {
           "question": "Apakah DottyPic gratis?",
-          "answer": "Ya, sepenuhnya. Setiap alat, setiap bentuk, dan setiap ukuran ekspor gratis. Tidak ada paket berbayar dan tidak ada masa coba yang habis."
+          "answer": "Ya, sepenuhnya. Setiap alat, setiap bentuk, dan setiap ukuran ekspor gratis. Tidak ada tingkatan berbayar dan tidak ada uji coba yang habis masa berlakunya."
         },
         "watermark": {
-          "question": "Apakah kalian menambahkan watermark ke gambar saya?",
-          "answer": "Tidak. Apa pun yang kamu ekspor keluar bersih, tanpa logo DottyPic di mana pun. Kamu bisa memposting atau memakainya sesukamu."
+          "question": "Apakah Anda menambahkan tanda air pada gambar saya?",
+          "answer": "Tidak. Apa pun yang Anda ekspor keluar bersih, tanpa logo DottyPic di mana pun. Anda bisa mengunggahnya atau memakainya sesuka Anda."
         },
         "account": {
           "question": "Apakah saya perlu akun untuk memakai DottyPic?",
-          "answer": "Tidak. Tidak perlu daftar dan tidak perlu email. Buka alat mana pun di situs ini dan kamu bisa langsung mulai."
+          "answer": "Tidak. Tidak perlu daftar akun dan tidak perlu email. Buka alat apa pun di situs dan Anda bisa langsung mulai bekerja."
         },
         "experience": {
           "question": "Apakah saya perlu pengalaman mengedit?",
-          "answer": "Tidak. DottyPic dibuat untuk orang yang belum pernah mengedit foto. Tidak ada layer, tidak ada mask, dan tidak ada color picker yang harus kamu atur dengan tepat. Unggah sesuatu, geser satu dua slider kalau mau, lalu unduh."
+          "answer": "Tidak. DottyPic dibuat untuk orang yang belum pernah mengedit foto. Tidak ada lapisan, tidak ada mask, dan tidak ada pemilih warna yang harus pas. Unggah sesuatu, geser satu dua kontrol jika mau, lalu unduh."
         },
         "audience": {
-          "question": "DottyPic untuk desainer atau untuk pemula?",
-          "answer": "Keduanya, tapi terutama pemula. Kebanyakan orang di sini hanya ingin postingan yang terlihat rapi tanpa membuka Photoshop. Desainer juga memakainya, biasanya untuk mengambil latar atau overlay cepat daripada membangunnya dari nol."
+          "question": "Apakah DottyPic untuk desainer atau pemula?",
+          "answer": "Keduanya, tapi terutama pemula. Kebanyakan orang di sini hanya ingin unggahan yang terlihat rapi tanpa membuka software foto yang berat. Desainer juga memakainya, biasanya untuk mengambil latar atau overlay cepat alih-alih membangun dari nol."
         },
         "whatToMake": {
-          "question": "Apa saja yang bisa saya buat dengan DottyPic?",
-          "answer": "Postingan kutipan dengan blok warna yang serasi, foto dengan overlay kepingan salju atau hati, latar polka dot, dan pola geometris. Orang memakainya untuk postingan dan story Instagram, deck presentasi, wallpaper ponsel, dan grafis usaha kecil."
+          "question": "Apa yang bisa saya buat dengan DottyPic?",
+          "answer": "Post kutipan dengan blok warna yang cocok, foto dengan overlay kepingan salju atau hati, latar polkadot, dan pola geometris. Orang memakainya untuk unggahan dan cerita Instagram, slide deck, wallpaper ponsel, dan grafis bisnis kecil."
         },
         "sizes": {
-          "question": "Ukuran apa saja yang bisa saya ekspor?",
-          "answer": "Postingan dan story Instagram, slide 16:9, wallpaper ponsel, dan ukuran khusus. Semuanya diekspor sebagai PNG, dengan opsi 2x kalau kamu butuh lebih tajam."
+          "question": "Ukuran apa saja yang bisa diekspor?",
+          "answer": "Unggahan dan cerita Instagram, slide 16:9, wallpaper ponsel, dan dimensi kustom. Semuanya diekspor sebagai PNG, dengan opsi 2x saat Anda butuh yang lebih tajam."
         },
         "commercial": {
-          "question": "Bisakah saya memakai hasilnya untuk keperluan komersial?",
-          "answer": "Bisa. Apa pun yang kamu buat dengan DottyPic adalah milikmu, termasuk untuk pekerjaan klien dan produk yang kamu jual. Satu-satunya yang tidak boleh adalah menjual ulang alatnya sendiri."
+          "question": "Bisakah saya memakai hasilnya secara komersial?",
+          "answer": "Ya. Apa pun yang Anda buat dengan DottyPic milik Anda untuk dipakai, termasuk pekerjaan klien dan produk yang Anda jual. Satu-satunya yang tidak boleh adalah menjual ulang alatnya sendiri."
         }
       }
     },
     "finalCta": {
       "heading": "Ayo buat sesuatu",
-      "body": "Pilih satu alat, masukkan foto, lihat hasilnya. Gratis, tanpa watermark, tanpa daftar.",
+      "body": "Pilih alat, masukkan foto, lihat apa yang keluar. Gratis, tanpa tanda air, tanpa daftar akun.",
       "cta": "Unggah foto"
     }
   },
@@ -311,20 +314,30 @@
   },
   "contact": {
     "meta": {
-      "title": "Contact",
-      "description": "Get in touch with the Dottypic team.",
+      "title": "Hubungi DottyPic",
+      "description": "Sapa DottyPic. Editor foto estetis gratis yang dimulai pada 2025 untuk unggahan sosial yang lebih mudah dan lebih berasa. Kirim masukan kapan saja.",
       "ogTitle": "Contact Us — Dottypic",
       "ogDescription": "Have a question or feedback? Get in touch with the Dottypic team."
     },
-    "heading": "Contact Us",
-    "lead": "Have a question or feedback? We would love to hear from you.",
-    "email": {
-      "title": "Email",
-      "body": "Send us an email and we will get back to you as soon as possible."
+    "hero": {
+      "headline": "Halo, kami DottyPic",
+      "subheadline": "Editor foto estetis gratis dengan alat kecil untuk post kutipan, overlay, dan latar bermotif."
     },
-    "feedback": {
-      "title": "Feedback",
-      "body": "Found a bug or have a feature request? Let us know — we are always improving Dottypic."
+    "about": {
+      "heading": "Cerita singkat",
+      "paragraph1": "DottyPic dimulai pada 2025. Pendirinya adalah seorang perempuan yang sejak dulu menyukai polkadot, dan alat pertamanya adalah pembuat latar polkadot yang sederhana.",
+      "paragraph2": "Di perjalanan, ia terus melihat kebutuhan kecil yang sama di seputar foto media sosial: kutipan yang tidak menutupi wajah, overlay yang cocok dengan foto, latar yang terasa siap diunggah. Editor berat terasa berlebihan untuk pekerjaan kecil itu.",
+      "paragraph3": "Jadi DottyPic tumbuh menjadi kumpulan alat kecil yang mudah. Tujuannya sederhana: membuat edit foto terasa lebih ringan, dan membantu foto sehari-hari terlihat lebih berasa, tanpa lapisan, akun, atau tanda air."
+    },
+    "getInTouch": {
+      "heading": "Hubungi kami",
+      "intro": "Pertanyaan, bug, ide, atau sekadar catatan tentang apa yang Anda buat. Kami membaca setiap pesan dan memakai masukannya agar DottyPic lebih baik.",
+      "emailLabel": "Kirim email ke",
+      "email": "support@dottypic.com",
+      "note": "Ganti alamat ini jika kotak masuk Anda berbeda. Cantumkan subjek seperti Masukan, Bug, atau Ide fitur agar kami bisa memilah lebih cepat."
+    },
+    "cta": {
+      "button": "Kirim masukan"
     }
   },
   "editor": {

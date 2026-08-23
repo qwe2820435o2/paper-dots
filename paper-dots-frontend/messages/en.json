@@ -36,7 +36,7 @@
     "toggleMenu": "Toggle menu"
   },
   "footer": {
-    "tagline": "Decorate your photos with hand-drawn paper textures and scattered dots. Free and easy to use.",
+    "tagline": "Free Aesthetic Photo Editor for Everyone",
     "tools": "Tools",
     "support": "Support",
     "legal": "Legal",
@@ -49,19 +49,22 @@
   "home": {
     "meta": {
       "title": "DottyPic: Free Aesthetic Photo Editor for Everyone",
-      "description": "DottyPic is a free aesthetic photo editor with small, easy tools for quote posts, overlays, and patterned backgrounds. No skills needed, no watermark, no sign up."
+      "description": "DottyPic is a free aesthetic photo editor with small, easy tools for quote posts, overlays, and patterned backgrounds. No skills needed, no watermark, no sign up.",
+      "ogTitle": "DottyPic: Free Aesthetic Photo Editor for Everyone",
+      "ogDescription": "Small, easy photo tools that make anything look put together. Free, no watermark, no sign up.",
+      "ogImageAlt": "DottyPic aesthetic photo editor showing quote post, overlay, and patterned background outputs"
     },
     "hero": {
-      "headline": "Free Aesthetic Photo Editor for <swash>Everyone</swash>",
+      "headline": "Free Aesthetic Photo Editor for Everyone",
       "subheadline": "Small, easy tools that turn any photo into something you would actually post. No layers, no learning curve, nothing to install.",
       "cta": "Upload a photo",
       "badge": "Free · No watermark · No sign up",
       "scrollLabel": "See the tools"
     },
     "toolGrid": {
-      "heading": "Meet the free online aesthetic photo edit tools",
+      "heading": "Meet the Free Online Aesthetic Photo Edit Tools",
       "lead": "Each tool does one thing and takes about a minute to work out. Simple enough if you have never edited a photo, quick enough that designers use them to skip opening anything heavier.",
-      "tryItNow": "Try it now",
+      "tryItNow": "Try it Now",
       "cards": {
         "momentCard": "Your words get their own color block instead of sitting on top of the photo.",
         "dot": "Scatter snowflakes, hearts, or stars across your photo, colored to match it.",
@@ -74,9 +77,9 @@
       }
     },
     "colorEngine": {
-      "heading": "Automatic color matching, straight from your photo",
+      "heading": "Automatic Color Matching, Straight From Your Photo",
       "body": "Every tool reads your photo, pulls out its main tones, and builds from those. The text block, the overlay shapes, the background pattern, all of it already matches before you touch anything. You can still change any of it. Most people never need to.",
-      "cta": "Try it now",
+      "cta": "Try it Now",
       "downloadGraphic": "Download graphic",
       "art": {
         "heading": "Every color comes from your photo",
@@ -92,7 +95,7 @@
       }
     },
     "why": {
-      "heading": "Why choose DottyPic?",
+      "heading": "Why Choose DottyPic?",
       "cards": {
         "free": {
           "heading": "Free, and not the kind that runs out",
@@ -113,7 +116,7 @@
       }
     },
     "reviews": {
-      "heading": "What people talk about us",
+      "heading": "What People Talk About Us",
       "items": {
         "mira": {
           "quote": "I have zero design skills and I make all my Instagram posts here now. The color matching is what sold me. I never have to guess which shade goes with what.",
@@ -171,7 +174,7 @@
       }
     },
     "finalCta": {
-      "heading": "Go make something",
+      "heading": "Go Make Something",
       "body": "Pick a tool, drop in a photo, see what comes out. Free, no watermark, no sign up.",
       "cta": "Upload a photo"
     }
@@ -311,20 +314,30 @@
   },
   "contact": {
     "meta": {
-      "title": "Contact",
-      "description": "Get in touch with the Dottypic team.",
+      "title": "Contact DottyPic",
+      "description": "Say hello to DottyPic. A free aesthetic photo editor started in 2025 for easier, moodier social posts. Send feedback anytime.",
       "ogTitle": "Contact Us — Dottypic",
       "ogDescription": "Have a question or feedback? Get in touch with the Dottypic team."
     },
-    "heading": "Contact Us",
-    "lead": "Have a question or feedback? We would love to hear from you.",
-    "email": {
-      "title": "Email",
-      "body": "Send us an email and we will get back to you as soon as possible."
+    "hero": {
+      "headline": "Hi, we are DottyPic",
+      "subheadline": "A free aesthetic photo editor with small tools for quote posts, overlays, and patterned backgrounds."
     },
-    "feedback": {
-      "title": "Feedback",
-      "body": "Found a bug or have a feature request? Let us know — we are always improving Dottypic."
+    "about": {
+      "heading": "A short story",
+      "paragraph1": "DottyPic started in 2025. The founder is a girl who has always loved polka dots, and the first tool was a simple polka dot background generator.",
+      "paragraph2": "Along the way she kept noticing the same small needs around social media photos: a quote that does not cover the face, overlays that match the shot, backgrounds that feel ready to post. Heavy editors felt like too much for those tiny jobs.",
+      "paragraph3": "So DottyPic grew into a set of small, easy tools. The goal is simple: make photo editing feel lighter, and help everyday pictures look more atmospheric without layers, accounts, or watermarks."
+    },
+    "getInTouch": {
+      "heading": "Get in touch",
+      "intro": "Questions, bugs, ideas, or just a note about what you made. We read every message and use the feedback to make DottyPic better.",
+      "emailLabel": "Email us at",
+      "email": "support@dottypic.com",
+      "note": "Replace this address if your inbox is different. Prefer a subject line like Feedback, Bug, or Feature idea so we can sort it faster."
+    },
+    "cta": {
+      "button": "Send feedback"
     }
   },
   "editor": {

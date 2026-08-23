@@ -35,19 +35,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home.meta" });
-  const tOg = await getTranslations({ locale, namespace: "og" });
 
   return {
     title: t("title"),
     description: t("description"),
     openGraph: {
-      title: t("title"),
-      description: t("description"),
+      title: t("ogTitle"),
+      description: t("ogDescription"),
       url: "/",
       type: "website",
       siteName: "Dottypic",
       locale: LOCALE_META[locale].ogLocale,
-      images: ogImages(locale, tOg("alt")),
+      images: ogImages(locale, t("ogImageAlt")),
     },
     alternates: buildAlternates("/", locale),
   };

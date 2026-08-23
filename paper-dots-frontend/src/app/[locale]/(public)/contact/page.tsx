@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Mail, MessageSquare } from "lucide-react";
+import { Mail } from "lucide-react";
 import type { AppLocale } from "@/i18n/locales";
 import { LOCALE_META } from "@/i18n/locales";
 import { buildAlternates, ogImages } from "@/lib/i18nSeo";
+import { guideFontClass } from "@/lib/fonts";
+import { GUIDE_WRAP, GUIDE_SEC_HEAD } from "@/components/guide/guideLayout";
+import { HOME_H2_STYLE } from "@/components/landing/homeLayout";
+import Reveal from "@/components/landing/Reveal";
+import GuideRail from "@/components/guide/GuideRail";
 
 export async function generateMetadata({
   params,
@@ -40,61 +45,71 @@ export default async function ContactPage({
 
   const t = await getTranslations("contact");
 
+  const mailto = `mailto:${t("getInTouch.email")}`;
+
   return (
-    <div className="min-h-[70vh] bg-white py-20 px-5 sm:px-8">
-      <div className="max-w-3xl mx-auto">
-        <h1
-          className="text-[42px] sm:text-[62px] font-medium text-[#1a1a2e] mb-4"
-          style={{
-            fontFamily: "var(--font-quicksand), sans-serif",
-            letterSpacing: "-3px",
-            lineHeight: "1.0",
-          }}
-        >
-          {t("heading")}
-        </h1>
-        <p className="text-[16px] leading-[1.6] mb-14 text-[#64748b]">
-          {t("lead")}
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Email */}
-          <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-green-50">
-              <Mail className="w-4 h-4 text-[#C5E89A]" strokeWidth={1.8} />
-            </div>
-            <div>
-              <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">
-                {t("email.title")}
-              </h2>
-              <p className="text-[14px] leading-[1.6] mb-3 text-[#64748b]">
-                {t("email.body")}
-              </p>
-              <a
-                href="mailto:support@dottypic.com"
-                className="text-[14px] font-medium text-[#C5E89A] hover:text-[#9ED06C] transition-colors"
-              >
-                support@dottypic.com
-              </a>
-            </div>
-          </div>
-
-          {/* Feedback */}
-          <div className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-            <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-green-50">
-              <MessageSquare className="w-4 h-4 text-[#C5E89A]" strokeWidth={1.8} />
-            </div>
-            <div>
-              <h2 className="text-[15px] font-semibold text-[#1a1a2e] mb-1 tracking-[-0.2px]">
-                {t("feedback.title")}
-              </h2>
-              <p className="text-[14px] leading-[1.6] text-[#64748b]">
-                {t("feedback.body")}
-              </p>
-            </div>
-          </div>
+    <div className={`${guideFontClass} guide-scope`}>
+      <section className="pb-16 pt-24 text-center">
+        <div className={`${GUIDE_WRAP} ${GUIDE_SEC_HEAD} mx-auto`}>
+          <Reveal>
+            <h1 style={{ fontSize: "clamp(38px, 4.5vw, 58px)" }}>{t("hero.headline")}</h1>
+            <p className="mx-auto mt-5 max-w-[52ch] text-lg text-guide-ink-2">{t("hero.subheadline")}</p>
+          </Reveal>
         </div>
-      </div>
+      </section>
+
+      <GuideRail />
+
+      <section className="py-20 text-center">
+        <div className={`${GUIDE_WRAP} ${GUIDE_SEC_HEAD} mx-auto`}>
+          <Reveal>
+            <h2 style={HOME_H2_STYLE}>{t("about.heading")}</h2>
+            <div aria-hidden className="mx-auto mt-5 flex items-center justify-center gap-2">
+              <span className="h-[9px] w-[9px] rounded-full border-[1.5px] border-guide-edge-strong bg-guide-lime" />
+              <span className="h-[9px] w-[9px] rounded-full border-[1.5px] border-[#e0447a] bg-guide-pop" />
+              <span className="h-[9px] w-[9px] rounded-full border-[1.5px] border-guide-ink bg-guide-ink" />
+            </div>
+            <div className="mt-8 space-y-5 text-left text-[15.5px] leading-[1.7] text-guide-ink-2">
+              <p>{t("about.paragraph1")}</p>
+              <p>{t("about.paragraph2")}</p>
+              <p>{t("about.paragraph3")}</p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="border-t border-guide-edge bg-guide-lime-3 py-20">
+        <div className={GUIDE_WRAP}>
+          <Reveal>
+            <div className="mx-auto max-w-[560px] rounded-[36px] border-[1.5px] border-guide-edge-strong bg-white px-10 py-14 text-center shadow-guide">
+              <h2 style={HOME_H2_STYLE}>{t("getInTouch.heading")}</h2>
+              <p className="mx-auto mt-4 max-w-[46ch] text-[15.5px] leading-[1.6] text-guide-ink-2">
+                {t("getInTouch.intro")}
+              </p>
+
+              <div className="mx-auto mt-8 inline-flex items-center gap-3 rounded-guide border-[1.5px] border-guide-edge bg-guide-lime-3 px-6 py-4">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white">
+                  <Mail className="h-4 w-4 text-guide-ink" strokeWidth={1.8} />
+                </span>
+                <div className="text-left">
+                  <div className="guide-mono text-xs text-guide-mute">{t("getInTouch.emailLabel")}</div>
+                  <div className="text-[15px] font-semibold text-guide-ink">{t("getInTouch.email")}</div>
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <a href={mailto} className="guide-btn">
+                  {t("cta.button")}
+                </a>
+              </div>
+
+              <p className="mx-auto mt-6 max-w-[46ch] text-xs leading-[1.6] text-guide-mute">
+                {t("getInTouch.note")}
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </div>
   );
 }

@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "sync:guides": "node --env-file-if-exists=.env.local scripts/sync-guide-content.mjs",
-    "sync:guides:check": "node --env-file-if-exists=.env.local scripts/sync-guide-content.mjs --check"
+    "sync:guides:check": "node --env-file-if-exists=.env.local scripts/sync-guide-content.mjs --check",
+    "sync:site": "node --env-file-if-exists=.env.local scripts/sync-site-content.mjs",
+    "sync:site:check": "node --env-file-if-exists=.env.local scripts/sync-site-content.mjs --check"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
