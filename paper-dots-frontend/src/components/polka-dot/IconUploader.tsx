@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { Upload, X, Circle, Type, Diamond, Heart, Star, Crown, Leaf, Moon } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIcon, clearIcon, setCharacterText, selectSampleShape, selectCharacterShape } from "@/store/slices/polkaDotSlice";
 import { SAMPLE_ICONS } from "@/lib/polkaDotSampleIcons";
@@ -43,6 +44,8 @@ const selectedTileStyle = { border: "1.5px solid #C5E89A", background: "#E8F5D2"
 const unselectedTileStyle = { border: "1.5px solid #D2EAAA", background: "white", color: "#9CA3AF" };
 
 export default function IconUploader() {
+    const t = useTranslations("editor");
+    const tLabels = useTranslations("labels");
     const dispatch = useAppDispatch();
     const iconUrl = useAppSelector((s) => s.polkaDot.iconUrl);
     const characterText = useAppSelector((s) => s.polkaDot.characterText);
@@ -134,7 +137,7 @@ export default function IconUploader() {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
             if (file.size > MAX_ICON_BYTES) {
-                toast.error("Icon must be under 10MB");
+                toast.error(t("toast.iconTooLarge"));
                 return;
             }
             try {
@@ -143,10 +146,10 @@ export default function IconUploader() {
                 const aspect = img.naturalWidth / img.naturalHeight || 1;
                 dispatch(setIcon({ url: dataUrl, aspect }));
             } catch {
-                toast.error("Could not read that image");
+                toast.error(t("toast.imageReadFailed"));
             }
         },
-        [dispatch],
+        [dispatch, t],
     );
 
     const handleEmojiClick = useCallback(
@@ -155,10 +158,10 @@ export default function IconUploader() {
                 const dataUrl = emojiDataUrls[emojiId] ?? (await toDataUrl(src));
                 dispatch(setIcon({ url: dataUrl, aspect: 1 }));
             } catch {
-                toast.error("Could not load that emoji");
+                toast.error(t("toast.emojiLoadFailed"));
             }
         },
-        [dispatch, emojiDataUrls],
+        [dispatch, emojiDataUrls, t],
     );
 
     const handleCharacterSelect = useCallback(() => {
@@ -193,7 +196,7 @@ export default function IconUploader() {
                     type="button"
                     onClick={() => dispatch(clearIcon())}
                     aria-pressed={!iconUrl}
-                    title="Dot"
+                    title={t("polkaDot.icons.dot")}
                     className="w-11 h-11 rounded-xl flex items-center justify-center transition-all"
                     style={!iconUrl ? selectedTileStyle : unselectedTileStyle}
                 >
@@ -204,7 +207,7 @@ export default function IconUploader() {
                     type="button"
                     onClick={handleCharacterSelect}
                     aria-pressed={isCharacterSelected}
-                    title="Character"
+                    title={t("common.character")}
                     className="w-11 h-11 rounded-xl flex items-center justify-center transition-all"
                     style={isCharacterSelected ? selectedTileStyle : unselectedTileStyle}
                 >
@@ -220,7 +223,7 @@ export default function IconUploader() {
                             type="button"
                             onClick={() => dispatch(selectSampleShape(sample.id))}
                             aria-pressed={selected}
-                            title={sample.label}
+                            title={tLabels(`sampleShapes.${sample.id}`)}
                             className="w-11 h-11 rounded-xl flex items-center justify-center transition-all"
                             style={selected ? selectedTileStyle : unselectedTileStyle}
                         >
@@ -233,12 +236,12 @@ export default function IconUploader() {
             {/* Character text input — only shown while the Character shape is active */}
             {isCharacterSelected && (
                 <div className="flex flex-col gap-1.5">
-                    <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">Character</span>
+                    <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">{t("common.character")}</span>
                     <input
                         type="text"
                         value={characterText}
                         onChange={(e) => handleCharacterTextChange(e.target.value)}
-                        placeholder="A"
+                        placeholder={t("common.characterPlaceholder")}
                         className="w-full px-3 py-2 rounded-lg text-[13px] outline-none"
                         style={{ border: "1.5px solid #D2EAAA", background: "white" }}
                     />
@@ -247,7 +250,7 @@ export default function IconUploader() {
 
             {/* Emoji quick-picks — a horizontal strip so 15 options don't push everything else down */}
             <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">Emoji</span>
+                <span className="text-[10px] uppercase text-[#9CA3AF] tracking-[0.08em]">{t("polkaDot.icons.emoji")}</span>
                 <div ref={emojiScrollRef} className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar">
                     {EMOJI_OPTIONS.map((emoji) => {
                         const selected = !!emojiDataUrls[emoji.id] && iconUrl === emojiDataUrls[emoji.id];
@@ -293,13 +296,13 @@ export default function IconUploader() {
                         style={{ background: "#F4FAE8" }}
                     >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={iconUrl} alt="Uploaded icon" className="max-w-full max-h-full object-contain" />
+                        <img src={iconUrl} alt={t("polkaDot.icons.uploadedIconAlt")} className="max-w-full max-h-full object-contain" />
                     </div>
-                    <span className="flex-1 min-w-0 text-[12px] text-[#64748b]">Custom icon</span>
+                    <span className="flex-1 min-w-0 text-[12px] text-[#64748b]">{t("polkaDot.icons.customIcon")}</span>
                     <button
                         type="button"
                         onClick={() => dispatch(clearIcon())}
-                        aria-label="Remove icon"
+                        aria-label={t("polkaDot.icons.removeIcon")}
                         className="p-1.5 rounded-md text-[#9CA3AF] hover:bg-[#F4FAE8] hover:text-[#1a1a2e] transition-colors shrink-0"
                     >
                         <X className="w-4 h-4" />
@@ -320,8 +323,8 @@ export default function IconUploader() {
                     />
                     <Upload className="w-4 h-4 shrink-0 text-[#9ED06C]" strokeWidth={1.8} />
                     <div className="min-w-0">
-                        <p className="text-[13px] font-medium text-[#1a1a2e]">Custom Icon</p>
-                        <p className="text-[11px] text-[#9CA3AF]">SVG &middot; PNG &middot; JPG &middot; up to 10MB</p>
+                        <p className="text-[13px] font-medium text-[#1a1a2e]">{t("polkaDot.icons.customIconTitle")}</p>
+                        <p className="text-[11px] text-[#9CA3AF]">{t("polkaDot.icons.customIconHint")}</p>
                     </div>
                 </label>
             )}

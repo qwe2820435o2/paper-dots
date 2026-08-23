@@ -1,20 +1,22 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Upload } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
-import { setPhotoUrl, setSolidColor, setBackgroundMode, setDotShape, setDotSize, setDotVariance, setDotOpacity } from "@/store/slices/decorateSlice";
-import { extractPhotoColor } from "@/lib/extractDominantColor";
+import { applyDecoratePhoto } from "@/lib/decoratePhotoUpload";
 
 interface Props {
+    /** Accepted for parity with the moment-card uploader, which swaps its label once a photo
+     *  is loaded. This one keeps the same "Upload photo" wording either way. */
     hasPhoto: boolean;
     variant?: "sidebar" | "canvas";
 }
 
 export default function PhotoUploader({
-    hasPhoto,
     variant = "sidebar",
 }: Props) {
+    const t = useTranslations("editor.common");
     const dispatch = useAppDispatch();
     const [dragOver, setDragOver] = useState(false);
 
@@ -22,16 +24,7 @@ export default function PhotoUploader({
         (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            const url = URL.createObjectURL(file);
-            extractPhotoColor(url).then((color) => {
-                dispatch(setBackgroundMode("solid"));
-                dispatch(setSolidColor(color));
-                dispatch(setPhotoUrl(url));
-                dispatch(setDotShape("snowflake"));
-                dispatch(setDotSize(30));
-                dispatch(setDotVariance(23));
-                dispatch(setDotOpacity(66));
-            });
+            applyDecoratePhoto(dispatch, file);
         },
         [dispatch],
     );
@@ -114,10 +107,10 @@ export default function PhotoUploader({
                         className="text-[18px] font-semibold text-[#1a1a2e] tracking-[-0.2px]"
                         style={{ fontFamily: "var(--font-quicksand), var(--font-nunito), sans-serif" }}
                     >
-                        Upload photo
+                        {t("uploadPhoto")}
                     </p>
                     <p className="text-[13px] text-center text-[#64748b] leading-[1.5] max-w-[240px]">
-                        Drop image here or click to browse
+                        {t("dropImage")}
                     </p>
                     <div className="flex items-center gap-1.5 mt-1">
                         {["PNG", "JPG", "WEBP"].map((fmt) => (
@@ -150,7 +143,7 @@ export default function PhotoUploader({
             <Upload className="w-4 h-4 shrink-0 text-[#1a1a2e]" strokeWidth={1.8} />
             <div className="min-w-0">
                 <p className="text-[14px] font-medium text-[#1a1a2e]">
-                    {hasPhoto ? "Upload photo" : "Upload photo"}
+                    {t("uploadPhoto")}
                 </p>
                 <p className="text-[11px] text-[#9CA3AF]">
                     PNG &middot; JPG &middot; WEBP

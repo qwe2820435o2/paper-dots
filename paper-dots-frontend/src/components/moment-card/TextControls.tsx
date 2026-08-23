@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
     setSubtitle,
@@ -8,13 +9,11 @@ import {
     type TextColorMode,
 } from "@/store/slices/momentCardSlice";
 
-const COLOR_MODE_OPTIONS: { id: TextColorMode; label: string }[] = [
-    { id: "auto", label: "Auto" },
-    { id: "dark", label: "Dark" },
-    { id: "light", label: "Light" },
-];
+/** Each entry doubles as the key under `editor.momentCard.text.colorModes`. */
+const COLOR_MODE_OPTIONS: TextColorMode[] = ["auto", "dark", "light"];
 
 export default function TextControls() {
+    const t = useTranslations("editor.momentCard.text");
     const dispatch = useAppDispatch();
     const title = useAppSelector((s) => s.momentCard.title);
     const subtitle = useAppSelector((s) => s.momentCard.subtitle);
@@ -24,34 +23,34 @@ export default function TextControls() {
         <div className="p-4 flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
                 <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
-                    Title
+                    {t("title")}
                 </label>
                 <input
                     value={title}
                     onChange={(e) => dispatch(setTitle(e.target.value))}
-                    placeholder="Moment title"
+                    placeholder={t("titlePlaceholder")}
                     className="w-full px-3 py-2 rounded-lg border border-[#D2EAAA] bg-white text-[14px] text-[#1a1a2e] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#C5E89A] focus:ring-2 focus:ring-[#E8F5D2]"
                 />
             </div>
 
             <div className="flex flex-col gap-1.5">
                 <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
-                    Subtitle
+                    {t("subtitle")}
                 </label>
                 <input
                     value={subtitle}
                     onChange={(e) => dispatch(setSubtitle(e.target.value))}
-                    placeholder="Tap here to add subtitle"
+                    placeholder={t("subtitlePlaceholder")}
                     className="w-full px-3 py-2 rounded-lg border border-[#D2EAAA] bg-white text-[14px] text-[#1a1a2e] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#C5E89A] focus:ring-2 focus:ring-[#E8F5D2]"
                 />
             </div>
 
             <div className="flex flex-col gap-1.5">
                 <span className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
-                    Text color
+                    {t("textColor")}
                 </span>
                 <div className="flex items-center gap-1.5 rounded-full bg-[#F4FAE8] p-1">
-                    {COLOR_MODE_OPTIONS.map(({ id, label }) => {
+                    {COLOR_MODE_OPTIONS.map((id) => {
                         const active = textColorMode === id;
                         return (
                             <button
@@ -64,7 +63,7 @@ export default function TextControls() {
                                         : "text-[#64748b] hover:text-[#1a1a2e]"
                                 }`}
                             >
-                                {label}
+                                {t(`colorModes.${id}`)}
                             </button>
                         );
                     })}

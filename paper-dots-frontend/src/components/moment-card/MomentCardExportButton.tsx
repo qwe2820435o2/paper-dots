@@ -4,6 +4,7 @@ import type { RefObject } from "react";
 import type Konva from "konva";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/store/hooks";
 import { STAGE_W, STAGE_H, PAGE_INSET_X, PAGE_INSET_Y, CARD_RADIUS } from "@/components/moment-card/MomentCardCanvas";
 import { isTouchPrimaryDevice } from "@/lib/device";
@@ -44,6 +45,7 @@ async function applyRoundedCorners(dataUrl: string, w: number, h: number, r: num
 }
 
 export default function MomentCardExportButton({ stageRef }: Props) {
+    const t = useTranslations("editor");
     const photoUrl = useAppSelector((s) => s.momentCard.photoUrl);
 
     async function handleExport() {
@@ -92,7 +94,7 @@ export default function MomentCardExportButton({ stageRef }: Props) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        toast.success("Saved to your downloads");
+        toast.success(t("toast.saved"));
     }
 
     return (
@@ -115,7 +117,7 @@ export default function MomentCardExportButton({ stageRef }: Props) {
             }}
         >
             <Download className="w-4 h-4" strokeWidth={2} />
-            Download PNG
+            {t("common.downloadPng")}
         </button>
     );
 }

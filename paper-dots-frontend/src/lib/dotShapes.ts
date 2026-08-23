@@ -1,58 +1,55 @@
 import type { DotShape } from "@/store/slices/decorateSlice";
 
 export interface PalettePreset {
+    /** Doubles as the key under the `labels.palettes` message namespace. */
     id: string;
-    label: string;
     colors: [string, string, string, string];
 }
 
 export const PALETTE_PRESETS: PalettePreset[] = [
     {
         id: "morandi",
-        label: "Morandi",
         colors: ["#c4b7a6", "#a8b5a2", "#b5c4ce", "#d4c5b0"],
     },
     {
         id: "macaron",
-        label: "Macaron",
         colors: ["#f9c5d1", "#c5e3f7", "#d5f5e3", "#fde8c8"],
     },
     {
         id: "sunset",
-        label: "Sunset",
         colors: ["#f4a261", "#e76f51", "#c77dff", "#f8edeb"],
     },
     {
         id: "ocean",
-        label: "Ocean",
         colors: ["#03045e", "#0077b6", "#90e0ef", "#caf0f8"],
     },
     {
         id: "forest",
-        label: "Forest",
         colors: ["#2d6a4f", "#52b788", "#b7e4c7", "#d8f3dc"],
     },
 ];
 
-export const DOT_COLORS: { value: string; label: string }[] = [
-    { value: "#1a1a1a", label: "Ink" },
-    { value: "#fafafa", label: "Paper" },
-    { value: "#cc7a00", label: "Marigold" },
-    { value: "#ff1fa9", label: "Neon Pink" },
-    { value: "#3b82f6", label: "Sky" },
+/** `id` keys into the `labels.dotColors` message namespace; `value` is the swatch hex. */
+export const DOT_COLORS: { id: string; value: string }[] = [
+    { id: "ink", value: "#1a1a1a" },
+    { id: "paper", value: "#fafafa" },
+    { id: "marigold", value: "#cc7a00" },
+    { id: "neonPink", value: "#ff1fa9" },
+    { id: "sky", value: "#3b82f6" },
 ];
 
-export const DOT_SHAPES: { value: DotShape; label: string }[] = [
-    { value: "circle", label: "Circle" },
-    { value: "flower", label: "Flower" },
-    { value: "character", label: "Character" },
-    { value: "diamond", label: "Diamond" },
-    { value: "heart", label: "Heart" },
-    { value: "star", label: "Star" },
-    { value: "crown", label: "Crown" },
-    { value: "leaf", label: "Leaf" },
-    { value: "crescent", label: "Crescent" },
-    { value: "snowflake", label: "Snowflake" },
+/** `value` doubles as the key under the `labels.dotShapes` message namespace. */
+export const DOT_SHAPES: { value: DotShape }[] = [
+    { value: "circle" },
+    { value: "flower" },
+    { value: "character" },
+    { value: "diamond" },
+    { value: "heart" },
+    { value: "star" },
+    { value: "crown" },
+    { value: "leaf" },
+    { value: "crescent" },
+    { value: "snowflake" },
 ];
 
 /**

@@ -20,7 +20,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 let rowNumber = 1;
 function row(section, itemId, fieldName, en) {
     rowNumber++;
-    return { rowNumber, section, itemId: itemId === null ? "" : String(itemId), fieldName, en, htmlTag: "", ja: "" };
+    return { rowNumber, section, itemId: itemId === null ? "" : String(itemId), fieldName, en, htmlTag: "", jp: "", id: "" };
 }
 
 const rows = [

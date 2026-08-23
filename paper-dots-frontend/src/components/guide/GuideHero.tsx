@@ -4,18 +4,23 @@ import RichText from "./RichText";
 import GuideMedia from "./GuideMedia";
 import GuideCtaButton from "./GuideCtaButton";
 import GuideHeroStudio from "./GuideHeroStudio";
+import UploadPhotoButton from "@/components/common/UploadPhotoButton";
 
 interface GuideHeroProps {
     hero: GuideContent["hero"];
     /** Editor route, used whenever the sheet leaves a CTA link cell empty. */
     appPath: string;
+    /** When set, the CTA becomes a real photo-upload control that lands in the given editor
+     *  with the photo loaded — used by guide pages whose CTA copy ("Make a Photo Quote", "Add
+     *  Photo Overlays") promises an upload that a plain link can't deliver. */
+    uploadTarget?: "dot" | "moment-card";
 }
 
 /** Always two-column: a real sheet image takes priority, otherwise every guide page falls
  *  back to the same GuideHeroStudio dot-pattern visual — DottyPic's brand signature, not a
  *  literal preview of that particular tool — so no guide page ships with an empty right
  *  column while its sheet image is still pending (see docs/guide-pages.md risk #3). */
-export default function GuideHero({ hero, appPath }: GuideHeroProps) {
+export default function GuideHero({ hero, appPath, uploadTarget }: GuideHeroProps) {
     const ctaHref = hero.cta.href ?? appPath;
     const visual = hero.image ? (
         <GuideMedia
@@ -37,9 +42,15 @@ export default function GuideHero({ hero, appPath }: GuideHeroProps) {
                         <p className="mt-5 text-lg text-guide-ink-2">{hero.subheadline}</p>
 
                         <div className="mt-8 flex flex-wrap items-center gap-4">
-                            <GuideCtaButton href={ctaHref} trackId="hero">
-                                {hero.cta.text}
-                            </GuideCtaButton>
+                            {uploadTarget ? (
+                                <UploadPhotoButton className="guide-btn" trackId="hero" target={uploadTarget}>
+                                    {hero.cta.text}
+                                </UploadPhotoButton>
+                            ) : (
+                                <GuideCtaButton href={ctaHref} trackId="hero">
+                                    {hero.cta.text}
+                                </GuideCtaButton>
+                            )}
                         </div>
 
                         {hero.formats.length > 0 && (

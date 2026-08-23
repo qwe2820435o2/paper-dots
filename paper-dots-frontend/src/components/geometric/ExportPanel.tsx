@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Download, Copy } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setExportWidth, setExportHeight, setExportFormat, type ExportFormat } from "@/store/slices/geometricSlice";
 import { buildIconGridSvgString, rasterizeIconGridSvg } from "@/lib/geometricGrid";
@@ -32,6 +33,7 @@ function triggerDownload(blob: Blob, filename: string): void {
 }
 
 export default function ExportPanel() {
+    const t = useTranslations("editor");
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.geometric);
     // width/height/format live in Redux (not local state) so the desktop and mobile copies of
@@ -48,7 +50,7 @@ export default function ExportPanel() {
             if (format === "svg") {
                 const svg = buildIconGridSvgString(config, width, height);
                 triggerDownload(new Blob([svg], { type: "image/svg+xml" }), `geometric-${stamp}.svg`);
-                toast.success("Saved to your downloads");
+                toast.success(t("toast.saved"));
                 return;
             }
 
@@ -72,9 +74,9 @@ export default function ExportPanel() {
             }
 
             triggerDownload(blob, filename);
-            toast.success("Saved to your downloads");
+            toast.success(t("toast.saved"));
         } catch {
-            toast.error("Export failed, please try again");
+            toast.error(t("toast.exportFailed"));
         } finally {
             setExporting(false);
         }
@@ -84,16 +86,16 @@ export default function ExportPanel() {
         const svg = buildIconGridSvgString(config, width, height);
         try {
             await navigator.clipboard.writeText(svg);
-            toast.success("SVG code copied");
+            toast.success(t("toast.svgCopied"));
         } catch {
-            toast.error("Could not copy to clipboard");
+            toast.error(t("toast.copyFailed"));
         }
     }
 
     return (
         <div className="px-4 py-4 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Size (px)</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">{t("common.sizePx")}</label>
                 <div className="flex items-center gap-2">
                     <input
                         type="number"
@@ -124,7 +126,7 @@ export default function ExportPanel() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Format</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">{t("common.format")}</label>
                 <div className="grid grid-cols-3 gap-1.5">
                     {FORMATS.map((f) => (
                         <ToggleChip
@@ -152,18 +154,18 @@ export default function ExportPanel() {
                 }}
             >
                 <Download className="w-4 h-4" strokeWidth={2} />
-                Download {format.toUpperCase()}
+                {t("common.downloadFormat", { format: format.toUpperCase() })}
             </button>
 
             <div className="flex flex-col gap-2 pt-1 border-t border-border">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">SVG</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">{t("common.svg")}</label>
                 <button
                     type="button"
                     onClick={copySvgCode}
                     className="w-full flex items-center justify-center gap-2 text-[13px] font-medium py-2.5 rounded-full transition-colors text-muted-foreground bg-muted hover:bg-secondary"
                 >
                     <Copy className="w-4 h-4" strokeWidth={2} />
-                    Copy SVG Code
+                    {t("common.copySvgCode")}
                 </button>
             </div>
         </div>

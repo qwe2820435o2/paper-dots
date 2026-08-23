@@ -16,7 +16,14 @@ interface GuideMediaProps {
  *  dimensions; the aspect ratio comes from the wrapping div instead. */
 export default function GuideMedia({ image, aspect = "aspect-[4/3]", priority, className }: GuideMediaProps) {
     return (
-        <div className={cn("relative overflow-hidden rounded-guide shadow-guide-lg", aspect, className)}>
+        <div
+            className={cn(
+                "relative overflow-hidden",
+                !image?.frameless && "rounded-guide shadow-guide-lg",
+                image?.aspect ?? aspect,
+                className
+            )}
+        >
             {image ? (
                 <Image
                     src={image.src}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { RotateCcw, Shuffle } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setBackgroundColor, setFrontColor, setColorPair, resetGeometric } from "@/store/slices/geometricSlice";
@@ -7,6 +8,7 @@ import ColorPicker from "@/components/decorate/ColorPicker";
 import { GEOMETRIC_COLOR_PRESETS } from "@/lib/geometricColorPresets";
 
 export default function ColorControls() {
+    const t = useTranslations("editor");
     const dispatch = useAppDispatch();
     const backgroundColor = useAppSelector((s) => s.geometric.backgroundColor);
     const frontColor = useAppSelector((s) => s.geometric.frontColor);
@@ -26,7 +28,7 @@ export default function ColorControls() {
                     className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-muted-foreground bg-muted hover:bg-secondary text-[11px] font-medium"
                 >
                     <Shuffle className="w-3.5 h-3.5 shrink-0" />
-                    Use Random Colors
+                    {t("geometric.colors.useRandomColors")}
                 </button>
                 <button
                     type="button"
@@ -34,19 +36,19 @@ export default function ColorControls() {
                     className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-muted-foreground bg-muted hover:bg-secondary text-[11px] font-medium"
                 >
                     <RotateCcw className="w-3.5 h-3.5 shrink-0" />
-                    Reset all
+                    {t("common.resetAll")}
                 </button>
             </div>
 
             <div className="flex flex-col gap-3">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Presets</label>
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">{t("common.presets")}</label>
                 <div className="flex flex-wrap gap-2.5">
                     {GEOMETRIC_COLOR_PRESETS.map((preset, i) => (
                         <button
                             key={i}
                             type="button"
                             title={`${preset.background} / ${preset.front}`}
-                            aria-label={`Preset: background ${preset.background}, front ${preset.front}`}
+                            aria-label={t("geometric.colors.presetAlt", { background: preset.background, front: preset.front })}
                             onClick={() => dispatch(setColorPair(preset))}
                             className="shrink-0 w-7 h-7 rounded-full transition-transform hover:scale-110"
                             style={{
@@ -59,13 +61,13 @@ export default function ColorControls() {
             </div>
 
             <div className="flex flex-col gap-3">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">Background</label>
-                <ColorPicker color={backgroundColor} onChange={(hex) => dispatch(setBackgroundColor(hex))} label="Background" />
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em]">{t("common.background")}</label>
+                <ColorPicker color={backgroundColor} onChange={(hex) => dispatch(setBackgroundColor(hex))} label={t("common.background")} />
             </div>
 
             <div className="flex flex-col gap-3 pt-1 border-t border-border">
-                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">Front</label>
-                <ColorPicker color={frontColor} onChange={(hex) => dispatch(setFrontColor(hex))} label="Front" />
+                <label className="text-[11px] uppercase text-muted-foreground tracking-[0.08em] pt-3">{t("geometric.colors.front")}</label>
+                <ColorPicker color={frontColor} onChange={(hex) => dispatch(setFrontColor(hex))} label={t("geometric.colors.front")} />
             </div>
         </div>
     );

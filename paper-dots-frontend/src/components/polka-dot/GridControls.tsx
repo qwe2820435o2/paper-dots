@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { RotateCcw } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -15,6 +16,7 @@ import ColorPicker from "@/components/decorate/ColorPicker";
 import IconUploader from "./IconUploader";
 
 export default function GridControls() {
+    const t = useTranslations("editor");
     const dispatch = useAppDispatch();
     const config = useAppSelector((s) => s.polkaDot);
 
@@ -28,13 +30,13 @@ export default function GridControls() {
                     className="flex items-center gap-1.5 px-2.5 h-7 rounded-lg transition-colors text-[#64748b] bg-[#F4FAE8] hover:bg-[#E8F5D2] text-[11px] font-medium"
                 >
                     <RotateCcw className="w-3.5 h-3.5 shrink-0" />
-                    Reset all
+                    {t("common.resetAll")}
                 </button>
             </div>
 
             {/* Shape */}
             <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Shape</label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.shape")}</label>
                 <IconUploader />
             </div>
 
@@ -42,7 +44,7 @@ export default function GridControls() {
             <div>
                 <div className="flex items-baseline justify-between mb-2">
                     <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">
-                        {config.iconUrl ? "Icon Size" : "Dot Size"}
+                        {config.iconUrl ? t("polkaDot.grid.iconSize") : t("polkaDot.grid.dotSize")}
                     </label>
                     <span className="text-[12px] tabular-nums text-[#64748b]">{config.dotSize}</span>
                 </div>
@@ -58,7 +60,7 @@ export default function GridControls() {
             {/* Spacing */}
             <div>
                 <div className="flex items-baseline justify-between mb-2">
-                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Spacing</label>
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.spacing")}</label>
                     <span className="text-[12px] tabular-nums text-[#64748b]">{config.spacing}</span>
                 </div>
                 <Slider
@@ -73,7 +75,7 @@ export default function GridControls() {
             {/* Opacity */}
             <div>
                 <div className="flex items-baseline justify-between mb-2">
-                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Opacity</label>
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("common.opacity")}</label>
                     <span className="text-[12px] tabular-nums text-[#64748b]">{config.opacity}</span>
                 </div>
                 <Slider
@@ -88,14 +90,14 @@ export default function GridControls() {
             {/* Dot Color (not applicable when a custom icon supplies its own colors) */}
             {!config.iconUrl && (
                 <div className="flex flex-col gap-2">
-                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Dot Color</label>
+                    <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("polkaDot.grid.dotColor")}</label>
                     <ColorPicker color={config.dotColor} onChange={(hex) => dispatch(setDotColor(hex))} />
                 </div>
             )}
 
             {/* Background Color */}
             <div className="flex flex-col gap-2">
-                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">Background Color</label>
+                <label className="text-[11px] uppercase text-[#64748b] tracking-[0.08em]">{t("polkaDot.grid.backgroundColor")}</label>
                 <ColorPicker
                     color={config.backgroundColor}
                     onChange={(hex) => dispatch(setBackgroundColor(hex))}

@@ -9,7 +9,9 @@ const REQUIRED_ENV = [
     "GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY_B64",
 ];
 
-const REQUIRED_HEADERS = ["Section", "Item ID", "Field Name", "EN", "HTML Tag", "JP"];
+// The sheet's column headers stay as authored ("JP", "ID"); the field names they map to are
+// the app's routing locale codes, which happen to match.
+const REQUIRED_HEADERS = ["Section", "Item ID", "Field Name", "EN", "HTML Tag", "JP", "ID"];
 
 export function assertEnv() {
     const missing = REQUIRED_ENV.filter((name) => !process.env[name]);
@@ -58,7 +60,7 @@ function resolveHeaderIndex(headerRow) {
     return index;
 }
 
-/** @returns {Array<{rowNumber:number, section:string, itemId:string, fieldName:string, en:string, htmlTag:string, ja:string}>} */
+/** @returns {Array<{rowNumber:number, section:string, itemId:string, fieldName:string, en:string, htmlTag:string, jp:string, id:string}>} */
 export async function fetchTabRows(sheets, spreadsheetId, tabTitle) {
     const res = await sheets.spreadsheets.values.get({
         spreadsheetId,
@@ -78,6 +80,7 @@ export async function fetchTabRows(sheets, spreadsheetId, tabTitle) {
         fieldName: row[idx["Field Name"]] ?? "",
         en: row[idx["EN"]] ?? "",
         htmlTag: row[idx["HTML Tag"]] ?? "",
-        ja: row[idx["JP"]] ?? "",
+        jp: row[idx["JP"]] ?? "",
+        id: row[idx["ID"]] ?? "",
     }));
 }

@@ -1,0 +1,599 @@
+{
+  "tools": {
+    "momentCard": {
+      "label": "写真クオートメーカー",
+      "navDescription": "写真をカラーカードに"
+    },
+    "dot": {
+      "label": "写真オーバーレイエディター",
+      "navDescription": "写真を楽しいドットで飾る"
+    },
+    "polkaDot": {
+      "label": "ポルカドットジェネレーター",
+      "navDescription": "シームレスなポルカドット背景を生成"
+    },
+    "geometricPatterns": {
+      "label": "幾何学パターンジェネレーター",
+      "navDescription": "シームレスな幾何学背景パターンを生成"
+    }
+  },
+  "breadcrumb": {
+    "home": "Home"
+  },
+  "og": {
+    "alt": "Dottypic — 紙のテクスチャと散りばめたドットで写真を飾る",
+    "headlineLine1": "写真を、すぐに",
+    "headlineLine2": "飾りましょう。",
+    "tagline": "紙のテクスチャと散りばめたドット。",
+    "pillFree": "無料",
+    "pillNoSignUp": "登録不要",
+    "pillInstant": "すぐ使える"
+  },
+  "header": {
+    "navTools": "ツール",
+    "cta": "写真をアップロード",
+    "changeLanguage": "言語を変更",
+    "toggleMenu": "メニューを開閉"
+  },
+  "footer": {
+    "tagline": "手描き風の紙のテクスチャと散りばめたドットで写真を飾りましょう。無料でかんたんに使えます。",
+    "tools": "ツール",
+    "support": "サポート",
+    "legal": "規約",
+    "faq": "よくある質問",
+    "contact": "お問い合わせ",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "copyright": "© {year} Dottypic. 無断転載を禁じます。"
+  },
+  "home": {
+    "meta": {
+      "title": "DottyPic：誰でも使える無料の映える写真エディター",
+      "description": "DottyPicは、クオート投稿・オーバーレイ・パターン背景を作れる小さくてかんたんなツールをそろえた無料の写真エディターです。スキル不要、透かしなし、登録なし。"
+    },
+    "hero": {
+      "headline": "<swash>誰でも</swash>使える無料の映える写真エディター",
+      "subheadline": "どんな写真も、そのまま投稿したくなる仕上がりに。レイヤーも学習コストもインストールも不要な、小さくてかんたんなツールです。",
+      "cta": "写真をアップロード",
+      "badge": "無料 · 透かしなし · 登録不要",
+      "scrollLabel": "ツールを見る"
+    },
+    "toolGrid": {
+      "heading": "無料で使える映える写真編集ツール",
+      "lead": "どのツールも役割はひとつだけ。使い方は1分ほどでわかります。写真編集がはじめてでも迷わず、デザイナーが重いソフトを開く手間を省くのにも十分な速さです。",
+      "tryItNow": "今すぐ試す",
+      "cards": {
+        "momentCard": "言葉は写真の上に重ねず、専用のカラーブロックに配置されます。",
+        "dot": "雪の結晶やハート、星を写真に散りばめ、色は写真に合わせて自動でなじませます。",
+        "polkaDot": "サイズも間隔も色も自由なポルカドット背景。すべてはここから始まりました。",
+        "geometricPatterns": "波、グリッド、三角形、テラゾー。投稿にもスライドにも壁紙にも使える背景です。"
+      },
+      "more": {
+        "heading": "続々追加予定",
+        "body": "新しいツールができ次第ここに追加します。もちろん無料、透かしなし、登録不要のまま。"
+      }
+    },
+    "colorEngine": {
+      "heading": "写真から直接、色を自動でマッチング",
+      "body": "どのツールもあなたの写真を読み取り、主要な色を抽出してそこから組み立てます。テキストブロックもオーバーレイの形も背景パターンも、触る前からすでになじんでいます。もちろんあとから変更もできますが、その必要を感じない人がほとんどです。",
+      "cta": "今すぐ試す",
+      "downloadGraphic": "画像をダウンロード",
+      "art": {
+        "heading": "色はすべてあなたの写真から",
+        "subheading": "一度アップロードするだけ。パレットもテキストブロックも各パターンも自動でなじみます。",
+        "step1": "1 · あなたの写真",
+        "step2": "2 · 色を抽出",
+        "step3": "3 · なじませ済み、すぐ投稿できます",
+        "quotePost": "クオート投稿",
+        "overlay": "オーバーレイ",
+        "polkaDots": "ポルカドット",
+        "geometric": "幾何学",
+        "tagline": "無料 · 透かしなし · 登録不要"
+      }
+    },
+    "why": {
+      "heading": "DottyPicを選ぶ理由",
+      "cards": {
+        "free": {
+          "heading": "無料、しかも途中で切れない無料",
+          "body": "すべてのツール、すべての形、すべての書き出しサイズが今も無料で、これからも無料のままです。使える選択肢を制限する有料プランも、購入が必要なクレジットも、作業中に静かに進む14日間のカウントダウンもありません。今日つくれるものは、来月も同じようにつくれます。"
+        },
+        "noWatermark": {
+          "heading": "作品に何かを刻印することは一切ありません",
+          "body": "隅にロゴが入ることも、中央に薄い斜め文字が入ることも、どのツールを使ったかがファイルに埋め込まれることもありません。ダウンロードの直前で、透かしを消すには課金が必要だと告げられることもありません。書き出した画像はあなたがつくったそのままで、どこに投稿するのも自由です。"
+        },
+        "unlimited": {
+          "heading": "好きなだけつくれます",
+          "body": "1日の上限も、隅で減っていく書き出しカウンターも、混雑時の順番待ちもありません。同じ写真で10パターン試して、気に入った1枚だけ残せます。ここには従量制のものが何ひとつないので、使う量を気にする理由がありません。"
+        },
+        "noAccount": {
+          "heading": "アカウントもメールも待ち時間も不要",
+          "body": "あなたとツールのあいだに登録画面はありません。考えるパスワードも、迷惑メールフォルダから探す確認リンクも、勝手にチェックが入ったニュースレターの同意欄もありません。ページを開けばもう動いています。1枚だけつくって二度と来なくても、まったく問題ありません。"
+        }
+      }
+    },
+    "reviews": {
+      "heading": "利用者の声",
+      "items": {
+        "mira": {
+          "quote": "デザインの知識はゼロですが、いまはInstagramの投稿を全部ここでつくっています。決め手は色のマッチングでした。どの色が合うのか迷わなくて済みます。",
+          "name": "Mira K."
+        },
+        "dan": {
+          "quote": "冬のキャンペーンのモックにオーバーレイエディターを使いました。同じものをIllustratorで組むより速くて、正直こちらのほうが良い仕上がりでした。",
+          "name": "Dan R."
+        },
+        "kenji": {
+          "quote": "スライド用にポルカドット背景が必要でしたが、どこにもアカウントを作りたくありませんでした。最初から最後まで2分ほどで終わりました。",
+          "name": "Kenji S."
+        },
+        "priya": {
+          "quote": "透かしが入らないところが、使い続けている理由です。ほかの無料エディターは作品にロゴを入れておいて、消すのに課金を求めてきます。",
+          "name": "Priya N."
+        }
+      }
+    },
+    "faq": {
+      "heading": "よくある質問",
+      "items": {
+        "free": {
+          "question": "DottyPicは無料ですか？",
+          "answer": "はい、完全に無料です。すべてのツール、すべての形、すべての書き出しサイズが無料です。有料プランも、期限切れになる試用期間もありません。"
+        },
+        "watermark": {
+          "question": "画像に透かしは入りますか？",
+          "answer": "入りません。書き出した画像にDottyPicのロゴが入ることはありません。そのまま投稿しても、どのように使っても大丈夫です。"
+        },
+        "account": {
+          "question": "利用にアカウントは必要ですか？",
+          "answer": "不要です。登録もメールアドレスも必要ありません。サイト上のどのツールもすぐに使いはじめられます。"
+        },
+        "experience": {
+          "question": "写真編集の経験は必要ですか？",
+          "answer": "必要ありません。DottyPicは写真編集をしたことがない人のためにつくられています。レイヤーもマスクも、正しく設定しなければいけないカラーピッカーもありません。写真をアップして、気が向けばスライダーを少し動かして、ダウンロードするだけです。"
+        },
+        "audience": {
+          "question": "DottyPicはデザイナー向けですか、初心者向けですか？",
+          "answer": "どちらにも使えますが、主に初心者向けです。ここに来る人の多くは、Photoshopを開かずに整った投稿をつくりたいだけです。デザイナーの方も、背景やオーバーレイを一から組む代わりにさっと用意する用途で使っています。"
+        },
+        "whatToMake": {
+          "question": "DottyPicで何がつくれますか？",
+          "answer": "色を合わせたカラーブロック付きのクオート投稿、雪の結晶やハートを重ねた写真、ポルカドット背景、幾何学パターンなどです。Instagramの投稿やストーリー、スライド資料、スマホの壁紙、スモールビジネスの画像などに使われています。"
+        },
+        "sizes": {
+          "question": "どのサイズで書き出せますか？",
+          "answer": "Instagramの投稿とストーリー、16:9のスライド、スマホの壁紙、任意のサイズに対応しています。書き出しはすべてPNGで、より鮮明にしたいときは2倍サイズも選べます。"
+        },
+        "commercial": {
+          "question": "つくったものを商用利用できますか？",
+          "answer": "できます。DottyPicでつくったものはあなたのもので、クライアントワークにも販売する商品にも使えます。できないのはツール自体の再販だけです。"
+        }
+      }
+    },
+    "finalCta": {
+      "heading": "何かつくってみましょう",
+      "body": "ツールを選んで、写真を入れて、どう仕上がるか見てみてください。無料、透かしなし、登録不要です。",
+      "cta": "写真をアップロード"
+    }
+  },
+  "faqPage": {
+    "meta": {
+      "title": "FAQ",
+      "description": "Answers to common questions about Dottypic.",
+      "ogTitle": "Frequently Asked Questions — Dottypic"
+    },
+    "heading": "FAQ",
+    "lead": "Everything you need to know about Dottypic.",
+    "items": {
+      "free": {
+        "question": "Is Dottypic's dot image generator free to use?",
+        "answer": "Yes! You get full access to our Automatic Photo Collage Maker and all design elements for free. Best of all? No watermarks on your final masterpieces."
+      },
+      "registration": {
+        "question": "Do I need to register to use the dot image generator?",
+        "answer": "No registration required! We believe in \"creating on the go.\" Just upload, edit your polka dot pattern, and download. Simple as that."
+      },
+      "density": {
+        "question": "Can I customize the density of the polka dot pattern?",
+        "answer": "Absolutely. You have full control over the polka dots pattern. You can adjust the shape, size, color, and spacing to create a look that is uniquely yours."
+      },
+      "shapes": {
+        "question": "Can I change the dots to other shapes?",
+        "answer": "Of course! While we love a classic polka dot setting, you can switch to hearts, stars, or waterdrops to match your specific vibe."
+      },
+      "autoAnalyze": {
+        "question": "How does the \"Auto-Analyze\" feature work?",
+        "answer": "Our smart tool \"reads\" the dominant colors in your uploaded images and automatically suggests a dot pattern and background color that complements your photo perfectly. It's like having a tiny designer in your pocket!"
+      },
+      "ownBackground": {
+        "question": "Can I use my own background images?",
+        "answer": "Yes! You can use our AI-generated colors or upload your own favorite textures and patterns to use as a base for your collage."
+      },
+      "mobile": {
+        "question": "Will the dot image generator work on my phone?",
+        "answer": "Yes! Dottypic is optimized for mobile and desktop browsers, so you can create aesthetic collages whenever inspiration strikes."
+      },
+      "privacy": {
+        "question": "How does the Automatic Photo Collage Maker handle my privacy?",
+        "answer": "Your photos stay yours. Dottypic processes everything locally in your browser. We never store or upload your images to a server, ensuring 100% privacy and security."
+      }
+    }
+  },
+  "privacy": {
+    "meta": {
+      "title": "Privacy Policy",
+      "description": "Learn how Dottypic handles your data and privacy.",
+      "ogTitle": "Privacy Policy — Dottypic"
+    },
+    "heading": "Privacy Policy",
+    "lastUpdated": "Last updated: March 26, 2026",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "content": "Dottypic (\"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you use our browser-based photo decoration tool."
+      },
+      "collection": {
+        "title": "Information We Collect",
+        "content": "We do not collect personal data. Dottypic is designed to work entirely in your browser. Photos you upload are processed locally on your device — they are never sent to our servers."
+      },
+      "processing": {
+        "title": "Photo Processing",
+        "content": "All photo editing, texture rendering, and dot generation happens in your browser using client-side JavaScript. Your images do not leave your device at any point during the decoration or export process."
+      },
+      "cookies": {
+        "title": "Cookies & Local Storage",
+        "content": "We may use browser local storage to save your editor preferences between sessions (such as your last selected paper or dot settings). We also use Google Analytics to collect anonymous usage statistics (such as page views and session duration) to help us improve the service. Google Analytics may use cookies to collect this data. No personally identifiable information is collected."
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "content": "Dottypic does not share any data with third-party services. There are no embedded advertising networks or external analytics platforms in our application."
+      },
+      "rights": {
+        "title": "Your Rights",
+        "content": "Since we do not collect or store personal data, there is nothing to access, modify, or delete. If you have any concerns about your privacy while using Dottypic, please contact us."
+      },
+      "changes": {
+        "title": "Changes to This Policy",
+        "content": "We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated revision date."
+      }
+    },
+    "contact": {
+      "title": "Contact",
+      "content": "If you have questions about this Privacy Policy, please reach out at <mail>support@dottypic.com</mail>."
+    }
+  },
+  "terms": {
+    "meta": {
+      "title": "Terms of Service",
+      "description": "Read the terms and conditions for using Dottypic.",
+      "ogTitle": "Terms of Service — Dottypic"
+    },
+    "heading": "Terms of Service",
+    "lastUpdated": "Last updated: March 26, 2026",
+    "acceptance": {
+      "title": "Acceptance of Terms",
+      "content": "By accessing or using Dottypic, you agree to be bound by these Terms of Service. If you do not agree, please do not use the service."
+    },
+    "description": {
+      "title": "Description of Service",
+      "content": "Dottypic is a free, browser-based photo decoration tool. You upload a photo, apply a paper texture, configure dot patterns, and download the result as a PNG. All processing occurs locally in your browser — no server upload is required."
+    },
+    "conduct": {
+      "title": "User Conduct",
+      "content": "You agree to use Dottypic only for lawful purposes. You must not:",
+      "prohibited": {
+        "illegal": "Use the service to create or distribute illegal, harmful, or offensive content.",
+        "reverseEngineer": "Attempt to reverse-engineer, modify, or interfere with the application.",
+        "scrape": "Use automated tools to scrape or overload the service."
+      }
+    },
+    "intellectualProperty": {
+      "title": "Intellectual Property",
+      "content": "The Dottypic application — including its design, code, paper textures, and visual assets — is the intellectual property of Dottypic. You may not copy, reproduce, or redistribute any part of the application without prior written consent.",
+      "content2": "Photos you decorate using Dottypic are yours. We claim no ownership over the content you generate."
+    },
+    "warranties": {
+      "title": "Disclaimer of Warranties",
+      "content": "Dottypic is provided \"as is\" without warranties of any kind, express or implied. We do not guarantee that the service will be uninterrupted, error-free, or compatible with all devices."
+    },
+    "liability": {
+      "title": "Limitation of Liability",
+      "content": "To the fullest extent permitted by law, Dottypic shall not be liable for any indirect, incidental, or consequential damages arising from your use of the service."
+    },
+    "changes": {
+      "title": "Changes to These Terms",
+      "content": "We reserve the right to modify these Terms of Service at any time. Continued use of Dottypic after changes constitutes acceptance of the updated terms."
+    },
+    "contact": {
+      "title": "Contact",
+      "content": "If you have questions about these Terms of Service, please contact us at <mail>support@dottypic.com</mail>."
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact",
+      "description": "Get in touch with the Dottypic team.",
+      "ogTitle": "Contact Us — Dottypic",
+      "ogDescription": "Have a question or feedback? Get in touch with the Dottypic team."
+    },
+    "heading": "Contact Us",
+    "lead": "Have a question or feedback? We would love to hear from you.",
+    "email": {
+      "title": "Email",
+      "body": "Send us an email and we will get back to you as soon as possible."
+    },
+    "feedback": {
+      "title": "Feedback",
+      "body": "Found a bug or have a feature request? Let us know — we are always improving Dottypic."
+    }
+  },
+  "editor": {
+    "common": {
+      "close": "Close",
+      "uploadPhoto": "Upload photo",
+      "replacePhoto": "Replace photo",
+      "dropImage": "Drop image here or click to browse",
+      "downloadPng": "Download PNG",
+      "downloadFormat": "Download {format}",
+      "downloadSvg": "Download SVG",
+      "copySvgCode": "Copy SVG Code",
+      "copyCssCode": "Copy CSS Code",
+      "sizePx": "Size (px)",
+      "format": "Format",
+      "svg": "SVG",
+      "css": "CSS",
+      "shape": "Shape",
+      "size": "Size",
+      "spacing": "Spacing",
+      "opacity": "Opacity",
+      "rotation": "Rotation",
+      "presets": "Presets",
+      "background": "Background",
+      "color": "Color",
+      "character": "Character",
+      "customColor": "Custom color",
+      "characterPlaceholder": "A",
+      "resetAll": "Reset all",
+      "shuffle": "Shuffle",
+      "colorPickerSaturation": "{label} saturation and brightness",
+      "colorPickerHue": "{label} hue",
+      "colorPickerHex": "{label} hex value"
+    },
+    "toast": {
+      "saved": "Saved to your downloads",
+      "exportFailed": "Export failed, please try again",
+      "svgCopied": "SVG code copied",
+      "cssCopied": "CSS code copied",
+      "copyFailed": "Could not copy to clipboard",
+      "iconTooLarge": "Icon must be under 10MB",
+      "imageReadFailed": "Could not read that image",
+      "emojiLoadFailed": "Could not load that emoji",
+      "imageLoadFailed": "Failed to load image"
+    },
+    "dot": {
+      "tabs": {
+        "upload": "Upload",
+        "layout": "Layout",
+        "paper": "Mask",
+        "dots": "Dots",
+        "export": "Export"
+      },
+      "layout": {
+        "stitch": "Stitch",
+        "ratio": "Ratio",
+        "border": "Border",
+        "options": {
+          "main-left": "Main on Left",
+          "main-right": "Main on Right",
+          "main-top": "Main on Top",
+          "main-bottom": "Main on Bottom",
+          "border": "Polaroid Border"
+        }
+      },
+      "paper": {
+        "modes": {
+          "solid": "Solid",
+          "stripe": "Stripe",
+          "photo": "Photo",
+          "checkerboard": "Checker",
+          "noise": "Noise",
+          "gradient": "Gradient",
+          "grid": "Grid",
+          "dot-grid": "Dot Grid"
+        },
+        "color1": "Color 1",
+        "color2": "Color 2",
+        "width": "Width",
+        "grain": "Grain",
+        "angle": "Angle",
+        "lineColor": "Line Color",
+        "dotColor": "Dot Color",
+        "backgroundAlt": "background"
+      },
+      "dots": {
+        "count": "Count",
+        "variance": "Variance",
+        "colorModes": {
+          "auto": "Auto",
+          "single": "Single",
+          "palette": "Palette",
+          "gradient": "Gradient"
+        },
+        "gradientDirections": {
+          "x": "Horizontal",
+          "y": "Vertical",
+          "radial": "Radial"
+        },
+        "gradientStart": "Start",
+        "gradientEnd": "End"
+      }
+    },
+    "polkaDot": {
+      "tabs": {
+        "grid": "Grid",
+        "transform": "Transform",
+        "presets": "Presets",
+        "export": "Export"
+      },
+      "grid": {
+        "iconSize": "Icon Size",
+        "dotSize": "Dot Size",
+        "dotColor": "Dot Color",
+        "backgroundColor": "Background Color"
+      },
+      "transform": {
+        "heading": "Transform",
+        "reset": "Reset Transform",
+        "skewX": "Skew X",
+        "skewY": "Skew Y",
+        "zoom": "Zoom"
+      },
+      "presets": {
+        "palettes": "Palettes"
+      },
+      "icons": {
+        "dot": "Dot",
+        "emoji": "Emoji",
+        "customIconTitle": "Custom Icon",
+        "customIconHint": "SVG · PNG · JPG · up to 10MB",
+        "customIcon": "Custom icon",
+        "uploadedIconAlt": "Uploaded icon",
+        "removeIcon": "Remove icon"
+      },
+      "previewAlt": "Polka dot pattern preview"
+    },
+    "geometric": {
+      "tabs": {
+        "shapes": "Shapes",
+        "layout": "Layout",
+        "colors": "Colors",
+        "export": "Export"
+      },
+      "shufflePattern": "Shuffle pattern (Space)",
+      "layout": {
+        "rows": "Rows",
+        "columns": "Columns",
+        "gridStyle": "Grid Style",
+        "evenGrid": "Even grid",
+        "compactGrid": "Compact grid",
+        "randomize": "Randomize",
+        "density": "Density"
+      },
+      "colors": {
+        "useRandomColors": "Use Random Colors",
+        "front": "Front",
+        "presetAlt": "Preset: background {background}, front {front}"
+      },
+      "previewAlt": "Geometric pattern preview"
+    },
+    "momentCard": {
+      "tabs": {
+        "upload": "Upload",
+        "text": "Text",
+        "export": "Export"
+      },
+      "text": {
+        "title": "Title",
+        "titlePlaceholder": "Moment title",
+        "subtitle": "Subtitle",
+        "subtitlePlaceholder": "Tap here to add subtitle",
+        "textColor": "Text color",
+        "colorModes": {
+          "auto": "Auto",
+          "dark": "Dark",
+          "light": "Light"
+        }
+      },
+      "colors": {
+        "backgroundColor": "Background color",
+        "reExtract": "Re-extract from current frame",
+        "extracting": "Extracting…",
+        "dragHint": "Drag the bottom photo to reposition it. The background color updates automatically when you release."
+      }
+    }
+  },
+  "editorMeta": {
+    "dot": {
+      "title": "Dot · Dottypic",
+      "description": "Upload a photo, pick a paper, scatter dots."
+    },
+    "polkaDot": {
+      "title": "Polka Dot Generator · Dottypic",
+      "description": "Generate a seamless polka dot background pattern and export it as PNG, SVG, or CSS."
+    },
+    "momentCard": {
+      "title": "Moment Card · Dottypic",
+      "description": "Turn a photo into a vibrant moment card. Extract the dominant color, add a title, and share."
+    },
+    "geometricPatterns": {
+      "title": "Geometric Pattern Maker · Dottypic",
+      "description": "Generate a randomized grid of geometric shapes and export it as SVG, PNG, or JPEG."
+    }
+  },
+  "labels": {
+    "dotShapes": {
+      "circle": "Circle",
+      "flower": "Flower",
+      "character": "Character",
+      "diamond": "Diamond",
+      "heart": "Heart",
+      "star": "Star",
+      "crown": "Crown",
+      "leaf": "Leaf",
+      "crescent": "Crescent",
+      "snowflake": "Snowflake"
+    },
+    "dotColors": {
+      "ink": "Ink",
+      "paper": "Paper",
+      "marigold": "Marigold",
+      "neonPink": "Neon Pink",
+      "sky": "Sky"
+    },
+    "palettes": {
+      "morandi": "Morandi",
+      "macaron": "Macaron",
+      "sunset": "Sunset",
+      "ocean": "Ocean",
+      "forest": "Forest"
+    },
+    "polkaDotPresets": {
+      "classic": "Classic",
+      "checker": "Checker",
+      "diamond": "Diamond",
+      "tilted": "Tilted",
+      "big-dots": "Big Dots",
+      "confetti": "Confetti"
+    },
+    "polkaDotPalettes": {
+      "classic": "Classic",
+      "morandi": "Morandi",
+      "ocean": "Ocean",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "mono": "Mono"
+    },
+    "sampleShapes": {
+      "diamond": "Diamond",
+      "heart": "Heart",
+      "star": "Star",
+      "crown": "Crown",
+      "leaf": "Leaf",
+      "crescent": "Crescent"
+    }
+  },
+  "notFound": {
+    "code": "404",
+    "heading": "Page not found",
+    "body": "The page you are looking for does not exist or has been moved.",
+    "backHome": "Back to Home",
+    "startDecorating": "Start Decorating"
+  },
+  "error": {
+    "code": "Oops",
+    "heading": "Something went wrong",
+    "body": "An unexpected error occurred. Please try again.",
+    "tryAgain": "Try Again",
+    "backHome": "Back to Home"
+  }
+}
