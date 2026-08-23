@@ -30,6 +30,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "faqPage.meta" });
+  const tOg = await getTranslations({ locale, namespace: "og" });
 
   return {
     title: t("title"),
@@ -38,8 +39,10 @@ export async function generateMetadata({
       title: t("ogTitle"),
       description: t("description"),
       url: "/faq",
+      type: "website",
+      siteName: "Dottypic",
       locale: LOCALE_META[locale].ogLocale,
-      images: ogImages(locale),
+      images: ogImages(locale, tOg("alt")),
     },
     alternates: buildAlternates("/faq", locale),
   };

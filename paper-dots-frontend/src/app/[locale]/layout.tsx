@@ -2,7 +2,7 @@ import { Nunito } from "next/font/google";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import "../globals.css";
 import { Toaster } from "sonner";
 import Providers from "@/components/common/Providers";
@@ -46,6 +46,7 @@ export async function generateMetadata({
   params: Promise<{ locale: AppLocale }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "og" });
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -65,13 +66,13 @@ export async function generateMetadata({
       locale: LOCALE_META[locale].ogLocale,
       siteName: "Dottypic",
       url: "/",
-      images: ogImages(locale),
+      images: ogImages(locale, t("alt")),
     },
     twitter: {
       card: "summary_large_image",
       title: SITE_TITLE,
       description: SITE_DESCRIPTION,
-      images: ogImages(locale).map((image) => image.url),
+      images: ogImages(locale, t("alt")).map((image) => image.url),
     },
   };
 }

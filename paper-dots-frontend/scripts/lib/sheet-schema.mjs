@@ -3,9 +3,15 @@
 //
 // The exact Field Name strings below are confirmed against a live pull of the real sheet
 // (Polka Dot Generator tab). A few fields that show up in the sheet have no home in
-// GuideContent yet (Meta::OG Title/OG Description/OG Image Alt, Feature::Feature Button,
-// How To::How To Image) — they're deliberately left unmapped and keep warning until the
-// content type grows to carry them. A sheet row that doesn't match anything here is never
+// GuideContent yet — they're deliberately left unmapped and keep warning until either the
+// content type grows to carry them or the sheet's own data is fixed:
+//   - Meta::OG Image Alt — the cell holds a Google Drive file URL, not alt text (copy-paste
+//     mistake from the Hero Image cell above it), so there's nothing sane to map it to yet.
+//   - Hero::Hero Image, Feature::Feature Image, How To::How To Image — `GuideImage.src` is
+//     documented as a path under `public/`; the sheet's values are Google Drive share links,
+//     which aren't directly usable as an image src. Needs an image-hosting decision before
+//     these can be wired up.
+// A sheet row that doesn't match anything here is never
 // silently dropped: it prints an "unknown Section/Field Name" warning naming the tab and
 // row, so a mismatch is a five-minute fix to this file rather than a copy that quietly
 // never made it into the page.
@@ -26,6 +32,8 @@ export const FIELD_MAP = {
 
     "meta information::meta title": "meta.title",
     "meta information::meta description": "meta.description",
+    "meta::og title": "meta.ogTitle",
+    "meta::og description": "meta.ogDescription",
 
     "hero::headline": "hero.headline",
     "hero::subheadline": "hero.subheadline",
@@ -61,6 +69,7 @@ export const COLLECTIONS = {
         fields: {
             "feature title": "heading",
             "feature description": "body",
+            "feature button": "cta.text",
         },
     },
     "how to": {

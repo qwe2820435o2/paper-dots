@@ -7,7 +7,9 @@ const content: GuideContentByLocale = {
     "name": "Geometric Pattern Generator",
     "meta": {
       "title": "Geometric Pattern Generator | Geometric pattern & Geometric designs",
-      "description": "Need a free geometric pattern generator for seamless backgrounds? Pick stripes, hexagons, Memphis, and more, then export PNG, JPG, or SVG. Try free, no login."
+      "description": "Need a free geometric pattern generator for seamless backgrounds? Pick stripes, hexagons, Memphis, and more, then export PNG, JPG, or SVG. Try free, no login.",
+      "ogTitle": "",
+      "ogDescription": ""
     },
     "hero": {
       "headline": "Free Online Geometric Pattern Generator",
@@ -19,37 +21,71 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Photo Overlay Editor",
+          "href": "/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "Photo Quote Maker",
+          "href": "/photo-quote-maker"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "Geometric Pattern Generator With a Huge Library",
-        "body": "You feel stuck when a pattern tool only offers a few basic shapes. Now you can browse looks that already feel like design styles. Choose stripes, polka dots, grids, chevron, triangles, hexagons, waves, diamonds, plus marks, isometric tiles, checkerboards, terrazzo, Memphis, Bauhaus, quatrefoil, and plaid for geometric designs that fit the mood.",
-        "image": null
+        "body": "It feels limiting when a design tool only offers a few basic shapes. Now you can easily browse through options that already feel like complete design styles. Our geometric pattern generator features a massive library. Choose from stripes, polka dots, grids, chevron, triangles, hexagons, waves, diamonds, plus marks, isometric tiles, checkerboards, terrazzo, Memphis, Bauhaus, quatrefoil, and plaid to create the perfect geometric pattern for your exact mood.",
+        "image": null,
+        "cta": {
+          "text": "Make a Geometric Pattern",
+          "href": null
+        }
       },
       {
         "id": "2",
         "heading": "Tune Color, Scale, Spacing, and Rotation",
-        "body": "Mismatched colors and spacing make a background look accidental. After a few tweaks, the pattern sits at the density and angle you need. Change pattern color and background color, then adjust scale, spacing, rotation, and opacity until your geometric pattern feels intentional.",
-        "image": null
+        "body": "Mismatched colors and awkward spacing can make your layout look completely accidental. After a few quick tweaks, everything will sit perfectly at the density and angle you actually need. This geometric background generator lets you change both the pattern and background colors. Easily adjust the scale, spacing, rotation, and opacity until your composition feels totally intentional using this intuitive geometric generator.",
+        "image": null,
+        "cta": {
+          "text": "Make a Geometric Pattern",
+          "href": null
+        }
       },
       {
         "id": "3",
-        "heading": "Seamless Tiling at Custom Sizes",
-        "body": "You get impatient when a pretty pattern breaks at the edges or forces a fixed canvas. The repeat stays clean across the field you choose. Create seamless tiling and set a custom export size so geometric shapes design work for banners, slides, or packaging without awkward seams.",
-        "image": null
+        "heading": "Geometric Pattern Maker for Seamless Tiling",
+        "body": "You get impatient when a beautiful design breaks at the edges or forces you onto a fixed canvas. The repeat should stay absolutely clean across any field you choose. Use this geometric pattern maker to create seamless tiling and set a custom export size. Now your artwork will look flawless on banners, presentation slides, or packaging without any awkward seams ruining the look.",
+        "image": null,
+        "cta": {
+          "text": "Make a Geometric Pattern",
+          "href": null
+        }
       },
       {
         "id": "4",
         "heading": "Shuffle Ideas and Color Presets",
-        "body": "Staring at blank controls feels rushed when you just want a starting point. One click gives a fresh direction and a ready palette. Use Shuffle for new combinations, then apply color presets so cool design patterns appear faster before you fine-tune.",
-        "image": null
+        "body": "Staring at blank controls can feel overwhelming when you just need a solid starting point. A single click provides a fresh direction and a ready made palette. Use the shuffle feature in our geometric design generator to discover new creative combinations instantly. Apply curated color presets so cool ideas appear much faster before you even begin to fine tune the tiny details.",
+        "image": null,
+        "cta": {
+          "text": "Make a Geometric Pattern",
+          "href": null
+        }
       },
       {
         "id": "5",
         "heading": "Export PNG, JPG, SVG, Free Forever",
-        "body": "You hesitate when a free tool watermarks the file or asks for an account first. Leave with the format your workflow needs. Download PNG, JPG, SVG, or SVG code in DottyPic with no watermark and no login required.",
-        "image": null
+        "body": "You should never have to hesitate because a tool adds a watermark or demands an account setup first. Leave with the exact file format your workflow actually requires. Download a PNG, JPG, SVG, or pure SVG code using this completely free geometric pattern generator. DottyPic ensures you get your high quality files with zero watermarks and absolutely no login required.",
+        "image": null,
+        "cta": {
+          "text": "Make a Geometric Pattern",
+          "href": null
+        }
       }
     ],
     "howTo": {
@@ -155,7 +191,9 @@ const content: GuideContentByLocale = {
     "name": "幾何学パターンジェネレーター",
     "meta": {
       "title": "幾何学パターンジェネレーター｜幾何学模様＆ジオメトリックデザイン",
-      "description": "継ぎ目のない背景向けの無料の幾何学パターンジェネレーターが必要ですか？ストライプ、六角形、メンフィス風などを選んで PNG・JPG・SVG で書き出し。ログイン不要ですぐ無料体験。"
+      "description": "継ぎ目のない背景向けの無料の幾何学パターンジェネレーターが必要ですか？ストライプ、六角形、メンフィス風などを選んで PNG・JPG・SVG で書き出し。ログイン不要ですぐ無料体験。",
+      "ogTitle": "",
+      "ogDescription": ""
     },
     "hero": {
       "headline": "継ぎ目のない背景向けの幾何学パターンジェネレーター",
@@ -167,37 +205,76 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "写真オーバーレイ編集ツール",
+          "href": "/jp/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "写真クオートメーカー",
+          "href": "/jp/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "幾何学パターンジェネレーター",
+          "href": "/jp/geometric-pattern-generator"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "パターン庫が充実した幾何学パターンジェネレーター",
         "body": "基本図形が少ししかないと、パターンツールで行き詰まります。いまはデザインスタイルとして通じる見た目から選べます。ストライプ、ドット、グリッド、シェブロン、三角、六角形、波、菱形、十字、アイソメ、チェッカー、テラゾー、メンフィス、バウハウス、四つ葉、チェック柄など、ムードに合うジオメトリックデザインが作れます。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "幾何学パターンを作る",
+          "href": null
+        }
       },
       {
         "id": "2",
         "heading": "色・大きさ・間隔・回転を調整",
         "body": "色や間隔が合っていないと、背景が偶然っぽく見えます。少し触れば、欲しい密度と角度に収まります。パターン色と背景色を変え、スケール、間隔、回転、透明度を調整して、意図のある幾何学模様に仕上げましょう。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "幾何学パターンを作る",
+          "href": null
+        }
       },
       {
         "id": "3",
         "heading": "カスタムサイズのシームレスなタイリング",
         "body": "きれいな柄なのに端で切れたり、固定キャンバスしか選べなかったりするとじれったいです。選んだ範囲全体で繰り返しがきれいにつながります。シームレスなタイリングと任意の書き出しサイズで、バナー、スライド、パッケージにも継ぎ目の違和感なく使えます。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "幾何学パターンを作る",
+          "href": null
+        }
       },
       {
         "id": "4",
         "heading": "シャッフルと配色プリセット",
         "body": "白紙の操作画面だけだと、起点が欲しくて焦ります。ワンクリックで新しい方向と使える配色が出ます。シャッフルで組み合わせを試し、配色プリセットを当てれば、細かく調整する前にかっこいいパターン案が早く見つかります。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "幾何学パターンを作る",
+          "href": null
+        }
       },
       {
         "id": "5",
         "heading": "PNG・JPG・SVGを無料で書き出し",
         "body": "無料なのに透かしやアカウント登録を求められると手が止まります。作業に合う形式で持ち帰れます。DottyPicなら透かしなし・ログイン不要で PNG、JPG、SVG、SVGコードをダウンロードできます。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "幾何学パターンを作る",
+          "href": null
+        }
       }
     ],
     "howTo": {
@@ -303,7 +380,9 @@ const content: GuideContentByLocale = {
     "name": "Pembuat pola geometris",
     "meta": {
       "title": "Pembuat pola geometris | Pola geometris & Desain geometris",
-      "description": "Butuh pembuat pola geometris gratis untuk latar tanpa sambungan? Pilih garis, heksagon, gaya Memphis, dan lainnya, lalu ekspor PNG, JPG, atau SVG. Coba gratis, tanpa masuk akun."
+      "description": "Butuh pembuat pola geometris gratis untuk latar tanpa sambungan? Pilih garis, heksagon, gaya Memphis, dan lainnya, lalu ekspor PNG, JPG, atau SVG. Coba gratis, tanpa masuk akun.",
+      "ogTitle": "",
+      "ogDescription": ""
     },
     "hero": {
       "headline": "Pembuat pola geometris untuk latar tanpa sambungan",
@@ -315,37 +394,76 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Editor overlay foto",
+          "href": "/id/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "Pembuat Kutipan Foto",
+          "href": "/id/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "Pembuat pola geometris",
+          "href": "/id/geometric-pattern-generator"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "Pembuat pola geometris dengan pustaka besar",
         "body": "Anda merasa macet saat alat pola hanya menawarkan sedikit bentuk dasar. Kini Anda bisa menelusuri tampilan yang sudah terasa seperti gaya desain. Pilih garis, polkadot, kisi, chevron, segitiga, heksagon, gelombang, belah ketupat, plus, isometrik, papan catur, terrazzo, Memphis, Bauhaus, quatrefoil, dan plaid untuk desain geometris yang sesuai suasana.",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "Buat pola geometris",
+          "href": null
+        }
       },
       {
         "id": "2",
         "heading": "Atur warna, skala, jarak, dan rotasi",
         "body": "Warna dan jarak yang tidak cocok membuat latar terlihat kebetulan. Setelah beberapa penyesuaian, pola duduk pada kepadatan dan sudut yang Anda butuhkan. Ubah warna pola dan warna latar, lalu atur skala, jarak, rotasi, dan opacity hingga pola geometris terasa disengaja.",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "Buat pola geometris",
+          "href": null
+        }
       },
       {
         "id": "3",
         "heading": "Ubin tanpa sambungan dengan ukuran kustom",
         "body": "Anda jadi tidak sabar saat pola bagus retak di tepi atau dipaksa kanvas tetap. Pengulangan tetap rapi di seluruh bidang yang Anda pilih. Buat ubin tanpa sambungan dan atur ukuran ekspor kustom agar desain bentuk geometris siap untuk banner, slide, atau kemasan tanpa sambungan ganjil.",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "Buat pola geometris",
+          "href": null
+        }
       },
       {
         "id": "4",
         "heading": "Acak ide dan preset warna",
         "body": "Menatap kontrol kosong terasa buru-buru saat Anda hanya ingin titik awal. Satu klik memberi arah baru dan palet siap pakai. Pakai Acak untuk kombinasi baru, lalu terapkan preset warna agar pola desain keren muncul lebih cepat sebelum Anda menyempurnakan.",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "Buat pola geometris",
+          "href": null
+        }
       },
       {
         "id": "5",
         "heading": "Ekspor PNG, JPG, SVG, gratis selamanya",
         "body": "Anda ragu saat alat gratis memasang tanda air atau meminta akun dulu. Bawa pulang format yang dibutuhkan alur kerja Anda. Unduh PNG, JPG, SVG, atau kode SVG di DottyPic tanpa tanda air dan tanpa masuk akun.",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "Buat pola geometris",
+          "href": null
+        }
       }
     ],
     "howTo": {

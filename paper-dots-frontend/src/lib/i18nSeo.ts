@@ -31,7 +31,9 @@ export function buildAlternates(path: string, locale: AppLocale): Metadata["alte
 
 /** The locale's OG card. A page that exports its own `openGraph` replaces the layout's whole
  *  object — and that also suppresses Next's automatic injection of the `opengraph-image.tsx`
- *  output — so every such page has to name the image itself or ship without a card. */
-export function ogImages(locale: AppLocale) {
-    return [{ url: localizedPath("/opengraph-image", locale), width: 1200, height: 630 }];
+ *  output — so every such page has to name the image itself or ship without a card. `alt` is
+ *  required rather than defaulted so every call site is forced to pass the translated `og.alt`
+ *  string instead of silently shipping an image with no alt text. */
+export function ogImages(locale: AppLocale, alt: string) {
+    return [{ url: localizedPath("/opengraph-image", locale), width: 1200, height: 630, alt }];
 }

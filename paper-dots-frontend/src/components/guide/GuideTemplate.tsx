@@ -40,7 +40,7 @@ export default function GuideTemplate({ content, slug, appPath }: GuideTemplateP
             <GuideHero hero={content.hero} appPath={appPath} uploadTarget={UPLOAD_TARGET_BY_SLUG[slug]} />
             <GuideRail />
             <GuideToolLinks toolLinks={toolLinks} />
-            {content.features.length > 0 && <GuideFeatures features={content.features} />}
+            {content.features.length > 0 && <GuideFeatures features={content.features} appPath={appPath} />}
             {content.howTo && <GuideHowTo howTo={content.howTo} />}
             {content.why && <GuideWhy why={content.why} />}
             {content.faq && <GuideFaq faq={content.faq} />}

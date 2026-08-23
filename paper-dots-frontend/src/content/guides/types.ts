@@ -41,6 +41,7 @@ export interface GuideItem {
 
 export interface GuideFeature extends GuideItem {
     image: GuideImage | null;
+    cta: GuideCta | null;
 }
 
 export interface GuideFaqItem {
@@ -61,6 +62,10 @@ export interface GuideContent {
     meta: {
         title: string;
         description: string;
+        /** Falls back to `title`/`description` when the sheet hasn't filled these in yet —
+         *  see `buildGuideMetadata`. */
+        ogTitle: string;
+        ogDescription: string;
     };
     hero: {
         headline: string;
