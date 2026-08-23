@@ -20,6 +20,8 @@ export async function generateMetadata({
       title: t("ogTitle"),
       description: t("ogDescription"),
       url: "/contact",
+      type: "website",
+      siteName: "Dottypic",
       locale: LOCALE_META[locale].ogLocale,
       images: ogImages(locale),
     },

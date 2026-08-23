@@ -24,6 +24,8 @@ export async function generateMetadata({
       title: t("ogTitle"),
       description: t("description"),
       url: "/terms",
+      type: "website",
+      siteName: "Dottypic",
       locale: LOCALE_META[locale].ogLocale,
       images: ogImages(locale),
     },
