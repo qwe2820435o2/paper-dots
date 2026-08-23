@@ -12,7 +12,7 @@ export function buildGuideMetadata(
     route: GuideRegistryEntry,
     locale: GuideLocale = "en"
 ): Metadata {
-    const title = `${content.name} · Dottypic`;
+    const title = content.meta.title;
     return {
         title,
         description: content.meta.description,
@@ -26,8 +26,10 @@ export function buildGuideMetadata(
             images: ogImages(locale),
         },
         twitter: {
+            card: "summary_large_image",
             title,
             description: content.meta.description,
+            images: ogImages(locale).map((image) => image.url),
         },
     };
 }
