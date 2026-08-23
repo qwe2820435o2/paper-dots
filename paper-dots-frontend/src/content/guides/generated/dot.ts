@@ -7,10 +7,12 @@ const content: GuideContentByLocale = {
     "name": "Photo Overlay Editor",
     "meta": {
       "title": "Free Photo Overlay Editor | Overlay images online",
-      "description": "Need a free photo overlay editor that matches overlay colors to your shot? Add snowflakes, hearts, and stars in seconds. Try it free, no login."
+      "description": "Edit overlays effortlessly with our free image overlay editor. Auto match colors and add beautiful shapes like hearts or stars instantly with no sign up.",
+      "ogTitle": "",
+      "ogDescription": ""
     },
     "hero": {
-      "headline": "Photo Overlay Editor for Color-Matched Looks",
+      "headline": "Photo Overlay Editor",
       "subheadline": "Upload a photo and DottyPic reads its colors, then lays on matching overlays so the effect feels shot together, not pasted on.",
       "image": null,
       "cta": {
@@ -19,37 +21,61 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Photo Quote Maker",
+          "href": "/photo-quote-maker"
+        },
+        {
+          "id": "2",
+          "label": "Geometric Pattern Generator",
+          "href": "/geometric-pattern-generator"
+        },
+        {
+          "id": "3",
+          "label": "Polka Dot Generator",
+          "href": "/polka-dot"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
-        "heading": "Photo Vverlay Editor With Auto Color Match",
-        "body": "Mismatched overlays make a photo feel cheap and stuck. Now the shapes look like they belong in the same frame. The editor reads your photo's main colors, builds a matching overlay palette, and still lets you tweak the color by hand for a seamless photo overlay.",
-        "image": null
+        "heading": "Auto Color Match for Seamless Blends",
+        "body": "Mismatched effects can easily make a beautiful picture look cheap. Now your shapes will naturally look like they belong in the exact same frame. Our intelligent photo overlay editor automatically reads the main colors of your picture and builds a perfectly matched palette. You can still tweak everything by hand to guarantee a beautifully seamless result every time.",
+        "image": null,
+        "cta": null
       },
       {
         "id": "2",
         "heading": "Shapes for Every Season and Mood",
-        "body": "You get impatient hunting separate stickers for winter, romance, or night posts. One place covers the year with ready shapes. Pick snowflakes, polka dots, hearts, stars, moons, leaves, and more, then layer them as a picture overlay that fits the moment you want to share.",
-        "image": null
+        "body": "Hunting down separate stickers for winter themes, romantic shots, or night posts takes way too much time. This image overlay editor covers the entire year in one convenient place. Pick from snowflakes, polka dots, hearts, stars, moons, or leaves, and effortlessly layer them to fit the exact moment you want to share with your audience.",
+        "image": null,
+        "cta": null
       },
       {
         "id": "3",
-        "heading": "Layouts That Flip With Your Photo",
-        "body": "Horizontal and vertical shots feel stuck when the overlay layout never changes. The composition can breathe left to right or top to bottom. Switch layout structure freely so overlay images sit in a frame that still looks balanced on wide photos and tall posts.",
-        "image": null
+        "heading": "Edit Overlays With Layouts That Flip",
+        "body": "Horizontal and vertical shots suffer when the composition refuses to adapt. Whenever you edit overlays, the structure should fit your picture perfectly without feeling forced. Switch the layout structure freely so your design always looks beautifully balanced and perfectly framed on both wide photos and tall posts.",
+        "image": null,
+        "cta": null
       },
       {
         "id": "4",
-        "heading": "Full Control Over Overlay Strength",
-        "body": "You feel rushed when an effect is either too faint or too loud with no middle ground. Dial density from a soft veil to a full field. Adjust count, size, opacity, and color on their own, so photo layering stays exact instead of locked to one preset look.",
-        "image": null
+        "heading": "Full Control in Your Overlay Photo Editor",
+        "body": "Stop settling for effects that are either too faint or too loud with no middle ground. You have total control to dial the density from a soft veil to a completely full field. Fine tune the count, size, opacity, and color independently so your overlay photo editor results stay exact instead of being locked to one generic preset look.",
+        "image": null,
+        "cta": null
       },
       {
         "id": "5",
         "heading": "Free Export, Plus Text Overlays",
-        "body": "You hesitate when a free tool asks for an account or stamps a watermark. Open, edit, and post with zero cost. DottyPic stays free with no watermark and no login, and you can add text overlays right on the finished image when you want words in the scene.",
-        "image": null
+        "body": "It is incredibly frustrating when a free tool demands an account or stamps a giant watermark over your hard work. Open your files, make your changes, and post with zero cost using our ultimate overlay photo editor. DottyPic remains completely free with absolutely no watermarks and no login required. You can even add custom text directly onto the finished file to perfectly complete your scene.",
+        "image": null,
+        "cta": null
       }
     ],
     "howTo": {
@@ -155,7 +181,9 @@ const content: GuideContentByLocale = {
     "name": "写真オーバーレイ編集ツール",
     "meta": {
       "title": "写真オーバーレイ編集｜写真に重ねる効果＆オンライン画像オーバーレイ",
-      "description": "写真の色に合うオーバーレイができる無料の写真オーバーレイ編集が必要ですか？雪の結晶、ハート、星を数秒で追加。ログイン不要で今すぐ無料体験。"
+      "description": "写真の色に合うオーバーレイができる無料の写真オーバーレイ編集が必要ですか？雪の結晶、ハート、星を数秒で追加。ログイン不要で今すぐ無料体験。",
+      "ogTitle": "",
+      "ogDescription": ""
     },
     "hero": {
       "headline": "色が自然に合う写真オーバーレイ編集",
@@ -167,37 +195,61 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "写真クオートメーカー",
+          "href": "/jp/photo-quote-maker"
+        },
+        {
+          "id": "2",
+          "label": "幾何学パターンジェネレーター",
+          "href": "/jp/geometric-pattern-generator"
+        },
+        {
+          "id": "3",
+          "label": "ポルカドットジェネレーター",
+          "href": "/jp/polka-dot"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "色を自動で合わせる写真オーバーレイ編集",
         "body": "オーバーレイの色が合っていないと、写真が一気に安く見えて行き詰まります。いまは形が同じフレームのもののように見えます。編集ツールが写真のメインカラーを読み、合う配色を作り、手での色変更もできるので、写真オーバーレイが自然に溶け込みます。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "2",
         "heading": "季節と気分をカバーする形のセット",
         "body": "冬、恋愛、夜の投稿用に別々の素材を探すとじれったくなります。一年分の形がここにそろっています。雪の結晶、ドット、ハート、星、月、葉などを選び、伝えたい瞬間に合う絵のオーバーレイとして重ねられます。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "3",
         "heading": "写真に合わせてレイアウトを切り替え",
         "body": "オーバーレイの配置がいつも同じだと、横写真も縦写真も窮屈に感じます。左右でも上下でも、構図に余白が生まれます。レイアウト構造を自由に切り替えて、広い写真でも縦長投稿でも、重ねた画像がバランスよく見えるようにします。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "4",
         "heading": "オーバーレイの強さを細かく調整",
         "body": "効果が薄すぎるか強すぎるかしか選べないと、焦ってしまいます。淡いベールから画面を埋める密度まで自分で決められます。数量、サイズ、透明度、色を別々に調整できるので、写真の重ね合わせがプリセット一つに縛られません。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "5",
         "heading": "無料書き出し、文字オーバーレイも可能",
         "body": "無料なのにアカウントを求められたり透かしが押されたりすると、手が止まります。開いて編集して、そのまま発信。DottyPicは透かしなし・ログイン不要の無料のまま使え、完成した画像に文字オーバーレイも直接足せます。",
-        "image": null
+        "image": null,
+        "cta": null
       }
     ],
     "howTo": {
@@ -295,6 +347,180 @@ const content: GuideContentByLocale = {
       "body": "無料の写真オーバーレイ編集で写真に色を合わせ、しっくりきたらきれいな画像をダウンロードしましょう。",
       "cta": {
         "text": "オーバーレイをはじめる",
+        "href": null
+      }
+    }
+  },
+  "id": {
+    "name": "Editor overlay foto",
+    "meta": {
+      "title": "Editor overlay foto | Overlay foto & Overlay gambar daring",
+      "description": "Butuh editor overlay foto gratis yang warnanya cocok dengan foto? Tambah kepingan salju, hati, dan bintang dalam hitungan detik. Coba gratis, tanpa masuk akun.",
+      "ogTitle": "",
+      "ogDescription": ""
+    },
+    "hero": {
+      "headline": "Editor overlay foto untuk tampilan warna yang cocok",
+      "subheadline": "Unggah foto dan DottyPic membaca warnanya, lalu menempatkan overlay yang cocok agar efeknya terasa diambil bersama, bukan ditempel belakangan.",
+      "image": null,
+      "cta": {
+        "text": "Tambah overlay foto",
+        "href": null
+      },
+      "formats": []
+    },
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Pembuat Kutipan Foto",
+          "href": "/id/photo-quote-maker"
+        },
+        {
+          "id": "2",
+          "label": "Pembuat pola geometris",
+          "href": "/id/geometric-pattern-generator"
+        },
+        {
+          "id": "3",
+          "label": "Generator Polkadot",
+          "href": "/id/polka-dot"
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "1",
+        "heading": "Editor overlay foto dengan pencocokan warna otomatis",
+        "body": "Overlay yang warnanya tidak cocok membuat foto terasa murahan dan macet. Kini bentuknya terlihat milik bingkai yang sama. Editor membaca warna utama foto, membuat palet overlay yang cocok, dan tetap bisa Anda ubah manual agar overlay foto menyatu.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "2",
+        "heading": "Bentuk untuk setiap musim dan suasana",
+        "body": "Anda jadi tidak sabar mencari stiker terpisah untuk unggahan musim dingin, romantis, atau malam. Satu tempat mencakup setahun dengan bentuk siap pakai. Pilih kepingan salju, polkadot, hati, bintang, bulan, daun, dan lainnya, lalu susun sebagai overlay gambar yang pas dengan momen yang ingin dibagikan.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "3",
+        "heading": "Tata letak yang beralih mengikuti foto",
+        "body": "Foto horizontal dan vertikal terasa macet jika tata letak overlay tidak pernah berubah. Komposisi bisa bernapas kiri-kanan atau atas-bawah. Ganti struktur tata letak dengan bebas agar gambar overlay tetap seimbang di foto lebar maupun unggahan tinggi.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "4",
+        "heading": "Kontrol penuh atas kekuatan overlay",
+        "body": "Anda merasa terburu-buru saat efek terlalu samar atau terlalu kuat tanpa pilihan tengah. Atur kepadatan dari kerudung lembut hingga memenuhi bidang. Sesuaikan jumlah, ukuran, opacity, dan warna secara terpisah, agar pelapisan foto tetap tepat, bukan terkunci pada satu tampilan bawaan.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "5",
+        "heading": "Ekspor gratis, plus overlay teks",
+        "body": "Anda ragu saat alat gratis meminta akun atau menempel tanda air. Buka, edit, dan unggah tanpa biaya. DottyPic tetap gratis tanpa tanda air dan tanpa masuk akun, dan Anda bisa menambah overlay teks langsung pada gambar jadi saat ingin ada kata di dalam adegan.",
+        "image": null,
+        "cta": null
+      }
+    ],
+    "howTo": {
+      "heading": "Cara overlay gambar daring dalam hitungan menit",
+      "steps": [
+        {
+          "id": "1",
+          "heading": "Unggah foto Anda",
+          "body": "Pilih foto yang jelas. Editor membaca palet warna utamanya agar overlay bisa cocok otomatis dengan foto."
+        },
+        {
+          "id": "2",
+          "heading": "Pilih bentuk dan tata letak",
+          "body": "Pilih kepingan salju, hati, bintang, atau bentuk lain, lalu ganti antara tata letak berdampingan atau bertumpuk sesuai potongan Anda."
+        },
+        {
+          "id": "3",
+          "heading": "Sesuaikan dan unduh",
+          "body": "Atur jumlah, ukuran, opacity, dan warna, tambah teks jika perlu, lalu ekspor file bersih tanpa tanda air dan tanpa masuk akun."
+        }
+      ]
+    },
+    "why": {
+      "heading": "Mengapa memilih editor overlay foto DottyPic?",
+      "cards": [
+        {
+          "id": "1",
+          "heading": "Overlay yang cocok dengan warna foto",
+          "body": "Alih-alih warna stiker acak, overlay mengikuti palet foto Anda, dengan kontrol warna manual saat ingin suasana berbeda."
+        },
+        {
+          "id": "2",
+          "heading": "Set bentuk untuk momen nyata",
+          "body": "Kepingan salju, hati, bintang, bulan, daun, dan lainnya mencakup adegan musiman maupun sehari-hari tanpa mencari paket stiker terpisah."
+        },
+        {
+          "id": "3",
+          "heading": "Kebebasan tata letak untuk setiap orientasi",
+          "body": "Beralih antara struktur kiri-kanan dan atas-bawah agar foto lanskap dan potret sama-sama menjaga komposisi yang rapi."
+        },
+        {
+          "id": "4",
+          "heading": "Gratis, fleksibel, dan siap diunggah",
+          "body": "Tanpa tembok akun, tanpa tanda air, kontrol penggeser penuh, dan overlay teks pada gambar akhir saat Anda perlu keterangan di dalam bingkai."
+        }
+      ]
+    },
+    "faq": {
+      "heading": "Pertanyaan umum",
+      "items": [
+        {
+          "id": "1",
+          "question": "Apa itu editor overlay foto?",
+          "answer": "Ini alat daring yang menempatkan bentuk atau lapisan di atas foto Anda. Di DottyPic, overlay juga cocok dengan warna foto agar efeknya menyatu, bukan menempel acak."
+        },
+        {
+          "id": "2",
+          "question": "Bisakah warna overlay cocok otomatis dengan foto saya?",
+          "answer": "Ya. Editor mendeteksi keluarga warna utama di foto dan membuat palet overlay yang cocok. Anda tetap bisa mengubah warna secara manual kapan saja."
+        },
+        {
+          "id": "3",
+          "question": "Bentuk overlay apa saja yang tersedia?",
+          "answer": "Anda bisa memakai kepingan salju, polkadot, hati, bintang, bulan, daun, dan bentuk lain untuk tampilan musiman maupun sehari-hari."
+        },
+        {
+          "id": "4",
+          "question": "Bisakah saya mengubah tata letak overlay untuk foto horizontal dan vertikal?",
+          "answer": "Ya. Beralih antara tata letak kiri-kanan dan atas-bawah agar foto lebar maupun tinggi tetap seimbang."
+        },
+        {
+          "id": "5",
+          "question": "Seberapa jauh saya bisa mengontrol kekuatan overlay?",
+          "answer": "Ya. Jumlah, ukuran, opacity, dan warna masing-masing bisa diatur, dari petunjuk lembut hingga efek memenuhi bidang."
+        },
+        {
+          "id": "6",
+          "question": "Bisakah saya menambah teks sebagai overlay pada gambar jadi?",
+          "answer": "Ya. Setelah overlay visual dipasang, Anda bisa menambah overlay teks langsung pada hasilnya saat ingin ada kata di dalam bingkai."
+        },
+        {
+          "id": "7",
+          "question": "Apakah editor overlay foto ini gratis digunakan?",
+          "answer": "Ya. DottyPic gratis, ekspor tanpa tanda air, dan tidak membutuhkan akun untuk mulai atau mengunduh."
+        },
+        {
+          "id": "8",
+          "question": "Bagaimana cara overlay gambar daring tanpa software desain?",
+          "answer": "Unggah foto, pilih set bentuk, sesuaikan penggeser, lalu unduh. Alur editor overlay foto dibuat untuk edit daring cepat tanpa harus mempelajari suite desain lengkap."
+        }
+      ]
+    },
+    "finalCta": {
+      "heading": "Buat tampilan overlay Anda",
+      "body": "Coba editor overlay foto gratis, cocokkan warna ke foto Anda, dan unduh gambar bersih saat efeknya sudah terasa pas.",
+      "cta": {
+        "text": "Mulai overlay",
         "href": null
       }
     }

@@ -7,7 +7,9 @@ const content: GuideContentByLocale = {
     "name": "Polka Dot Generator",
     "meta": {
       "title": "Polka Dot Generator | Free Polka Dot Pattern & Background",
-      "description": "Need a free Polka dot generator without design software? Customize colors, shapes, and spacing, then download PNG, JPEG, SVG, or CSS. Try it free & no sign up."
+      "description": "Create an aesthetic polka dot background instantly with our free polka dot pattern generator. Customize colors and export as PNG or SVG with no sign up.",
+      "ogTitle": "Polka Dot Generator | Free Polka Dot Pattern & Background",
+      "ogDescription": "Need a free Polka dot generator without design software? Customize colors, shapes, and spacing, then download PNG, JPEG, SVG, or CSS. Try it free & no sign up."
     },
     "hero": {
       "headline": "Polka Dot Generator for Custom Dot Backgrounds",
@@ -15,45 +17,84 @@ const content: GuideContentByLocale = {
       "image": null,
       "cta": {
         "text": "Generate Polka Dots",
-        "href": null
+        "href": "/create/polka-dot"
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Photo Overlay Editor",
+          "href": "/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "Photo Quote Maker",
+          "href": "/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "Geometric Pattern Generator",
+          "href": "/geometric-pattern-generator"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "Polka Dot Generator in One Click",
-        "body": "You feel rushed when a simple dotted look takes too long to build from scratch. In a few clicks, you already have a clean pattern on screen ready to refine. Generate polka dots instantly in DottyPic, then keep editing until your polka dot background feels right for posts, banners, or print without opening heavy design software at all.",
-        "image": null
+        "body": "Instead of spending hours building a dotted look from the ground up, create an aesthetic polka dot background instantly. With DottyPic polka dot pattern generator, you can generate a clean and customizable design in just one click. Refine your creation right in your browser without needing heavy design software until it perfectly fits your posts, banners, or print projects.",
+        "image": null,
+        "cta": {
+          "text": "Start Generating",
+          "href": null
+        }
       },
       {
         "id": "2",
-        "heading": "Shapes, Emoji, and Text as Dots",
-        "body": "Plain round dots leave your layout feeling stuck and too basic for the mood you want. Your pattern can look playful and personal instead of like a stock fill. Choose preset shapes, emoji, or custom text as the repeating unit, so your polka dots pattern carries personality while still reading as a classic dotted field across the canvas.",
-        "image": null
+        "heading": "Choose Shapes, Emoji, and Text as Dots",
+        "body": "Plain round circles can sometimes feel too basic for your creative vision. Break free from stock fills by using preset shapes, emojis, or even custom text as your repeating unit. This adds a playful and personal touch, ensuring your polka dot pattern carries unique personality while maintaining that classic and recognizable rhythm across your canvas.",
+        "image": null,
+        "cta": {
+          "text": "Start Generating",
+          "href": null
+        }
       },
       {
         "id": "3",
-        "heading": "Upload Images as Polka Dots",
-        "body": "Brand work feels mismatched when every tool only offers plain circles. Now your own art can repeat across the whole canvas as dots. Upload an image and use it as the repeating unit to build a branded dot pattern background that still keeps the familiar polka rhythm your audience recognizes at a glance on every surface.",
-        "image": null
+        "heading": "Upload Your Image for Custom Polka Dots",
+        "body": "Brand work can feel disconnected when you are limited to standard dots. Elevate your design by uploading your own art or logo to repeat across the canvas. Build a truly custom polka dot background that reinforces your brand identity while keeping that familiar and striking rhythm your audience instantly recognizes on every surface.",
+        "image": null,
+        "cta": {
+          "text": "Start Generating",
+          "href": null
+        }
       },
       {
         "id": "4",
-        "heading": "How Size, Spacing, Colors, and Tilt Work",
-        "body": "You get impatient when colors, spacing, and angle will not line up with your frame. After a few tweaks, the pattern sits where you need it and matches your palette. Adjust size, spacing, opacity, colors, direction, and tilt, then pick themes like muted tones, sunset, or mono for a balanced dotted pattern or polka dot texture.",
-        "image": null
+        "heading": "Customize Your Spacing, Colors, and Tilt",
+        "body": "Do not let rigid tools dictate your layout. Take full control over how your polka dot pattern aligns with your frame. You can easily adjust size, spacing, opacity, colors, direction, and tilt until everything sits exactly where you need it. Choose from curated palettes like muted tones, sunset, or monochrome to create a beautifully balanced texture that perfectly matches your vision.",
+        "image": null,
+        "cta": {
+          "text": "Start Generating",
+          "href": null
+        }
       },
       {
         "id": "5",
-        "heading": "What Formats and Sizes You Can Export",
-        "body": "Exports feel frustrating when the file size or format blocks your next step. You leave with the dimensions and format your project actually needs. Set a custom download size and save as PNG, JPEG, SVG, or CSS code, free with no watermarks, no ads, and no usage limits getting in the way of finishing your layout.",
-        "image": null
+        "heading": "Export Flexible Formats and Custom Sizes",
+        "body": "Stop worrying about export limitations blocking your next step. You can set a custom download size and save your design exactly as your project requires. Export your work as a PNG, JPEG, SVG, or CSS code. Enjoy completely free downloads with zero watermarks, no ads, and absolutely no usage limits getting in the way of finishing your layout.",
+        "image": null,
+        "cta": {
+          "text": "Start Generating",
+          "href": null
+        }
       }
     ],
     "howTo": {
-      "heading": "How to Make a Polka Dot Pattern Online",
+      "heading": "How to Make a Polka Dot Background Online?",
       "steps": [
         {
           "id": "1",
@@ -143,7 +184,7 @@ const content: GuideContentByLocale = {
       ]
     },
     "finalCta": {
-      "heading": "Make Your Dotted Look",
+      "heading": "Create Cute Polka Dot Pattern",
       "body": "Try the free Polka dot generator, tweak every detail, and download a clean pattern when it feels right for your next project.",
       "cta": {
         "text": "Start Generating",
@@ -155,7 +196,9 @@ const content: GuideContentByLocale = {
     "name": "ポルカドットジェネレーター",
     "meta": {
       "title": "ポルカドットジェネレーター｜ポルカドット柄＆ポルカドット背景",
-      "description": "デザインソフトなしで使える無料のポルカドットジェネレーターが必要ですか？色・形・間隔を調整して、PNG、JPEG、SVG、CSSでダウンロード。今すぐ無料で試せます。"
+      "description": "DottyPicの無料ポルカドットパターンジェネレーターで、おしゃれなポルカドット背景を今すぐ作成できます。色をカスタマイズし、登録不要でPNGまたはSVG形式で書き出せます。",
+      "ogTitle": "ポルカドットジェネレーター｜ポルカドット柄＆ポルカドット背景",
+      "ogDescription": "デザインソフトなしで使える無料のポルカドットジェネレーターが必要ですか？色・形・間隔を調整して、PNG、JPEG、SVG、CSSでダウンロード。今すぐ無料で試せます。"
     },
     "hero": {
       "headline": "カスタムドット背景が作れるポルカドットジェネレーター",
@@ -163,41 +206,80 @@ const content: GuideContentByLocale = {
       "image": null,
       "cta": {
         "text": "ポルカドットを生成",
-        "href": null
+        "href": "/create/polka-dot"
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "写真オーバーレイ編集ツール",
+          "href": "/jp/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "写真クオートメーカー",
+          "href": "/jp/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "幾何学パターンジェネレーター",
+          "href": "/jp/geometric-pattern-generator"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "ワンクリックのポルカドットジェネレーター",
         "body": "ちょっとしたドット柄なのに、いちから作ると時間がかかって焦ってしまいますよね。数回クリックするだけで、画面上にきれいなパターンが出て、あとは整えるだけ。DottyPicならその場でポルカドットを生成し、重いデザインソフトを開かなくても、投稿・バナー・印刷に合う**ポルカドット背景**になるまで調整を続けられます。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "生成をはじめる",
+          "href": null
+        }
       },
       {
         "id": "2",
         "heading": "形・絵文字・文字をドットに",
         "body": "丸い点だけだと、レイアウトが単調で、狙った雰囲気に届かない感じがしますよね。ストック素材っぽさではなく、もっと遊び心のある自分らしい柄にできます。プリセットの形、絵文字、好きな文字を繰り返し単位に選べば、クラシックなドットの並びはそのままに、**ポルカドット柄**に個性を乗せられます。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "生成をはじめる",
+          "href": null
+        }
       },
       {
         "id": "3",
         "heading": "画像をアップロードしてポルカドットに",
         "body": "どのツールもただの円しか出せないと、ブランド向けの仕事がどうも噛み合いません。今度は自分の素材をドットとしてキャンバス全体に並べられます。画像をアップロードして繰り返し単位にすれば、ひと目でわかるポルカのリズムはそのままに、ブランドらしい**ドットパターン背景**が作れます。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "生成をはじめる",
+          "href": null
+        }
       },
       {
         "id": "4",
         "heading": "サイズ・間隔・色・傾きの調整方法",
         "body": "色や間隔、角度がフレームに合わなくて、もどかしくなることありますよね。少し触るだけで、パターンが欲しい位置に収まり、パレットにもなじみます。サイズ、間隔、透明度、色、向き、傾きを調整し、くすみカラーやサンセット、モノトーンなどのテーマを選べば、バランスのよい**ドット柄**や**ポルカドットテクスチャ**に仕上がります。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "生成をはじめる",
+          "href": null
+        }
       },
       {
         "id": "5",
         "heading": "書き出せる形式とサイズ",
         "body": "サイズや形式が次の作業を止めてしまうと、書き出しはただストレスです。必要な寸法と形式で持ち帰れます。ダウンロードサイズを指定して PNG、JPEG、SVG、CSSコードで保存。透かしなし、広告なし、回数制限なしなので、レイアウトを仕上げる手が止まりません。しかも無料です。",
-        "image": null
+        "image": null,
+        "cta": {
+          "text": "生成をはじめる",
+          "href": null
+        }
       }
     ],
     "howTo": {
@@ -295,6 +377,195 @@ const content: GuideContentByLocale = {
       "body": "無料のポルカドットジェネレーターで細部まで調整して、次のプロジェクトにしっくりくるきれいな柄をダウンロードしましょう。",
       "cta": {
         "text": "生成をはじめる",
+        "href": null
+      }
+    }
+  },
+  "id": {
+    "name": "Generator Polkadot",
+    "meta": {
+      "title": "Generator polkadot | Pola polkadot & Background polkadot",
+      "description": "Buat background polkadot estetis secara instan dengan generator pola polkadot gratis kami. Sesuaikan warna dan ekspor sebagai PNG atau SVG tanpa perlu daftar akun.",
+      "ogTitle": "Generator polkadot | Pola polkadot & Background polkadot",
+      "ogDescription": "Butuh generator polkadot gratis tanpa software desain? Atur warna, bentuk, dan jarak, lalu unduh PNG, JPEG, SVG, atau CSS. Coba gratis sekarang."
+    },
+    "hero": {
+      "headline": "Generator polkadot untuk Background Titik Kustom",
+      "subheadline": "Lupakan kanvas kosong. DottyPic membantu Anda membuat tampilan bertitik yang playful, mengatur setiap detail, dan mengekspor file rapi untuk web atau cetak dalam hitungan menit.",
+      "image": null,
+      "cta": {
+        "text": "Buat Polkadot",
+        "href": "/create/polka-dot"
+      },
+      "formats": []
+    },
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Editor overlay foto",
+          "href": "/id/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "Pembuat Kutipan Foto",
+          "href": "/id/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "Pembuat pola geometris",
+          "href": "/id/geometric-pattern-generator"
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "1",
+        "heading": "Generator polkadot dalam Satu Klik",
+        "body": "Anda merasa terburu-buru saat tampilan bertitik sederhana justru lama dibuat dari nol. Dalam beberapa klik, pola bersih sudah muncul di layar siap disempurnakan. Hasilkan polkadot seketika di DottyPic, lalu terus edit sampai **background polkadot** Anda pas untuk posting, banner, atau cetak, tanpa membuka software desain yang berat.",
+        "image": null,
+        "cta": {
+          "text": "Mulai Membuat",
+          "href": null
+        }
+      },
+      {
+        "id": "2",
+        "heading": "Bentuk, Emoji, dan Teks sebagai Titik",
+        "body": "Titik bulat polos membuat layout terasa macet dan terlalu biasa untuk mood yang Anda inginkan. Polanya bisa terlihat playful dan personal, bukan seperti isi stok. Pilih bentuk preset, emoji, atau teks kustom sebagai unit pengulang, sehingga **pola polkadot** Anda punya karakter, tapi tetap terbaca sebagai bidang bertitik klasik di seluruh kanvas.",
+        "image": null,
+        "cta": {
+          "text": "Mulai Membuat",
+          "href": null
+        }
+      },
+      {
+        "id": "3",
+        "heading": "Unggah Gambar sebagai Polkadot",
+        "body": "Pekerjaan brand terasa tidak pas jika setiap tool hanya menawarkan lingkaran polos. Kini karya Anda sendiri bisa mengulang di seluruh kanvas sebagai titik. Unggah gambar dan jadikan unit pengulang untuk membangun **background pola titik** bermerek, tetap dengan ritme polkadot yang langsung dikenali audiens di setiap permukaan.",
+        "image": null,
+        "cta": {
+          "text": "Mulai Membuat",
+          "href": null
+        }
+      },
+      {
+        "id": "4",
+        "heading": "Cara Mengatur Ukuran, Jarak, Warna, dan Kemiringan",
+        "body": "Anda jadi tidak sabar ketika warna, jarak, dan sudut tidak sejajar dengan frame. Setelah beberapa penyesuaian, pola duduk di posisi yang dibutuhkan dan cocok dengan palet Anda. Atur ukuran, jarak, opacity, warna, arah, dan kemiringan, lalu pilih tema seperti muted, sunset, atau mono untuk **pola bertitik** atau **tekstur polkadot** yang seimbang.",
+        "image": null,
+        "cta": {
+          "text": "Mulai Membuat",
+          "href": null
+        }
+      },
+      {
+        "id": "5",
+        "heading": "Format dan Ukuran yang Bisa Diekspor",
+        "body": "Ekspor terasa frustasi saat ukuran atau format file menghambat langkah berikutnya. Anda pergi dengan dimensi dan format yang benar-benar dibutuhkan proyek. Atur ukuran unduhan kustom dan simpan sebagai PNG, JPEG, SVG, atau kode CSS, gratis tanpa watermark, tanpa iklan, dan tanpa batas pemakaian yang menghalangi layout Anda selesai.",
+        "image": null,
+        "cta": {
+          "text": "Mulai Membuat",
+          "href": null
+        }
+      }
+    ],
+    "howTo": {
+      "heading": "Cara Membuat Pola Polkadot Online",
+      "steps": [
+        {
+          "id": "1",
+          "heading": "Buka Generator",
+          "body": "Buka tool online dan mulai dari kanvas kosong atau preset sederhana agar Anda bisa melihat pola berubah saat mengedit."
+        },
+        {
+          "id": "2",
+          "heading": "Sesuaikan Titik Anda",
+          "body": "Atur ukuran, jarak, warna, kemiringan, serta bentuk, emoji, teks, atau gambar unggahan opsional sebagai unit pengulang."
+        },
+        {
+          "id": "3",
+          "heading": "Unduh File Anda",
+          "body": "Pilih ukuran kanvas, lalu ekspor PNG, JPEG, SVG, atau kode CSS untuk web, media sosial, atau cetak."
+        }
+      ]
+    },
+    "why": {
+      "heading": "Mengapa Memilih Generator Polkadot DottyPic?",
+      "cards": [
+        {
+          "id": "1",
+          "heading": "Lebih dari Titik Bulat",
+          "body": "Kebanyakan tool berhenti di lingkaran. Di sini Anda bisa memakai bentuk, emoji, teks, atau unggahan sendiri sebagai unit pengulang, sehingga polanya terasa personal, bukan stok."
+        },
+        {
+          "id": "2",
+          "heading": "Kontrol Penuh tanpa Ribet",
+          "body": "Atur ukuran, jarak, opacity, warna, kemiringan, dan arah di satu tempat. Anda dapat tampilan kustom tanpa harus pindah ke software desain yang rumit."
+        },
+        {
+          "id": "3",
+          "heading": "Ekspor Siap untuk Proyek Nyata",
+          "body": "Unduh dengan ukuran kustom sebagai PNG, JPEG, SVG, atau kode CSS. Artinya pola yang sama bisa langsung dari pratinjau singkat ke pekerjaan web atau cetak."
+        },
+        {
+          "id": "4",
+          "heading": "Gratis, Tanpa Batas, dan Bebas Gangguan",
+          "body": "Buat sebanyak yang Anda butuhkan tanpa watermark dan tanpa iklan menghalangi. Fokus tetap pada membuat pola, bukan mengurus batasan."
+        }
+      ]
+    },
+    "faq": {
+      "heading": "FAQ",
+      "items": [
+        {
+          "id": "1",
+          "question": "Bagaimana cara membuat pola polkadot tanpa Photoshop?",
+          "answer": "Buka generator online, atur ukuran, jarak, dan warna, lalu unduh file Anda. Anda bisa melewati software desain dan tetap mendapatkan **pola polkadot** yang bersih untuk web atau cetak."
+        },
+        {
+          "id": "2",
+          "question": "Bisakah saya membuat background polkadot dengan warna kustom?",
+          "answer": "Ya. Atur sendiri warna titik dan warna background, atau mulai dari palet tema seperti muted, sunset, atau mono, lalu sesuaikan sampai cocok dengan brand Anda."
+        },
+        {
+          "id": "3",
+          "question": "Bisakah titiknya berupa bentuk, emoji, atau teks, bukan lingkaran?",
+          "answer": "Ya. Selain titik bulat, Anda bisa memakai bentuk preset, emoji, atau teks kustom sebagai unit pengulang agar polanya lebih playful atau sesuai brand."
+        },
+        {
+          "id": "4",
+          "question": "Bisakah saya mengunggah gambar sendiri untuk dijadikan polkadot?",
+          "answer": "Ya. Unggah gambar dan jadikan unit pengulang. Ini membantu saat Anda ingin **pola titik** bermerek, bukan isian lingkaran polos."
+        },
+        {
+          "id": "5",
+          "question": "Format file apa saja yang bisa diunduh?",
+          "answer": "Anda bisa mengunduh PNG, JPEG, SVG, dan kode CSS. Pilih format yang cocok dengan alur kerja, baik butuh gambar datar maupun kode untuk situs."
+        },
+        {
+          "id": "6",
+          "question": "Bisakah saya mengatur ukuran unduhan sendiri?",
+          "answer": "Ya. Pilih dimensi yang Anda butuhkan sebelum mengekspor, agar file siap untuk banner, posting, atau layout cetak tanpa harus mengubah ukuran lagi."
+        },
+        {
+          "id": "7",
+          "question": "Apakah generator polkadot ini gratis digunakan?",
+          "answer": "Ya. DottyPic gratis, tanpa batas pemakaian, tanpa watermark, dan tanpa iklan yang mengganggu saat mengedit atau mengunduh."
+        },
+        {
+          "id": "8",
+          "question": "Bagaimana cara menambah kemiringan atau mengubah arah titik?",
+          "answer": "Gunakan kontrol arah dan kemiringan untuk memberi sudut pada pola. Perubahan kecil bisa membuat **pola background bertitik** terasa lebih dinamis tanpa digambar ulang."
+        }
+      ]
+    },
+    "finalCta": {
+      "heading": "Buat Tampilan Bertitik Anda",
+      "body": "Coba generator polkadot gratis, sesuaikan setiap detail, dan unduh pola bersih saat rasanya sudah pas untuk proyek berikutnya.",
+      "cta": {
+        "text": "Mulai Membuat",
         "href": null
       }
     }

@@ -14,6 +14,8 @@ export async function buildGuideMetadata(
     locale: GuideLocale = "en"
 ): Promise<Metadata> {
     const title = content.meta.title;
+    const ogTitle = content.meta.ogTitle || title;
+    const ogDescription = content.meta.ogDescription || content.meta.description;
     const t = await getTranslations({ locale, namespace: "og" });
     const images = ogImages(locale, t("alt"));
     return {
@@ -21,8 +23,8 @@ export async function buildGuideMetadata(
         description: content.meta.description,
         alternates: buildAlternates(route.guidePath, locale),
         openGraph: {
-            title,
-            description: content.meta.description,
+            title: ogTitle,
+            description: ogDescription,
             url: route.guidePath,
             type: "website",
             locale: LOCALE_META[locale].ogLocale,
@@ -30,8 +32,8 @@ export async function buildGuideMetadata(
         },
         twitter: {
             card: "summary_large_image",
-            title,
-            description: content.meta.description,
+            title: ogTitle,
+            description: ogDescription,
             images: images.map((image) => image.url),
         },
     };

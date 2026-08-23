@@ -304,6 +304,8 @@ function toOrderedContent(draft) {
         meta: {
             title: draft.meta?.title ?? "",
             description: draft.meta?.description ?? "",
+            ogTitle: draft.meta?.ogTitle ?? "",
+            ogDescription: draft.meta?.ogDescription ?? "",
         },
         hero: {
             headline: draft.hero?.headline ?? "",
@@ -326,6 +328,7 @@ function toOrderedContent(draft) {
             heading: f.heading ?? "",
             body: f.body ?? "",
             image: f.image ?? null,
+            cta: f.cta?.text ? { text: f.cta.text, href: f.cta.href ?? null } : null,
         })),
         howTo: draft.howTo
             ? {

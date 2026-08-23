@@ -6,11 +6,13 @@ const content: GuideContentByLocale = {
   "en": {
     "name": "Photo Quote Maker",
     "meta": {
-      "title": "Photo Quote Maker | Free Quote maker with Picture",
-      "description": "Need a free photo quote maker that keeps text off your photo? Auto-matched color, smart crop, and IG-ready results in seconds. Try it free now."
+      "title": "Quote Maker with Picture | Write Quotes on Pictures Online Free",
+      "description": "Write quotes on pictures online free. This quote image generator keeps text off your photo with auto matched colors and smart cropping. Try it free today.",
+      "ogTitle": "",
+      "ogDescription": ""
     },
     "hero": {
-      "headline": "Photo Quote Maker for IG-Ready Mood Posts",
+      "headline": "Quote Maker with Picture",
       "subheadline": "Upload a photo, add your words, and DottyPic builds a clean color block layout with smart crop so your quote feels ready to post today.",
       "image": null,
       "cta": {
@@ -19,41 +21,60 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Photo Overlay Editor",
+          "href": "/photo-overlay-editor"
+        },
+        {
+          "id": "3",
+          "label": "Geometric Pattern Generator",
+          "href": "/geometric-pattern-generator"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "Photo Quote Maker With Clean Text Space",
-        "body": "You feel stuck when quote text sits on top of faces and ruins the shot. Now your words live in their own calm field above the photo. Text sits in a separate color block, with no overlay layers, so your photo with quote stays readable without covering the moment you care about in the frame you shot.",
-        "image": null
+        "body": "It feels frustrating when text sits directly on top of faces and ruins a beautiful shot. Instead of struggling with messy overlays, use our quote maker with picture tool to give your words their own calm field above the photo. The text sits securely in a separate color block, ensuring you can write quotes on pictures online while keeping your cherished moment fully visible and perfectly readable.",
+        "image": null,
+        "cta": null
       },
       {
         "id": "2",
         "heading": "Auto Colors From Your Photo",
-        "body": "Mismatched backgrounds make a quote look cheap next to the picture. The finished frame feels coordinated, almost magazine-clean. The tool reads your photo's main colors and builds a matching solid backdrop, so your quote photo looks intentional instead of randomly filled or clashing with the image.",
-        "image": null
+        "body": "Mismatched backgrounds can quickly make a design look cheap next to your image. This quote image generator acts as your personal color expert by reading the main tones of your photo and automatically building a matching solid backdrop. Every finished frame feels coordinated and magazine clean, guaranteeing your picture with quote maker result looks intentional and beautiful instead of clashing.",
+        "image": null,
+        "cta": null
       },
       {
         "id": "3",
         "heading": "Smart Crop for Better Composition",
-        "body": "You get impatient when cropping for Instagram cuts off the subject. The key person or object lands where it should in the frame. Crop to your target ratio and keep the subject in place, so your quotes photo maker result looks composed before you even touch a slider or guess where to cut.",
-        "image": null
+        "body": "Cropping for social media gets annoying when it completely cuts off your main subject. Our intelligent quote with picture maker ensures the key person or object lands exactly where it should. Simply crop to your target ratio and keep the subject safely in place. This makes it the perfect quote maker with your own picture, delivering a perfectly composed result before you even touch a slider or guess where to cut.",
+        "image": null,
+        "cta": null
       },
       {
         "id": "4",
-        "heading": "No Templates or Layer Fuss",
+        "heading": "Skip the Complex Templates and Layers",
         "body": "Design tools feel rushed when every post starts with picking a template and moving layers. In a few seconds you already have a finished mood image. Skip template hunting and layer edits. Add your line, let the layout build itself, and leave with a post-ready photo with quotes maker look for social feeds.",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "5",
         "heading": "Your Words, Free and Unwatermarked",
-        "body": "You hesitate when a free tool asks for login or stamps a watermark on your mood. You keep full credit and full freedom to say what you feel. Type your own quote, download without a watermark, and create in DottyPic with no account required whenever inspiration hits your next feed plan.",
-        "image": null
+        "body": "It is always disappointing when a tool demands a login or stamps a huge logo across your beautiful work. You should keep full credit and complete freedom to share what you feel. With DottyPic, you can easily write quotes on pictures online free of charge. Type your text, download your file without any watermarks, and create amazing content with no account required whenever inspiration strikes.",
+        "image": null,
+        "cta": null
       }
     ],
     "howTo": {
-      "heading": "How to Write Quotes on a Photo Online",
+      "heading": "How to Write Quotes on Pictures Online",
       "steps": [
         {
           "id": "1",
@@ -155,7 +176,9 @@ const content: GuideContentByLocale = {
     "name": "写真クオートメーカー",
     "meta": {
       "title": "写真クオートメーカー｜写真付き名言メーカー＆写真に文字を入れるツール",
-      "description": "文字が写真にかぶらない無料の写真クオートメーカーが必要ですか？色は自動で合い、スマートに切り抜いて、数秒でインスタ向けの仕上がり。今すぐ無料で試せます。"
+      "description": "文字が写真にかぶらない無料の写真クオートメーカーが必要ですか？色は自動で合い、スマートに切り抜いて、数秒でインスタ向けの仕上がり。今すぐ無料で試せます。",
+      "ogTitle": "",
+      "ogDescription": ""
     },
     "hero": {
       "headline": "インスタにすぐ出せるムード投稿向けの写真クオートメーカー",
@@ -167,37 +190,61 @@ const content: GuideContentByLocale = {
       },
       "formats": []
     },
-    "toolLinks": null,
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "写真オーバーレイ編集ツール",
+          "href": "/jp/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "写真クオートメーカー",
+          "href": "/jp/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "幾何学パターンジェネレーター",
+          "href": "/jp/geometric-pattern-generator"
+        }
+      ]
+    },
     "features": [
       {
         "id": "1",
         "heading": "文字スペースがきれいな写真クオートメーカー",
         "body": "顔の上にクオートが乗って写真が台無しになると、どうにも行き詰まった感じになりますよね。いまは言葉が写真の上、落ち着いた専用エリアに収まります。テキストは重ねレイヤーではなく独立したカラーブロックに入るので、撮ったコマの大事な瞬間を隠さず、写真付きのクオートもきちんと読めます。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "2",
         "heading": "写真から自動で色を合わせる",
         "body": "背景の色が写真と合っていないと、クオートが一気に安っぽく見えます。完成した画面はまとまりがあり、雑誌のページみたいにきれい。ツールが写真のメインカラーを読み取り、合う単色背景を作るので、クオート写真は適当な塗りつぶしやチグハグな印象ではなく、意図のある仕上がりになります。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "3",
         "heading": "構図が整うスマートな切り抜き",
         "body": "インスタ用に切ったら主役が欠けていて、もどかしくなりますよね。大事な人や被写体が、フレーム内のしかるべき位置に収まります。目的の比率に切り抜きつつ被写体をキープするので、スライダーを触ったり切り位置を当てずっぽうに決めたりする前から、写真クオートメーカーの結果がきちんと構図立てされています。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "4",
         "heading": "テンプレもレイヤー操作も不要",
         "body": "毎回テンプレを選んでレイヤーを動かすところから始まると、デザインツールって急かされている感じがします。数秒で、もうムードのある完成画像ができています。テンプレ探しとレイヤー編集はスキップ。一文を足せばレイアウトが自分で立ち上がり、SNS向けにすぐ出せる写真付きクオートメーカーの見た目で持ち帰れます。",
-        "image": null
+        "image": null,
+        "cta": null
       },
       {
         "id": "5",
         "heading": "自分の言葉で、透かしなし・無料",
         "body": "無料ツールなのにログインを求められたり、ムードのある一枚に透かしが押されたりすると、手が止まります。クレジットも、言いたいことも、あなたのもの。好きなクオートを打って透かしなしでダウンロード。次の投稿プランにひらめきが来たら、アカウントなしでDottyPicで作れます。",
-        "image": null
+        "image": null,
+        "cta": null
       }
     ],
     "howTo": {
@@ -295,6 +342,180 @@ const content: GuideContentByLocale = {
       "body": "無料の写真クオートメーカーで、文字を写真に重ねず、しっくりくるきれいな一枚をダウンロードしましょう。",
       "cta": {
         "text": "クオート作成をはじめる",
+        "href": null
+      }
+    }
+  },
+  "id": {
+    "name": "Pembuat Kutipan Foto",
+    "meta": {
+      "title": "Pembuat kutipan foto | Pembuat kutipan dengan gambar & Foto dengan kutipan",
+      "description": "Butuh pembuat kutipan foto gratis yang teksnya tidak menutupi foto? Warna otomatis cocok, potong cerdas, hasil siap Instagram dalam hitungan detik. Coba gratis sekarang.",
+      "ogTitle": "",
+      "ogDescription": ""
+    },
+    "hero": {
+      "headline": "Pembuat kutipan foto untuk post mood siap Instagram",
+      "subheadline": "Unggah foto, tulis kata-kata Anda, dan DottyPic menyusun layout blok warna yang bersih dengan potong cerdas agar kutipan terasa siap diposting hari ini.",
+      "image": null,
+      "cta": {
+        "text": "Buat Kutipan Foto",
+        "href": null
+      },
+      "formats": []
+    },
+    "toolLinks": {
+      "lead": "",
+      "items": [
+        {
+          "id": "1",
+          "label": "Editor overlay foto",
+          "href": "/id/photo-overlay-editor"
+        },
+        {
+          "id": "2",
+          "label": "Pembuat Kutipan Foto",
+          "href": "/id/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "Pembuat pola geometris",
+          "href": "/id/geometric-pattern-generator"
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "1",
+        "heading": "Pembuat kutipan foto dengan ruang teks yang bersih",
+        "body": "Anda merasa macet saat teks kutipan menutupi wajah dan merusak foto. Kini kata-kata Anda ada di area tenang tersendiri di atas foto. Teks duduk di blok warna terpisah, tanpa lapisan penutup, sehingga foto dengan kutipan tetap terbaca tanpa menutupi momen yang Anda pedulikan dalam bingkai yang Anda ambil.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "2",
+        "heading": "Warna otomatis dari foto Anda",
+        "body": "Latar yang tidak cocok membuat kutipan terlihat murahan di samping gambar. Bingkai jadi selaras, hampir sebersih majalah. Alat membaca warna utama foto Anda dan membuat latar solid yang cocok, sehingga foto kutipan terasa disengaja, bukan diisi acak atau bentrok dengan gambar.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "3",
+        "heading": "Potong cerdas untuk komposisi lebih baik",
+        "body": "Anda jadi tidak sabar saat potong untuk Instagram memotong subjek. Orang atau objek penting jatuh di posisi yang seharusnya dalam bingkai. Potong ke rasio target dan jaga subjek tetap di tempatnya, sehingga hasil pembuat kutipan foto terlihat tertata sebelum Anda menyentuh penggeser atau menebak potongan.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "4",
+        "heading": "Tanpa templat atau ribet lapisan",
+        "body": "Alat desain terasa buru-buru jika setiap unggahan dimulai dari memilih templat dan menggeser lapisan. Dalam beberapa detik, Anda sudah punya gambar mood yang jadi. Lewati pencarian templat dan edit lapisan. Tambahkan kalimat Anda, biarkan tata letak terbentuk sendiri, dan bawa pulang tampilan pembuat kutipan dengan foto yang siap unggah untuk umpan sosial.",
+        "image": null,
+        "cta": null
+      },
+      {
+        "id": "5",
+        "heading": "Kata-kata Anda, gratis tanpa tanda air",
+        "body": "Anda ragu saat alat gratis meminta masuk akun atau menempel tanda air di mood Anda. Kredit penuh dan kebebasan mengungkapkan perasaan tetap milik Anda. Ketik kutipan sendiri, unduh tanpa tanda air, dan buat di DottyPic tanpa akun kapan pun inspirasi datang untuk rencana umpan berikutnya.",
+        "image": null,
+        "cta": null
+      }
+    ],
+    "howTo": {
+      "heading": "Cara menulis kutipan di foto secara daring",
+      "steps": [
+        {
+          "id": "1",
+          "heading": "Unggah foto Anda",
+          "body": "Pilih foto yang jelas yang ingin Anda bagikan. Alat akan membaca warnanya dan menyiapkan potong cerdas untuk rasio target Anda."
+        },
+        {
+          "id": "2",
+          "heading": "Tambahkan kutipan Anda",
+          "body": "Ketik kalimat mood yang ingin Anda sampaikan. Teks Anda duduk di blok warna sendiri di atas foto, bukan menumpuk di atas wajah."
+        },
+        {
+          "id": "3",
+          "heading": "Unduh dan unggah",
+          "body": "Ekspor gambar bersih tanpa tanda air yang siap untuk Instagram atau umpan lain, tanpa perlu masuk akun."
+        }
+      ]
+    },
+    "why": {
+      "heading": "Mengapa memilih pembuat kutipan foto DottyPic?",
+      "cards": [
+        {
+          "id": "1",
+          "heading": "Teks yang tidak menutupi foto",
+          "body": "Alih-alih menumpuk kata di atas wajah, kutipan Anda ada di blok warna khusus. Foto tetap utuh, dan pesannya tetap mudah dibaca."
+        },
+        {
+          "id": "2",
+          "heading": "Warna yang cocok secara otomatis",
+          "body": "Latar mengambil nada utama foto Anda, sehingga seluruh bingkai terasa harmonis tanpa memilih palet secara manual."
+        },
+        {
+          "id": "3",
+          "heading": "Komposisi ditangani untuk Anda",
+          "body": "Potong cerdas menjaga subjek di posisi yang tepat untuk rasio Anda, sehingga potongan ganjil sebelum mengunggah jadi lebih sedikit."
+        },
+        {
+          "id": "4",
+          "heading": "Cepat, gratis, dan tanpa masuk akun",
+          "body": "Tanpa labirin templat, tanpa tanda air, tanpa tembok akun. Tulis kalimat Anda, dapatkan gambarnya, lalu lanjut."
+        }
+      ]
+    },
+    "faq": {
+      "heading": "Pertanyaan umum",
+      "items": [
+        {
+          "id": "1",
+          "question": "Bagaimana cara membuat foto dengan kutipan tanpa menutupi gambar?",
+          "answer": "Gunakan tata letak di mana teks duduk di blok warna terpisah di atas foto. Kata-kata tidak pernah menutupi gambar, sehingga wajah dan detail tetap jelas sementara foto dengan kutipan Anda tetap terasa utuh."
+        },
+        {
+          "id": "2",
+          "question": "Bisakah pembuat kutipan foto mencocokkan warna ke foto saya secara otomatis?",
+          "answer": "Ya. Alat membaca warna utama di foto Anda dan membuat latar solid yang cocok, sehingga foto kutipan jadi terlihat selaras tanpa sampel warna manual."
+        },
+        {
+          "id": "3",
+          "question": "Apakah alat ini memotong foto saya untuk Instagram?",
+          "answer": "Ya. Alat memotong ke rasio target dan menjaga subjek di posisi yang lebih kuat, sehingga unggahan Anda terlihat tertata sebelum dibagikan."
+        },
+        {
+          "id": "4",
+          "question": "Apakah saya perlu keterampilan desain atau templat?",
+          "answer": "Tidak. Unggah foto, ketik kutipan, dan dapatkan tata letak jadi dalam hitungan detik. Tidak perlu menjelajah templat atau mengedit lapisan."
+        },
+        {
+          "id": "5",
+          "question": "Bisakah saya menulis kutipan sendiri, bukan memilih kalimat bawaan?",
+          "answer": "Ya. Tambahkan mood atau pesan apa pun yang Anda inginkan. Tata letak menyesuaikan kata-kata Anda sehingga ide sendiri bisa diekspresikan dengan bebas."
+        },
+        {
+          "id": "6",
+          "question": "Apakah pembuat kutipan foto ini gratis digunakan?",
+          "answer": "Ya. Gratis, tanpa tanda air pada unduhan, dan tidak perlu masuk akun untuk membuat atau mengekspor di DottyPic."
+        },
+        {
+          "id": "7",
+          "question": "Apa bedanya dengan pembuat poster kutipan biasa?",
+          "answer": "Banyak alat poster fokus pada templat dan teks di papan desain. Di sini foto yang memimpin, warna cocok otomatis, teks tetap di blok sendiri, dan potongan ditangani untuk Anda."
+        },
+        {
+          "id": "8",
+          "question": "Bagaimana cara cepat menulis kutipan di foto untuk unggahan sosial?",
+          "answer": "Unggah foto, ketik kalimat Anda, lalu unduh hasilnya. Alur pembuat kutipan foto dibuat untuk unggahan cepat yang mengutamakan mood, tanpa ribet desain."
+        }
+      ]
+    },
+    "finalCta": {
+      "heading": "Buat unggahan mood Anda",
+      "body": "Coba pembuat kutipan foto gratis, jaga teks agar tidak menutupi foto, dan unduh gambar bersih saat vibanya sudah pas untuk Anda.",
+      "cta": {
+        "text": "Mulai membuat kutipan",
         "href": null
       }
     }
