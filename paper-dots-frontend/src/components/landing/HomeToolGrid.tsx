@@ -1,19 +1,18 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 import { ArrowRight, Plus } from "lucide-react";
 import { GUIDE_WRAP, GUIDE_SEC_HEAD } from "@/components/guide/guideLayout";
 import { HOME_H2_STYLE } from "./homeLayout";
-import HomeToolThumb, { type ToolThumbConfig } from "./HomeToolThumb";
 import Reveal from "./Reveal";
 
 interface ToolCard {
-    /** Feeds the thumbnail's internal SVG element ids — kept short and locale-invariant. */
     id: string;
     /** Key under the `tools` namespace; the card name is shared with the header and footer so
      *  a tool is never called two different things in the same locale. */
     toolKey: string;
     href: string;
-    thumb: ToolThumbConfig;
+    image: string;
 }
 
 const TOOL_CARDS: ToolCard[] = [
@@ -21,25 +20,25 @@ const TOOL_CARDS: ToolCard[] = [
         id: "quote",
         toolKey: "momentCard",
         href: "/photo-quote-maker",
-        thumb: { kind: "quote", photo: "#e8967a", block: "#3c2a24", text: "#ffe4d2" },
+        image: "/home/quote-maker.png",
     },
     {
         id: "overlay",
         toolKey: "dot",
         href: "/photo-overlay-editor",
-        thumb: { kind: "pattern", shape: "heart", size: 15, gap: 38, tilt: -6, bg: "#f0b79a", dot: "#c25a3e", opacity: 0.9 },
+        image: "/home/photo-overlay.png",
     },
     {
         id: "dots",
         toolKey: "polkaDot",
         href: "/polka-dot",
-        thumb: { kind: "pattern", shape: "circle", size: 16, gap: 44, tilt: 0, bg: "#c5e89a", dot: "#15200d" },
+        image: "/home/polka-dot.png",
     },
     {
         id: "geo",
         toolKey: "geometricPatterns",
         href: "/geometric-pattern-generator",
-        thumb: { kind: "pattern", shape: "tri", size: 20, gap: 40, tilt: 0, bg: "#ffd9c2", dot: "#e8967a", opacity: 0.85 },
+        image: "/home/geometric-pattern.png",
     },
 ];
 
@@ -63,7 +62,13 @@ export default async function HomeToolGrid() {
                                 className="group flex h-full flex-col overflow-hidden rounded-guide border-[1.5px] border-guide-edge bg-white transition-all hover:-translate-y-1 hover:border-guide-edge-strong hover:shadow-guide"
                             >
                                 <span className="relative block h-[200px] overflow-hidden border-b-[1.5px] border-guide-edge">
-                                    <HomeToolThumb id={tool.id} config={tool.thumb} />
+                                    <Image
+                                        src={tool.image}
+                                        alt={tTools(`${tool.toolKey}.label`)}
+                                        fill
+                                        sizes="(min-width: 1024px) 33vw, 100vw"
+                                        className="object-cover"
+                                    />
                                 </span>
                                 <span className="flex flex-1 flex-col pb-6 pl-6 pr-6 pt-[22px]">
                                     <span className="guide-display text-xl font-bold leading-[1.2] tracking-[-0.02em] text-guide-ink">
