@@ -4,6 +4,7 @@ import { ArrowRight, Plus } from "lucide-react";
 import { GUIDE_WRAP, GUIDE_SEC_HEAD } from "@/components/guide/guideLayout";
 import { HOME_H2_STYLE } from "./homeLayout";
 import HomeToolThumb, { type ToolThumbConfig } from "./HomeToolThumb";
+import Reveal from "./Reveal";
 
 interface ToolCard {
     /** Feeds the thumbnail's internal SVG element ids — kept short and locale-invariant. */
@@ -49,53 +50,56 @@ export default async function HomeToolGrid() {
     return (
         <section id="tools" className="border-y border-guide-edge bg-guide-lime-3 py-24">
             <div className={GUIDE_WRAP}>
-                <div className={GUIDE_SEC_HEAD}>
+                <Reveal className={GUIDE_SEC_HEAD}>
                     <h2 style={HOME_H2_STYLE}>{t("heading")}</h2>
                     <p className="mt-4 text-lg text-guide-ink-2">{t("lead")}</p>
-                </div>
+                </Reveal>
 
                 <div className="mt-[52px] grid grid-cols-1 gap-[22px] lg:grid-cols-3">
                     {TOOL_CARDS.map((tool) => (
-                        <Link
-                            key={tool.id}
-                            href={tool.href}
-                            className="group flex flex-col overflow-hidden rounded-guide border-[1.5px] border-guide-edge bg-white transition-all hover:-translate-y-1 hover:border-guide-edge-strong hover:shadow-guide"
-                        >
-                            <span className="relative block h-[200px] overflow-hidden border-b-[1.5px] border-guide-edge">
-                                <HomeToolThumb id={tool.id} config={tool.thumb} />
-                            </span>
-                            <span className="flex flex-1 flex-col pb-6 pl-6 pr-6 pt-[22px]">
-                                <span className="guide-display text-xl font-bold leading-[1.2] tracking-[-0.02em] text-guide-ink">
-                                    {tTools(`${tool.toolKey}.label`)}
+                        <Reveal key={tool.id}>
+                            <Link
+                                href={tool.href}
+                                className="group flex h-full flex-col overflow-hidden rounded-guide border-[1.5px] border-guide-edge bg-white transition-all hover:-translate-y-1 hover:border-guide-edge-strong hover:shadow-guide"
+                            >
+                                <span className="relative block h-[200px] overflow-hidden border-b-[1.5px] border-guide-edge">
+                                    <HomeToolThumb id={tool.id} config={tool.thumb} />
                                 </span>
-                                <span className="mb-[18px] mt-[9px] flex-1 text-[15px] leading-[1.5] text-guide-ink-2">
-                                    {t(`cards.${tool.toolKey}`)}
+                                <span className="flex flex-1 flex-col pb-6 pl-6 pr-6 pt-[22px]">
+                                    <span className="guide-display text-xl font-bold leading-[1.2] tracking-[-0.02em] text-guide-ink">
+                                        {tTools(`${tool.toolKey}.label`)}
+                                    </span>
+                                    <span className="mb-[18px] mt-[9px] flex-1 text-[15px] leading-[1.5] text-guide-ink-2">
+                                        {t(`cards.${tool.toolKey}`)}
+                                    </span>
+                                    <span className="guide-display inline-flex items-center gap-[7px] font-bold text-guide-ink">
+                                        {t("tryItNow")}
+                                        <ArrowRight
+                                            size={16}
+                                            strokeWidth={2}
+                                            className="transition-transform group-hover:translate-x-[3px]"
+                                        />
+                                    </span>
                                 </span>
-                                <span className="guide-display inline-flex items-center gap-[7px] font-bold text-guide-ink">
-                                    {t("tryItNow")}
-                                    <ArrowRight
-                                        size={16}
-                                        strokeWidth={2}
-                                        className="transition-transform group-hover:translate-x-[3px]"
-                                    />
-                                </span>
-                            </span>
-                        </Link>
+                            </Link>
+                        </Reveal>
                     ))}
 
-                    <div className="flex flex-col items-stretch gap-0 rounded-guide border-[1.5px] border-dashed border-guide-edge-strong bg-guide-lime-3 lg:col-span-2 lg:flex-row lg:items-center">
-                        <span className="grid h-[200px] place-items-center text-guide-edge-strong lg:h-auto lg:w-[200px] lg:self-stretch lg:border-r-[1.5px] lg:border-dashed lg:border-guide-edge-strong">
-                            <Plus size={38} strokeWidth={1.8} />
-                        </span>
-                        <span className="flex flex-1 flex-col justify-center pb-6 pl-6 pr-6 pt-[22px]">
-                            <span className="guide-display text-xl font-bold leading-[1.2] tracking-[-0.02em] text-guide-ink">
-                                {t("more.heading")}
+                    <Reveal className="lg:col-span-2">
+                        <div className="flex h-full flex-col items-stretch gap-0 rounded-guide border-[1.5px] border-dashed border-guide-edge-strong bg-guide-lime-3 lg:flex-row lg:items-center">
+                            <span className="grid h-[200px] place-items-center text-guide-edge-strong lg:h-auto lg:w-[200px] lg:self-stretch lg:border-r-[1.5px] lg:border-dashed lg:border-guide-edge-strong">
+                                <Plus size={38} strokeWidth={1.8} />
                             </span>
-                            <span className="mt-[9px] text-[15px] leading-[1.5] text-guide-ink-2">
-                                {t("more.body")}
+                            <span className="flex flex-1 flex-col justify-center pb-6 pl-6 pr-6 pt-[22px]">
+                                <span className="guide-display text-xl font-bold leading-[1.2] tracking-[-0.02em] text-guide-ink">
+                                    {t("more.heading")}
+                                </span>
+                                <span className="mt-[9px] text-[15px] leading-[1.5] text-guide-ink-2">
+                                    {t("more.body")}
+                                </span>
                             </span>
-                        </span>
-                    </div>
+                        </div>
+                    </Reveal>
                 </div>
             </div>
         </section>

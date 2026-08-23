@@ -9,6 +9,7 @@ import { CREATE_TOOLS, type CreateTool } from "@/lib/tools";
 import { guideFontClass } from "@/lib/fonts";
 import { GUIDE_WRAP } from "@/components/guide/guideLayout";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
+import UploadPhotoButton from "@/components/common/UploadPhotoButton";
 
 /** Nav-row typography borrows the guide pages' DM Sans / DM Mono / Bricolage Grotesque faces.
  *  Only `guideFontClass` (the three CSS-variable classes) is applied, never `guide-scope`
@@ -109,13 +110,13 @@ export default function Header() {
                     {/* Desktop CTA */}
                     <div className="hidden items-center gap-3.5 md:ml-auto md:flex">
                         <LanguageSwitcher />
-                        <Link
-                            href="/create/polka-dot"
-                            className="inline-flex items-center gap-2 rounded-full border-2 border-[#15200d] bg-[#c5e89a] px-[22px] py-[11px] text-[15px] font-bold text-[#15200d] shadow-[0_4px_0_#15200d] transition-all hover:translate-y-[3px] hover:bg-[#d5f0ae] hover:shadow-[0_2px_0_#15200d] active:translate-y-[5px] active:shadow-none"
-                            style={CTA_STYLE}
+                        <UploadPhotoButton
+                            className="inline-flex items-center gap-2 rounded-full border-2 border-[#15200d] bg-[#c5e89a] px-[22px] py-[11px] text-[15px] font-bold text-[#15200d] shadow-[0_4px_0_#15200d] transition-all hover:translate-y-[3px] hover:bg-[#d5f0ae] hover:shadow-[0_2px_0_#15200d] active:translate-y-[5px] active:shadow-none cursor-pointer"
+                            trackId="header-cta"
+                            target="dot"
                         >
-                            {t("cta")}
-                        </Link>
+                            <span style={CTA_STYLE}>{t("cta")}</span>
+                        </UploadPhotoButton>
                     </div>
 
                     {/* Mobile menu button */}
@@ -165,14 +166,14 @@ export default function Header() {
                                 </div>
                             );
                         })}
-                        <Link
-                            href="/create/polka-dot"
-                            className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#15200d] bg-[#c5e89a] px-5 py-2.5 text-[14px] font-bold text-[#15200d] shadow-[0_4px_0_#15200d] transition-colors hover:bg-[#d5f0ae]"
-                            style={CTA_STYLE}
-                            onClick={() => setMenuOpen(false)}
+                        <UploadPhotoButton
+                            className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#15200d] bg-[#c5e89a] px-5 py-2.5 text-[14px] font-bold text-[#15200d] shadow-[0_4px_0_#15200d] transition-colors hover:bg-[#d5f0ae] cursor-pointer"
+                            trackId="header-cta-mobile"
+                            target="dot"
+                            onBeforeNavigate={() => setMenuOpen(false)}
                         >
-                            {t("cta")}
-                        </Link>
+                            <span style={CTA_STYLE}>{t("cta")}</span>
+                        </UploadPhotoButton>
                         <div className="mt-4 border-t border-[#e3e9d8] pt-4">
                             <LanguageSwitcher variant="inline" onSwitch={() => setMenuOpen(false)} />
                         </div>

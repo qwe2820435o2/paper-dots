@@ -56,10 +56,7 @@
       "subheadline": "Alat-alat kecil dan mudah yang mengubah foto apa pun jadi sesuatu yang benar-benar layak kamu posting. Tanpa layer, tanpa kurva belajar, tanpa perlu instal apa pun.",
       "cta": "Unggah foto",
       "badge": "Gratis · Tanpa watermark · Tanpa daftar",
-      "art": {
-        "yourPhoto": "foto kamu",
-        "readyToPost": "siap diposting"
-      }
+      "scrollLabel": "Lihat alatnya"
     },
     "toolGrid": {
       "heading": "Kenali alat edit foto estetik online gratisnya",

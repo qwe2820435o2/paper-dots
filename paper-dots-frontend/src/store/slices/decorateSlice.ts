@@ -110,6 +110,8 @@ export interface BackgroundConfig {
     dotGridRadius: number;
 }
 
+export type DecoratePanel = "upload" | "layout" | "paper" | "dots" | "export";
+
 export interface DecorateState {
     /** object URL of the uploaded photo, or null */
     photoUrl: string | null;
@@ -118,10 +120,15 @@ export interface DecorateState {
     layout: LayoutConfig;
     /** seed used by the dot generator; reroll to reshuffle layout */
     seed: number;
+    /** Panel to open once `photoUrl` lands, consumed and cleared by DecorateApp on mount.
+     *  Set by callers (e.g. the homepage/header upload buttons) that dispatch a photo and
+     *  navigate here in the same tick, so the editor can skip its own "layout" default. */
+    initialPanel: DecoratePanel | null;
 }
 
 const initialState: DecorateState = {
     photoUrl: null,
+    initialPanel: null,
     background: {
         mode: "solid",
         solidColor: "#fafafa",
@@ -177,6 +184,9 @@ const decorateSlice = createSlice({
     reducers: {
         setPhotoUrl(state, action: PayloadAction<string | null>) {
             state.photoUrl = action.payload;
+        },
+        setInitialPanel(state, action: PayloadAction<DecoratePanel | null>) {
+            state.initialPanel = action.payload;
         },
         setBackgroundMode(state, action: PayloadAction<BackgroundMode>) {
             state.background.mode = action.payload;
@@ -296,6 +306,7 @@ const decorateSlice = createSlice({
 
 export const {
     setPhotoUrl,
+    setInitialPanel,
     setBackgroundMode,
     setSolidColor,
     setStripeColor1,

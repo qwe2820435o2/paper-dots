@@ -13,6 +13,7 @@ import HomeToolGrid from "@/components/landing/HomeToolGrid";
 import HomeColorEngine from "@/components/landing/HomeColorEngine";
 import HomeWhy from "@/components/landing/HomeWhy";
 import HomeReviews from "@/components/landing/HomeReviews";
+import Reveal from "@/components/landing/Reveal";
 
 /** Ids double as message keys under `home.faq.items` and as the accordion's React keys, so
  *  they must not change when copy does. */
@@ -90,16 +91,21 @@ export default async function HomePage({
         <HomeWhy />
         <HomeReviews />
         <div id="faq" className="scroll-mt-20">
-          <GuideFaq faq={{ heading: t("faq.heading"), items: faqItems }} />
+          <Reveal>
+            <GuideFaq faq={{ heading: t("faq.heading"), items: faqItems }} />
+          </Reveal>
         </div>
-        <GuideFinalCta
-          finalCta={{
-            heading: t("finalCta.heading"),
-            body: t("finalCta.body"),
-            cta: { text: t("finalCta.cta"), href: null },
-          }}
-          appPath="/create/polka-dot"
-        />
+        <Reveal>
+          <GuideFinalCta
+            finalCta={{
+              heading: t("finalCta.heading"),
+              body: t("finalCta.body"),
+              cta: { text: t("finalCta.cta"), href: null },
+            }}
+            appPath="/create/dot"
+            uploadToDot
+          />
+        </Reveal>
       </div>
     </>
   );

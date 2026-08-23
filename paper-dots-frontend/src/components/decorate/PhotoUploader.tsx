@@ -4,8 +4,7 @@ import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Upload } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
-import { setPhotoUrl, setSolidColor, setBackgroundMode, setDotShape, setDotSize, setDotVariance, setDotOpacity } from "@/store/slices/decorateSlice";
-import { extractPhotoColor } from "@/lib/extractDominantColor";
+import { applyDecoratePhoto } from "@/lib/decoratePhotoUpload";
 
 interface Props {
     /** Accepted for parity with the moment-card uploader, which swaps its label once a photo
@@ -25,16 +24,7 @@ export default function PhotoUploader({
         (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            const url = URL.createObjectURL(file);
-            extractPhotoColor(url).then((color) => {
-                dispatch(setBackgroundMode("solid"));
-                dispatch(setSolidColor(color));
-                dispatch(setPhotoUrl(url));
-                dispatch(setDotShape("snowflake"));
-                dispatch(setDotSize(30));
-                dispatch(setDotVariance(23));
-                dispatch(setDotOpacity(66));
-            });
+            applyDecoratePhoto(dispatch, file);
         },
         [dispatch],
     );

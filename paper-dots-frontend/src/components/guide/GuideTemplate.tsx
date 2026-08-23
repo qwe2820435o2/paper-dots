@@ -27,12 +27,17 @@ interface GuideTemplateProps {
  *  through this same component with no per-tool props, so hero/feature/tool-links visual
  *  fallbacks (GuideHero, GuideFeatureBlock, guideDefaultToolLinks) apply identically
  *  everywhere. */
+const UPLOAD_TARGET_BY_SLUG: Partial<Record<GuideSlug, "dot" | "moment-card">> = {
+    dot: "dot",
+    "moment-card": "moment-card",
+};
+
 export default function GuideTemplate({ content, slug, appPath }: GuideTemplateProps) {
     const toolLinks = content.toolLinks ?? getDefaultToolLinks(slug);
 
     return (
         <div className={`${guideFontClass} guide-scope`}>
-            <GuideHero hero={content.hero} appPath={appPath} />
+            <GuideHero hero={content.hero} appPath={appPath} uploadTarget={UPLOAD_TARGET_BY_SLUG[slug]} />
             <GuideRail />
             <GuideToolLinks toolLinks={toolLinks} />
             {content.features.length > 0 && <GuideFeatures features={content.features} />}

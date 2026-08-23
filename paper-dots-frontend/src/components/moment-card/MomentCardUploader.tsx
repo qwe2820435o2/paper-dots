@@ -4,18 +4,7 @@ import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Upload } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
-import { setPhoto } from "@/store/slices/momentCardSlice";
-import { extractDominantColorVivid } from "@/lib/extractDominantColor";
-
-function loadImageEl(url: string): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error("image load failed"));
-        img.src = url;
-    });
-}
+import { applyMomentCardPhoto } from "@/lib/momentCardPhotoUpload";
 
 interface Props {
     hasPhoto: boolean;
@@ -28,18 +17,10 @@ export default function MomentCardUploader({ hasPhoto, variant = "sidebar" }: Pr
     const [dragOver, setDragOver] = useState(false);
 
     const handleFiles = useCallback(
-        async (files: FileList | null) => {
+        (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            const url = URL.createObjectURL(file);
-            const img = await loadImageEl(url);
-            const color = extractDominantColorVivid(img);
-            dispatch(setPhoto({
-                url,
-                naturalWidth: img.naturalWidth,
-                naturalHeight: img.naturalHeight,
-                bgColor: color,
-            }));
+            applyMomentCardPhoto(dispatch, file);
         },
         [dispatch],
     );

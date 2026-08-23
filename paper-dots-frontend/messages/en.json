@@ -56,10 +56,7 @@
       "subheadline": "Small, easy tools that turn any photo into something you would actually post. No layers, no learning curve, nothing to install.",
       "cta": "Upload a photo",
       "badge": "Free · No watermark · No sign up",
-      "art": {
-        "yourPhoto": "your photo",
-        "readyToPost": "ready to post"
-      }
+      "scrollLabel": "See the tools"
     },
     "toolGrid": {
       "heading": "Meet the free online aesthetic photo edit tools",

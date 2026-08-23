@@ -12,7 +12,8 @@ import {
   X,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setInitialPanel, type DecoratePanel } from "@/store/slices/decorateSlice";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import PhotoUploader from "@/components/decorate/PhotoUploader";
 import LayoutPicker from "@/components/decorate/LayoutPicker";
@@ -35,7 +36,7 @@ const DecorateCanvas = dynamic(
   },
 );
 
-type Panel = "upload" | "layout" | "paper" | "dots" | "export" | null;
+type Panel = DecoratePanel | null;
 
 /** `id` doubles as the key under `editor.dot.tabs`. */
 const TOOLS: { id: Panel; icon: typeof ImagePlus }[] = [
@@ -48,15 +49,25 @@ const TOOLS: { id: Panel; icon: typeof ImagePlus }[] = [
 
 export default function DecorateApp() {
   const t = useTranslations("editor");
+  const dispatch = useAppDispatch();
   const photoUrl = useAppSelector((s) => s.decorate.photoUrl);
+  const initialPanel = useAppSelector((s) => s.decorate.initialPanel);
   const stageRef = useRef<Konva.Stage | null>(null);
   const [activePanel, setActivePanel] = useState<Panel>(null);
+  // Captured once at mount: a caller that dispatched a photo and navigated here in the same
+  // tick (the homepage/header upload buttons) sets this before DecorateApp ever renders, so
+  // it must not be re-read after `setInitialPanel(null)` below clears it back to null.
+  const initialPanelRef = useRef(initialPanel);
 
   useLockBodyScroll();
 
   useEffect(() => {
-    if (photoUrl) setActivePanel("layout");
+    if (photoUrl) setActivePanel(initialPanelRef.current ?? "layout");
   }, [photoUrl]);
+
+  useEffect(() => {
+    if (initialPanelRef.current) dispatch(setInitialPanel(null));
+  }, [dispatch]);
 
   function togglePanel(panel: Panel) {
     setActivePanel((prev) => (prev === panel ? null : panel));
