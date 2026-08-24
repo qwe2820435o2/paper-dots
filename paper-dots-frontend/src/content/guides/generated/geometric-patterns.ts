@@ -33,6 +33,11 @@ const content: GuideContentByLocale = {
           "id": "2",
           "label": "Photo Quote Maker",
           "href": "/photo-quote-maker"
+        },
+        {
+          "id": "3",
+          "label": "Polka Dot Generator",
+          "href": "/polka-dot"
         }
       ]
     },
@@ -220,8 +225,8 @@ const content: GuideContentByLocale = {
         },
         {
           "id": "3",
-          "label": "幾何学パターンジェネレーター",
-          "href": "/jp/geometric-pattern-generator"
+          "label": "ポルカドットジェネレーター",
+          "href": "/jp/polka-dot"
         }
       ]
     },
@@ -409,8 +414,8 @@ const content: GuideContentByLocale = {
         },
         {
           "id": "3",
-          "label": "Pembuat pola geometris",
-          "href": "/id/geometric-pattern-generator"
+          "label": "Generator Polkadot",
+          "href": "/id/polka-dot"
         }
       ]
     },
