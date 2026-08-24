@@ -17,6 +17,7 @@ const LEGACY_PATHS: Array<{ from: string; to: string }> = [
   { from: "/moment-card/app", to: "/create/moment-card" },
   { from: "/polka-dot/app", to: "/create/polka-dot" },
   { from: "/geometric-patterns/app", to: "/create/geometric-patterns" },
+  { from: "/faq", to: "/" },
 ];
 
 const nextConfig: NextConfig = {

@@ -40,7 +40,6 @@
     "tools": "Alat",
     "support": "Bantuan",
     "legal": "Legal",
-    "faq": "FAQ",
     "contact": "Hubungi Kami",
     "privacy": "Kebijakan Privasi",
     "terms": "Ketentuan Layanan",
@@ -177,49 +176,6 @@
       "heading": "Ayo buat sesuatu",
       "body": "Pilih alat, masukkan foto, lihat apa yang keluar. Gratis, tanpa tanda air, tanpa daftar akun.",
       "cta": "Unggah foto"
-    }
-  },
-  "faqPage": {
-    "meta": {
-      "title": "FAQ",
-      "description": "Answers to common questions about Dottypic.",
-      "ogTitle": "Frequently Asked Questions — Dottypic"
-    },
-    "heading": "FAQ",
-    "lead": "Everything you need to know about Dottypic.",
-    "items": {
-      "free": {
-        "question": "Is Dottypic's dot image generator free to use?",
-        "answer": "Yes! You get full access to our Automatic Photo Collage Maker and all design elements for free. Best of all? No watermarks on your final masterpieces."
-      },
-      "registration": {
-        "question": "Do I need to register to use the dot image generator?",
-        "answer": "No registration required! We believe in \"creating on the go.\" Just upload, edit your polka dot pattern, and download. Simple as that."
-      },
-      "density": {
-        "question": "Can I customize the density of the polka dot pattern?",
-        "answer": "Absolutely. You have full control over the polka dots pattern. You can adjust the shape, size, color, and spacing to create a look that is uniquely yours."
-      },
-      "shapes": {
-        "question": "Can I change the dots to other shapes?",
-        "answer": "Of course! While we love a classic polka dot setting, you can switch to hearts, stars, or waterdrops to match your specific vibe."
-      },
-      "autoAnalyze": {
-        "question": "How does the \"Auto-Analyze\" feature work?",
-        "answer": "Our smart tool \"reads\" the dominant colors in your uploaded images and automatically suggests a dot pattern and background color that complements your photo perfectly. It's like having a tiny designer in your pocket!"
-      },
-      "ownBackground": {
-        "question": "Can I use my own background images?",
-        "answer": "Yes! You can use our AI-generated colors or upload your own favorite textures and patterns to use as a base for your collage."
-      },
-      "mobile": {
-        "question": "Will the dot image generator work on my phone?",
-        "answer": "Yes! Dottypic is optimized for mobile and desktop browsers, so you can create aesthetic collages whenever inspiration strikes."
-      },
-      "privacy": {
-        "question": "How does the Automatic Photo Collage Maker handle my privacy?",
-        "answer": "Your photos stay yours. Dottypic processes everything locally in your browser. We never store or upload your images to a server, ensuring 100% privacy and security."
-      }
     }
   },
   "privacy": {
