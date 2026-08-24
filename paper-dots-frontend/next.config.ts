@@ -20,6 +20,24 @@ const LEGACY_PATHS: Array<{ from: string; to: string }> = [
   { from: "/faq", to: "/" },
 ];
 
+const IMMUTABLE_CACHE = "public, max-age=31536000, immutable";
+/** Long enough that repeat views come out of cache, short enough that replacing a file in
+ *  place reaches visitors the same day. */
+const REVALIDATED_CACHE = "public, max-age=3600, stale-while-revalidate=86400";
+
+/** Everything under `public/` is served from a fixed, unhashed URL, so `immutable` is a promise
+ *  we can only keep for files that are never edited in place — and these two groups are. The
+ *  guide/home artwork gets re-exported (e84fc01 resized every one of them) and the brand icons
+ *  were replaced wholesale by the logo change, which is exactly why `favicon.ico` and
+ *  `icon-192.png` then sat stale in Cloudflare's edge for a month, back when one blanket rule
+ *  marked every image extension immutable. Next stamps `immutable` on `/_next/static` and on the
+ *  `icon.svg` / `apple-icon.png` metadata routes itself, and those URLs are content-hashed, so
+ *  nothing here needs to cover them. */
+const OVERWRITTEN_IMAGE_DIRS =
+  "home|polka-dot|photo-overlay-editor|photo-quote-maker|geometric-pattern-generator";
+const OVERWRITTEN_BRAND_FILES =
+  "favicon.ico|icon-192.png|icon-512.png|logo-dark.svg|hero-before-after.png";
+
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
@@ -43,17 +61,19 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
+      // `papers` and `emoji` are append-only libraries — a texture or an emoji is added, never
+      // replaced — so their fixed URLs really are immutable.
       {
-        source: "/papers/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
+        source: "/:dir(papers|emoji)/:path*",
+        headers: [{ key: "Cache-Control", value: IMMUTABLE_CACHE }],
       },
       {
-        source: "/:path(.*\\.(?:png|webp|svg|ico|jpg|jpeg|woff2))",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
+        source: `/:dir(${OVERWRITTEN_IMAGE_DIRS})/:file(.+\\.(?:png|webp|jpg|jpeg|svg))`,
+        headers: [{ key: "Cache-Control", value: REVALIDATED_CACHE }],
+      },
+      {
+        source: `/:file(${OVERWRITTEN_BRAND_FILES})`,
+        headers: [{ key: "Cache-Control", value: REVALIDATED_CACHE }],
       },
     ];
   },
