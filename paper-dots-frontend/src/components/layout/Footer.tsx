@@ -4,7 +4,6 @@ import Image from "next/image";
 import { CREATE_TOOLS } from "@/lib/tools";
 
 const supportLinks = [
-  { key: "faq", href: "/faq" },
   { key: "contact", href: "/contact" },
 ];
 
