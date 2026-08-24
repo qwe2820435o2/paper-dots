@@ -30,6 +30,11 @@ const content: GuideContentByLocale = {
           "href": "/photo-overlay-editor"
         },
         {
+          "id": "2",
+          "label": "Polka Dot Generator",
+          "href": "/polka-dot"
+        },
+        {
           "id": "3",
           "label": "Geometric Pattern Generator",
           "href": "/geometric-pattern-generator"
@@ -200,8 +205,8 @@ const content: GuideContentByLocale = {
         },
         {
           "id": "2",
-          "label": "写真クオートメーカー",
-          "href": "/jp/photo-quote-maker"
+          "label": "ポルカドットジェネレーター",
+          "href": "/jp/polka-dot"
         },
         {
           "id": "3",
@@ -374,8 +379,8 @@ const content: GuideContentByLocale = {
         },
         {
           "id": "2",
-          "label": "Pembuat Kutipan Foto",
-          "href": "/id/photo-quote-maker"
+          "label": "Generator Polkadot",
+          "href": "/id/polka-dot"
         },
         {
           "id": "3",
