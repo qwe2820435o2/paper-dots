@@ -3,19 +3,52 @@
 import { useTranslations } from "next-intl";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setAfterScale, setAfterRotation, resetAfterTransform } from "@/store/slices/beforeAfterSlice";
+import {
+    setAfterScale,
+    setAfterRotation,
+    setAfterOffset,
+    resetAfterTransform,
+} from "@/store/slices/beforeAfterSlice";
 
 /** Rendered while the "align" tab is open — `BeforeAfterApp` puts the canvas into its dedicated
- *  align-mode overlay for as long as this tab stays active (see Canvas.tsx). Position itself is
- *  dragged directly on the canvas; this panel only holds scale/rotation/reset. */
+ *  align-mode overlay for as long as this tab stays active (see Canvas.tsx). Dragging the photo
+ *  is the fast way to set position; the offset sliders below are the keyboard-reachable one,
+ *  since a Konva shape is not in the tab order and takes no key events. */
 export default function AlignPanel() {
     const t = useTranslations("editor.beforeAfter.align");
+    const tCommon = useTranslations("editor.common");
     const dispatch = useAppDispatch();
     const transform = useAppSelector((s) => s.beforeAfter.afterTransform);
 
     return (
         <div className="p-4 flex flex-col gap-4">
             <p className="text-[12px] text-[#64748b] leading-[1.5]">{t("hint")}</p>
+
+            <div className="flex flex-col gap-2">
+                <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
+                    {t("position")}
+                </label>
+                <div className="flex items-center gap-2">
+                    <span className="w-16 shrink-0 text-[11px] text-[#9CA3AF]">{tCommon("horizontal")}</span>
+                    <Slider
+                        min={-50}
+                        max={50}
+                        step={1}
+                        value={[Math.round(transform.offsetXPct)]}
+                        onValueChange={(v) => dispatch(setAfterOffset({ xPct: v[0], yPct: transform.offsetYPct }))}
+                    />
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="w-16 shrink-0 text-[11px] text-[#9CA3AF]">{tCommon("vertical")}</span>
+                    <Slider
+                        min={-50}
+                        max={50}
+                        step={1}
+                        value={[Math.round(transform.offsetYPct)]}
+                        onValueChange={(v) => dispatch(setAfterOffset({ xPct: transform.offsetXPct, yPct: v[0] }))}
+                    />
+                </div>
+            </div>
 
             <div className="flex flex-col gap-1.5">
                 <div className="flex items-baseline justify-between">
