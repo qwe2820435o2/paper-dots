@@ -15,6 +15,10 @@
     "geometricPatterns": {
       "label": "Pembuat Pola Geometris",
       "navDescription": "Buat pola latar geometris tanpa sambungan"
+    },
+    "beforeAfter": {
+      "label": "Pembuat Foto Before & After",
+      "navDescription": "Geser slider untuk membandingkan dua foto"
     }
   },
   "breadcrumb": {
@@ -479,12 +483,44 @@
         "extracting": "Extracting…",
         "dragHint": "Drag the bottom photo to reposition it. The background color updates automatically when you release."
       }
+    },
+    "beforeAfter": {
+      "before": "Sebelum",
+      "after": "Sesudah",
+      "layouts": {
+        "slider": "Slider",
+        "side-by-side": "Berdampingan",
+        "split": "Terbagi",
+        "stack": "Bertumpuk"
+      },
+      "removeText": "Hapus",
+      "textLabel": "Teks",
+      "textPlaceholder": "Tambahkan keterangan",
+      "align": {
+        "hint": "Geser foto di bawah untuk menyejajarkannya dengan Sebelum, lalu sesuaikan skala atau rotasi jika perlu.",
+        "scale": "Skala",
+        "rotation": "Rotasi",
+        "reset": "Reset"
+      },
+      "downloadGif": "Unduh GIF",
+      "encodingGif": "Memproses… {percent}%",
+      "tabs": {
+        "photos": "Foto",
+        "layout": "Tata Letak",
+        "text": "Teks",
+        "align": "Ratakan",
+        "export": "Ekspor"
+      }
     }
   },
   "editorMeta": {
     "dot": {
       "title": "Dot · Dottypic",
       "description": "Upload a photo, pick a paper, scatter dots."
+    },
+    "beforeAfter": {
+      "title": "Pembuat Foto Before & After · Dottypic",
+      "description": "Unggah foto sebelum dan sesudah, geser slider untuk membandingkan, lalu ekspor sebagai PNG."
     },
     "polkaDot": {
       "title": "Polka Dot Generator · Dottypic",

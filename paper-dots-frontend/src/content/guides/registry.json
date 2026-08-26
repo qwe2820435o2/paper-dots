@@ -26,5 +26,12 @@
     "sheetTab": "Photo Overlay Editor",
     "guidePath": "/photo-overlay-editor",
     "appPath": "/create/dot"
+  },
+  {
+    "slug": "before-after",
+    "label": "Before & After Photo Maker",
+    "sheetTab": "Before & After Photo Maker",
+    "guidePath": "/before-after-photo-maker",
+    "appPath": "/create/before-after"
   }
 ]

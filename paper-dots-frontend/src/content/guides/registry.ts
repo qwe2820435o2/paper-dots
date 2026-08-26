@@ -9,7 +9,7 @@ import registryJson from "./registry.json";
 /** Adding a tool means adding it here and in `registry.json`; the assertion below fails fast
  *  if the two ever disagree, and `GUIDES` in `./index` will not typecheck until the new slug
  *  has a content module. */
-export const GUIDE_SLUGS = ["polka-dot", "geometric-patterns", "moment-card", "dot"] as const;
+export const GUIDE_SLUGS = ["polka-dot", "geometric-patterns", "moment-card", "dot", "before-after"] as const;
 
 export type GuideSlug = (typeof GUIDE_SLUGS)[number];
 

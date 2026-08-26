@@ -3,6 +3,7 @@ import decorateReducer from "./slices/decorateSlice";
 import momentCardReducer from "./slices/momentCardSlice";
 import polkaDotReducer from "./slices/polkaDotSlice";
 import geometricReducer from "./slices/geometricSlice";
+import beforeAfterReducer from "./slices/beforeAfterSlice";
 import { persistGeometricState } from "./persistGeometric";
 
 // No preloadedState from localStorage here: the store module also runs during SSR (where
@@ -15,6 +16,7 @@ export const store = configureStore({
         momentCard: momentCardReducer,
         polkaDot: polkaDotReducer,
         geometric: geometricReducer,
+        beforeAfter: beforeAfterReducer,
     },
 });
 
