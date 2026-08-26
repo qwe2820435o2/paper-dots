@@ -5,13 +5,13 @@ import { useTranslations } from "next-intl";
 import { Upload } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { applyDecorateBgPhoto } from "@/lib/decoratePhotoUpload";
 import {
   setBackgroundMode,
   setSolidColor,
   setStripeColor1,
   setStripeColor2,
   setStripeWidth,
-  setBgPhotoUrl,
   setCheckerboardColor1,
   setCheckerboardColor2,
   setCheckerboardSize,
@@ -87,7 +87,7 @@ export default function PaperPicker() {
   function handleBgPhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    dispatch(setBgPhotoUrl(URL.createObjectURL(file)));
+    dispatch(applyDecorateBgPhoto(file));
   }
 
   return (

@@ -50,12 +50,12 @@ export default function UploadPhotoButton({ children, className, trackId, onBefo
         trackEvent("guide_cta_click", { cta_id: trackId, destination });
 
         if (target === "dot") {
-            await applyDecoratePhoto(dispatch, file);
+            await dispatch(applyDecoratePhoto(file));
             dispatch(setInitialPanel("dots"));
         } else {
             // MomentCardApp already opens its "text" panel as soon as a photo lands, so no
             // pending-panel flag is needed here (unlike DecorateApp's default "layout" panel).
-            await applyMomentCardPhoto(dispatch, file);
+            await dispatch(applyMomentCardPhoto(file));
         }
 
         onBeforeNavigate?.();

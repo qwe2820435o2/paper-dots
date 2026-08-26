@@ -20,7 +20,7 @@ export default function MomentCardUploader({ hasPhoto, variant = "sidebar" }: Pr
         (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            applyMomentCardPhoto(dispatch, file);
+            dispatch(applyMomentCardPhoto(file));
         },
         [dispatch],
     );
