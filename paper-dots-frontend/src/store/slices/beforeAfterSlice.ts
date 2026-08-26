@@ -49,6 +49,12 @@ const initialAfterTransform: AfterTransformState = {
     rotationDeg: 0,
 };
 
+/** True once the user has actually nudged "after" off its default cover-fit placement. Lets
+ *  callers tell a reset that throws away real work from one that changes nothing. */
+export function hasAfterTransform(t: AfterTransformState): boolean {
+    return t.offsetXPct !== 0 || t.offsetYPct !== 0 || t.scale !== 1 || t.rotationDeg !== 0;
+}
+
 const initialState: BeforeAfterState = {
     beforeUrl: null,
     afterUrl: null,

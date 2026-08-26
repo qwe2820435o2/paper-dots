@@ -10,17 +10,20 @@ import { isTouchPrimaryDevice } from "@/lib/device";
 
 interface Props {
     stageRef: RefObject<Konva.Stage | null>;
+    /** Set while a GIF export is sweeping the divider — grabbing the stage then would capture
+     *  a mid-sweep frame instead of what the user is looking at. */
+    disabled?: boolean;
 }
 
-export default function ExportButton({ stageRef }: Props) {
+export default function ExportButton({ stageRef, disabled = false }: Props) {
     const t = useTranslations("editor");
     const beforeUrl = useAppSelector((s) => s.beforeAfter.beforeUrl);
     const afterUrl = useAppSelector((s) => s.beforeAfter.afterUrl);
-    const ready = !!beforeUrl && !!afterUrl;
+    const ready = !!beforeUrl && !!afterUrl && !disabled;
 
     async function handleExport() {
         const stage = stageRef.current;
-        if (!stage) return;
+        if (!stage || !ready) return;
         const dataUrl = stage.toDataURL({ pixelRatio: 2, mimeType: "image/png" });
 
         const blob = await (await fetch(dataUrl)).blob();

@@ -2,6 +2,7 @@
 
 import { useState, type RefObject } from "react";
 import type Konva from "konva";
+import type GIF from "gif.js";
 import { Film } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
@@ -11,6 +12,13 @@ import { isTouchPrimaryDevice } from "@/lib/device";
 
 interface Props {
     stageRef: RefObject<Konva.Stage | null>;
+    /** Owned by `BeforeAfterApp` rather than kept local: the sweep screenshots the live stage
+     *  frame by frame, so a layout switch, an align-mode toggle, or a PNG export landing
+     *  mid-run would resize the stage under it and hand `gif.js` frames that no longer match
+     *  the first one — which locks the output canvas size. The parent needs the flag to lock
+     *  the rest of the editor for the duration. */
+    busy: boolean;
+    onBusyChange: (busy: boolean) => void;
 }
 
 /** Longer edge of a captured GIF frame, in px. Kept well below the PNG export's resolution —
@@ -21,6 +29,17 @@ const GIF_MAX_EDGE = 480;
 const FRAME_STEP = 5;
 /** ms each frame is shown for in the rendered GIF. */
 const FRAME_DELAY = 50;
+
+/** How long encoding may go without advancing before it is treated as dead, in ms.
+ *
+ *  `gif.js` has no `error` event: it hands each frame to a web worker and waits for a message
+ *  back, so a worker script that 404s, is blocked, or throws simply never replies and
+ *  `finished` never fires. That used to strand `busy` at `true`; now that an export freezes the
+ *  whole editor, a silent hang would lock the user out of the tool entirely until they reload.
+ *  A stall timer catches both failure shapes — a worker that never starts and one that dies
+ *  partway — where a single overall deadline would have to be long enough for the slowest
+ *  phone to finish a full sweep and would therefore catch neither quickly. */
+const ENCODE_STALL_TIMEOUT = 20000;
 
 function loadImage(src: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
@@ -35,10 +54,38 @@ function waitForRedraw(): Promise<void> {
     return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
 }
 
+/** Runs the encode, rejecting instead of hanging if it stops making progress (see
+ *  `ENCODE_STALL_TIMEOUT`). `render()` also throws synchronously on a worker the browser
+ *  refuses to construct, which the executor turns into a rejection for free. */
+function renderGif(gif: GIF, onProgress: (percent: number) => void): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+        let stallTimer: ReturnType<typeof setTimeout>;
+        const armStallTimer = () => {
+            clearTimeout(stallTimer);
+            stallTimer = setTimeout(() => {
+                gif.abort();
+                reject(new Error("GIF encoding stalled"));
+            }, ENCODE_STALL_TIMEOUT);
+        };
+
+        gif.on("progress", (percent) => {
+            armStallTimer();
+            onProgress(percent);
+        });
+        gif.on("finished", (blob) => {
+            clearTimeout(stallTimer);
+            resolve(blob);
+        });
+
+        armStallTimer();
+        gif.render();
+    });
+}
+
 /** Sweeps the divider 0% → 100% → 0% and re-encodes what's on screen into a looping GIF.
  *  Only meaningful for the "slider" layout — the caller is responsible for only rendering this
  *  button there. */
-export default function GifExportButton({ stageRef }: Props) {
+export default function GifExportButton({ stageRef, busy, onBusyChange }: Props) {
     const t = useTranslations("editor");
     const tBeforeAfter = useTranslations("editor.beforeAfter");
     const dispatch = useAppDispatch();
@@ -46,7 +93,6 @@ export default function GifExportButton({ stageRef }: Props) {
     const afterUrl = useAppSelector((s) => s.beforeAfter.afterUrl);
     const sliderPosition = useAppSelector((s) => s.beforeAfter.sliderPosition);
     const ready = !!beforeUrl && !!afterUrl;
-    const [busy, setBusy] = useState(false);
     const [progress, setProgress] = useState(0);
 
     async function handleExport() {
@@ -54,7 +100,7 @@ export default function GifExportButton({ stageRef }: Props) {
         if (!stage || busy) return;
 
         const originalPosition = sliderPosition;
-        setBusy(true);
+        onBusyChange(true);
         setProgress(0);
 
         try {
@@ -80,11 +126,7 @@ export default function GifExportButton({ stageRef }: Props) {
 
             dispatch(setSliderPosition(originalPosition));
 
-            const blob = await new Promise<Blob>((resolve) => {
-                gif.on("progress", (pct) => setProgress(50 + Math.round(pct * 50)));
-                gif.on("finished", (result) => resolve(result));
-                gif.render();
-            });
+            const blob = await renderGif(gif, (percent) => setProgress(50 + Math.round(percent * 50)));
 
             const filename = `dottypic-${Date.now()}.gif`;
             const file = new File([blob], filename, { type: "image/gif" });
@@ -118,7 +160,7 @@ export default function GifExportButton({ stageRef }: Props) {
             dispatch(setSliderPosition(originalPosition));
             toast.error(t("toast.exportFailed"));
         } finally {
-            setBusy(false);
+            onBusyChange(false);
             setProgress(0);
         }
     }

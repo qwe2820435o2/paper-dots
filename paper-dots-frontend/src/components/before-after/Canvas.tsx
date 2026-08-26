@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import type Konva from "konva";
 import { Stage, Layer, Image as KonvaImage, Line, Circle, Rect, Text } from "react-konva";
 import { useTranslations } from "next-intl";
@@ -22,6 +22,11 @@ const CELL_MAX = 1080;
 
 /** Gap between panels in the "side-by-side" and "stack" layouts, in canvas px. */
 const PANEL_GAP = 16;
+
+/** How much of the frame's width the caption is allowed to occupy before it wraps. The leftover
+ *  margin keeps a centered caption clear of the edges; a long one becomes several lines instead
+ *  of running off the canvas. */
+const LABEL_WIDTH_RATIO = 0.9;
 
 interface ImageLayout {
     x: number;
@@ -83,6 +88,35 @@ function afterImageTransformProps(
         rotation: transform.rotationDeg,
         crop,
     };
+}
+
+/** The `pointermove`/`pointerup` pair backing one drag interaction, kept together in a single
+ *  object so the exact function references used to attach are the ones used to detach —
+ *  `removeEventListener` matches by reference, and a per-render closure would silently fail to
+ *  detach, leaving the listener stuck on `window`. */
+interface DragHandlers {
+    move: (e: PointerEvent) => void;
+    up: () => void;
+}
+
+function attachDrag(h: DragHandlers) {
+    window.addEventListener("pointermove", h.move);
+    window.addEventListener("pointerup", h.up);
+}
+
+function detachDrag(h: DragHandlers) {
+    window.removeEventListener("pointermove", h.move);
+    window.removeEventListener("pointerup", h.up);
+}
+
+/** Konva hands us either a mouse or a touch event depending on the input; both drags start the
+ *  same way, so normalize to a single client point. */
+function eventPoint(evt: MouseEvent | TouchEvent): { clientX: number; clientY: number } {
+    if ("touches" in evt) {
+        const touch = evt.touches[0];
+        return { clientX: touch?.clientX ?? 0, clientY: touch?.clientY ?? 0 };
+    }
+    return { clientX: evt.clientX, clientY: evt.clientY };
 }
 
 /** A small always-on label so a static (non-slider) layout is still readable without a
@@ -182,47 +216,56 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
         [afterImg, cellW, cellH],
     );
 
+    // All three drags below work in *normalized* stage-rect coordinates (0-1 of the on-screen
+    // box) rather than canvas px. Slider position and label position are already stored as
+    // percentages, and the align offset is a percentage of the cell — which is the whole stage
+    // while align mode is on — so the canvas-px size cancels out of every conversion. Reading
+    // only the live `getBoundingClientRect()` on each move keeps the math correct even if the
+    // container resizes mid-drag (orientation change, panel toggle); a size captured back at
+    // mousedown would be stale for the rest of the drag.
     const draggingRef = useRef(false);
+    const alignDragRef = useRef<{
+        startXNorm: number;
+        startYNorm: number;
+        startOffsetXPct: number;
+        startOffsetYPct: number;
+    } | null>(null);
+    const labelDraggingRef = useRef(false);
 
-    function getStageX(clientX: number) {
+    /** Pointer position as a 0-1 fraction of the stage's on-screen box, or null when the stage
+     *  isn't measurable yet (no ref, zero-size container). */
+    const getNormalizedPoint = useCallback((clientX: number, clientY: number) => {
         const stage = stageRef.current;
-        if (!stage) return 0;
+        if (!stage) return null;
         const rect = stage.container().getBoundingClientRect();
-        return rect.width > 0 ? (clientX - rect.left) * (canvasW / rect.width) : 0;
-    }
-
-    function seekTo(clientX: number) {
-        const pct = canvasW > 0 ? (getStageX(clientX) / canvasW) * 100 : 50;
-        dispatch(setSliderPosition(Math.max(0, Math.min(100, pct))));
-    }
-
-    function onPointerMove(e: PointerEvent) {
-        if (!draggingRef.current) return;
-        seekTo(e.clientX);
-    }
-
-    function onPointerUp() {
-        draggingRef.current = false;
-        window.removeEventListener("pointermove", onPointerMove);
-        window.removeEventListener("pointerup", onPointerUp);
-    }
-
-    function handleMouseDown(e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) {
-        const evt = e.evt;
-        const clientX = "touches" in evt ? (evt.touches[0]?.clientX ?? 0) : (evt as MouseEvent).clientX;
-        draggingRef.current = true;
-        seekTo(clientX);
-        window.addEventListener("pointermove", onPointerMove);
-        window.addEventListener("pointerup", onPointerUp);
-    }
-
-    useEffect(() => {
-        return () => {
-            window.removeEventListener("pointermove", onPointerMove);
-            window.removeEventListener("pointerup", onPointerUp);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (rect.width <= 0 || rect.height <= 0) return null;
+        return { nx: (clientX - rect.left) / rect.width, ny: (clientY - rect.top) / rect.height };
     }, []);
+
+    // Each handler pair is identity-stable (it only depends on `dispatch`), so the unmount
+    // cleanup further down detaches the very functions that were attached.
+    const sliderDrag = useMemo<DragHandlers>(() => {
+        const h: DragHandlers = {
+            move: (e) => {
+                if (!draggingRef.current) return;
+                const p = getNormalizedPoint(e.clientX, e.clientY);
+                if (p) dispatch(setSliderPosition(p.nx * 100));
+            },
+            up: () => {
+                draggingRef.current = false;
+                detachDrag(h);
+            },
+        };
+        return h;
+    }, [dispatch, getNormalizedPoint]);
+
+    function handleSliderMouseDown(e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) {
+        const { clientX, clientY } = eventPoint(e.evt);
+        draggingRef.current = true;
+        const p = getNormalizedPoint(clientX, clientY);
+        if (p) dispatch(setSliderPosition(p.nx * 100));
+        attachDrag(sliderDrag);
+    }
 
     const handleX = (sliderPosition / 100) * canvasW;
 
@@ -231,121 +274,87 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
     const stageW = alignMode ? cellW : canvasW;
     const stageH = alignMode ? cellH : canvasH;
 
-    const alignDragRef = useRef<{ startX: number; startY: number; startOffsetXPct: number; startOffsetYPct: number } | null>(
-        null,
-    );
-
-    function getAlignStagePoint(clientX: number, clientY: number) {
-        const stage = stageRef.current;
-        if (!stage) return { x: 0, y: 0 };
-        const rect = stage.container().getBoundingClientRect();
-        return {
-            x: rect.width > 0 ? (clientX - rect.left) * (cellW / rect.width) : 0,
-            y: rect.height > 0 ? (clientY - rect.top) * (cellH / rect.height) : 0,
+    const alignDrag = useMemo<DragHandlers>(() => {
+        const h: DragHandlers = {
+            move: (e) => {
+                const drag = alignDragRef.current;
+                if (!drag) return;
+                const p = getNormalizedPoint(e.clientX, e.clientY);
+                if (!p) return;
+                dispatch(
+                    setAfterOffset({
+                        xPct: drag.startOffsetXPct + (p.nx - drag.startXNorm) * 100,
+                        yPct: drag.startOffsetYPct + (p.ny - drag.startYNorm) * 100,
+                    }),
+                );
+            },
+            up: () => {
+                alignDragRef.current = null;
+                detachDrag(h);
+            },
         };
-    }
-
-    function onAlignPointerMove(e: PointerEvent) {
-        const drag = alignDragRef.current;
-        if (!drag) return;
-        const p = getAlignStagePoint(e.clientX, e.clientY);
-        dispatch(
-            setAfterOffset({
-                xPct: drag.startOffsetXPct + ((p.x - drag.startX) / cellW) * 100,
-                yPct: drag.startOffsetYPct + ((p.y - drag.startY) / cellH) * 100,
-            }),
-        );
-    }
-
-    function onAlignPointerUp() {
-        alignDragRef.current = null;
-        window.removeEventListener("pointermove", onAlignPointerMove);
-        window.removeEventListener("pointerup", onAlignPointerUp);
-    }
+        return h;
+    }, [dispatch, getNormalizedPoint]);
 
     function handleAlignMouseDown(e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) {
-        const evt = e.evt;
-        const clientX = "touches" in evt ? (evt.touches[0]?.clientX ?? 0) : (evt as MouseEvent).clientX;
-        const clientY = "touches" in evt ? (evt.touches[0]?.clientY ?? 0) : (evt as MouseEvent).clientY;
-        const p = getAlignStagePoint(clientX, clientY);
+        const { clientX, clientY } = eventPoint(e.evt);
+        const p = getNormalizedPoint(clientX, clientY);
+        if (!p) return;
         alignDragRef.current = {
-            startX: p.x,
-            startY: p.y,
+            startXNorm: p.nx,
+            startYNorm: p.ny,
             startOffsetXPct: afterTransform.offsetXPct,
             startOffsetYPct: afterTransform.offsetYPct,
         };
-        window.addEventListener("pointermove", onAlignPointerMove);
-        window.addEventListener("pointerup", onAlignPointerUp);
+        attachDrag(alignDrag);
     }
 
-    useEffect(() => {
-        return () => {
-            window.removeEventListener("pointermove", onAlignPointerMove);
-            window.removeEventListener("pointerup", onAlignPointerUp);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     // Text label: draggable anywhere on the frame, independent of the slider handle above.
-    // Centered on its own (x, y) via offsetX/offsetY (measured after each text/size change) so
-    // xPct/yPct = 50 truly means "centered" regardless of how long the caption is.
-    const labelDraggingRef = useRef(false);
+    // Centered on its own (x, y) via offsetX/offsetY so xPct/yPct = 50 truly means "centered".
+    // The caption wraps inside a fixed box a fraction of the frame wide rather than running off
+    // the edge, so the horizontal offset is just half that box — only the wrapped height has to
+    // be measured off the node, and it changes with the box width as well as the text itself.
     const labelNodeRef = useRef<Konva.Text | null>(null);
-    const [labelSize, setLabelSize] = useState({ w: 0, h: 0 });
+    const labelWidth = canvasW * LABEL_WIDTH_RATIO;
+    const [labelHeight, setLabelHeight] = useState(0);
     useEffect(() => {
         const node = labelNodeRef.current;
         if (!node) return;
-        setLabelSize({ w: node.width(), h: node.height() });
-    }, [label.text, label.fontSize]);
+        setLabelHeight(node.height());
+    }, [label.text, label.fontSize, labelWidth]);
 
-    function getStagePoint(clientX: number, clientY: number) {
-        const stage = stageRef.current;
-        if (!stage) return { x: 0, y: 0 };
-        const rect = stage.container().getBoundingClientRect();
-        return {
-            x: rect.width > 0 ? (clientX - rect.left) * (canvasW / rect.width) : 0,
-            y: rect.height > 0 ? (clientY - rect.top) * (canvasH / rect.height) : 0,
+    const labelDrag = useMemo<DragHandlers>(() => {
+        const h: DragHandlers = {
+            move: (e) => {
+                if (!labelDraggingRef.current) return;
+                const p = getNormalizedPoint(e.clientX, e.clientY);
+                if (p) dispatch(setLabelPosition({ xPct: p.nx * 100, yPct: p.ny * 100 }));
+            },
+            up: () => {
+                labelDraggingRef.current = false;
+                detachDrag(h);
+            },
         };
-    }
-
-    function seekLabelTo(clientX: number, clientY: number) {
-        const p = getStagePoint(clientX, clientY);
-        dispatch(
-            setLabelPosition({
-                xPct: canvasW > 0 ? (p.x / canvasW) * 100 : 50,
-                yPct: canvasH > 0 ? (p.y / canvasH) * 100 : 50,
-            }),
-        );
-    }
-
-    function onLabelPointerMove(e: PointerEvent) {
-        if (!labelDraggingRef.current) return;
-        seekLabelTo(e.clientX, e.clientY);
-    }
-
-    function onLabelPointerUp() {
-        labelDraggingRef.current = false;
-        window.removeEventListener("pointermove", onLabelPointerMove);
-        window.removeEventListener("pointerup", onLabelPointerUp);
-    }
+        return h;
+    }, [dispatch, getNormalizedPoint]);
 
     function handleLabelMouseDown(e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) {
-        const evt = e.evt;
-        const clientX = "touches" in evt ? (evt.touches[0]?.clientX ?? 0) : (evt as MouseEvent).clientX;
-        const clientY = "touches" in evt ? (evt.touches[0]?.clientY ?? 0) : (evt as MouseEvent).clientY;
+        const { clientX, clientY } = eventPoint(e.evt);
         labelDraggingRef.current = true;
-        seekLabelTo(clientX, clientY);
-        window.addEventListener("pointermove", onLabelPointerMove);
-        window.addEventListener("pointerup", onLabelPointerUp);
+        const p = getNormalizedPoint(clientX, clientY);
+        if (p) dispatch(setLabelPosition({ xPct: p.nx * 100, yPct: p.ny * 100 }));
+        attachDrag(labelDrag);
     }
 
+    // Unmounting mid-drag (navigating away before pointerup) would otherwise leave the window
+    // listeners behind forever.
     useEffect(() => {
         return () => {
-            window.removeEventListener("pointermove", onLabelPointerMove);
-            window.removeEventListener("pointerup", onLabelPointerUp);
+            detachDrag(sliderDrag);
+            detachDrag(alignDrag);
+            detachDrag(labelDrag);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [sliderDrag, alignDrag, labelDrag]);
 
     return (
         <div ref={wrapRef} className="w-full h-full flex items-center justify-center" style={{ touchAction: "none" }}>
@@ -398,8 +407,8 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
                                     width={48}
                                     height={canvasH}
                                     fill="transparent"
-                                    onMouseDown={handleMouseDown}
-                                    onTouchStart={handleMouseDown}
+                                    onMouseDown={handleSliderMouseDown}
+                                    onTouchStart={handleSliderMouseDown}
                                 />
                                 <Line
                                     points={[handleX, 0, handleX, canvasH]}
@@ -489,8 +498,10 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
                                 ref={labelNodeRef}
                                 x={(label.xPct / 100) * canvasW}
                                 y={(label.yPct / 100) * canvasH}
-                                offsetX={labelSize.w / 2}
-                                offsetY={labelSize.h / 2}
+                                width={labelWidth}
+                                align="center"
+                                offsetX={labelWidth / 2}
+                                offsetY={labelHeight / 2}
                                 text={label.text}
                                 fontSize={label.fontSize}
                                 fontStyle="700"

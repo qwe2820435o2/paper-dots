@@ -18,7 +18,7 @@
     },
     "beforeAfter": {
       "label": "Before & After Photo Maker",
-      "navDescription": "Drag a slider to compare two photos"
+      "navDescription": "Compare two photos: slider, GIF, or side by side"
     }
   },
   "breadcrumb": {
@@ -330,7 +330,9 @@
       "shuffle": "Shuffle",
       "colorPickerSaturation": "{label} saturation and brightness",
       "colorPickerHue": "{label} hue",
-      "colorPickerHex": "{label} hex value"
+      "colorPickerHex": "{label} hex value",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
     },
     "toast": {
       "saved": "Saved to your downloads",
@@ -341,7 +343,8 @@
       "iconTooLarge": "Icon must be under 10MB",
       "imageReadFailed": "Could not read that image",
       "emojiLoadFailed": "Could not load that emoji",
-      "imageLoadFailed": "Failed to load image"
+      "imageLoadFailed": "Failed to load image",
+      "alignReset": "Alignment reset for the new photo"
     },
     "dot": {
       "tabs": {
@@ -500,7 +503,8 @@
         "hint": "Drag the photo below to line it up with Before, then fine-tune scale or rotation if needed.",
         "scale": "Scale",
         "rotation": "Rotation",
-        "reset": "Reset"
+        "reset": "Reset",
+        "position": "Position"
       },
       "downloadGif": "Download GIF",
       "encodingGif": "Encoding… {percent}%",
@@ -510,7 +514,9 @@
         "text": "Text",
         "align": "Align",
         "export": "Export"
-      }
+      },
+      "dividerPosition": "Divider position",
+      "labelPosition": "Position"
     }
   },
   "editorMeta": {

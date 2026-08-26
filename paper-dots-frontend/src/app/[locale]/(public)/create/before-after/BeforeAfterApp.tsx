@@ -41,6 +41,10 @@ export default function BeforeAfterApp() {
     const ready = !!beforeUrl && !!afterUrl;
     const stageRef = useRef<Konva.Stage | null>(null);
     const [activePanel, setActivePanel] = useState<Panel>(null);
+    // GIF encoding screenshots the live stage frame by frame, so anything that resizes it or
+    // swaps its render branch mid-run — changing tab (which switches layout / toggles align
+    // mode) or firing a PNG export — would corrupt the output. Freeze the editor until it ends.
+    const [exporting, setExporting] = useState(false);
 
     useLockBodyScroll();
 
@@ -55,6 +59,7 @@ export default function BeforeAfterApp() {
     }, [activePanel, dispatch]);
 
     function togglePanel(panel: Panel) {
+        if (exporting) return;
         setActivePanel((prev) => (prev === panel ? null : panel));
     }
 
@@ -68,8 +73,10 @@ export default function BeforeAfterApp() {
             {activePanel === "align" && <AlignPanel />}
             {activePanel === "export" && (
                 <div className="p-4 flex gap-2">
-                    <ExportButton stageRef={stageRef} />
-                    {layoutType === "slider" && <GifExportButton stageRef={stageRef} />}
+                    <ExportButton stageRef={stageRef} disabled={exporting} />
+                    {layoutType === "slider" && (
+                        <GifExportButton stageRef={stageRef} busy={exporting} onBusyChange={setExporting} />
+                    )}
                 </div>
             )}
         </>
@@ -98,10 +105,13 @@ export default function BeforeAfterApp() {
                                 key={id}
                                 type="button"
                                 onClick={() => togglePanel(id)}
+                                disabled={exporting}
                                 className={`w-14 h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
-                                    isActive
-                                        ? "bg-[#E8F5D2] text-[#C5E89A]"
-                                        : "text-[#9CA3AF] hover:bg-[#F4FAE8] hover:text-[#C5E89A]"
+                                    exporting
+                                        ? "text-[#9CA3AF] opacity-40 cursor-not-allowed"
+                                        : isActive
+                                          ? "bg-[#E8F5D2] text-[#C5E89A]"
+                                          : "text-[#9CA3AF] hover:bg-[#F4FAE8] hover:text-[#C5E89A]"
                                 }`}
                             >
                                 <Icon size={18} strokeWidth={1.6} />
@@ -149,10 +159,14 @@ export default function BeforeAfterApp() {
                         style={{ borderBottom: "1px solid #D2EAAA" }}
                     >
                         <span className="text-[13px] font-medium text-[#1a1a2e]">{activeLabel}</span>
+                        {/* Closing the drawer would unmount the very button driving the export. */}
                         <button
                             type="button"
                             onClick={() => setActivePanel(null)}
-                            className="p-1 -mr-1 text-[#9CA3AF] active:text-[#1a1a2e]"
+                            disabled={exporting}
+                            className={`p-1 -mr-1 text-[#9CA3AF] active:text-[#1a1a2e] ${
+                                exporting ? "opacity-40 cursor-not-allowed" : ""
+                            }`}
                             aria-label={tCommon("close")}
                         >
                             <X size={18} />
@@ -178,10 +192,13 @@ export default function BeforeAfterApp() {
                                 key={id}
                                 type="button"
                                 onClick={() => togglePanel(id)}
+                                disabled={exporting}
                                 className={`flex-1 min-h-[52px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-colors ${
-                                    isActive
-                                        ? "bg-[#E8F5D2] text-[#C5E89A]"
-                                        : "text-[#9CA3AF] active:bg-[#F4FAE8] active:text-[#C5E89A]"
+                                    exporting
+                                        ? "text-[#9CA3AF] opacity-40 cursor-not-allowed"
+                                        : isActive
+                                          ? "bg-[#E8F5D2] text-[#C5E89A]"
+                                          : "text-[#9CA3AF] active:bg-[#F4FAE8] active:text-[#C5E89A]"
                                 }`}
                             >
                                 <Icon size={20} strokeWidth={1.6} />
