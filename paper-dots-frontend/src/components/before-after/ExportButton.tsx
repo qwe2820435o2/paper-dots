@@ -62,19 +62,7 @@ export default function ExportButton({ stageRef, disabled = false }: Props) {
             type="button"
             onClick={handleExport}
             disabled={!ready}
-            className="flex-1 flex items-center justify-center gap-2 text-[14px] font-medium py-2.5 rounded-full transition-all"
-            style={{
-                background: ready ? "#C5E89A" : "rgba(197,232,154,0.3)",
-                color: "#ffffff",
-                cursor: ready ? "pointer" : "not-allowed",
-                opacity: ready ? 1 : 0.5,
-            }}
-            onMouseEnter={(e) => {
-                if (ready) (e.currentTarget as HTMLButtonElement).style.background = "#9ED06C";
-            }}
-            onMouseLeave={(e) => {
-                if (ready) (e.currentTarget as HTMLButtonElement).style.background = "#C5E89A";
-            }}
+            className="flex-1 min-w-0 flex items-center justify-center gap-2 whitespace-nowrap text-[14px] font-medium py-2.5 px-4 rounded-full shadow-[0_2px_8px_rgba(158,208,108,0.35)] transition-colors bg-[#9ED06C] text-white hover:bg-[#8AC257] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
         >
             <Download className="w-4 h-4" strokeWidth={2} />
             {t("common.downloadPng")}

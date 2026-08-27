@@ -172,14 +172,7 @@ export default function GifExportButton({ stageRef, busy, onBusyChange }: Props)
             type="button"
             onClick={handleExport}
             disabled={!ready || busy}
-            className="flex-1 flex items-center justify-center gap-2 text-[14px] font-medium py-2.5 rounded-full transition-all border"
-            style={{
-                background: "#ffffff",
-                borderColor: "#D2EAAA",
-                color: ready && !busy ? "#1a1a2e" : "#9CA3AF",
-                cursor: ready && !busy ? "pointer" : "not-allowed",
-                opacity: ready ? 1 : 0.5,
-            }}
+            className="flex-1 min-w-0 flex items-center justify-center gap-2 whitespace-nowrap text-[14px] font-medium py-2.5 px-4 rounded-full border transition-colors border-[#9ED06C] text-[#4C7A2E] hover:bg-[#F4FAE8] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
         >
             <Film className="w-4 h-4" strokeWidth={2} />
             {label}

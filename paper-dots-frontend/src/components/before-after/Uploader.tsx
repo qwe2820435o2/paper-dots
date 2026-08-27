@@ -53,7 +53,7 @@ function UploadSlot({ slot, url, label }: SlotProps) {
         return (
             <div className="relative w-full aspect-square rounded-2xl overflow-hidden border-[1.5px] border-[#D2EAAA] bg-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt={label} className="w-full h-full object-cover" />
+                <img src={url} alt={label} className="w-full h-full object-contain" />
                 <div className="absolute top-2 left-2 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/90 text-[#1a1a2e]">
                     {label}
                 </div>
