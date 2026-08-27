@@ -2,6 +2,7 @@ import type { GuideContent } from "@/content/guides";
 import { GUIDE_WRAP } from "./guideLayout";
 import GuideCtaButton from "./GuideCtaButton";
 import UploadPhotoButton from "@/components/common/UploadPhotoButton";
+import GuideBeforeAfterUploaderCta from "./GuideBeforeAfterUploaderCta";
 
 interface GuideFinalCtaProps {
     finalCta: NonNullable<GuideContent["finalCta"]>;
@@ -10,9 +11,12 @@ interface GuideFinalCtaProps {
      *  with the photo loaded — used only by the homepage, whose copy promises "Upload a
      *  photo" but a plain link to `appPath` can't deliver that. */
     uploadToDot?: boolean;
+    /** When true, renders the before-after two-slot dropzone instead of a link — same
+     *  treatment as the hero CTA on that guide page (see GuideHero's `uploadTarget`). */
+    beforeAfterUpload?: boolean;
 }
 
-export default function GuideFinalCta({ finalCta, appPath, uploadToDot }: GuideFinalCtaProps) {
+export default function GuideFinalCta({ finalCta, appPath, uploadToDot, beforeAfterUpload }: GuideFinalCtaProps) {
     const ctaHref = finalCta.cta.href ?? appPath;
 
     return (
@@ -22,7 +26,11 @@ export default function GuideFinalCta({ finalCta, appPath, uploadToDot }: GuideF
                     <h2 className="mb-3.5 text-[clamp(34px,3.2vw,46px)]">{finalCta.heading}</h2>
                     <p className="mx-auto max-w-[520px] text-lg text-[#2c3a20]">{finalCta.body}</p>
                     <div className="mt-8">
-                        {uploadToDot ? (
+                        {beforeAfterUpload ? (
+                            <div className="mx-auto flex max-w-[520px] justify-center">
+                                <GuideBeforeAfterUploaderCta ctaLabel={finalCta.cta.text} className="guide-btn-invert" />
+                            </div>
+                        ) : uploadToDot ? (
                             <UploadPhotoButton className="guide-btn guide-btn-invert" trackId="final-cta" target="dot">
                                 {finalCta.cta.text}
                             </UploadPhotoButton>

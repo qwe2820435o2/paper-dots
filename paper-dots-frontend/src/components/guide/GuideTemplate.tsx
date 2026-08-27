@@ -27,9 +27,10 @@ interface GuideTemplateProps {
  *  through this same component with no per-tool props, so hero/feature/tool-links visual
  *  fallbacks (GuideHero, GuideFeatureBlock, guideDefaultToolLinks) apply identically
  *  everywhere. */
-const UPLOAD_TARGET_BY_SLUG: Partial<Record<GuideSlug, "dot" | "moment-card">> = {
+const UPLOAD_TARGET_BY_SLUG: Partial<Record<GuideSlug, "dot" | "moment-card" | "before-after">> = {
     dot: "dot",
     "moment-card": "moment-card",
+    "before-after": "before-after",
 };
 
 export default function GuideTemplate({ content, slug, appPath }: GuideTemplateProps) {
@@ -44,7 +45,13 @@ export default function GuideTemplate({ content, slug, appPath }: GuideTemplateP
             {content.howTo && <GuideHowTo howTo={content.howTo} />}
             {content.why && <GuideWhy why={content.why} />}
             {content.faq && <GuideFaq faq={content.faq} />}
-            {content.finalCta && <GuideFinalCta finalCta={content.finalCta} appPath={appPath} />}
+            {content.finalCta && (
+                <GuideFinalCta
+                    finalCta={content.finalCta}
+                    appPath={appPath}
+                    beforeAfterUpload={UPLOAD_TARGET_BY_SLUG[slug] === "before-after"}
+                />
+            )}
         </div>
     );
 }

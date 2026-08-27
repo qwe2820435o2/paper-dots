@@ -5,6 +5,7 @@ import GuideMedia from "./GuideMedia";
 import GuideCtaButton from "./GuideCtaButton";
 import GuideHeroStudio from "./GuideHeroStudio";
 import UploadPhotoButton from "@/components/common/UploadPhotoButton";
+import GuideBeforeAfterUploaderCta from "./GuideBeforeAfterUploaderCta";
 
 interface GuideHeroProps {
     hero: GuideContent["hero"];
@@ -12,8 +13,10 @@ interface GuideHeroProps {
     appPath: string;
     /** When set, the CTA becomes a real photo-upload control that lands in the given editor
      *  with the photo loaded — used by guide pages whose CTA copy ("Make a Photo Quote", "Add
-     *  Photo Overlays") promises an upload that a plain link can't deliver. */
-    uploadTarget?: "dot" | "moment-card";
+     *  Photo Overlays") promises an upload that a plain link can't deliver. "before-after"
+     *  renders the two-slot dropzone directly instead of a single-file button, since that
+     *  editor needs two photos before it's "ready". */
+    uploadTarget?: "dot" | "moment-card" | "before-after";
 }
 
 /** Always two-column: a real sheet image takes priority, otherwise every guide page falls
@@ -37,7 +40,9 @@ export default function GuideHero({ hero, appPath, uploadTarget }: GuideHeroProp
                         <p className="mt-5 text-lg text-guide-ink-2">{hero.subheadline}</p>
 
                         <div className="mt-8 flex flex-wrap items-center gap-4">
-                            {uploadTarget ? (
+                            {uploadTarget === "before-after" ? (
+                                <GuideBeforeAfterUploaderCta ctaLabel={hero.cta.text} />
+                            ) : uploadTarget ? (
                                 <UploadPhotoButton className="guide-btn" trackId="hero" target={uploadTarget}>
                                     {hero.cta.text}
                                 </UploadPhotoButton>
