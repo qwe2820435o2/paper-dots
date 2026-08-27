@@ -15,6 +15,10 @@
     "geometricPatterns": {
       "label": "幾何学パターンジェネレーター",
       "navDescription": "シームレスな幾何学背景パターンを生成"
+    },
+    "beforeAfter": {
+      "label": "ビフォーアフター写真メーカー",
+      "navDescription": "2枚の写真をスライダー・GIF・並べて比較"
     }
   },
   "breadcrumb": {
@@ -326,7 +330,9 @@
       "shuffle": "Shuffle",
       "colorPickerSaturation": "{label} saturation and brightness",
       "colorPickerHue": "{label} hue",
-      "colorPickerHex": "{label} hex value"
+      "colorPickerHex": "{label} hex value",
+      "horizontal": "水平",
+      "vertical": "垂直"
     },
     "toast": {
       "saved": "Saved to your downloads",
@@ -337,7 +343,8 @@
       "iconTooLarge": "Icon must be under 10MB",
       "imageReadFailed": "Could not read that image",
       "emojiLoadFailed": "Could not load that emoji",
-      "imageLoadFailed": "Failed to load image"
+      "imageLoadFailed": "Failed to load image",
+      "alignReset": "新しい写真に合わせて位置合わせをリセットしました"
     },
     "dot": {
       "tabs": {
@@ -479,12 +486,47 @@
         "extracting": "Extracting…",
         "dragHint": "Drag the bottom photo to reposition it. The background color updates automatically when you release."
       }
+    },
+    "beforeAfter": {
+      "before": "ビフォー",
+      "after": "アフター",
+      "layouts": {
+        "slider": "スライダー",
+        "side-by-side": "並べて表示",
+        "split": "分割",
+        "stack": "縦に並べる"
+      },
+      "removeText": "削除",
+      "textLabel": "テキスト",
+      "textPlaceholder": "キャプションを入力",
+      "align": {
+        "hint": "下の写真をドラッグしてビフォーに合わせ、必要ならサイズや角度も微調整してください。",
+        "scale": "サイズ",
+        "rotation": "回転",
+        "reset": "リセット",
+        "position": "位置"
+      },
+      "downloadGif": "GIFをダウンロード",
+      "encodingGif": "生成中… {percent}%",
+      "tabs": {
+        "photos": "写真",
+        "layout": "レイアウト",
+        "text": "テキスト",
+        "align": "位置合わせ",
+        "export": "書き出し"
+      },
+      "dividerPosition": "境界線の位置",
+      "labelPosition": "位置"
     }
   },
   "editorMeta": {
     "dot": {
       "title": "Dot · Dottypic",
       "description": "Upload a photo, pick a paper, scatter dots."
+    },
+    "beforeAfter": {
+      "title": "ビフォーアフター写真メーカー · Dottypic",
+      "description": "ビフォー写真とアフター写真をアップロードし、スライダーで比較してPNGで書き出します。"
     },
     "polkaDot": {
       "title": "Polka Dot Generator · Dottypic",

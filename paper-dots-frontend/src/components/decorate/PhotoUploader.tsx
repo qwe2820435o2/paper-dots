@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Upload } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
 import { applyDecoratePhoto } from "@/lib/decoratePhotoUpload";
+import UploadDropzoneDots from "./UploadDropzoneDots";
 
 interface Props {
     /** Accepted for parity with the moment-card uploader, which swaps its label once a photo
@@ -24,7 +25,7 @@ export default function PhotoUploader({
         (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            applyDecoratePhoto(dispatch, file);
+            dispatch(applyDecoratePhoto(file));
         },
         [dispatch],
     );
@@ -59,31 +60,7 @@ export default function PhotoUploader({
                     onChange={(e) => handleFiles(e.target.files)}
                 />
 
-                {/* Decorative dots */}
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[14%] left-[12%] w-2.5 h-2.5 rounded-full bg-[#C5E89A] opacity-60"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[20%] right-[16%] w-1.5 h-1.5 rounded-full bg-[#F7F6D3]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute bottom-[22%] left-[18%] w-2 h-2 rounded-full border-[1.5px] border-[#D2EAAA]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute bottom-[16%] right-[14%] w-3 h-3 rounded-full bg-[#E8F5D2]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[45%] left-[8%] w-1.5 h-1.5 rounded-full bg-[#FDE7EE]"
-                />
-                <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-[60%] right-[8%] w-2 h-2 rounded-full bg-[#F7F6D3] opacity-80"
-                />
+                <UploadDropzoneDots />
 
                 <div
                     className={`relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-200 ${

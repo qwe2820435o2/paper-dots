@@ -13,4 +13,5 @@ export const CREATE_TOOLS: CreateTool[] = [
     { key: "dot", href: "/photo-overlay-editor" },
     { key: "polkaDot", href: "/polka-dot" },
     { key: "geometricPatterns", href: "/geometric-pattern-generator" },
+    { key: "beforeAfter", href: "/before-after-photo-maker" },
 ];

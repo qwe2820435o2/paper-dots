@@ -5,11 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import type Konva from "konva";
 import { ImagePlus, Type, Download, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import MomentCardUploader from "@/components/moment-card/MomentCardUploader";
 import TextControls from "@/components/moment-card/TextControls";
 import MomentCardExportButton from "@/components/moment-card/MomentCardExportButton";
+import ResetAllButton from "@/components/common/ResetAllButton";
+import { resetMomentCardEditor } from "@/lib/momentCardPhotoUpload";
 
 const MomentCardCanvas = dynamic(
     () => import("@/components/moment-card/MomentCardCanvas"),
@@ -37,6 +39,7 @@ const TOOLS: { id: Panel; icon: typeof ImagePlus }[] = [
 
 export default function MomentCardApp() {
     const t = useTranslations("editor");
+    const dispatch = useAppDispatch();
     const photoUrl = useAppSelector((s) => s.momentCard.photoUrl);
     const stageRef = useRef<Konva.Stage | null>(null);
     const [activePanel, setActivePanel] = useState<Panel>(null);
@@ -56,8 +59,9 @@ export default function MomentCardApp() {
     const panelContent = (
         <>
             {activePanel === "upload" && (
-                <div className="p-4">
+                <div className="p-4 flex flex-col gap-3">
                     <MomentCardUploader hasPhoto={!!photoUrl} />
+                    <ResetAllButton onReset={() => dispatch(resetMomentCardEditor())} />
                 </div>
             )}
             {activePanel === "text" && <TextControls />}

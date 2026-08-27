@@ -15,6 +15,10 @@
     "geometricPatterns": {
       "label": "Geometric Pattern Generator",
       "navDescription": "Generate seamless geometric background patterns"
+    },
+    "beforeAfter": {
+      "label": "Before & After Photo Maker",
+      "navDescription": "Compare two photos: slider, GIF, or side by side"
     }
   },
   "breadcrumb": {
@@ -326,7 +330,9 @@
       "shuffle": "Shuffle",
       "colorPickerSaturation": "{label} saturation and brightness",
       "colorPickerHue": "{label} hue",
-      "colorPickerHex": "{label} hex value"
+      "colorPickerHex": "{label} hex value",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
     },
     "toast": {
       "saved": "Saved to your downloads",
@@ -337,7 +343,8 @@
       "iconTooLarge": "Icon must be under 10MB",
       "imageReadFailed": "Could not read that image",
       "emojiLoadFailed": "Could not load that emoji",
-      "imageLoadFailed": "Failed to load image"
+      "imageLoadFailed": "Failed to load image",
+      "alignReset": "Alignment reset for the new photo"
     },
     "dot": {
       "tabs": {
@@ -479,12 +486,47 @@
         "extracting": "Extracting…",
         "dragHint": "Drag the bottom photo to reposition it. The background color updates automatically when you release."
       }
+    },
+    "beforeAfter": {
+      "before": "Before",
+      "after": "After",
+      "layouts": {
+        "slider": "Slider",
+        "side-by-side": "Side by Side",
+        "split": "Split",
+        "stack": "Stack"
+      },
+      "removeText": "Remove",
+      "textLabel": "Text",
+      "textPlaceholder": "Add a caption",
+      "align": {
+        "hint": "Drag the photo below to line it up with Before, then fine-tune scale or rotation if needed.",
+        "scale": "Scale",
+        "rotation": "Rotation",
+        "reset": "Reset",
+        "position": "Position"
+      },
+      "downloadGif": "Download GIF",
+      "encodingGif": "Encoding… {percent}%",
+      "tabs": {
+        "photos": "Photos",
+        "layout": "Layout",
+        "text": "Text",
+        "align": "Align",
+        "export": "Export"
+      },
+      "dividerPosition": "Divider position",
+      "labelPosition": "Position"
     }
   },
   "editorMeta": {
     "dot": {
       "title": "Dot · Dottypic",
       "description": "Upload a photo, pick a paper, scatter dots."
+    },
+    "beforeAfter": {
+      "title": "Before & After Photo Maker · Dottypic",
+      "description": "Upload a before and after photo, drag the slider to compare, and export as PNG."
     },
     "polkaDot": {
       "title": "Polka Dot Generator · Dottypic",

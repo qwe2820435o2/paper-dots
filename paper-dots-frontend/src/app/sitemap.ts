@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { GUIDE_REGISTRY } from "@/content/guides/registry";
-import { DEFAULT_LOCALE, LOCALES, LOCALE_META } from "@/i18n/locales";
+import { LOCALES } from "@/i18n/locales";
 import { localizedPath } from "@/lib/i18nSeo";
 
 const DISABLE_INDEXING = process.env.DISABLE_INDEXING === "true";
@@ -29,21 +29,18 @@ const ROUTES: Array<{
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  // One entry per locale, each carrying the full alternates set so a crawler that reaches any
-  // one of them learns about the other two. `languages` keys are BCP 47 tags (`ja`), which is
-  // why they come from LOCALE_META rather than the routing code.
-  return ROUTES.flatMap(({ path, changeFrequency, priority }) => {
-    const languages = Object.fromEntries([
-      ...LOCALES.map((code) => [LOCALE_META[code].htmlLang, `${SITE_URL}${localizedPath(path, code)}`]),
-      ["x-default", `${SITE_URL}${localizedPath(path, DEFAULT_LOCALE)}`],
-    ]);
-
-    return LOCALES.map((code) => ({
+  // One entry per locale, each listed as a plain URL. hreflang is deliberately *not* repeated
+  // here: every one of these paths already emits the full alternates set in its own <head> via
+  // buildAlternates (src/lib/i18nSeo.ts), and Google only needs one of the two. Declaring them
+  // here as well makes Next emit <xhtml:link> elements, and an XHTML namespace inside the
+  // document is enough for Chrome to drop its built-in XML tree viewer and render the sitemap
+  // as a wall of unstyled text.
+  return ROUTES.flatMap(({ path, changeFrequency, priority }) =>
+    LOCALES.map((code) => ({
       url: `${SITE_URL}${localizedPath(path, code)}`,
       lastModified,
       changeFrequency,
       priority,
-      alternates: { languages },
-    }));
-  });
+    }))
+  );
 }

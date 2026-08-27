@@ -14,6 +14,8 @@ import {
 import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setInitialPanel, type DecoratePanel } from "@/store/slices/decorateSlice";
+import { resetDecorateEditor } from "@/lib/decoratePhotoUpload";
+import ResetAllButton from "@/components/common/ResetAllButton";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import PhotoUploader from "@/components/decorate/PhotoUploader";
 import LayoutPicker from "@/components/decorate/LayoutPicker";
@@ -78,8 +80,9 @@ export default function DecorateApp() {
   const panelContent = (
     <>
       {activePanel === "upload" && (
-        <div className="p-4">
+        <div className="p-4 flex flex-col gap-3">
           <PhotoUploader variant="canvas" hasPhoto={!!photoUrl} />
+          <ResetAllButton onReset={() => dispatch(resetDecorateEditor())} />
         </div>
       )}
       {activePanel === "layout" && <LayoutPicker />}
