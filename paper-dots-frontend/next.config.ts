@@ -35,9 +35,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: WP_MEDIA_HOST,
-        // Wide enough to cover a theme- or plugin-served image, narrow enough that the
-        // optimizer still cannot be pointed at arbitrary paths on the host.
-        pathname: "/wp-content/**",
+        // Any path on the host, not just /wp-content/. Narrowing it buys nothing here — the
+        // host is ours either way — and costs a great deal: an image outside the expected
+        // directory makes next/image throw, which takes down the whole post page rather than
+        // just the picture. WordPress installs move their uploads around more often than that
+        // trade is worth.
+        pathname: "/**",
       },
     ],
   },

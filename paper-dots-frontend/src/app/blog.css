@@ -110,6 +110,10 @@
     height: auto;
 }
 
+.blog-scope .blog-content audio {
+    width: 100%;
+}
+
 .blog-scope .blog-content figure {
     margin: 0;
 }
@@ -135,6 +139,82 @@
     width: 100%;
     border: 0;
     border-radius: var(--radius-guide-sm);
+}
+
+/* ---------- Columns and groups ---------- */
+
+/* The editor's column layout, which the original spec calls out by name as something that has
+ * to survive the trip. Without these rules the columns collapse into a stack and the post looks
+ * nothing like what was laid out in wp-admin.
+ *
+ * Mirrors WordPress's own breakpoint: columns stack below 782px and sit side by side above it.
+ * `flex-grow` rather than a fixed width, because the editor writes an inline `flex-basis` on any
+ * column whose width was set by hand, and that has to win. */
+.blog-scope .blog-content .wp-block-columns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: normal;
+    gap: 24px;
+}
+
+@media (min-width: 782px) {
+    .blog-scope .blog-content .wp-block-columns:not(.is-not-stacked-on-mobile) {
+        flex-wrap: nowrap;
+    }
+}
+
+@media (max-width: 781px) {
+    .blog-scope .blog-content .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+        flex-basis: 100%;
+    }
+}
+
+.blog-scope .blog-content .wp-block-column {
+    flex-grow: 1;
+    /* Without this a long word or wide image in one column can push the row past its container. */
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+/* The `> * + *` rhythm at the top of .blog-content only reaches direct children, so anything the
+ * editor nested inside a column or a group would otherwise come out with no spacing at all. */
+.blog-scope .blog-content .wp-block-column > * + *,
+.blog-scope .blog-content .wp-block-group > * + * {
+    margin-top: 1.35em;
+}
+
+.blog-scope .blog-content .wp-block-column > *:first-child,
+.blog-scope .blog-content .wp-block-group > *:first-child {
+    margin-top: 0;
+}
+
+.blog-scope .blog-content .wp-block-group-is-layout-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+}
+
+/* ---------- Gallery ---------- */
+
+/* Modern galleries nest a <figure class="wp-block-image"> per photo. Left alone they would stack
+ * full-width, one screen-height image after another. */
+.blog-scope .blog-content .wp-block-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.blog-scope .blog-content .wp-block-gallery > figure {
+    flex-grow: 1;
+    /* Two-up by default; a single trailing image still stretches to fill the row. */
+    flex-basis: calc(50% - 6px);
+    min-width: 0;
+    margin: 0;
+}
+
+.blog-scope .blog-content .wp-block-gallery > figure img {
+    width: 100%;
 }
 
 /* ---------- Quote ---------- */
@@ -209,6 +289,12 @@
     background: var(--color-guide-lime-3);
     font-weight: 700;
     color: var(--color-guide-ink);
+}
+
+/* The editor's "fixed width table cells" toggle. Honouring it is the difference between the
+ * table looking like it did in wp-admin and the browser re-sizing every column by content. */
+.blog-scope .blog-content table.has-fixed-layout {
+    table-layout: fixed;
 }
 
 /* ---------- Code ---------- */

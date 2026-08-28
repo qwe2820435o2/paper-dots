@@ -148,12 +148,33 @@ export interface FeaturedImage {
     height: number;
 }
 
+/** The one host `next/image` is configured to load from, derived from the API URL exactly as
+ *  next.config.ts derives its `remotePatterns` entry. */
+const WP_HOST = new URL(WP_API).hostname;
+
 /** WordPress replaces the embedded media entry with an error object when the attachment is
  *  missing or unreadable, so the presence of `source_url` — not of the array element — is what
  *  actually tells you there is an image. */
 export function featuredImage(post: WPPost): FeaturedImage | null {
     const media = post._embedded?.["wp:featuredmedia"]?.[0];
     if (!media?.source_url) return null;
+
+    // An unconfigured host makes next/image throw, which takes down the whole post page rather
+    // than just the picture. A media library served from somewhere else — a CDN offload plugin
+    // is the usual way that happens — should cost a post its thumbnail, never its page.
+    let host: string;
+    try {
+        host = new URL(media.source_url).hostname;
+    } catch {
+        return null;
+    }
+    if (host !== WP_HOST) {
+        console.warn(
+            `[wordpress] featured image skipped: "${host}" is not in next.config.ts ` +
+                `images.remotePatterns. Add it there to render images from this host.`
+        );
+        return null;
+    }
 
     return {
         url: media.source_url,

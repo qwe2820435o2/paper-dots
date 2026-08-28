@@ -166,6 +166,16 @@ WP 的 `date` 字段是站点本地时间且不带时区偏移，服务端预渲
 
 注意这跟 `src/components/guide/RichText.tsx` 不是一回事：那份 HTML 来自表格、过了同步脚本校验、还在 `git diff` 里被人看过；WP 正文这三条都不满足。这个信任假设已写进代码注释。
 
+### 5.11 上线前真实内容验证发现的两个问题
+
+用真实文章跑 CSS 覆盖比对时发现的，都已修复：
+
+**分栏没有样式。** `wp-block-columns` / `wp-block-column` 完全没被覆盖，分栏会塌成上下堆叠。原始方案文档点名要求「分栏」必须保留，所以这是对既定需求的实打实的缺口。已按 WordPress 自己的 782px 断点补齐，并用 `flex-grow` 而非固定宽度 —— 编辑器会给手工调过宽度的栏写内联 `flex-basis`，那个必须优先。顺带补了 `wp-block-gallery`、`wp-block-group` 的 flex 布局、表格的 `has-fixed-layout`、以及嵌套容器内部的段落间距。
+
+**特色图主机不在白名单会让整页崩溃。** `next/image` 遇到未配置的 host 会抛错，结果不是图片裂开而是**整篇文章页渲染失败**。两处修复：`next.config.ts` 的 `remotePatterns` 路径从 `/wp-content/**` 放宽到 `/**`（主机本来就是我们自己的，收窄换不来安全，却换来一个整页崩溃的失败模式），以及 `featuredImage()` 增加同主机检查，真遇到异源图片时降级成「没有缩略图」并打日志提示要往 `remotePatterns` 里加什么。
+
+这个问题在自家 CMS 上目前不会触发（零媒体文件），但只要日后装个 CDN 卸载插件就会全站爆掉。
+
 ## 6. 验证结果
 
 所有验证都基于实际运行的构建产物，不是推断。因为自家 CMS 只有一篇空文章，凡是需要真实内容的项目都改用公开的真实 WordPress 站点验证。
@@ -209,7 +219,9 @@ dev 模式下报 `not-found.tsx doesn't have a root layout` 并返回 500。生�
 
 ### 7.4 未验证项
 
-自家 CMS 里还没有带图片、引用块、表格的文章。Gutenberg 样式是用 wptavern 和 wordpress.org 的真实文章验证的，覆盖到了 `wp-block-button` / `heading` / `paragraph` / `quote`，但**表格、代码块、对齐类、alignwide/alignfull 只有 CSS，没有真实内容验证过**。
+Gutenberg 样式已用 wptavern 和 wordpress.org 的真实文章覆盖验证过 11 类区块（含表格、分栏、对齐类、alignwide/alignfull、代码块、按钮、引用、列表、分隔线、嵌入、画廊）。这轮验证发现并修掉了两个真问题，见 5.11。
+
+**仍未在自家环境验证的**：从 wp-admin 编辑器实际操作产出的内容（此前的验证读的都是别人站点已发布的产物），以及特色图 —— 自家 CMS 至今零媒体文件，所以**上传路径从未被实测过**。`docs/blog-launch-checklist.md` 任务 2 就是干这个的。
 
 ### 7.5 内链改写的前提
 
