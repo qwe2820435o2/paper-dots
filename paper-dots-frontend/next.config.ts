@@ -20,9 +20,26 @@ const LEGACY_PATHS: Array<{ from: string; to: string }> = [
   { from: "/faq", to: "/" },
 ];
 
+/** Media library host for the headless WordPress blog, derived from the same env var
+ *  `src/lib/wordpress.ts` reads so the two can never drift apart. WordPress returns absolute
+ *  URLs on its own origin for uploaded images, and `next/image` refuses any host not listed
+ *  here. */
+const WP_MEDIA_HOST = new URL(
+  process.env.WORDPRESS_API_URL ?? "https://wordpress-dot.up.railway.app/wp-json/wp/v2"
+).hostname;
+
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: WP_MEDIA_HOST,
+        // Wide enough to cover a theme- or plugin-served image, narrow enough that the
+        // optimizer still cannot be pointed at arbitrary paths on the host.
+        pathname: "/wp-content/**",
+      },
+    ],
   },
   compress: true,
   devIndicators: false,

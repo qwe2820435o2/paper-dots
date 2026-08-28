@@ -37,7 +37,8 @@
     "navTools": "ツール",
     "cta": "写真をアップロード",
     "changeLanguage": "言語を変更",
-    "toggleMenu": "メニューを開閉"
+    "toggleMenu": "メニューを開閉",
+    "navBlog": "ブログ"
   },
   "footer": {
     "tagline": "誰でも使える無料のおしゃれフォトエディター",
@@ -48,6 +49,25 @@
     "privacy": "プライバシーポリシー",
     "terms": "利用規約",
     "copyright": "© {year} Dottypic. 無断転載を禁じます。"
+  },
+  "blog": {
+    "meta": {
+      "title": "ブログ | Dottypic",
+      "titlePaged": "ブログ — {page}ページ目 | Dottypic",
+      "description": "Dottypic の無料エディターで写真をもっと素敵に仕上げるためのコツ、使い方、アイデアをお届けします。",
+      "ogTitle": "Dottypic ブログ"
+    },
+    "heading": "ブログ",
+    "lead": "写真をもっと楽しむためのコツ、使い方、アイデア。",
+    "readMore": "続きを読む",
+    "backToList": "記事一覧",
+    "empty": "記事はまだありません。またのぞいてみてください。",
+    "unavailable": "現在、記事を読み込めません。しばらくしてからもう一度お試しください。",
+    "pagination": {
+      "previous": "前へ",
+      "next": "次へ",
+      "status": "{total}ページ中 {page}ページ目"
+    }
   },
   "home": {
     "meta": {
