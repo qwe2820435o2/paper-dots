@@ -37,7 +37,8 @@
     "navTools": "Alat",
     "cta": "Unggah foto",
     "changeLanguage": "Ganti bahasa",
-    "toggleMenu": "Buka atau tutup menu"
+    "toggleMenu": "Buka atau tutup menu",
+    "navBlog": "Blog"
   },
   "footer": {
     "tagline": "Editor Foto Estetik Gratis untuk Semua Orang",
@@ -48,6 +49,25 @@
     "privacy": "Kebijakan Privasi",
     "terms": "Ketentuan Layanan",
     "copyright": "© {year} Dottypic. Semua hak dilindungi."
+  },
+  "blog": {
+    "meta": {
+      "title": "Blog | Dottypic",
+      "titlePaged": "Blog — Halaman {page} | Dottypic",
+      "description": "Tips, tutorial, dan ide untuk mengubah foto Anda menjadi sesuatu yang layak diunggah, dari pembuat editor gratis Dottypic.",
+      "ogTitle": "Blog Dottypic"
+    },
+    "heading": "Blog",
+    "lead": "Tips, tutorial, dan ide untuk memaksimalkan foto Anda.",
+    "readMore": "Baca selengkapnya",
+    "backToList": "Semua artikel",
+    "empty": "Belum ada artikel. Silakan cek lagi nanti.",
+    "unavailable": "Artikel tidak dapat dimuat saat ini. Silakan coba lagi sebentar lagi.",
+    "pagination": {
+      "previous": "Sebelumnya",
+      "next": "Berikutnya",
+      "status": "Halaman {page} dari {total}"
+    }
   },
   "home": {
     "meta": {

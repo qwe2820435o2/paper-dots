@@ -35,6 +35,11 @@ const navLinks: NavLink[] = [
         href: "/#tools",
         children: CREATE_TOOLS,
     },
+    {
+        id: "blog",
+        labelKey: "navBlog",
+        href: "/blog",
+    },
 ];
 
 export default function Header() {

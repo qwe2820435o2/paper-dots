@@ -20,9 +20,29 @@ const LEGACY_PATHS: Array<{ from: string; to: string }> = [
   { from: "/faq", to: "/" },
 ];
 
+/** Media library host for the headless WordPress blog, derived from the same env var
+ *  `src/lib/wordpress.ts` reads so the two can never drift apart. WordPress returns absolute
+ *  URLs on its own origin for uploaded images, and `next/image` refuses any host not listed
+ *  here. */
+const WP_MEDIA_HOST = new URL(
+  process.env.WORDPRESS_API_URL ?? "https://wordpress-dot.up.railway.app/wp-json/wp/v2"
+).hostname;
+
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: WP_MEDIA_HOST,
+        // Any path on the host, not just /wp-content/. Narrowing it buys nothing here — the
+        // host is ours either way — and costs a great deal: an image outside the expected
+        // directory makes next/image throw, which takes down the whole post page rather than
+        // just the picture. WordPress installs move their uploads around more often than that
+        // trade is worth.
+        pathname: "/**",
+      },
+    ],
   },
   compress: true,
   devIndicators: false,

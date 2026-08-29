@@ -37,7 +37,8 @@
     "navTools": "Tools",
     "cta": "Upload a photo",
     "changeLanguage": "Change language",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "navBlog": "Blog"
   },
   "footer": {
     "tagline": "Free Aesthetic Photo Editor for Everyone",
@@ -48,6 +49,25 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "copyright": "© {year} Dottypic. All rights reserved."
+  },
+  "blog": {
+    "meta": {
+      "title": "Blog | Dottypic",
+      "titlePaged": "Blog — Page {page} | Dottypic",
+      "description": "Tips, tutorials and ideas for turning your photos into something worth posting, from the makers of Dottypic's free editors.",
+      "ogTitle": "The Dottypic Blog"
+    },
+    "heading": "Blog",
+    "lead": "Tips, tutorials and ideas for making more of your photos.",
+    "readMore": "Read more",
+    "backToList": "All posts",
+    "empty": "No posts yet. Check back soon.",
+    "unavailable": "Posts can't be loaded right now. Please try again in a moment.",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "status": "Page {page} of {total}"
+    }
   },
   "home": {
     "meta": {
