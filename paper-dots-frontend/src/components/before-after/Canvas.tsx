@@ -7,10 +7,11 @@ import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
     setSliderPosition,
-    setLabelPosition,
-    setAfterOffset,
     type BeforeAfterLayout,
-    type AfterTransformState,
+    type ImageTransformState,
+    type TextLabelState,
+    type LabelStyleState,
+    type LabelPosition,
 } from "@/store/slices/beforeAfterSlice";
 import { useHTMLImage } from "@/components/decorate/useHTMLImage";
 
@@ -20,13 +21,11 @@ import { useHTMLImage } from "@/components/decorate/useHTMLImage";
  *  its container directly — no separate Konva-level scaleX/scaleY step. */
 const CELL_MAX = 1080;
 
-/** Gap between panels in the "side-by-side" and "stack" layouts, in canvas px. */
-const PANEL_GAP = 16;
-
-/** How much of the frame's width the caption is allowed to occupy before it wraps. The leftover
- *  margin keeps a centered caption clear of the edges; a long one becomes several lines instead
- *  of running off the canvas. */
-const LABEL_WIDTH_RATIO = 0.9;
+/** Flat canvas-px padding kept around labels and the brand logo. The frame is already sized to
+ *  its real target resolution (up to `CELL_MAX`), so a flat value reads the same as the fixed
+ *  px offsets the rest of this file already uses for the slider handle. */
+const LABEL_PADDING = 10;
+const LOGO_PADDING = 16;
 
 interface ImageLayout {
     x: number;
@@ -65,16 +64,16 @@ function fitAspect(aspect: number, maxW: number, maxH: number): { w: number; h: 
     return { w: maxW, h: maxW / aspect };
 }
 
-/** Places the "after" image in its `cellW`×`cellH` cell at `(panelX, panelY)`, applying the
- *  manual alignment nudge on top of the cover-fit crop — scale/rotate pivot around the cell's
- *  own center so the nudge feels like moving/resizing the photo in place, not from a corner. */
-function afterImageTransformProps(
+/** Places an image in its `cellW`×`cellH` cell at `(panelX, panelY)`, applying the manual crop
+ *  on top of the cover-fit crop — scale/rotate pivot around the cell's own center so the crop
+ *  feels like moving/resizing the photo in place, not from a corner. */
+function imageTransformProps(
     crop: ImageLayout["crop"],
     panelX: number,
     panelY: number,
     cellW: number,
     cellH: number,
-    transform: AfterTransformState,
+    transform: ImageTransformState,
 ) {
     return {
         x: panelX + cellW / 2 + (transform.offsetXPct / 100) * cellW,
@@ -119,23 +118,76 @@ function eventPoint(evt: MouseEvent | TouchEvent): { clientX: number; clientY: n
     return { clientX: evt.clientX, clientY: evt.clientY };
 }
 
-/** A small always-on label so a static (non-slider) layout is still readable without a
- *  divider to tell the panels apart. Not the user-editable text-label feature — just a
- *  fixed caption baked into every export. */
-function PanelBadge({ x, y, text }: { x: number; y: number; text: string }) {
+/** hex + 0-100 opacity -> an rgba() string, for the label's background block. */
+function rgba(hex: string, opacityPct: number): string {
+    const n = parseInt(hex.slice(1), 16);
+    const r = (n >> 16) & 255;
+    const g = (n >> 8) & 255;
+    const b = n & 255;
+    return `rgba(${r},${g},${b},${Math.max(0, Math.min(100, opacityPct)) / 100})`;
+}
+
+/** One before/after caption: a padded background block behind auto-measured text, anchored to
+ *  one of six preset corners/edges of `box` — replaces free dragging so the position is always
+ *  reachable without a pointer (and stays put across layout/size changes). Measuring the node
+ *  after every render (rather than estimating from font metrics) keeps the background block
+ *  exactly as wide as the text, including per-font differences. */
+function EditableLabel({
+    box,
+    text,
+    position,
+    style,
+}: {
+    box: { x: number; y: number; w: number; h: number };
+    text: string;
+    position: LabelPosition;
+    style: LabelStyleState;
+}) {
+    const textRef = useRef<Konva.Text | null>(null);
+    const [size, setSize] = useState({ w: 0, h: 0 });
+
+    useEffect(() => {
+        const node = textRef.current;
+        if (!node) return;
+        setSize({ w: node.width(), h: node.height() });
+    }, [text, style.fontFamily, style.fontSize]);
+
+    if (!style.visible || !text) return null;
+
+    const blockW = size.w + LABEL_PADDING * 2;
+    const blockH = size.h + LABEL_PADDING * 2;
+    const [v, h] = position.split("-") as [string, string];
+    const blockY = v === "top" ? box.y + LABEL_PADDING : box.y + box.h - blockH - LABEL_PADDING;
+    const blockX =
+        h === "left"
+            ? box.x + LABEL_PADDING
+            : h === "right"
+              ? box.x + box.w - blockW - LABEL_PADDING
+              : box.x + (box.w - blockW) / 2;
+
     return (
-        <Text
-            x={x}
-            y={y}
-            text={text}
-            fontSize={16}
-            fontStyle="700"
-            fill="#ffffff"
-            shadowColor="#000000"
-            shadowBlur={4}
-            shadowOpacity={0.6}
-            listening={false}
-        />
+        <>
+            <Rect
+                x={blockX}
+                y={blockY}
+                width={blockW}
+                height={blockH}
+                fill={rgba(style.backgroundColor, style.backgroundOpacity)}
+                cornerRadius={4}
+                listening={false}
+            />
+            <Text
+                ref={textRef}
+                x={blockX + LABEL_PADDING}
+                y={blockY + LABEL_PADDING}
+                text={text}
+                fontFamily={style.fontFamily}
+                fontSize={style.fontSize}
+                fontStyle="700"
+                fill={style.color}
+                listening={false}
+            />
+        </>
     );
 }
 
@@ -149,12 +201,19 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
     const afterUrl = useAppSelector((s) => s.beforeAfter.afterUrl);
     const sliderPosition = useAppSelector((s) => s.beforeAfter.sliderPosition);
     const layoutType: BeforeAfterLayout = useAppSelector((s) => s.beforeAfter.layoutType);
-    const label = useAppSelector((s) => s.beforeAfter.label);
-    const alignMode = useAppSelector((s) => s.beforeAfter.alignMode);
+    const gap = useAppSelector((s) => s.beforeAfter.gap);
+    const canvasBackground = useAppSelector((s) => s.beforeAfter.canvasBackground);
+    const aspect = useAppSelector((s) => s.beforeAfter.aspect);
+    const beforeTransform = useAppSelector((s) => s.beforeAfter.beforeTransform);
     const afterTransform = useAppSelector((s) => s.beforeAfter.afterTransform);
+    const beforeLabelState: TextLabelState = useAppSelector((s) => s.beforeAfter.beforeLabel);
+    const afterLabelState: TextLabelState = useAppSelector((s) => s.beforeAfter.afterLabel);
+    const labelStyle = useAppSelector((s) => s.beforeAfter.labelStyle);
+    const logo = useAppSelector((s) => s.beforeAfter.logo);
 
     const beforeImg = useHTMLImage(beforeUrl);
     const afterImg = useHTMLImage(afterUrl);
+    const logoImg = useHTMLImage(logo.url);
 
     const stageRef = useRef<Konva.Stage | null>(null);
     useImperativeHandle(ref, () => stageRef.current as Konva.Stage);
@@ -173,39 +232,33 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
         return () => ro.disconnect();
     }, []);
 
-    // "split" is the seamless (zero-gap) version of "side-by-side" — same two-cell geometry,
-    // just arranged horizontally either way. "stack" is the vertical arrangement.
-    const panelGap = layoutType === "split" ? 0 : PANEL_GAP;
-    const isTwoPanel = layoutType === "side-by-side" || layoutType === "split";
+    const isTwoPanel = layoutType === "side-by-side";
     const isStack = layoutType === "stack";
 
-    // Frame size follows the "before" photo's aspect ratio, fit to the wrapper and capped at
-    // CELL_MAX for quality. The two-panel layouts need two cells (plus a gap), horizontal or
-    // vertical, instead of the single frame "slider" uses.
-    const { canvasW, canvasH, cellW, cellH } = useMemo(() => {
+    // The frame's aspect ratio comes from the user's chosen size (not either photo's own
+    // dimensions) so the exported artwork always matches the picked preset/custom size,
+    // regardless of layout.
+    const { canvasW, canvasH } = useMemo(() => {
         const maxW = Math.min(CELL_MAX, containerW || CELL_MAX);
         const maxH = Math.min(CELL_MAX, containerH || CELL_MAX);
-        const aspect = beforeImg ? beforeImg.width / beforeImg.height : 1;
+        const ratio = aspect.width / aspect.height || 1;
+        const fit = fitAspect(ratio, maxW, maxH);
+        return { canvasW: Math.round(fit.w), canvasH: Math.round(fit.h) };
+    }, [aspect, containerW, containerH]);
 
+    // Two-panel layouts subdivide the frame (not the other way around) so the overall canvas
+    // keeps the chosen aspect ratio no matter which layout is active.
+    const { cellW, cellH, panelGap } = useMemo(() => {
         if (isTwoPanel) {
-            const cell = fitAspect(aspect, (maxW - panelGap) / 2, maxH);
-            const w = Math.round(cell.w);
-            const h = Math.round(cell.h);
-            return { canvasW: w * 2 + panelGap, canvasH: h, cellW: w, cellH: h };
+            const w = Math.max(1, Math.round((canvasW - gap) / 2));
+            return { cellW: w, cellH: canvasH, panelGap: gap };
         }
-
         if (isStack) {
-            const cell = fitAspect(aspect, maxW, (maxH - PANEL_GAP) / 2);
-            const w = Math.round(cell.w);
-            const h = Math.round(cell.h);
-            return { canvasW: w, canvasH: h * 2 + PANEL_GAP, cellW: w, cellH: h };
+            const h = Math.max(1, Math.round((canvasH - gap) / 2));
+            return { cellW: canvasW, cellH: h, panelGap: gap };
         }
-
-        const cell = fitAspect(aspect, maxW, maxH);
-        const w = Math.round(cell.w);
-        const h = Math.round(cell.h);
-        return { canvasW: w, canvasH: h, cellW: w, cellH: h };
-    }, [isTwoPanel, isStack, panelGap, beforeImg, containerW, containerH]);
+        return { cellW: canvasW, cellH: canvasH, panelGap: 0 };
+    }, [isTwoPanel, isStack, canvasW, canvasH, gap]);
 
     const beforeLayout = useMemo(
         () => (beforeImg ? coverLayout(beforeImg, cellW, cellH) : null),
@@ -216,24 +269,12 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
         [afterImg, cellW, cellH],
     );
 
-    // All three drags below work in *normalized* stage-rect coordinates (0-1 of the on-screen
-    // box) rather than canvas px. Slider position and label position are already stored as
-    // percentages, and the align offset is a percentage of the cell — which is the whole stage
-    // while align mode is on — so the canvas-px size cancels out of every conversion. Reading
-    // only the live `getBoundingClientRect()` on each move keeps the math correct even if the
-    // container resizes mid-drag (orientation change, panel toggle); a size captured back at
-    // mousedown would be stale for the rest of the drag.
+    // The slider drag works in *normalized* stage-rect coordinates (0-1 of the on-screen box)
+    // rather than canvas px, since sliderPosition is stored as a percentage — the canvas-px size
+    // cancels out of the conversion. Reading only the live `getBoundingClientRect()` on each
+    // move keeps the math correct even if the container resizes mid-drag.
     const draggingRef = useRef(false);
-    const alignDragRef = useRef<{
-        startXNorm: number;
-        startYNorm: number;
-        startOffsetXPct: number;
-        startOffsetYPct: number;
-    } | null>(null);
-    const labelDraggingRef = useRef(false);
 
-    /** Pointer position as a 0-1 fraction of the stage's on-screen box, or null when the stage
-     *  isn't measurable yet (no ref, zero-size container). */
     const getNormalizedPoint = useCallback((clientX: number, clientY: number) => {
         const stage = stageRef.current;
         if (!stage) return null;
@@ -242,8 +283,6 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
         return { nx: (clientX - rect.left) / rect.width, ny: (clientY - rect.top) / rect.height };
     }, []);
 
-    // Each handler pair is identity-stable (it only depends on `dispatch`), so the unmount
-    // cleanup further down detaches the very functions that were attached.
     const sliderDrag = useMemo<DragHandlers>(() => {
         const h: DragHandlers = {
             move: (e) => {
@@ -269,251 +308,195 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
 
     const handleX = (sliderPosition / 100) * canvasW;
 
-    // Align mode shows a dedicated single-cell overlay (before opaque, after translucent and
-    // draggable) regardless of `layoutType`, so the stage itself shrinks to one cell while it's on.
-    const stageW = alignMode ? cellW : canvasW;
-    const stageH = alignMode ? cellH : canvasH;
-
-    const alignDrag = useMemo<DragHandlers>(() => {
-        const h: DragHandlers = {
-            move: (e) => {
-                const drag = alignDragRef.current;
-                if (!drag) return;
-                const p = getNormalizedPoint(e.clientX, e.clientY);
-                if (!p) return;
-                dispatch(
-                    setAfterOffset({
-                        xPct: drag.startOffsetXPct + (p.nx - drag.startXNorm) * 100,
-                        yPct: drag.startOffsetYPct + (p.ny - drag.startYNorm) * 100,
-                    }),
-                );
-            },
-            up: () => {
-                alignDragRef.current = null;
-                detachDrag(h);
-            },
-        };
-        return h;
-    }, [dispatch, getNormalizedPoint]);
-
-    function handleAlignMouseDown(e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) {
-        const { clientX, clientY } = eventPoint(e.evt);
-        const p = getNormalizedPoint(clientX, clientY);
-        if (!p) return;
-        alignDragRef.current = {
-            startXNorm: p.nx,
-            startYNorm: p.ny,
-            startOffsetXPct: afterTransform.offsetXPct,
-            startOffsetYPct: afterTransform.offsetYPct,
-        };
-        attachDrag(alignDrag);
-    }
-
-    // Text label: draggable anywhere on the frame, independent of the slider handle above.
-    // Centered on its own (x, y) via offsetX/offsetY so xPct/yPct = 50 truly means "centered".
-    // The caption wraps inside a fixed box a fraction of the frame wide rather than running off
-    // the edge, so the horizontal offset is just half that box — only the wrapped height has to
-    // be measured off the node, and it changes with the box width as well as the text itself.
-    const labelNodeRef = useRef<Konva.Text | null>(null);
-    const labelWidth = canvasW * LABEL_WIDTH_RATIO;
-    const [labelHeight, setLabelHeight] = useState(0);
-    useEffect(() => {
-        const node = labelNodeRef.current;
-        if (!node) return;
-        setLabelHeight(node.height());
-    }, [label.text, label.fontSize, labelWidth]);
-
-    const labelDrag = useMemo<DragHandlers>(() => {
-        const h: DragHandlers = {
-            move: (e) => {
-                if (!labelDraggingRef.current) return;
-                const p = getNormalizedPoint(e.clientX, e.clientY);
-                if (p) dispatch(setLabelPosition({ xPct: p.nx * 100, yPct: p.ny * 100 }));
-            },
-            up: () => {
-                labelDraggingRef.current = false;
-                detachDrag(h);
-            },
-        };
-        return h;
-    }, [dispatch, getNormalizedPoint]);
-
-    function handleLabelMouseDown(e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) {
-        const { clientX, clientY } = eventPoint(e.evt);
-        labelDraggingRef.current = true;
-        const p = getNormalizedPoint(clientX, clientY);
-        if (p) dispatch(setLabelPosition({ xPct: p.nx * 100, yPct: p.ny * 100 }));
-        attachDrag(labelDrag);
-    }
-
     // Unmounting mid-drag (navigating away before pointerup) would otherwise leave the window
-    // listeners behind forever.
+    // listener behind forever.
     useEffect(() => {
-        return () => {
-            detachDrag(sliderDrag);
-            detachDrag(alignDrag);
-            detachDrag(labelDrag);
-        };
-    }, [sliderDrag, alignDrag, labelDrag]);
+        return () => detachDrag(sliderDrag);
+    }, [sliderDrag]);
+
+    const beforeText = beforeLabelState.text || t("before");
+    const afterText = afterLabelState.text || t("after");
+
+    const logoBox = useMemo(() => {
+        if (!logoImg || !logoImg.naturalWidth) return null;
+        const w = canvasW * (logo.sizePct / 100);
+        const h = (w / logoImg.naturalWidth) * logoImg.naturalHeight;
+        const x = logo.position.includes("right") ? canvasW - w - LOGO_PADDING : LOGO_PADDING;
+        const y = logo.position.includes("bottom") ? canvasH - h - LOGO_PADDING : LOGO_PADDING;
+        return { x, y, w, h };
+    }, [logoImg, logo.sizePct, logo.position, canvasW, canvasH]);
+
+    // Sits on top of the photos but under the captions — built once and placed between the
+    // image layer(s) and the label layer in whichever layout branch is active below, since only
+    // one of those branches ever mounts at a time.
+    const logoLayer = logoBox ? (
+        <Layer listening={false}>
+            <KonvaImage image={logoImg!} x={logoBox.x} y={logoBox.y} width={logoBox.w} height={logoBox.h} />
+        </Layer>
+    ) : null;
 
     return (
         <div ref={wrapRef} className="w-full h-full flex items-center justify-center" style={{ touchAction: "none" }}>
-            <Stage ref={stageRef} width={stageW} height={stageH}>
-                {alignMode ? (
+            <Stage ref={stageRef} width={canvasW} height={canvasH}>
+                {layoutType === "slider" && (
                     <>
-                        {/* Before, opaque — the reference to line "after" up against. */}
+                        {/* Base layer: "before", always fully visible. */}
                         <Layer listening={false}>
-                            <Rect x={0} y={0} width={cellW} height={cellH} fill="#fafafa" />
-                            {beforeImg && beforeLayout && <KonvaImage image={beforeImg} {...beforeLayout} />}
+                            <Rect x={0} y={0} width={canvasW} height={canvasH} fill={canvasBackground} />
+                            {beforeImg && beforeLayout && (
+                                <KonvaImage
+                                    image={beforeImg}
+                                    {...imageTransformProps(beforeLayout.crop, 0, 0, canvasW, canvasH, beforeTransform)}
+                                />
+                            )}
                         </Layer>
-                        {/* After, translucent and draggable — nudge it until it lines up. */}
-                        <Layer>
-                            {afterImg && afterLayout && (
+
+                        {/* "after", clipped to the left `sliderPosition`% of the frame. */}
+                        {afterImg && afterLayout && (
+                            <Layer listening={false} clipX={0} clipY={0} clipWidth={handleX} clipHeight={canvasH}>
                                 <KonvaImage
                                     image={afterImg}
-                                    {...afterImageTransformProps(afterLayout.crop, 0, 0, cellW, cellH, afterTransform)}
-                                    opacity={0.55}
-                                    onMouseDown={handleAlignMouseDown}
-                                    onTouchStart={handleAlignMouseDown}
-                                />
-                            )}
-                        </Layer>
-                    </>
-                ) : (
-                    <>
-                    {layoutType === "slider" && (
-                        <>
-                            {/* Base layer: "before", always fully visible. */}
-                            <Layer listening={false}>
-                                <Rect x={0} y={0} width={canvasW} height={canvasH} fill="#fafafa" />
-                                {beforeImg && beforeLayout && <KonvaImage image={beforeImg} {...beforeLayout} />}
-                            </Layer>
-
-                            {/* "after", clipped to the left `sliderPosition`% of the frame. */}
-                            {afterImg && afterLayout && (
-                                <Layer listening={false} clipX={0} clipY={0} clipWidth={handleX} clipHeight={canvasH}>
-                                    <KonvaImage
-                                        image={afterImg}
-                                        {...afterImageTransformProps(afterLayout.crop, 0, 0, canvasW, canvasH, afterTransform)}
-                                    />
-                                </Layer>
-                            )}
-
-                            {/* Drag handle: a wide invisible hit strip plus the visible divider + grip. */}
-                            <Layer>
-                                <Rect
-                                    x={handleX - 24}
-                                    y={0}
-                                    width={48}
-                                    height={canvasH}
-                                    fill="transparent"
-                                    onMouseDown={handleSliderMouseDown}
-                                    onTouchStart={handleSliderMouseDown}
-                                />
-                                <Line
-                                    points={[handleX, 0, handleX, canvasH]}
-                                    stroke="#ffffff"
-                                    strokeWidth={3}
-                                    shadowColor="#000000"
-                                    shadowOpacity={0.25}
-                                    shadowBlur={4}
-                                    listening={false}
-                                />
-                                <Circle
-                                    x={handleX}
-                                    y={canvasH / 2}
-                                    radius={22}
-                                    fill="#ffffff"
-                                    shadowColor="#000000"
-                                    shadowOpacity={0.25}
-                                    shadowBlur={8}
-                                    listening={false}
-                                />
-                                <Line
-                                    points={[handleX - 7, canvasH / 2 - 6, handleX - 12, canvasH / 2, handleX - 7, canvasH / 2 + 6]}
-                                    stroke="#1a1a2e"
-                                    strokeWidth={2.5}
-                                    lineCap="round"
-                                    lineJoin="round"
-                                    listening={false}
-                                />
-                                <Line
-                                    points={[handleX + 7, canvasH / 2 - 6, handleX + 12, canvasH / 2, handleX + 7, canvasH / 2 + 6]}
-                                    stroke="#1a1a2e"
-                                    strokeWidth={2.5}
-                                    lineCap="round"
-                                    lineJoin="round"
-                                    listening={false}
+                                    {...imageTransformProps(afterLayout.crop, 0, 0, canvasW, canvasH, afterTransform)}
                                 />
                             </Layer>
-                        </>
-                    )}
+                        )}
 
-                    {isTwoPanel && (
-                        <Layer listening={false}>
-                            <Rect x={0} y={0} width={cellW} height={cellH} fill="#fafafa" />
-                            <Rect x={cellW + panelGap} y={0} width={cellW} height={cellH} fill="#fafafa" />
-                            {beforeImg && beforeLayout && <KonvaImage image={beforeImg} {...beforeLayout} x={0} y={0} />}
-                            {afterImg && afterLayout && (
-                                <KonvaImage
-                                    image={afterImg}
-                                    {...afterImageTransformProps(afterLayout.crop, cellW + panelGap, 0, cellW, cellH, afterTransform)}
-                                />
-                            )}
-                            {layoutType === "split" && (
-                                <Line
-                                    points={[cellW, 0, cellW, cellH]}
-                                    stroke="#ffffff"
-                                    strokeWidth={2}
-                                    shadowColor="#000000"
-                                    shadowOpacity={0.2}
-                                    shadowBlur={3}
-                                />
-                            )}
-                            <PanelBadge x={12} y={12} text={t("before")} />
-                            <PanelBadge x={cellW + panelGap + 12} y={12} text={t("after")} />
-                        </Layer>
-                    )}
+                        {logoLayer}
 
-                    {isStack && (
-                        <Layer listening={false}>
-                            <Rect x={0} y={0} width={cellW} height={cellH} fill="#fafafa" />
-                            <Rect x={0} y={cellH + PANEL_GAP} width={cellW} height={cellH} fill="#fafafa" />
-                            {beforeImg && beforeLayout && <KonvaImage image={beforeImg} {...beforeLayout} x={0} y={0} />}
-                            {afterImg && afterLayout && (
-                                <KonvaImage
-                                    image={afterImg}
-                                    {...afterImageTransformProps(afterLayout.crop, 0, cellH + PANEL_GAP, cellW, cellH, afterTransform)}
-                                />
-                            )}
-                            <PanelBadge x={12} y={12} text={t("before")} />
-                            <PanelBadge x={12} y={cellH + PANEL_GAP + 12} text={t("after")} />
-                        </Layer>
-                    )}
-
-                    {/* User's custom caption, on top of every layout. Draggable to reposition. */}
-                    {label.text && (
+                        {/* Only "before" gets a caption here — a floating "after" tag that
+                            appears and disappears as the divider is dragged would be confusing. */}
                         <Layer>
-                            <Text
-                                ref={labelNodeRef}
-                                x={(label.xPct / 100) * canvasW}
-                                y={(label.yPct / 100) * canvasH}
-                                width={labelWidth}
-                                align="center"
-                                offsetX={labelWidth / 2}
-                                offsetY={labelHeight / 2}
-                                text={label.text}
-                                fontSize={label.fontSize}
-                                fontStyle="700"
-                                fill={label.color}
-                                shadowColor="#000000"
-                                shadowBlur={6}
-                                shadowOpacity={0.5}
-                                onMouseDown={handleLabelMouseDown}
-                                onTouchStart={handleLabelMouseDown}
+                            <EditableLabel
+                                box={{ x: 0, y: 0, w: canvasW, h: canvasH }}
+                                text={beforeText}
+                                position={beforeLabelState.position}
+                                style={labelStyle}
                             />
                         </Layer>
-                    )}
+
+                        {/* Drag handle: a wide invisible hit strip plus the visible divider + grip. */}
+                        <Layer>
+                            <Rect
+                                x={handleX - 24}
+                                y={0}
+                                width={48}
+                                height={canvasH}
+                                fill="transparent"
+                                onMouseDown={handleSliderMouseDown}
+                                onTouchStart={handleSliderMouseDown}
+                            />
+                            <Line
+                                points={[handleX, 0, handleX, canvasH]}
+                                stroke="#ffffff"
+                                strokeWidth={3}
+                                shadowColor="#000000"
+                                shadowOpacity={0.25}
+                                shadowBlur={4}
+                                listening={false}
+                            />
+                            <Circle
+                                x={handleX}
+                                y={canvasH / 2}
+                                radius={22}
+                                fill="#ffffff"
+                                shadowColor="#000000"
+                                shadowOpacity={0.25}
+                                shadowBlur={8}
+                                listening={false}
+                            />
+                            <Line
+                                points={[handleX - 7, canvasH / 2 - 6, handleX - 12, canvasH / 2, handleX - 7, canvasH / 2 + 6]}
+                                stroke="#1a1a2e"
+                                strokeWidth={2.5}
+                                lineCap="round"
+                                lineJoin="round"
+                                listening={false}
+                            />
+                            <Line
+                                points={[handleX + 7, canvasH / 2 - 6, handleX + 12, canvasH / 2, handleX + 7, canvasH / 2 + 6]}
+                                stroke="#1a1a2e"
+                                strokeWidth={2.5}
+                                lineCap="round"
+                                lineJoin="round"
+                                listening={false}
+                            />
+                        </Layer>
+                    </>
+                )}
+
+                {isTwoPanel && (
+                    <>
+                        <Layer listening={false}>
+                            <Rect x={0} y={0} width={cellW} height={cellH} fill={canvasBackground} />
+                            <Rect x={cellW + panelGap} y={0} width={cellW} height={cellH} fill={canvasBackground} />
+                            {beforeImg && beforeLayout && (
+                                <KonvaImage
+                                    image={beforeImg}
+                                    {...imageTransformProps(beforeLayout.crop, 0, 0, cellW, cellH, beforeTransform)}
+                                />
+                            )}
+                            {afterImg && afterLayout && (
+                                <KonvaImage
+                                    image={afterImg}
+                                    {...imageTransformProps(afterLayout.crop, cellW + panelGap, 0, cellW, cellH, afterTransform)}
+                                />
+                            )}
+                        </Layer>
+
+                        {logoLayer}
+
+                        <Layer listening={false}>
+                            <EditableLabel
+                                box={{ x: 0, y: 0, w: cellW, h: cellH }}
+                                text={beforeText}
+                                position={beforeLabelState.position}
+                                style={labelStyle}
+                            />
+                            <EditableLabel
+                                box={{ x: cellW + panelGap, y: 0, w: cellW, h: cellH }}
+                                text={afterText}
+                                position={afterLabelState.position}
+                                style={labelStyle}
+                            />
+                        </Layer>
+                    </>
+                )}
+
+                {isStack && (
+                    <>
+                        <Layer listening={false}>
+                            <Rect x={0} y={0} width={cellW} height={cellH} fill={canvasBackground} />
+                            <Rect x={0} y={cellH + panelGap} width={cellW} height={cellH} fill={canvasBackground} />
+                            {beforeImg && beforeLayout && (
+                                <KonvaImage
+                                    image={beforeImg}
+                                    {...imageTransformProps(beforeLayout.crop, 0, 0, cellW, cellH, beforeTransform)}
+                                />
+                            )}
+                            {afterImg && afterLayout && (
+                                <KonvaImage
+                                    image={afterImg}
+                                    {...imageTransformProps(afterLayout.crop, 0, cellH + panelGap, cellW, cellH, afterTransform)}
+                                />
+                            )}
+                        </Layer>
+
+                        {logoLayer}
+
+                        <Layer listening={false}>
+                            <EditableLabel
+                                box={{ x: 0, y: 0, w: cellW, h: cellH }}
+                                text={beforeText}
+                                position={beforeLabelState.position}
+                                style={labelStyle}
+                            />
+                            <EditableLabel
+                                box={{ x: 0, y: cellH + panelGap, w: cellW, h: cellH }}
+                                text={afterText}
+                                position={afterLabelState.position}
+                                style={labelStyle}
+                            />
+                        </Layer>
                     </>
                 )}
             </Stage>

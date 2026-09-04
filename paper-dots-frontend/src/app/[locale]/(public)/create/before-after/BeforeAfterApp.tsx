@@ -3,47 +3,49 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import type Konva from "konva";
-import { ImagePlus, LayoutGrid, Type, Move, Download, X } from "lucide-react";
+import { ImagePlus, Maximize, LayoutGrid, Type, BadgeCheck, Download, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
-import { setAlignMode } from "@/store/slices/beforeAfterSlice";
 import BeforeAfterUploader from "@/components/before-after/Uploader";
+import ImagesPanel from "@/components/before-after/ImagesPanel";
+import SizePanel from "@/components/before-after/SizePanel";
 import ExportButton from "@/components/before-after/ExportButton";
 import GifExportButton from "@/components/before-after/GifExportButton";
+import VideoExportButton from "@/components/before-after/VideoExportButton";
 import LayoutPicker from "@/components/before-after/LayoutPicker";
 import TextLabelPanel from "@/components/before-after/TextLabelPanel";
-import AlignPanel from "@/components/before-after/AlignPanel";
+import LogoPanel from "@/components/before-after/LogoPanel";
 
 const BeforeAfterCanvas = dynamic(() => import("@/components/before-after/Canvas"), {
     ssr: false,
     loading: () => <div className="w-full aspect-square rounded-2xl bg-white" />,
 });
 
-type Panel = "photos" | "layout" | "text" | "align" | "export" | null;
+type Panel = "images" | "size" | "layout" | "text" | "logo" | "export" | null;
 
 /** `id` doubles as the key under `editor.beforeAfter.tabs`. */
 const TOOLS: { id: Panel; icon: typeof ImagePlus }[] = [
-    { id: "photos", icon: ImagePlus },
+    { id: "images", icon: ImagePlus },
+    { id: "size", icon: Maximize },
     { id: "layout", icon: LayoutGrid },
     { id: "text", icon: Type },
-    { id: "align", icon: Move },
+    { id: "logo", icon: BadgeCheck },
     { id: "export", icon: Download },
 ];
 
 export default function BeforeAfterApp() {
     const t = useTranslations("editor.beforeAfter");
     const tCommon = useTranslations("editor.common");
-    const dispatch = useAppDispatch();
     const beforeUrl = useAppSelector((s) => s.beforeAfter.beforeUrl);
     const afterUrl = useAppSelector((s) => s.beforeAfter.afterUrl);
     const layoutType = useAppSelector((s) => s.beforeAfter.layoutType);
     const ready = !!beforeUrl && !!afterUrl;
     const stageRef = useRef<Konva.Stage | null>(null);
     const [activePanel, setActivePanel] = useState<Panel>(null);
-    // GIF encoding screenshots the live stage frame by frame, so anything that resizes it or
-    // swaps its render branch mid-run — changing tab (which switches layout / toggles align
-    // mode) or firing a PNG export — would corrupt the output. Freeze the editor until it ends.
+    // GIF/video encoding screenshots the live stage frame by frame, so anything that resizes it
+    // or swaps its render branch mid-run — changing tab (which can switch layout) or firing a
+    // PNG/JPG export — would corrupt the output. Freeze the editor until it ends.
     const [exporting, setExporting] = useState(false);
 
     useLockBodyScroll();
@@ -51,12 +53,6 @@ export default function BeforeAfterApp() {
     useEffect(() => {
         if (ready) setActivePanel((p) => p ?? "layout");
     }, [ready]);
-
-    // The "align" tab doubles as the on/off switch for Canvas's dedicated align-mode overlay —
-    // opening it is "start aligning", closing it (or switching tabs) is "done".
-    useEffect(() => {
-        dispatch(setAlignMode(activePanel === "align"));
-    }, [activePanel, dispatch]);
 
     function togglePanel(panel: Panel) {
         if (exporting) return;
@@ -67,15 +63,22 @@ export default function BeforeAfterApp() {
 
     const panelContent = (
         <>
-            {activePanel === "photos" && <BeforeAfterUploader compact />}
+            {activePanel === "images" && <ImagesPanel />}
+            {activePanel === "size" && <SizePanel />}
             {activePanel === "layout" && <LayoutPicker />}
             {activePanel === "text" && <TextLabelPanel />}
-            {activePanel === "align" && <AlignPanel />}
+            {activePanel === "logo" && <LogoPanel />}
             {activePanel === "export" && (
-                <div className="p-4 flex gap-2">
-                    <ExportButton stageRef={stageRef} disabled={exporting} />
+                <div className="p-4 flex flex-col gap-2">
+                    <div className="flex gap-2">
+                        <ExportButton stageRef={stageRef} format="png" disabled={exporting} />
+                        <ExportButton stageRef={stageRef} format="jpg" disabled={exporting} />
+                    </div>
                     {layoutType === "slider" && (
-                        <GifExportButton stageRef={stageRef} busy={exporting} onBusyChange={setExporting} />
+                        <div className="flex gap-2">
+                            <GifExportButton stageRef={stageRef} busy={exporting} onBusyChange={setExporting} />
+                            <VideoExportButton stageRef={stageRef} busy={exporting} onBusyChange={setExporting} />
+                        </div>
                     )}
                 </div>
             )}

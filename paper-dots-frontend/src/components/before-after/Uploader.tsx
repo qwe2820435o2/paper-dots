@@ -5,49 +5,45 @@ import { Upload, RefreshCw, X } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-    applyBeforeAfterPhoto,
-    clearBeforeAfterPhoto,
-    resetBeforeAfterEditor,
-    type BeforeAfterSlot,
-} from "@/lib/beforeAfterPhotoUpload";
-import ResetAllButton from "@/components/common/ResetAllButton";
-import { hasAfterTransform } from "@/store/slices/beforeAfterSlice";
+import { applyBeforeAfterPhoto, clearBeforeAfterPhoto, type BeforeAfterSlot } from "@/lib/beforeAfterPhotoUpload";
+import { hasTransform } from "@/store/slices/beforeAfterSlice";
 import UploadDropzoneDots from "@/components/decorate/UploadDropzoneDots";
 
-interface SlotProps {
+export interface UploadSlotProps {
     slot: BeforeAfterSlot;
     url: string | null;
     label: string;
 }
 
-function UploadSlot({ slot, url, label }: SlotProps) {
+/** One upload dropzone, for either the "before" or "after" photo. Exported so `ImagesPanel` can
+ *  reuse the exact same upload/replace/clear control alongside its crop sliders. */
+export function UploadSlot({ slot, url, label }: UploadSlotProps) {
     const t = useTranslations("editor.common");
     const tToast = useTranslations("editor.toast");
     const dispatch = useAppDispatch();
-    const afterTransform = useAppSelector((s) => s.beforeAfter.afterTransform);
+    const transform = useAppSelector((s) => (slot === "before" ? s.beforeAfter.beforeTransform : s.beforeAfter.afterTransform));
     const [dragOver, setDragOver] = useState(false);
 
-    // Swapping a photo drops the alignment (it was calibrated against the photo being replaced).
-    // Say so only when there was an alignment to lose — otherwise it is noise on first upload.
-    const warnIfAlignmentLost = useCallback(() => {
-        if (hasAfterTransform(afterTransform)) toast.info(tToast("alignReset"));
-    }, [afterTransform, tToast]);
+    // Swapping a photo drops its crop (it was calibrated against the photo being replaced). Say
+    // so only when there was a crop to lose — otherwise it is noise on first upload.
+    const warnIfCropLost = useCallback(() => {
+        if (hasTransform(transform)) toast.info(tToast("cropReset"));
+    }, [transform, tToast]);
 
     const handleFiles = useCallback(
         (files: FileList | null) => {
             const file = files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            warnIfAlignmentLost();
+            warnIfCropLost();
             dispatch(applyBeforeAfterPhoto(file, slot));
         },
-        [dispatch, slot, warnIfAlignmentLost],
+        [dispatch, slot, warnIfCropLost],
     );
 
     const clear = useCallback(() => {
-        warnIfAlignmentLost();
+        warnIfCropLost();
         dispatch(clearBeforeAfterPhoto(slot));
-    }, [dispatch, slot, warnIfAlignmentLost]);
+    }, [dispatch, slot, warnIfCropLost]);
 
     if (url) {
         return (
@@ -155,30 +151,21 @@ function UploadSlot({ slot, url, label }: SlotProps) {
     );
 }
 
-interface Props {
-    /** Used for the "Photos" tab in the editor's side panel/drawer, where the two slots stack
-     *  full-width instead of sitting side by side in a fixed-width grid. */
-    compact?: boolean;
-}
-
 /** The "Before & After" editor's dual dropzone: two independent slots, each with its own drag
- *  state, upload, and clear/replace controls. Unlike every other tool here, the canvas can't do
- *  anything useful until *both* slots are filled, so this stands in for the canvas area until
- *  then (see BeforeAfterApp) — and is reused, in `compact` form, as the always-reachable "Photos"
- *  tab afterward so a photo can still be swapped out mid-edit. */
-export default function BeforeAfterUploader({ compact = false }: Props) {
+ *  state, upload, and clear/replace controls. The canvas can't do anything useful until *both*
+ *  slots are filled, so this stands in for the canvas area until then (see BeforeAfterApp) and
+ *  is what the guide page's upload CTA renders directly. Once the editor is ready, swapping a
+ *  photo happens from the "Images" tab (`ImagesPanel`), which reuses `UploadSlot` alongside its
+ *  crop controls instead of mounting this grid again. */
+export default function BeforeAfterUploader() {
     const t = useTranslations("editor.beforeAfter");
-    const dispatch = useAppDispatch();
     const beforeUrl = useAppSelector((s) => s.beforeAfter.beforeUrl);
     const afterUrl = useAppSelector((s) => s.beforeAfter.afterUrl);
 
-    // Only offered in `compact` form: the full-size variant *is* the empty editor, where there
-    // is nothing yet to start over from.
     return (
-        <div className={compact ? "p-4 flex flex-col gap-3 w-full" : "grid grid-cols-2 gap-3 w-full max-w-[520px]"}>
+        <div className="grid grid-cols-2 gap-3 w-full max-w-[520px]">
             <UploadSlot slot="before" url={beforeUrl} label={t("before")} />
             <UploadSlot slot="after" url={afterUrl} label={t("after")} />
-            {compact && <ResetAllButton onReset={() => dispatch(resetBeforeAfterEditor())} />}
         </div>
     );
 }

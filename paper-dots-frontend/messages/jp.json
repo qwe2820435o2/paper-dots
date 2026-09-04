@@ -364,7 +364,7 @@
       "imageReadFailed": "Could not read that image",
       "emojiLoadFailed": "Could not load that emoji",
       "imageLoadFailed": "Failed to load image",
-      "alignReset": "新しい写真に合わせて位置合わせをリセットしました"
+      "cropReset": "新しい写真に合わせて切り抜きをリセットしました"
     },
     "dot": {
       "tabs": {
@@ -513,30 +513,55 @@
       "layouts": {
         "slider": "スライダー",
         "side-by-side": "並べて表示",
-        "split": "分割",
         "stack": "縦に並べる"
       },
-      "removeText": "削除",
-      "textLabel": "テキスト",
-      "textPlaceholder": "キャプションを入力",
-      "align": {
-        "hint": "下の写真をドラッグしてビフォーに合わせ、必要ならサイズや角度も微調整してください。",
-        "scale": "サイズ",
-        "rotation": "回転",
-        "reset": "リセット",
-        "position": "位置"
+      "images": {
+        "zoom": "ズーム",
+        "resetCrop": "切り抜きをリセット"
+      },
+      "size": {
+        "instagram": "Instagram",
+        "tiktok": "TikTok",
+        "website": "Webサイト",
+        "custom": "カスタムサイズ"
+      },
+      "layout": {
+        "gap": "間隔",
+        "canvasBackground": "キャンバスの背景色"
+      },
+      "label": {
+        "showLabels": "ラベルを表示",
+        "fontFamily": "フォント",
+        "backgroundOpacity": "背景の不透明度"
+      },
+      "position": {
+        "topLeft": "左上",
+        "bottomLeft": "左下",
+        "bottomCenter": "下中央",
+        "topCenter": "上中央",
+        "topRight": "右上",
+        "bottomRight": "右下"
+      },
+      "logo": {
+        "title": "ブランドロゴ",
+        "upload": "ロゴをアップロード",
+        "size": "ロゴのサイズ",
+        "position": "ロゴの位置",
+        "remove": "ロゴを削除"
       },
       "downloadGif": "GIFをダウンロード",
       "encodingGif": "生成中… {percent}%",
+      "downloadVideo": "動画をダウンロード",
+      "recordingVideo": "録画中…",
       "tabs": {
-        "photos": "写真",
+        "images": "写真",
+        "size": "サイズ",
         "layout": "レイアウト",
         "text": "テキスト",
-        "align": "位置合わせ",
+        "logo": "ロゴ",
         "export": "書き出し"
       },
-      "dividerPosition": "境界線の位置",
-      "labelPosition": "位置"
+      "dividerPosition": "境界線の位置"
     }
   },
   "editorMeta": {
