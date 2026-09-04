@@ -94,7 +94,7 @@ export default function BeforeAfterApp() {
     );
 
     return (
-        <div className="h-[calc(100dvh-56px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">
+        <div className="h-[calc(100dvh-75px)] overflow-hidden bg-[#F8FCF2] flex flex-col md:flex-row">
             {/* Desktop: left icon toolbar */}
             {ready && (
                 <div
