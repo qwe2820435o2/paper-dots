@@ -347,7 +347,6 @@
       "customColor": "Custom color",
       "characterPlaceholder": "A",
       "resetAll": "Reset all",
-      "confirmResetAll": "もう一度クリックして確定",
       "shuffle": "Shuffle",
       "colorPickerSaturation": "{label} saturation and brightness",
       "colorPickerHue": "{label} hue",
@@ -532,6 +531,7 @@
       },
       "label": {
         "showLabels": "ラベルを表示",
+        "moreStyles": "その他のスタイル",
         "fontFamily": "フォント",
         "backgroundOpacity": "背景の不透明度",
         "afterSliderHint": "スライダーでこの部分が表示されるまで見えません。"

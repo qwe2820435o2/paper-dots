@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { ChevronDown } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ColorPicker from "@/components/decorate/ColorPicker";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -43,6 +45,10 @@ export default function TextLabelPanel() {
     const afterLabel = useAppSelector((s) => s.beforeAfter.afterLabel);
     const style = useAppSelector((s) => s.beforeAfter.labelStyle);
     const layoutType = useAppSelector((s) => s.beforeAfter.layoutType);
+    // Collapsed by default — on a short mobile drawer, the two caption groups above already push
+    // this section well below the fold, and font/color/background are touched far less often
+    // than the text and position right above them.
+    const [stylesOpen, setStylesOpen] = useState(false);
 
     function labelGroup(slot: BeforeAfterSlot) {
         const label = slot === "before" ? beforeLabel : afterLabel;
@@ -100,62 +106,78 @@ export default function TextLabelPanel() {
             {labelGroup("before")}
             {labelGroup("after")}
 
-            <div className="flex flex-col gap-1.5">
-                <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{t("label.fontFamily")}</label>
-                <select
-                    value={style.fontFamily}
-                    onChange={(e) => dispatch(setLabelFontFamily(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-[#D2EAAA] bg-white text-[13px] text-[#1a1a2e] focus:outline-none focus:border-[#C5E89A] focus:ring-2 focus:ring-[#E8F5D2]"
-                >
-                    {FONTS.map((font) => (
-                        <option key={font} value={font} style={{ fontFamily: font }}>
-                            {font}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <button
+                type="button"
+                onClick={() => setStylesOpen((v) => !v)}
+                className="flex items-center justify-between text-[12px] font-medium text-[#64748b] tracking-[0.04em] py-1 -mb-1"
+                aria-expanded={stylesOpen}
+            >
+                {t("label.moreStyles")}
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${stylesOpen ? "rotate-180" : ""}`} />
+            </button>
 
-            <div className="flex flex-col gap-1.5">
-                <div className="flex items-baseline justify-between">
-                    <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{tCommon("size")}</label>
-                    <span className="text-[12px] tabular-nums text-[#64748b]">{style.fontSize}</span>
-                </div>
-                <Slider
-                    min={12}
-                    max={96}
-                    step={1}
-                    value={[style.fontSize]}
-                    onValueChange={(v) => dispatch(setLabelFontSize(v[0]))}
-                />
-            </div>
+            {stylesOpen && (
+                <>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{t("label.fontFamily")}</label>
+                        <select
+                            value={style.fontFamily}
+                            onChange={(e) => dispatch(setLabelFontFamily(e.target.value))}
+                            className="w-full px-3 py-2 rounded-lg border border-[#D2EAAA] bg-white text-[13px] text-[#1a1a2e] focus:outline-none focus:border-[#C5E89A] focus:ring-2 focus:ring-[#E8F5D2]"
+                        >
+                            {FONTS.map((font) => (
+                                <option key={font} value={font} style={{ fontFamily: font }}>
+                                    {font}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-            <div className="flex flex-col gap-1.5">
-                <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{tCommon("color")}</label>
-                <ColorPicker color={style.color} onChange={(hex) => dispatch(setLabelColor(hex))} label={tCommon("color")} />
-            </div>
+                    <div className="flex flex-col gap-1.5">
+                        <div className="flex items-baseline justify-between">
+                            <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{tCommon("size")}</label>
+                            <span className="text-[12px] tabular-nums text-[#64748b]">{style.fontSize}</span>
+                        </div>
+                        <Slider
+                            min={12}
+                            max={96}
+                            step={1}
+                            value={[style.fontSize]}
+                            onValueChange={(v) => dispatch(setLabelFontSize(v[0]))}
+                        />
+                    </div>
 
-            <div className="flex flex-col gap-1.5">
-                <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{tCommon("background")}</label>
-                <ColorPicker
-                    color={style.backgroundColor}
-                    onChange={(hex) => dispatch(setLabelBackgroundColor(hex))}
-                    label={tCommon("background")}
-                />
-            </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{tCommon("color")}</label>
+                        <ColorPicker color={style.color} onChange={(hex) => dispatch(setLabelColor(hex))} label={tCommon("color")} />
+                    </div>
 
-            <div className="flex flex-col gap-1.5">
-                <div className="flex items-baseline justify-between">
-                    <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{t("label.backgroundOpacity")}</label>
-                    <span className="text-[12px] tabular-nums text-[#64748b]">{style.backgroundOpacity}%</span>
-                </div>
-                <Slider
-                    min={0}
-                    max={100}
-                    step={1}
-                    value={[style.backgroundOpacity]}
-                    onValueChange={(v) => dispatch(setLabelBackgroundOpacity(v[0]))}
-                />
-            </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">{tCommon("background")}</label>
+                        <ColorPicker
+                            color={style.backgroundColor}
+                            onChange={(hex) => dispatch(setLabelBackgroundColor(hex))}
+                            label={tCommon("background")}
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                        <div className="flex items-baseline justify-between">
+                            <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
+                                {t("label.backgroundOpacity")}
+                            </label>
+                            <span className="text-[12px] tabular-nums text-[#64748b]">{style.backgroundOpacity}%</span>
+                        </div>
+                        <Slider
+                            min={0}
+                            max={100}
+                            step={1}
+                            value={[style.backgroundOpacity]}
+                            onValueChange={(v) => dispatch(setLabelBackgroundOpacity(v[0]))}
+                        />
+                    </div>
+                </>
+            )}
         </div>
     );
 }

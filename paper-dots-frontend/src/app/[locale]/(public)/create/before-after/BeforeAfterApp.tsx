@@ -51,7 +51,7 @@ export default function BeforeAfterApp() {
     useLockBodyScroll();
 
     useEffect(() => {
-        if (ready) setActivePanel((p) => p ?? "layout");
+        if (ready) setActivePanel((p) => p ?? "images");
     }, [ready]);
 
     function togglePanel(panel: Panel) {

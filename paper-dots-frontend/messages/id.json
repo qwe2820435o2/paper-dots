@@ -347,7 +347,6 @@
       "customColor": "Custom color",
       "characterPlaceholder": "A",
       "resetAll": "Reset all",
-      "confirmResetAll": "Klik lagi untuk konfirmasi",
       "shuffle": "Shuffle",
       "colorPickerSaturation": "{label} saturation and brightness",
       "colorPickerHue": "{label} hue",
@@ -532,6 +531,7 @@
       },
       "label": {
         "showLabels": "Tampilkan label",
+        "moreStyles": "Gaya lainnya",
         "fontFamily": "Font",
         "backgroundOpacity": "Opasitas latar",
         "afterSliderHint": "Hanya muncul setelah slider menyingkap bagian ini."
