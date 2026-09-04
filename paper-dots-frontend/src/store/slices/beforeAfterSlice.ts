@@ -110,7 +110,10 @@ const initialState: BeforeAfterState = {
     beforeTransform: initialTransform,
     afterTransform: initialTransform,
     beforeLabel: { text: "", position: "top-left" },
-    afterLabel: { text: "", position: "top-left" },
+    // Different corner from `beforeLabel` by default: in the "slider" layout both labels share
+    // the same full-frame box (see Canvas.tsx), so identical default positions would stack the
+    // two captions directly on top of each other the moment the divider reveals that corner.
+    afterLabel: { text: "", position: "top-right" },
     labelStyle: {
         visible: true,
         fontFamily: "Arial",

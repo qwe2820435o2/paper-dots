@@ -363,13 +363,26 @@ const BeforeAfterCanvas = forwardRef<Konva.Stage>(function BeforeAfterCanvas(_pr
 
                         {logoLayer}
 
-                        {/* Only "before" gets a caption here — a floating "after" tag that
-                            appears and disappears as the divider is dragged would be confusing. */}
+                        {/* "before"'s caption is a permanent reference tag, unclipped like its
+                            base layer. */}
                         <Layer>
                             <EditableLabel
                                 box={{ x: 0, y: 0, w: canvasW, h: canvasH }}
                                 text={beforeText}
                                 position={beforeLabelState.position}
+                                style={labelStyle}
+                            />
+                        </Layer>
+
+                        {/* "after"'s caption shares the clip its photo does, so it only appears
+                            once the divider has actually uncovered that part of the frame —
+                            consistent with the photo instead of floating on top of it regardless
+                            of the reveal. */}
+                        <Layer listening={false} clipX={0} clipY={0} clipWidth={handleX} clipHeight={canvasH}>
+                            <EditableLabel
+                                box={{ x: 0, y: 0, w: canvasW, h: canvasH }}
+                                text={afterText}
+                                position={afterLabelState.position}
                                 style={labelStyle}
                             />
                         </Layer>
