@@ -79,18 +79,22 @@ export default function LayoutPicker() {
                 </div>
             )}
 
-            <div className="flex items-center justify-between gap-2">
-                <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
-                    {tBeforeAfter("layout.canvasBackground")}
-                </label>
-                <input
-                    type="color"
-                    value={canvasBackground}
-                    onChange={(e) => dispatch(setCanvasBackground(e.target.value))}
-                    aria-label={tCommon("background")}
-                    className="w-9 h-9 rounded-lg border border-[#D2EAAA] bg-white p-0.5 cursor-pointer"
-                />
-            </div>
+            {/* Only the gap between panels ever shows this color — in "slider" the two photos
+                always cover-fit the whole frame, so there is no gap for it to fill. */}
+            {layoutType !== "slider" && (
+                <div className="flex items-center justify-between gap-2">
+                    <label className="text-[12px] font-medium text-[#64748b] tracking-[0.04em]">
+                        {tBeforeAfter("layout.canvasBackground")}
+                    </label>
+                    <input
+                        type="color"
+                        value={canvasBackground}
+                        onChange={(e) => dispatch(setCanvasBackground(e.target.value))}
+                        aria-label={tCommon("background")}
+                        className="w-9 h-9 rounded-lg border border-[#D2EAAA] bg-white p-0.5 cursor-pointer"
+                    />
+                </div>
+            )}
         </div>
     );
 }

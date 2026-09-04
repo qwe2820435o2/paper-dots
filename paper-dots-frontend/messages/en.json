@@ -347,6 +347,7 @@
       "customColor": "Custom color",
       "characterPlaceholder": "A",
       "resetAll": "Reset all",
+      "confirmResetAll": "Click to confirm",
       "shuffle": "Shuffle",
       "colorPickerSaturation": "{label} saturation and brightness",
       "colorPickerHue": "{label} hue",
@@ -532,7 +533,8 @@
       "label": {
         "showLabels": "Show labels",
         "fontFamily": "Font",
-        "backgroundOpacity": "Background opacity"
+        "backgroundOpacity": "Background opacity",
+        "afterSliderHint": "Only shows once the divider reveals this part of the frame."
       },
       "position": {
         "topLeft": "Top left",

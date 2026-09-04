@@ -42,6 +42,7 @@ export default function TextLabelPanel() {
     const beforeLabel = useAppSelector((s) => s.beforeAfter.beforeLabel);
     const afterLabel = useAppSelector((s) => s.beforeAfter.afterLabel);
     const style = useAppSelector((s) => s.beforeAfter.labelStyle);
+    const layoutType = useAppSelector((s) => s.beforeAfter.layoutType);
 
     function labelGroup(slot: BeforeAfterSlot) {
         const label = slot === "before" ? beforeLabel : afterLabel;
@@ -66,6 +67,13 @@ export default function TextLabelPanel() {
                         </option>
                     ))}
                 </select>
+                {/* In "slider", the after photo is only revealed as the divider drags over it —
+                    a fixed after caption follows the same reveal instead of floating on top of
+                    an area that hasn't been dragged over yet (see Canvas.tsx). Without this note
+                    a caption that was just typed in can look like it silently failed to appear. */}
+                {slot === "after" && layoutType === "slider" && (
+                    <p className="text-[11px] text-[#9CA3AF] leading-[1.4]">{t("label.afterSliderHint")}</p>
+                )}
             </div>
         );
     }

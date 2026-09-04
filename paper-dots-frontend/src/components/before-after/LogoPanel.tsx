@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { Upload, X } from "lucide-react";
+import { RefreshCw, Upload, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Slider } from "@/components/ui/slider";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -19,6 +19,7 @@ const POSITIONS: { id: LogoPosition; labelKey: string }[] = [
  *  every export, sized as a percent of the frame so it scales with whatever size is picked. */
 export default function LogoPanel() {
     const t = useTranslations("editor.beforeAfter");
+    const tCommon = useTranslations("editor.common");
     const dispatch = useAppDispatch();
     const logo = useAppSelector((s) => s.beforeAfter.logo);
 
@@ -37,14 +38,23 @@ export default function LogoPanel() {
                 <div className="relative w-full aspect-[3/1] rounded-xl overflow-hidden border-[1.5px] border-[#D2EAAA] bg-[#F8FCF2] flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={logo.url} alt={t("logo.title")} className="max-w-[70%] max-h-[70%] object-contain" />
-                    <button
-                        type="button"
-                        onClick={() => dispatch(clearBeforeAfterLogo())}
-                        className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 flex items-center justify-center text-[#1a1a2e] hover:bg-white"
-                        aria-label={t("logo.remove")}
-                    >
-                        <X size={14} />
-                    </button>
+                    <div className="absolute top-2 right-2 flex items-center gap-1.5">
+                        <label
+                            className="w-6 h-6 rounded-full bg-white/90 flex items-center justify-center text-[#1a1a2e] hover:bg-white cursor-pointer"
+                            aria-label={tCommon("replacePhoto")}
+                        >
+                            <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
+                            <RefreshCw size={12} />
+                        </label>
+                        <button
+                            type="button"
+                            onClick={() => dispatch(clearBeforeAfterLogo())}
+                            className="w-6 h-6 rounded-full bg-white/90 flex items-center justify-center text-[#1a1a2e] hover:bg-white"
+                            aria-label={t("logo.remove")}
+                        >
+                            <X size={14} />
+                        </button>
+                    </div>
                 </div>
             ) : (
                 <label className="relative w-full aspect-[3/1] rounded-xl cursor-pointer flex flex-col items-center justify-center gap-1.5 border-[1.5px] border-dashed border-[#D2EAAA] bg-white hover:border-[#C5E89A] hover:bg-[#F8FCF2] transition-colors">
