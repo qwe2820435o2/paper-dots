@@ -364,7 +364,7 @@
       "imageReadFailed": "Could not read that image",
       "emojiLoadFailed": "Could not load that emoji",
       "imageLoadFailed": "Failed to load image",
-      "alignReset": "Alignment reset for the new photo"
+      "cropReset": "Crop reset for the new photo"
     },
     "dot": {
       "tabs": {
@@ -513,30 +513,57 @@
       "layouts": {
         "slider": "Slider",
         "side-by-side": "Side by Side",
-        "split": "Split",
         "stack": "Stack"
       },
-      "removeText": "Remove",
-      "textLabel": "Text",
-      "textPlaceholder": "Add a caption",
-      "align": {
-        "hint": "Drag the photo below to line it up with Before, then fine-tune scale or rotation if needed.",
-        "scale": "Scale",
-        "rotation": "Rotation",
-        "reset": "Reset",
-        "position": "Position"
+      "images": {
+        "zoom": "Zoom",
+        "resetCrop": "Reset crop"
+      },
+      "size": {
+        "instagram": "Instagram",
+        "tiktok": "TikTok",
+        "website": "Website",
+        "custom": "Custom size"
+      },
+      "layout": {
+        "gap": "Gap",
+        "canvasBackground": "Canvas background"
+      },
+      "label": {
+        "showLabels": "Show labels",
+        "moreStyles": "More styles",
+        "fontFamily": "Font",
+        "backgroundOpacity": "Background opacity",
+        "afterSliderHint": "Only shows once the divider reveals this part of the frame."
+      },
+      "position": {
+        "topLeft": "Top left",
+        "bottomLeft": "Bottom left",
+        "bottomCenter": "Bottom center",
+        "topCenter": "Top center",
+        "topRight": "Top right",
+        "bottomRight": "Bottom right"
+      },
+      "logo": {
+        "title": "Brand logo",
+        "upload": "Upload a logo",
+        "size": "Logo size",
+        "position": "Logo position",
+        "remove": "Remove logo"
       },
       "downloadGif": "Download GIF",
       "encodingGif": "Encoding… {percent}%",
+      "downloadVideo": "Download video",
+      "recordingVideo": "Recording…",
       "tabs": {
-        "photos": "Photos",
+        "images": "Images",
+        "size": "Size",
         "layout": "Layout",
         "text": "Text",
-        "align": "Align",
+        "logo": "Logo",
         "export": "Export"
       },
-      "dividerPosition": "Divider position",
-      "labelPosition": "Position"
+      "dividerPosition": "Divider position"
     }
   },
   "editorMeta": {

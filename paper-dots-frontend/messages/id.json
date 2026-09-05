@@ -364,7 +364,7 @@
       "imageReadFailed": "Could not read that image",
       "emojiLoadFailed": "Could not load that emoji",
       "imageLoadFailed": "Failed to load image",
-      "alignReset": "Penyelarasan diatur ulang untuk foto baru"
+      "cropReset": "Crop diatur ulang untuk foto baru"
     },
     "dot": {
       "tabs": {
@@ -513,30 +513,57 @@
       "layouts": {
         "slider": "Slider",
         "side-by-side": "Berdampingan",
-        "split": "Terbagi",
         "stack": "Bertumpuk"
       },
-      "removeText": "Hapus",
-      "textLabel": "Teks",
-      "textPlaceholder": "Tambahkan keterangan",
-      "align": {
-        "hint": "Geser foto di bawah untuk menyejajarkannya dengan Sebelum, lalu sesuaikan skala atau rotasi jika perlu.",
-        "scale": "Skala",
-        "rotation": "Rotasi",
-        "reset": "Reset",
-        "position": "Posisi"
+      "images": {
+        "zoom": "Perbesar",
+        "resetCrop": "Reset crop"
+      },
+      "size": {
+        "instagram": "Instagram",
+        "tiktok": "TikTok",
+        "website": "Situs Web",
+        "custom": "Ukuran khusus"
+      },
+      "layout": {
+        "gap": "Jarak",
+        "canvasBackground": "Warna latar kanvas"
+      },
+      "label": {
+        "showLabels": "Tampilkan label",
+        "moreStyles": "Gaya lainnya",
+        "fontFamily": "Font",
+        "backgroundOpacity": "Opasitas latar",
+        "afterSliderHint": "Hanya muncul setelah slider menyingkap bagian ini."
+      },
+      "position": {
+        "topLeft": "Kiri atas",
+        "bottomLeft": "Kiri bawah",
+        "bottomCenter": "Tengah bawah",
+        "topCenter": "Tengah atas",
+        "topRight": "Kanan atas",
+        "bottomRight": "Kanan bawah"
+      },
+      "logo": {
+        "title": "Logo merek",
+        "upload": "Unggah logo",
+        "size": "Ukuran logo",
+        "position": "Posisi logo",
+        "remove": "Hapus logo"
       },
       "downloadGif": "Unduh GIF",
       "encodingGif": "Memproses… {percent}%",
+      "downloadVideo": "Unduh video",
+      "recordingVideo": "Merekam…",
       "tabs": {
-        "photos": "Foto",
+        "images": "Foto",
+        "size": "Ukuran",
         "layout": "Tata Letak",
         "text": "Teks",
-        "align": "Ratakan",
+        "logo": "Logo",
         "export": "Ekspor"
       },
-      "dividerPosition": "Posisi pembatas",
-      "labelPosition": "Posisi"
+      "dividerPosition": "Posisi pembatas"
     }
   },
   "editorMeta": {
